@@ -1,1 +1,23 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar class="sidebar-title">
+      <ion-title>{{ 'menu' | translate }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="side-bar-menu">
+    <ion-list>
+      <ion-item nav-clear menu-close class="lang" href="#/language">{{ 'translateViewTitle' | translate }}</ion-item>
+      <ion-item nav-clear menu-close class="profile" href="#/profileSettings">{{ 'profileSettings' | translate }}</ion-item>
+      <ion-item nav-clear menu-close (click)="pushPage('payment')" class="payment">{{ 'paymentDetails' | translate }}</ion-item>
+      <ion-item nav-clear menu-close (click)="pushPage('qrcode')" class="qr-code">{{ 'QrScannerText' | translate }}</ion-item>
+      <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        {{p.title}}
+      </button>-->
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

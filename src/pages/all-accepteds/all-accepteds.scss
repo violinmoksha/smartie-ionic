@@ -1,0 +1,46 @@
+page-all-accepteds {
+  ul{
+    padding: 0;
+    margin: 0;
+    li.accepted{
+      background-color: #CCE9DA;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-bottom: 1px solid #cfcfcf;
+      a{
+        text-decoration:none;
+        color: #000;
+        background-image: url(./../assets/img/green-alert-icon.png)!important;
+
+        background-size: 30px;
+        background-position: 15px center;
+        background-repeat: no-repeat;
+        padding: 15px;
+        padding-left: 60px;
+        display: block;
+      }
+    }
+
+    li.requested{
+      background-color: #FCDADD;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-bottom: 1px solid #cfcfcf;
+      a{
+        text-decoration:none;
+        color: #000;
+        background-image: url(./../assets/img/red-alert-icon.png)!important;
+
+        background-size: 30px;
+        background-position: 15px center;
+        background-repeat: no-repeat;
+        padding: 15px;
+        padding-left: 60px;
+        display: block;
+      }
+    }
+
+  }
+}

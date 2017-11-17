@@ -1,0 +1,68 @@
+<!--
+  Generated template for the JobRequestsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Job Requests</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div class="notification-wrapper totles-pop-search" id="profile-info">
+    <div class="notification">
+      <div class="left">
+        <div class="avatar"><img src="{{ params.profilePhoto }}"></div>
+        <div class="u-detail">
+          <div class="name">{{ params.fullname }}</div>
+          <div class="profile-type">{{ params.role }}</div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="price">{{ params.prefPayRate }} ฿</div>
+        <div class="hour-rate">Per Hour</div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+
+  <div class="jobprofile-content">
+  <h2>Hi I am a {{ params.experience }} Years Experience {{ params.expertLangs }} Teacher</h2>
+    <div class="jobprofile-details">
+      <h3>Details:</h3>
+      <p>{{ params.profileAbout }}</p>
+    </div>
+    <div class="clear"></div>
+    <div class="jobprofile-details">
+      <h3>Location</h3>
+      <p>
+        {{ params.prefLocation }}
+      </p>
+      <div class="clear"></div>
+      </div>
+      <!-- <div class="job-phone-details">
+      <h3>Phone No</h3>
+      <p>{{ params.phone }}</p>
+      </div> -->
+      <div class="jobprofile-buttons">
+        <button class="button button-positive" ion-button full><i class="fa fa-user" aria-hidden="true"></i> View Job Proife</button>
+        <button class="button button-positive" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i> Send Mail</button>
+      </div>
+    </div>
+    <div class="alert-button-group">
+      <button ion-button="alert-button" class="alert-button alert-button-md alert-button-default alert-button-default-md" (click)="dismiss()"><span class="button-inner">Close</span><div class="button-effect"></div></button>
+
+      <button ion-button="alert-button" [disabled]="requestSent" (click)="sendRequest()" class="alert-button alert-button-md alert-button-default alert-button-default-md">
+        <span class="button-inner" *ngIf="!requestSent">Send Request</span>
+        <span class="button-inner" *ngIf="requestSent">Invite Sent</span>
+      <div class="button-effect"></div></button>
+
+    </div>
+</ion-content>

@@ -1,0 +1,77 @@
+<!--
+  Generated template for the TeacherJobAcceptedPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ 'jobAccepted' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div class="role-notification">
+    <h2>Congratulations your invite has been Accepted</h2>
+  </div>
+  <div class="notification-wrapper totles-pop-search" id="profile-info">
+    <div class="notification">
+      <div class="left">
+        <div class="avatar" *ngIf="!profileData.profilePhoto"><img src="{{ profilePhoto }}"></div>
+        <div class="avatar" *ngIf="profileData.profilePhoto"><img src="{{ profileData.profilePhoto.url }}"></div>
+        <div class="u-detail">
+          <div class="name">{{ profileData.fullname }}</div>
+          <div class="profile-type">{{ profileData.role }}</div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="price">{{ profileData.prefpayrate }} ฿</div>
+        <div class="hour-rate">Per Hour</div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div class="jobaccept-details">
+    <h3>Hi I am 10 Years experience English Teacher!</h3>
+    <div class="profile-detail">
+      <h3>Details: </h3>
+      <p>
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+      </p>
+
+      <h3>Preferred Location</h3>
+      <p>{{ profileData.preflocation }}</p>
+
+      <h3>Available Timings</h3>
+      <p>9.00 AM to 5 PM on 26-01-2016 to 30-01-2016</p>
+    </div>
+    <div class="profile-prof-details">
+      <h3>Languages of Expertise: </h3>
+      <p>English, Thai & French</p>
+
+      <h3>Levels Capable: </h3>
+      <p>P1, P2, P3 & H1</p>
+    </div>
+    <div class="profile-contact">
+      <h3>Phone No: </h3>
+      <p>{{ profileData.phone }}</p>
+
+      <h3>Location: </h3>
+      <p>
+        320, Sed ultrices augue,
+        41/7 auctor finibus aliquet.
+        Colldberg - 5424552
+      </p>
+      <img class="map-icon" src={{profileLocationIcon}} />
+      <div class="clear">
+
+      </div>
+    </div>
+  </div>
+  <button class="button button-positive" (click)="payToTeacher()" ion-button full>Pay</button>
+</ion-content>

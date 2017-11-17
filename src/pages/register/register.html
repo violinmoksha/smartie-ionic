@@ -1,0 +1,34 @@
+
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ 'registerOptions' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="logo-icon">
+     <img src="./assets/img/logo-icon.png" />
+  </div>
+
+  <div class="reg-text">
+    <h1>{{ 'whoAreYou' | translate }}</h1>
+  </div>
+
+  <ion-item class="roles">
+    <a class="item item-role" (click)="pushPage('teacher')"> {{ 'teacher' | translate }}</a>
+  </ion-item>
+  <ion-item class="roles">
+    <a class="item item-role" (click)="pushPage('student')"> {{ 'student' | translate }}</a>
+  </ion-item>
+  <ion-item class="roles">
+    <a class="item item-role" (click)="pushPage('parent')"> {{ 'parent' | translate }}</a>
+  </ion-item>
+  <ion-item class="roles">
+    <a class="item item-role" (click)="pushPage('school')"> {{ 'school' | translate }}</a>
+  </ion-item>
+  <!--<button ion-button secondary menuToggle>Toggle Menu</button>-->
+</ion-content>

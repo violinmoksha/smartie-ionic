@@ -1,0 +1,144 @@
+.login-page{
+  text-align: center;
+  .logo-icon{
+    margin-bottom: 20px;
+  }
+  .item {
+      border-color: #ddd;
+      background-color: #fff;
+      color: #444;
+      position: relative;
+      z-index: 2;
+      display: block;
+      margin: -1px;
+      padding:5px 15px;
+      border-width: 1px;
+      border-style: solid;
+      font-size: 16px;
+      .text-input-md{
+        margin: 0;
+      }
+  }
+  .button-default{
+    border-color: transparent;
+    background-color: #f8f8f8;
+    color: #fff!important;
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    padding: 0 12px;
+    min-width: 52px;
+    min-height: 47px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    vertical-align: top;
+    text-align: center;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    line-height: 46px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    span{
+      color: #fff;
+    }
+  }
+  .button.fb-login{
+    border-color: transparent;
+    background-color: #f8f8f8;
+    color: #444;
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    padding: 0 12px;
+    min-width: 52px;
+    min-height: 47px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    vertical-align: top;
+    text-align: center;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    line-height: 46px;
+    cursor: pointer;
+    background-color: #45619D;
+    color: #fff;
+    width: 100%;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    img{
+      margin-top: 5px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 15px;
+    }
+  }
+  .register-block{
+    display: block;
+    text-align: center;
+    color: #808184;
+    margin-top: 30px;
+    a{
+      color: #009345;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+  span{
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: #808184;
+  }
+
+  .alert-wrapper{
+    border-radius: 10px;
+    .alert-title{
+      text-align: center;
+      color: #009345;
+      font-size: 18px;
+    }
+    .alert-sub-title{
+      font-size: 15px;
+      color: #333333;
+      text-align: center;
+    }
+    .alert-button-group{
+      margin: 0;
+      padding:15px;
+    }
+    .alert-button{
+      border-color: transparent;
+      background-color: #009345;
+      color: #fff!important;
+      position: relative;
+      display: inline-block;
+      margin: 0;
+      padding: 0 12px;
+      min-width: 52px;
+      min-height: 47px;
+      border-width: 1px;
+      border-style: solid;
+      border-radius: 4px;
+      vertical-align: top;
+      text-align: center;
+      text-overflow: ellipsis;
+      font-size: 16px;
+      line-height: 46px;
+      cursor: pointer;
+      text-align: center;
+      width: 100%;
+      span{
+        width: 100%;
+        text-align: center;
+        display: block;
+      }
+    }
+  }
+}
+
+

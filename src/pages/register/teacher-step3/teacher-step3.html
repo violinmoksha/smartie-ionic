@@ -1,0 +1,124 @@
+<!--
+  Generated template for the TeacherStep3Page page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ 'teacherRegistration' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <!-- <div>
+    <h4>Debug</h4>
+    <pre>Form : {{Teacherstep3Form.value | json }}</pre>
+    <pre>Form Status : {{Teacherstep3Form.status }}</pre>
+    <pre>Form StartDate Status : {{Teacherstep3Form.get('dates.startDate').value }}</pre>
+    <pre>Form StartDate Status : {{Teacherstep3Form.get('dates.endDate').value }}</pre>
+  </div> -->
+
+  <form [formGroup]="Teacherstep3Form" name="Teacherstep3Form" (ngSubmit)="finalTeacherSubmit(Teacherstep3Form.value)" novalidate>
+
+    <div class="list list-inset registration teacher step3">
+
+      <label class="item item-input">
+        <span class="input-label">Years of Experience in Teaching</span>
+        <ion-input placeholder="10 Years" type="text" formControlName="experience"></ion-input>
+      </label>
+
+      <div *ngIf="!Teacherstep3Form.controls['experience'].valid && Teacherstep3Form.controls['experience'].touched" class="item item-message">
+        Experience is required
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">Prefered Teaching Location</span>
+        <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
+      </label>
+
+      <div *ngIf="!Teacherstep3Form.controls['prefLocation'].valid && Teacherstep3Form.controls['prefLocation'].touched" class="item item-message">
+        Enter your prefered location.
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">Prefered Hourly Rates</span>
+        <ion-input placeholder="10$ per Hour" type="text" formControlName="prefPayRate"></ion-input>
+      </label>
+
+      <div *ngIf="!Teacherstep3Form.controls['prefPayRate'].valid && Teacherstep3Form.controls['prefPayRate'].touched" class="item item-message">
+        Enter your Hourly rate.
+      </div>
+
+      <div formGroupName="dates">
+        <span class="input-label">Schedule Availability</span>
+        <label class="item item-input">
+          <span class="input-label">Start Date</span>
+          <ion-datetime displayFormat="DD-MMM-YYYY" formControlName="startDate"></ion-datetime>
+        </label>
+
+        <div *ngIf="Teacherstep3Form.get('dates.startDate').invalid && Teacherstep3Form.get('dates.startDate').touched" class="item item-message">
+          Start date is required.
+        </div>
+
+        <label class="item item-input">
+          <span class="input-label">End Date</span>
+          <ion-datetime displayFormat="DD-MMM-YYYY" formControlName="endDate"></ion-datetime>
+        </label>
+
+        <div *ngIf="Teacherstep3Form.get('dates.endDate').invalid && Teacherstep3Form.get('dates.endDate').touched" class="item item-message">
+          End date is required.
+        </div>
+        <div *ngIf="Teacherstep3Form.get('dates').errors !== null && Teacherstep3Form.get('dates.endDate').touched" class="item item-message">
+          End date should greater than Start date.
+        </div>
+      </div>
+
+      <div formGroupName="times">
+        <label class="item item-input">
+          <span class="input-label">Start Time</span>
+          <ion-datetime displayFormat="HH-mm" formControlName="startTime"></ion-datetime>
+        </label>
+
+        <div *ngIf="Teacherstep3Form.get('times.startTime').invalid && Teacherstep3Form.get('times.startTime').touched" class="item item-message">
+          Start time is required.
+        </div>
+
+        <label class="item item-input">
+          <span class="input-label">End Time</span>
+          <ion-datetime displayFormat="HH-mm" formControlName="endTime"></ion-datetime>
+        </label>
+
+        <div *ngIf="Teacherstep3Form.get('times.endTime').invalid && Teacherstep3Form.get('times.endTime').touched" class="item item-message">
+          End time is required.
+        </div>
+        <div *ngIf="Teacherstep3Form.get('times').errors !== null && Teacherstep3Form.get('times.endTime').touched" class="item item-message">
+          End time should greater than Start time.
+        </div>
+      </div>
+
+      <ion-list>
+        <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
+          {{cert.name}}
+          <a href="javascript:" (click)="deleteTeacherCert(cert)"><img src="./assets/img/delete-icon.png"></a>
+        </ion-item>
+      </ion-list>
+
+      <div class="teacher-cv">
+        <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="">
+        <div class="button button-cv">Upload Your CV and Certificates</div>
+        <span class="input-label">Credentials verifiable via phone camera</span>
+      </div>
+
+    </div>
+
+    <button class="button button-positive" [disabled]="!Teacherstep3Form.valid" ion-button full>Submit</button>
+
+  </form>
+
+</ion-content>
