@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 //import { Http, Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Constants } from '../../app/app.constants';
-import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
+// import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
 
 /**
  * Generated class for the AllAcceptedsPage page.
@@ -46,10 +46,13 @@ export class AllAccepteds {
     }
 
     let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getAllAccepteds;
-    let headers = new HttpHeaders();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'X-Parse-Application-Id': this.applicationId,
+        'X-Parse-Master-Key': this.masterKey,
+        'Content-Type': this.contentType
+      })
+    };
 
     if(this.navParams.data.activeRole == 'teacher'){
       this.body = { requestingProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'userProfile')).profileData.objectId, role: this.navParams.data.activeRole }
@@ -57,10 +60,12 @@ export class AllAccepteds {
       this.body = { requestedProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'userProfile')).profileData.objectId }
     }
 
-    this.http.post(postUrl, this.body, { headers: headers}).toPromise().then(res => {
-      let notifyResult = res;
-      console.log(res);
-      this.allAccepteds = notifyResult;
+    return new Promise(resolve => {
+      this.http.post(postUrl, JSON.stringify(this.body), httpOptions ).subscribe(res => {
+        let notifyResult = res;
+        this.allAccepteds = notifyResult.result;
+        console.log(this.allAccepteds);
+      })
     })
   }
 
@@ -83,16 +88,19 @@ export class AllAccepteds {
     }
 
     let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getAcceptedJobRequest;
-    let headers = new HttpHeaders();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'X-Parse-Application-Id': this.applicationId,
+        'X-Parse-Master-Key': this.masterKey,
+        'Content-Type': this.contentType
+      })
+    };
     let body = { requestingProfileId : requestingProfileId, requestedProfileId: requestedProfileId, role: this.navParams.data.activeRole }
 
-    this.http.post(postUrl, body, { headers: headers }).toPromise().then((res) => {
-      // TODO: make this work in new Ionic
-      let resResult = JSON.parse(res.text());
-      //this.navCtrl.push(TeacherJobAccepted, { data: resResult.result });
+    return new Promise(resolve => {
+      this.http.post(postUrl, JSON.stringify(body), httpOptions ).subscribe(res => {
+        let resResult = res;
+      })
     })
   }
 

@@ -49,10 +49,14 @@ export class JobRequests {
     }
 
     let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getRequestedJobRequest;
-    let headers = new HttpHeaders();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'X-Parse-Application-Id': this.applicationId,
+        'X-Parse-Master-Key': this.masterKey,
+        'Content-Type': this.contentType
+      })
+    };
+
     //TODO: if loggedin role is teacher - teacher is requesting and the markers on the screen are requested
     //TODO: if loggedin role is others - teacher is requesting and the loggedin other is request
     if(this.params.loggedRole === 'teacher'){
@@ -61,13 +65,17 @@ export class JobRequests {
       this.body = { requestingProfileId: this.params.requestedId, requestedProfileId: roleProfile.profileData.objectId };
     }
 
-    return this.http.post(postUrl, this.body, { headers: headers }).toPromise().then((response) => {
-      let resResult = response;
-      if(resResult){
-        this.requestSent = true;
-      }else{
-        this.requestSent = false;
-      }
+    return new Promise(resolve => {
+      this.http.post(postUrl, JSON.stringify(this.body), httpOptions ).subscribe(response => {
+        let resResult = response;
+        if(resResult){
+          this.requestSent = true;
+        }else{
+          this.requestSent = false;
+        }
+      }, err => {
+        console.log(err);
+      })
     })
   }
 
@@ -94,10 +102,13 @@ export class JobRequests {
     }
 
     let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.setJobRequest;
-    let headers = new HttpHeaders();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'X-Parse-Application-Id': this.applicationId,
+        'X-Parse-Master-Key': this.masterKey,
+        'Content-Type': this.contentType
+      })
+    };
 
     if(this.params.loggedRole === 'teacher'){
       this.body = { requestingProfileId: JSON.parse(localStorage.getItem(this.params.loggedRole+'userProfile')).profileData.objectId, requestedProfileId: this.params.requestedId  };
@@ -105,14 +116,16 @@ export class JobRequests {
       this.body = { requestingProfileId: this.params.requestedId, requestedProfileId: JSON.parse(localStorage.getItem(this.params.loggedRole+'userProfile')).profileData.objectId  }
     }
 
-    this.http.post(postUrl, this.body, { headers: headers }).toPromise().then((response) => {
-      if(response.status == 200){
-        this.requestSent = true;
-      }
-      setTimeout(() => {
-        this.viewCtrl.dismiss();
-      }, 5000);
-    });
+    return new Promise(resolve => {
+      this.http.post(postUrl, JSON.stringify(this.body), httpOptions ).subscribe(response => {
+        if(response.status == 200){
+          this.requestSent = true;
+        }
+        setTimeout(() => {
+          this.viewCtrl.dismiss();
+        }, 5000);
+      })
+    })
 
   }
 

@@ -86,19 +86,6 @@ export class TotlesSearch {
       this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
       this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
     }
-
-    // let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.sendJobRequest;
-    // let headers = new HttpHeaders();
-    // headers.append('X-Parse-Application-Id', this.applicationId);
-    // headers.append('X-Parse-Master-Key', this.masterKey);
-    // headers.append('Content-Type', this.contentType);
-    // let body = { requestingProfileId: JSON.parse(localStorage.getItem(this.navParams.data.role+'userProfile')).profileData.objectId, requestedProfileId : locationData.user.objectId }
-
-    /*this.http.post(postUrl, body, { headers: headers }).toPromise().then((response) => {
-      setTimeout(() => {
-        this.alert.dismiss();
-      }, 5000);
-    });*/
   }
 
   createMarkerLocation(locationData){
@@ -200,27 +187,31 @@ export class TotlesSearch {
     }
 
     let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.totlesSearch;
-    let headers = new HttpHeaders();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'X-Parse-Application-Id': this.applicationId,
+        'X-Parse-Master-Key': this.masterKey,
+        'Content-Type': this.contentType
+      })
+    };
     let body = searchData;
 
-    return this.http.post(postUrl, body, { headers: headers }).toPromise().then((response) => {
-      let searchResults = JSON.parse(response.text());
-      var mapOptions = {
-          zoom: 1,
-          // center: latLng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
+    return new Promise(resolve => {
+      this.http.post(postUrl, JSON.stringify(body), httpOptions ).subscribe(response => {
+        let searchResults = response;
+        var mapOptions = {
+            zoom: 1,
+            // center: latLng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
 
-      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-      this.bounds = new google.maps.LatLngBounds();
+        this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+        this.bounds = new google.maps.LatLngBounds();
 
-      for(let searchResult of searchResults.result){
-        this.createMarkerLocation(searchResult);
-      }
-
+        for(let searchResult of searchResults.result){
+          this.createMarkerLocation(searchResult);
+        }
+      })
     })
   }
 

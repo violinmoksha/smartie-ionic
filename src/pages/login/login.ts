@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 //import { Http, Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Register } from '../register/register';
@@ -29,13 +29,11 @@ export class Login {
   private masterKey: string;
   private contentType: string;
 
-  private formBuilder: FormBuilder;
-
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private http: HttpClient, private storage: Storage) {
 
-    this.LoginForm = this.formBuilder.group({
-      username: [''],
-      password: ['']
+    this.LoginForm = new FormGroup({
+      username: new FormControl(''),
+      password: new FormControl('')
     });
   }
 
@@ -59,53 +57,77 @@ export class Login {
       }
 
       let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.loginUser;
-      let headers = new HttpHeaders();
+      /*let headers = new HttpHeaders();
       headers.append('X-Parse-Application-Id', this.applicationId);
       headers.append('X-Parse-Master-Key', this.masterKey);
-      headers.append('Content-Type', this.contentType);
+      headers.append('Content-Type', this.contentType);*/
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'X-Parse-Application-Id': this.applicationId,
+          'X-Parse-Master-Key': this.masterKey,
+          'Content-Type': this.contentType
+        })
+      };
       let body = {username: data.username, password: data.password};
+
+      console.log(body);
 
       /// maybe???
       /*return new Promise(resolve => {
 
       })*/
-      this.http.post(postUrl, body, { headers: headers }).toPromise().then((res) => {
-        let body = JSON.parse(res.text());
-          localStorage.setItem(body.result.profileData.role+'userProfile', JSON.stringify(body.result))
+      return new Promise(resolve => {
+        this.http.post(postUrl, JSON.stringify(body), httpOptions ).subscribe(data => {
+          console.log(data);
+          localStorage.setItem(data.result.profileData.role+'userProfile', JSON.stringify(data.result));
+          this.storage.set('sessionToken', data.result.userData.sessionToken);
 
-        // console.log(body.result.userData.sessionToken);
-        this.storage.set('sessionToken', body.result.userData.sessionToken);
+          if(data.result.profileData.role !== 'teacher'){
+            // this.isAnyJobAccepted();
+            let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getNotifyCount;
+            const httpOptions = {
+              headers: new HttpHeaders({
+                'X-Parse-Application-Id': this.applicationId,
+                'X-Parse-Master-Key': this.masterKey,
+                'Content-Type': this.contentType
+              })
+            };
+            let dataNotification = { requestedProfileId: data.result.profileData.objectId, role: data.result.profileData.role };
 
-        if(body.result.profileData.role !== 'teacher'){
-          // this.isAnyJobAccepted();
-          let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getNotifyCount;
-          let headers = new HttpHeaders();
-          headers.append('X-Parse-Application-Id', this.applicationId);
-          headers.append('X-Parse-Master-Key', this.masterKey);
-          headers.append('Content-Type', this.contentType);
-          let data = { requestedProfileId: body.result.profileData.objectId, role: body.result.profileData.role };
+            return new Promise(resolve => {
+              this.http.post(postUrl, dataNotification, httpOptions ).subscribe(notifyRes => {
+                let notificationCount = notifyRes;
+                localStorage.setItem(data.result.profileData.objectId + 'notificationCount', JSON.stringify(notificationCount));
+                this.navCtrl.push(TotlesSearch, { role: data.result.profileData.role, fromWhere: 'login', loggedProfileId: data.result.profileData.objectId });
+              }, err => {
+                console.log(err);
+              })
+            })
+          }else{
+            let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getNotifyCount;
+            const httpOptions = {
+              headers: new HttpHeaders({
+                'X-Parse-Application-Id': this.applicationId,
+                'X-Parse-Master-Key': this.masterKey,
+                'Content-Type': this.contentType
+              })
+            };
+            let dataNotification = { requestingProfileId: data.result.profileData.objectId, role: data.result.profileData.role };
 
-          this.http.post(postUrl, data, { headers: headers }).toPromise().then((notifyRes) => {
-            let notificationCount = JSON.parse(notifyRes.text());
-            localStorage.setItem(body.result.profileData.objectId + 'notificationCount', JSON.stringify(notificationCount));
-            this.navCtrl.push(TotlesSearch, { role: body.result.profileData.role, fromWhere: 'login', loggedProfileId: body.result.profileData.objectId });
-          })
-
-        }else{
-          let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getNotifyCount;
-          let headers = new HttpHeaders();
-          headers.append('X-Parse-Application-Id', this.applicationId);
-          headers.append('X-Parse-Master-Key', this.masterKey);
-          headers.append('Content-Type', this.contentType);
-          let data = { requestingProfileId: body.result.profileData.objectId, role: body.result.profileData.role };
-
-          this.http.post(postUrl, data, { headers: headers }).toPromise().then((notifyRes) => {
-            let notificationCount = JSON.parse(notifyRes.text());
-            localStorage.setItem(body.result.profileData.objectId + 'notificationCount', JSON.stringify(notificationCount));
-            this.navCtrl.push(TotlesSearch, { role: body.result.profileData.role, fromWhere: 'login', loggedProfileId: body.result.profileData.objectId  });
-          })
-        }
-      })
+            return new Promise(resolve => {
+              this.http.post(postUrl, dataNotification, httpOptions ).subscribe(notifyRes => {
+                let notificationCount = notifyRes;
+                localStorage.setItem(data.result.profileData.objectId + 'notificationCount', JSON.stringify(notificationCount));
+                this.navCtrl.push(TotlesSearch, { role: data.result.profileData.role, fromWhere: 'login', loggedProfileId: data.result.profileData.objectId  });
+              }, err => {
+                console.log(err);
+              })
+            })
+          }
+        }, err => {
+          console.log(err);
+        });
+      });
     }else{
       let alert = this.alertCtrl.create({
         title: 'Login Failed !',
