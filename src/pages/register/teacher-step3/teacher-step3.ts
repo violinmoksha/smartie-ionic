@@ -135,18 +135,18 @@ export class RegisterTeacherStep3 {
 
     return this.http.post(postUrl, body, { headers: headers }).subscribe(
       data => {
-        let signupResult = JSON.parse(data.text());
-        localStorage.setItem("teacherSignupUserProfile", JSON.stringify(signupResult.result));
+//        let signupResult = JSON.parse(data.text());
+//        localStorage.setItem("teacherSignupUserProfile", JSON.stringify(signupResult.result));
 
         let cvPromises = [];
         // console.log(this.TeacherFiles);
         if(this.TeacherFiles){
           for(let cvFile of this.TeacherFiles){
-            cvPromises.push(this.setTeacherCred(signupResult.result.objectId, cvFile).then((responseResult) => {
-                console.log(responseResult);
-              }).catch((rejectResult) => {
-                console.log(rejectResult);
-              }))
+//            cvPromises.push(this.setTeacherCred(signupResult.result.objectId, cvFile).then((responseResult) => {
+//              console.log(responseResult);
+//            }).catch((rejectResult) => {
+//              console.log(rejectResult);
+//            }))
           }
 
           // finish all of the array of promises,

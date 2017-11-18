@@ -106,9 +106,10 @@ export class JobRequests {
     }
 
     this.http.post(postUrl, this.body, { headers: headers }).toPromise().then((response) => {
-      if(response.status == 200){
-        this.requestSent = true;
-      }
+      console.log(response);
+      //if(response.status == 200){
+        //this.requestSent = true;
+      //}
       setTimeout(() => {
         this.viewCtrl.dismiss();
       }, 5000);

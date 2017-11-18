@@ -57,7 +57,7 @@ export class AllAccepteds {
       this.body = { requestedProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'userProfile')).profileData.objectId }
     }
 
-    this.http.post(postUrl, this.body, { headers: headers}).toPromise().then(res => {
+    this.http.post(postUrl, this.body, { headers: headers, responseType: 'json'}).toPromise().then(res => {
       let notifyResult = res;
       console.log(res);
       this.allAccepteds = notifyResult;
@@ -91,7 +91,7 @@ export class AllAccepteds {
 
     this.http.post(postUrl, body, { headers: headers }).toPromise().then((res) => {
       // TODO: make this work in new Ionic
-      let resResult = JSON.parse(res.text());
+      //let resResult = JSON.parse(res.text());
       //this.navCtrl.push(TeacherJobAccepted, { data: resResult.result });
     })
   }

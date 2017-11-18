@@ -4,11 +4,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 //import { Http, Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Register } from '../register/register';
-import { TotlesSearch } from '../totles-search/totles-search';
-import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
+//import { TotlesSearch } from '../totles-search/totles-search';
+//import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
 import { Constants } from '../../app/app.constants';
 // import { Auth } from '@ionic/cloud-angular';
-import { Storage } from '@ionic/storage';
+//import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the LoginPage page.
@@ -31,8 +31,8 @@ export class Login {
 
   private formBuilder: FormBuilder;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private http: HttpClient, private storage: Storage) {
-
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private http: HttpClient) {
+    this.formBuilder = new FormBuilder();
     this.LoginForm = this.formBuilder.group({
       username: [''],
       password: ['']
@@ -70,13 +70,13 @@ export class Login {
 
       })*/
       this.http.post(postUrl, body, { headers: headers }).toPromise().then((res) => {
-        let body = JSON.parse(res.text());
-          localStorage.setItem(body.result.profileData.role+'userProfile', JSON.stringify(body.result))
+        //let body = JSON.parse(res.text());
+          //localStorage.setItem(body.profileData.role+'userProfile', JSON.stringify(body.result))
 
         // console.log(body.result.userData.sessionToken);
-        this.storage.set('sessionToken', body.result.userData.sessionToken);
+        //this.storage.set('sessionToken', body.result.userData.sessionToken);
 
-        if(body.result.profileData.role !== 'teacher'){
+        /*if(body.result.profileData.role !== 'teacher'){
           // this.isAnyJobAccepted();
           let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getNotifyCount;
           let headers = new HttpHeaders();
@@ -104,7 +104,7 @@ export class Login {
             localStorage.setItem(body.result.profileData.objectId + 'notificationCount', JSON.stringify(notificationCount));
             this.navCtrl.push(TotlesSearch, { role: body.result.profileData.role, fromWhere: 'login', loggedProfileId: body.result.profileData.objectId  });
           })
-        }
+        }*/
       })
     }else{
       let alert = this.alertCtrl.create({
@@ -143,11 +143,12 @@ export class Login {
 
     return this.http.post(postUrl, body, { headers: headers }).toPromise().then((result) => {
       console.log(result);
-      if(result.status == 200){
+/*    if(result.status == 200){
         let requestedResponse = JSON.parse(result.text());
         localStorage.setItem('TeacherJobAcceptedResult', JSON.stringify(requestedResponse.result));
         this.navCtrl.push(TeacherJobAccepted);
       }
+*/
     })
 
 

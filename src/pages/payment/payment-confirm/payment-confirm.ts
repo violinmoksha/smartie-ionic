@@ -88,9 +88,10 @@ export class PaymentConfirm {
 
     return this.http.post(postUrl, body, { headers: headers }).toPromise().then((res) =>{
       console.log(data.emailPayment);
-      if(res.status == 200){
+/*    if(res.status == 200){
         this.navCtrl.push(PaymentThankyou, { emailId: data.emailPayment });
       }
+*/
     });
 
     // happens backend since this has "the token" inside it

@@ -162,8 +162,8 @@ export class RegisterStudent {
 
     return this.http.post(postUrl, body, { headers: headers }).subscribe(
       data => {
-        let signupResult = JSON.parse(data.text());
-        localStorage.setItem("studentSignupUserProfile", JSON.stringify(signupResult.result));
+//      let signupResult = JSON.parse(data.text());
+//      localStorage.setItem("studentSignupUserProfile", JSON.stringify(signupResult.result));
 
         if(localStorage.getItem('profilePhotoDataUrl') == null){
           this.navCtrl.push(TotlesSearch, {role: 'student', fromwhere: 'signUp'});

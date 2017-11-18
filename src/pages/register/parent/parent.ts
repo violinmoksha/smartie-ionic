@@ -162,8 +162,8 @@ export class RegisterParent {
 
     return this.http.post(postUrl, body, { headers: headers }).subscribe(
       data => {
-        let signupResult = JSON.parse(data.text());
-        localStorage.setItem("parentSignupUserProfile", JSON.stringify(signupResult.result));
+//        let signupResult = JSON.parse(data.text());
+//        localStorage.setItem("parentSignupUserProfile", JSON.stringify(signupResult.result));
 
         if(localStorage.getItem('profilePhotoDataUrl') == null){
           this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
