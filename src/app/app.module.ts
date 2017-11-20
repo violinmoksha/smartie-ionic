@@ -52,7 +52,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 //import { Camera } from '@ionic-native/camera';
 //import { Geolocation } from '@ionic-native/geolocation';
 
-import { ParseProvider } from '../providers/parse/parse';
+import { ParseProvider } from '../providers/parse';
 
 import { IonicStorageModule } from '@ionic/storage';
 
