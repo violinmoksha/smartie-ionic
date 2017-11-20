@@ -4,11 +4,11 @@ import { FormGroup, FormControl } from '@angular/forms';
 //import { Http, Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Register } from '../register/register';
-import { TotlesSearch } from '../totles-search/totles-search';
-import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
+//import { TotlesSearch } from '../totles-search/totles-search';
+//import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
 import { Constants } from '../../app/app.constants';
 // import { Auth } from '@ionic/cloud-angular';
-import { Storage } from '@ionic/storage';
+//import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the LoginPage page.
@@ -29,11 +29,21 @@ export class Login {
   private masterKey: string;
   private contentType: string;
 
+<<<<<<< HEAD
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private http: HttpClient, private storage: Storage) {
 
     this.LoginForm = new FormGroup({
       username: new FormControl(''),
       password: new FormControl('')
+=======
+  private formBuilder: FormBuilder;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private http: HttpClient) {
+    this.formBuilder = new FormBuilder();
+    this.LoginForm = this.formBuilder.group({
+      username: [''],
+      password: ['']
+>>>>>>> 20f3e50f8fee973585304ce0c77aff699cd56b1c
     });
   }
 
@@ -165,11 +175,12 @@ export class Login {
 
     return this.http.post(postUrl, body, { headers: headers }).toPromise().then((result) => {
       console.log(result);
-      if(result.status == 200){
+/*    if(result.status == 200){
         let requestedResponse = JSON.parse(result.text());
         localStorage.setItem('TeacherJobAcceptedResult', JSON.stringify(requestedResponse.result));
         this.navCtrl.push(TeacherJobAccepted);
       }
+*/
     })
 
 

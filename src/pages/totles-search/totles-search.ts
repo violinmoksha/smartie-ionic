@@ -207,7 +207,7 @@ export class TotlesSearch {
 
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
         this.bounds = new google.maps.LatLngBounds();
-
+        
         for(let searchResult of searchResults.result){
           this.createMarkerLocation(searchResult);
         }

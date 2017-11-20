@@ -146,8 +146,8 @@ export class RegisterSchool {
 
     return this.http.post(postUrl, body, { headers: headers }).subscribe(
       data => {
-        let signupResult = JSON.parse(data.text());
-        localStorage.setItem("schoolSignupUserProfile", JSON.stringify(signupResult.result));
+//        let signupResult = JSON.parse(data.text());
+//        localStorage.setItem("schoolSignupUserProfile", JSON.stringify(signupResult.result));
 
         // if(localStorage.getItem('profilePhotoDataUrl') == null && localStorage.getItem('schoolPhotoDataUrl') == null ){
           this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
