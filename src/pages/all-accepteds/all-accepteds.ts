@@ -97,18 +97,11 @@ export class AllAccepteds {
     };
     let body = { requestingProfileId : requestingProfileId, requestedProfileId: requestedProfileId, role: this.navParams.data.activeRole }
 
-<<<<<<< HEAD
     return new Promise(resolve => {
       this.http.post(postUrl, JSON.stringify(body), httpOptions ).subscribe(res => {
         let resResult = res;
       })
-=======
-    this.http.post(postUrl, body, { headers: headers }).toPromise().then((res) => {
-      // TODO: make this work in new Ionic
-      //let resResult = JSON.parse(res.text());
-      //this.navCtrl.push(TeacherJobAccepted, { data: resResult.result });
->>>>>>> 20f3e50f8fee973585304ce0c77aff699cd56b1c
-    })
-  }
+    });
 
+  }
 }
