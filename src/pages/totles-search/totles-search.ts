@@ -197,7 +197,7 @@ export class TotlesSearch {
     let body = searchData;
 
     return new Promise(resolve => {
-      this.http.post(postUrl, JSON.stringify(body), httpOptions ).subscribe(response => {
+      this.http.post(postUrl, body, httpOptions ).subscribe(response => {
         let searchResults = response;
         var mapOptions = {
             zoom: 1,
@@ -207,7 +207,7 @@ export class TotlesSearch {
 
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
         this.bounds = new google.maps.LatLngBounds();
-        
+
         for(let searchResult of searchResults.result){
           this.createMarkerLocation(searchResult);
         }

@@ -57,6 +57,7 @@ import { ParseProvider } from '../providers/parse/parse';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { Stripe } from '@ionic-native/stripe';
+import { SmartieApiProvider } from '../providers/smartie-api/smartie-api';
 
 // AoT requires an exported function for factories
 /*
@@ -161,7 +162,8 @@ export function createTranslateLoader(http: HttpClient) {
     //Geolocation, // ???
     //Parse,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ParseProvider
+    ParseProvider,
+    SmartieApiProvider
   ]
 })
 export class AppModule {}
