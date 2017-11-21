@@ -4,11 +4,12 @@ import { FormGroup, FormControl } from '@angular/forms';
 //import { Http, Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Register } from '../register/register';
-//import { TotlesSearch } from '../totles-search/totles-search';
-//import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
+import { TotlesSearch } from '../totles-search/totles-search';
+import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
 import { Constants } from '../../app/app.constants';
 // import { Auth } from '@ionic/cloud-angular';
-//import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage';
+import { SmartieApiProvider } from '../../providers/smartie-api/smartie-api';
 
 /**
  * Generated class for the LoginPage page.
@@ -29,55 +30,18 @@ export class Login {
   private masterKey: string;
   private contentType: string;
 
-<<<<<<< HEAD
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private http: HttpClient, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private http: HttpClient, private storage: Storage, private smartieApi: SmartieApiProvider) {
 
     this.LoginForm = new FormGroup({
       username: new FormControl(''),
       password: new FormControl('')
-=======
-  private formBuilder: FormBuilder;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private http: HttpClient) {
-    this.formBuilder = new FormBuilder();
-    this.LoginForm = this.formBuilder.group({
-      username: [''],
-      password: ['']
->>>>>>> 20f3e50f8fee973585304ce0c77aff699cd56b1c
     });
   }
 
   login(data){
     if(data.username !== '' && data.password !==''){
-      if(Constants.API_ENDPOINTS.env === 'local'){
-        this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-        this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-        this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-        this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-      }else if(Constants.API_ENDPOINTS.env === 'test'){
-        this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-        this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-        this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-        this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-      }else if(Constants.API_ENDPOINTS.env === 'prod'){
-        this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-        this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-        this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-        this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-      }
 
-      let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.loginUser;
-      /*let headers = new HttpHeaders();
-      headers.append('X-Parse-Application-Id', this.applicationId);
-      headers.append('X-Parse-Master-Key', this.masterKey);
-      headers.append('Content-Type', this.contentType);*/
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'X-Parse-Application-Id': this.applicationId,
-          'X-Parse-Master-Key': this.masterKey,
-          'Content-Type': this.contentType
-        })
-      };
+      let apiKeys = this.smartieApi.getApiKeys('loginUser');
       let body = {username: data.username, password: data.password};
 
       console.log(body);
@@ -87,25 +51,20 @@ export class Login {
 
       })*/
       return new Promise(resolve => {
-        this.http.post(postUrl, JSON.stringify(body), httpOptions ).subscribe(data => {
+        this.http.post(apiKeys.apiUrl, JSON.stringify(body), apiKeys.apiHeaders ).subscribe(data => {
           console.log(data);
           localStorage.setItem(data.result.profileData.role+'userProfile', JSON.stringify(data.result));
           this.storage.set('sessionToken', data.result.userData.sessionToken);
 
           if(data.result.profileData.role !== 'teacher'){
             // this.isAnyJobAccepted();
-            let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getNotifyCount;
-            const httpOptions = {
-              headers: new HttpHeaders({
-                'X-Parse-Application-Id': this.applicationId,
-                'X-Parse-Master-Key': this.masterKey,
-                'Content-Type': this.contentType
-              })
-            };
+            // let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getNotifyCount;
+            let apiKeys = this.smartieApi.getApiKeys('getNotifyCount');
+
             let dataNotification = { requestedProfileId: data.result.profileData.objectId, role: data.result.profileData.role };
 
             return new Promise(resolve => {
-              this.http.post(postUrl, dataNotification, httpOptions ).subscribe(notifyRes => {
+              this.http.post(apiKeys.apiUrl, dataNotification, apiKeys.apiHeaders ).subscribe(notifyRes => {
                 let notificationCount = notifyRes;
                 localStorage.setItem(data.result.profileData.objectId + 'notificationCount', JSON.stringify(notificationCount));
                 this.navCtrl.push(TotlesSearch, { role: data.result.profileData.role, fromWhere: 'login', loggedProfileId: data.result.profileData.objectId });
@@ -114,18 +73,12 @@ export class Login {
               })
             })
           }else{
-            let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getNotifyCount;
-            const httpOptions = {
-              headers: new HttpHeaders({
-                'X-Parse-Application-Id': this.applicationId,
-                'X-Parse-Master-Key': this.masterKey,
-                'Content-Type': this.contentType
-              })
-            };
+            let apiKeys = this.smartieApi.getApiKeys('getNotifyCount');
+
             let dataNotification = { requestingProfileId: data.result.profileData.objectId, role: data.result.profileData.role };
 
             return new Promise(resolve => {
-              this.http.post(postUrl, dataNotification, httpOptions ).subscribe(notifyRes => {
+              this.http.post(apiKeys.apiUrl, dataNotification, apiKeys.apiHeaders ).subscribe(notifyRes => {
                 let notificationCount = notifyRes;
                 localStorage.setItem(data.result.profileData.objectId + 'notificationCount', JSON.stringify(notificationCount));
                 this.navCtrl.push(TotlesSearch, { role: data.result.profileData.role, fromWhere: 'login', loggedProfileId: data.result.profileData.objectId  });
@@ -149,41 +102,20 @@ export class Login {
   }
 
   isAnyJobAccepted(){
-    if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
-
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getAcceptedJobRequest;
-    let headers = new HttpHeaders();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
+    let apiKeys = this.smartieApi.getApiKeys('getAcceptedJobRequest');
     let body = {requestingProfileId : '5ibpC33sTC', requestedProfileId: 'yKkVUDcRIO'}
 
-    return this.http.post(postUrl, body, { headers: headers }).toPromise().then((result) => {
-      console.log(result);
-/*    if(result.status == 200){
-        let requestedResponse = JSON.parse(result.text());
-        localStorage.setItem('TeacherJobAcceptedResult', JSON.stringify(requestedResponse.result));
-        this.navCtrl.push(TeacherJobAccepted);
-      }
-*/
+    return new Promise(resolve => {
+      this.http.post(apiKeys.apiUrl, body, apiKeys.apiHeaders ).subscribe(result => {
+        if(result.status == 200){
+          let requestedResponse = JSON.parse(result.text());
+          localStorage.setItem('TeacherJobAcceptedResult', JSON.stringify(requestedResponse.result));
+          this.navCtrl.push(TeacherJobAccepted);
+        }
+      }, err => {
+        console.log(err);
+      })
     })
-
-
   }
 
   pushItem(){

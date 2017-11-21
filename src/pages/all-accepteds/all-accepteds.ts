@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 //import { Http, Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Constants } from '../../app/app.constants';
-// import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
+import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
 
 /**
  * Generated class for the AllAcceptedsPage page.
@@ -69,7 +69,9 @@ export class AllAccepteds {
     })
   }
 
-  showJobAccept(requestingProfileId, requestedProfileId){
+  showJobAccept(accepted){
+    var requestingProfileId = accepted.requestingProfileId;
+    var requestedProfileId = accepted.requestedProfileId;
     if(Constants.API_ENDPOINTS.env === 'local'){
       this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
       this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
@@ -100,6 +102,7 @@ export class AllAccepteds {
     return new Promise(resolve => {
       this.http.post(postUrl, JSON.stringify(body), httpOptions ).subscribe(res => {
         let resResult = res;
+        this.navCtrl.push(TeacherJobAccepted, { data: resResult.result });
       })
     });
 
