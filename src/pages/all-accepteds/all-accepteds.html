@@ -18,7 +18,7 @@
 <ion-content padding>
   <ul>
     <li [ngClass]="{'accepted': accepted.acceptedState, 'requested' : !accepted.acceptedState}" *ngFor="let accepted of allAccepteds">
-      <a href="javascript:" (click)="showJobAccept(accepted.requestingProfileId,accepted.requestedProfileId)">Your invitation has been accepted</a>
+      <a href="javascript:" (click)="showJobAccept(accepted)">Your invitation has been accepted</a>
     </li>
   </ul>
 </ion-content>
