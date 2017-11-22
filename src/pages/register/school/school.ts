@@ -2,9 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
-import { Constants } from '../../../app/app.constants';
-//import { Http, Headers } from '@angular/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SmartieAPI } from '../../../providers/api/smartie';
 import { Parse } from 'parse';
 import { TotlesSearch } from '../../totles-search/totles-search';
 
@@ -34,7 +32,7 @@ export class RegisterSchool {
 
   private formBuilder: FormBuilder;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, private actionSheetCtrl: ActionSheetController, private http: HttpClient, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, private actionSheetCtrl: ActionSheetController, private smartieApi: SmartieAPI, private alertCtrl: AlertController) {
 
     //Password matcher customValidator
     function passwordMatcher(c: AbstractControl){
@@ -137,40 +135,43 @@ export class RegisterSchool {
   }
 
   SchoolSubmit(schoolData){
-    let postUrl = Constants.API_ENDPOINTS.baseUrls.test + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.signupSchool;
-    let headers = new HttpHeaders();
-    headers.append('X-Parse-Application-Id', '948b9456-8c0a-4755-9e84-71be3723d338');
-    headers.append('X-Parse-Master-Key', '49bc1a33-dfe7-4a32-bdcc-ee30b7ed8447');
-    headers.append('Content-Type', 'application/json');
-    let body = {role: 'school', username: schoolData.username, password: schoolData.passwords.password, email: schoolData.email, schoolname: schoolData.schoolName, contactname: schoolData.contactName, contactposition: schoolData.contactPosition, phone: schoolData.phone, levelreq: schoolData.levelsRequired, langreq: schoolData.expertiseLangNeed, profileabout: schoolData.schoolMessage, preflocation: schoolData.preferedLearningLocation, prefpayrate: schoolData.desiredHourlyPriceRange, langpref: 'en'}
+    let API = this.smartieApi.getApi(
+      'signupSchool',
+      {role: 'school', username: schoolData.username, password: schoolData.passwords.password, email: schoolData.email, schoolname: schoolData.schoolName, contactname: schoolData.contactName, contactposition: schoolData.contactPosition, phone: schoolData.phone, levelreq: schoolData.levelsRequired, langreq: schoolData.expertiseLangNeed, profileabout: schoolData.schoolMessage, preflocation: schoolData.preferedLearningLocation, prefpayrate: schoolData.desiredHourlyPriceRange, langpref: 'en'}
+    );
 
-    return this.http.post(postUrl, body, { headers: headers }).subscribe(
-      data => {
-//        let signupResult = JSON.parse(data.text());
-//        localStorage.setItem("schoolSignupUserProfile", JSON.stringify(signupResult.result));
+    return new Promise(resolve => {
+      interface Response {
+        result: any
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
+        signupResult => {
+          localStorage.setItem("schoolSignupUserProfile", JSON.stringify(signupResult.result));
 
-        // if(localStorage.getItem('profilePhotoDataUrl') == null && localStorage.getItem('schoolPhotoDataUrl') == null ){
-          this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
-        // }else{
-        //   this.setProfilePic().then((pictureResolve) => {
-        //     this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
-        //   }).catch((pictureReject) => {
-        //     console.log(pictureReject);
-        //   });
-        // }
+          // if(localStorage.getItem('profilePhotoDataUrl') == null && localStorage.getItem('schoolPhotoDataUrl') == null ){
+            this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
+          // }else{
+          //   this.setProfilePic().then((pictureResolve) => {
+          //     this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
+          //   }).catch((pictureReject) => {
+          //     console.log(pictureReject);
+          //   });
+          // }
 
-      },
-      err => {
-        let signupError = JSON.parse(err.text());
-        // console.log(signupError);
-        let alert = this.alertCtrl.create({
-          title: 'Signup Failed !',
-          subTitle: signupError.error.split(':')[2],
-          buttons: ['OK']
-        });
-        alert.present();
-      }
-    )
+        },
+        err => {
+          let signupError = JSON.parse(err.text());
+          // console.log(signupError);
+          let alert = this.alertCtrl.create({
+            title: 'Signup Failed !',
+            subTitle: signupError.error.split(':')[2],
+            buttons: ['OK']
+          });
+          alert.present();
+        }
+      )
+    });
+
   }
 
 }

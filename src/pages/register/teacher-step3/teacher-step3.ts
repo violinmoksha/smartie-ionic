@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Constants } from '../../../app/app.constants';
-//import { Http, Headers } from '@angular/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SmartieAPI } from '../../../providers/api/smartie';
 import { Parse } from 'parse';
 import { TotlesSearch } from '../../totles-search/totles-search';
 
@@ -25,13 +23,9 @@ export class RegisterTeacherStep3 {
   public fileData: any;
   private form1Values: any;
   private form2Values: any;
-  private baseUrl: string;
-  private applicationId: string;
-  private masterKey: string;
-  private contentType: string;
   private formBuilder: FormBuilder;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController) {
 
     function dateValidator(c: AbstractControl){
       return c.get('startDate').value < c.get('endDate').value ? null : { 'dateGreater' : true };
@@ -109,75 +103,61 @@ export class RegisterTeacherStep3 {
   }
 
   finalTeacherSubmit(form3Values){
-    if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
+    let API = this.smartieApi.getApi(
+      'signupTeacher',
+      {role: 'teacher', username: this.form1Values.username, password: this.form1Values.passwords.password, email: this.form1Values.email, fullname: this.form1Values.name, phone: this.form1Values.phone, age: this.form1Values.age, nativelang: this.form1Values.native, nationality: this.form1Values.nationality, profiletitle: this.form1Values.profileTitle, profileabout: this.form1Values.teacherMessage, expertlangs: this.form2Values.teacherLanguage, levelscapable: this.form2Values.teacherLevel, yrsexperience: form3Values.experience, preflocation: form3Values.prefLocation, prefpayrate: form3Values.prefPayRate, defstartdate: form3Values.startDate, defenddate: form3Values.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
+    );
 
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.signupTeacher;
-    let headers = new HttpHeaders();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
-    let body = {role: 'teacher', username: this.form1Values.username, password: this.form1Values.passwords.password, email: this.form1Values.email, fullname: this.form1Values.name, phone: this.form1Values.phone, age: this.form1Values.age, nativelang: this.form1Values.native, nationality: this.form1Values.nationality, profiletitle: this.form1Values.profileTitle, profileabout: this.form1Values.teacherMessage, expertlangs: this.form2Values.teacherLanguage, levelscapable: this.form2Values.teacherLevel, yrsexperience: form3Values.experience, preflocation: form3Values.prefLocation, prefpayrate: form3Values.prefPayRate, defstartdate: form3Values.startDate, defenddate: form3Values.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
+    return new Promise(resolve => {
+      interface Response {
+        result: any
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
+        signupResult => {
+          localStorage.setItem("teacherSignupUserProfile", JSON.stringify(signupResult.result));
 
-    return this.http.post(postUrl, body, { headers: headers }).subscribe(
-      data => {
-//        let signupResult = JSON.parse(data.text());
-//        localStorage.setItem("teacherSignupUserProfile", JSON.stringify(signupResult.result));
+          let cvPromises = [];
+          // console.log(this.TeacherFiles);
+          if(this.TeacherFiles){
+            for(let cvFile of this.TeacherFiles){
+              cvPromises.push(this.setTeacherCred(signupResult.result.objectId, cvFile).then((responseResult) => {
+                console.log(responseResult);
+              }).catch((rejectResult) => {
+                console.log(rejectResult);
+              }))
+            }
 
-        let cvPromises = [];
-        // console.log(this.TeacherFiles);
-        if(this.TeacherFiles){
-          for(let cvFile of this.TeacherFiles){
-//            cvPromises.push(this.setTeacherCred(signupResult.result.objectId, cvFile).then((responseResult) => {
-//              console.log(responseResult);
-//            }).catch((rejectResult) => {
-//              console.log(rejectResult);
-//            }))
-          }
-
-          // finish all of the array of promises,
-          // then setProfilePic()
-          Promise.all(cvPromises).then(()=>{
+            // finish all of the array of promises,
+            // then setProfilePic()
+            Promise.all(cvPromises).then(()=>{
+              this.setProfilePic().then((pictureResolve) => {
+                this.navCtrl.push(TotlesSearch, {role: 'teacher', fromwhere: 'signUp'});
+              }).catch((pictureReject) => {
+                console.log(pictureReject);
+              });
+            })
+          }else{
             this.setProfilePic().then((pictureResolve) => {
+              console.log('test');
               this.navCtrl.push(TotlesSearch, {role: 'teacher', fromwhere: 'signUp'});
             }).catch((pictureReject) => {
               console.log(pictureReject);
             });
-          })
-        }else{
-          this.setProfilePic().then((pictureResolve) => {
-            console.log('test');
-            this.navCtrl.push(TotlesSearch, {role: 'teacher', fromwhere: 'signUp'});
-          }).catch((pictureReject) => {
-            console.log(pictureReject);
+          }
+        },
+        err => {
+          let signupError = JSON.parse(err.text());
+          // console.log(signupError);
+          let alert = this.alertCtrl.create({
+            title: 'Signup Failed !',
+            subTitle: signupError.error.split(':')[2],
+            buttons: ['OK']
           });
+          alert.present();
         }
-      },
-      err => {
-        let signupError = JSON.parse(err.text());
-        // console.log(signupError);
-        let alert = this.alertCtrl.create({
-          title: 'Signup Failed !',
-          subTitle: signupError.error.split(':')[2],
-          buttons: ['OK']
-        });
-        alert.present();
-      }
-    )
+      )
+    });
+
   }
 
   setProfilePic() {

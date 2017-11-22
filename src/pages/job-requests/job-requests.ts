@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
-//import { Http, Headers } from '@angular/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Constants } from '../../app/app.constants';
+import { SmartieAPI } from '../../providers/api/smartie';
 
 /**
  * Generated class for the JobRequestsPage page.
@@ -17,48 +15,16 @@ import { Constants } from '../../app/app.constants';
 export class JobRequests {
 
   private params: any;
-  private baseUrl: string;
-  private applicationId: string;
-  private masterKey: string;
-  private contentType: string;
   private requestSent: boolean;
   private body: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public http: HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI) {
     this.params = navParams.data;
   }
 
   ionViewDidLoad() {
     let roleProfile = JSON.parse(localStorage.getItem(this.params.loggedRole + 'userProfile'));
 
-    if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
-
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getRequestedJobRequest;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'X-Parse-Application-Id': this.applicationId,
-        'X-Parse-Master-Key': this.masterKey,
-        'Content-Type': this.contentType
-      })
-    };
-
-    //TODO: if loggedin role is teacher - teacher is requesting and the markers on the screen are requested
-    //TODO: if loggedin role is others - teacher is requesting and the loggedin other is request
     if(this.params.loggedRole === 'teacher'){
       this.body = { requestingProfileId: roleProfile.profileData.objectId, requestedProfileId: this.params.requestedId };
     }else{
@@ -66,9 +32,13 @@ export class JobRequests {
     }
 
     return new Promise(resolve => {
-      this.http.post(postUrl, JSON.stringify(this.body), httpOptions ).subscribe(response => {
-        let resResult = response;
-        if(resResult){
+      let API = this.smartieApi.getApi(
+        'getRequestedJobRequest',
+        this.body
+      );
+      interface Response {};
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        if(response){
           this.requestSent = true;
         }else{
           this.requestSent = false;
@@ -84,40 +54,21 @@ export class JobRequests {
   }
 
   sendRequest(){
-    if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
-
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.setJobRequest;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'X-Parse-Application-Id': this.applicationId,
-        'X-Parse-Master-Key': this.masterKey,
-        'Content-Type': this.contentType
-      })
-    };
 
     if(this.params.loggedRole === 'teacher'){
       this.body = { requestingProfileId: JSON.parse(localStorage.getItem(this.params.loggedRole+'userProfile')).profileData.objectId, requestedProfileId: this.params.requestedId  };
     }else{
       this.body = { requestingProfileId: this.params.requestedId, requestedProfileId: JSON.parse(localStorage.getItem(this.params.loggedRole+'userProfile')).profileData.objectId  }
     }
-
+    let API = this.smartieApi.getApi(
+      'setJobRequest',
+      this.body
+    );
     return new Promise(resolve => {
-      this.http.post(postUrl, JSON.stringify(this.body), httpOptions ).subscribe(response => {
+      interface Response {
+        status: number
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
         if(response.status == 200){
           this.requestSent = true;
         }

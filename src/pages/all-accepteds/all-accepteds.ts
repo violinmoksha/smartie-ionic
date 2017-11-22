@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-//import { Http, Headers } from '@angular/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Constants } from '../../app/app.constants';
+import { SmartieAPI } from '../../providers/api/smartie';
 import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
 
 /**
@@ -16,54 +14,26 @@ import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted
   templateUrl: 'all-accepteds.html',
 })
 export class AllAccepteds {
-
-  private baseUrl: string;
-  private applicationId: string;
-  private masterKey: string;
-  private contentType: string;
   private allAccepteds: any;
   private body: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI) {
   }
 
   ionViewDidLoad() {
-    if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
-
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getAllAccepteds;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'X-Parse-Application-Id': this.applicationId,
-        'X-Parse-Master-Key': this.masterKey,
-        'Content-Type': this.contentType
-      })
-    };
-
     if(this.navParams.data.activeRole == 'teacher'){
-      this.body = { requestingProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'userProfile')).profileData.objectId, role: this.navParams.data.activeRole }
+      this.body = { requestingProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'userProfile')).profileData.objectId, role: this.navParams.data.activeRole };
     }else{
-      this.body = { requestedProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'userProfile')).profileData.objectId }
+      this.body = { requestedProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'userProfile')).profileData.objectId };
     }
+    let API = this.smartieApi.getApi('getAllAccepteds', this.body);
 
     return new Promise(resolve => {
-      this.http.post(postUrl, JSON.stringify(this.body), httpOptions ).subscribe(res => {
-        let notifyResult = res;
-        this.allAccepteds = notifyResult.result;
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
+        this.allAccepteds = res.result;
         console.log(this.allAccepteds);
       })
     })
@@ -72,37 +42,16 @@ export class AllAccepteds {
   showJobAccept(accepted){
     var requestingProfileId = accepted.requestingProfileId;
     var requestedProfileId = accepted.requestedProfileId;
-    if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
 
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getAcceptedJobRequest;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'X-Parse-Application-Id': this.applicationId,
-        'X-Parse-Master-Key': this.masterKey,
-        'Content-Type': this.contentType
-      })
-    };
-    let body = { requestingProfileId : requestingProfileId, requestedProfileId: requestedProfileId, role: this.navParams.data.activeRole }
+    this.body = { requestingProfileId : requestingProfileId, requestedProfileId: requestedProfileId, role: this.navParams.data.activeRole }
+    let API = this.smartieApi.getApi('getAcceptedJobRequest', this.body);
 
     return new Promise(resolve => {
-      this.http.post(postUrl, JSON.stringify(body), httpOptions ).subscribe(res => {
-        let resResult = res;
-        this.navCtrl.push(TeacherJobAccepted, { data: resResult.result });
+      interface Response {
+        result: any
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
+        this.navCtrl.push(TeacherJobAccepted, { data: res.result });
       })
     });
 

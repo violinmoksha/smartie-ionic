@@ -1,9 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
-//import { Storage } from '@ionic/storage';
-//import { Http, Headers } from '@angular/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Constants } from '../../app/app.constants';
+import { SmartieAPI } from '../../providers/api/smartie';
 import { DomSanitizer } from '@angular/platform-browser';
 import { JobRequests } from '../job-requests/job-requests';
 import { AllAccepteds } from '../all-accepteds/all-accepteds';
@@ -27,10 +24,6 @@ export class TotlesSearch {
   bounds: any;
   private role: string;
   private fromWhere: string;
-  private baseUrl: string;
-  private applicationId: string;
-  private masterKey: string;
-  private contentType: string;
   private userIcon: string;
   private profilePhoto: string;
   private _contentTitle: string;
@@ -43,7 +36,7 @@ export class TotlesSearch {
 
   private alertCtrl: AlertController;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private sanitizer: DomSanitizer, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController) {
     this.role = navParams.data.role;
     this.fromWhere = navParams.data.fromWhere;
     this.alert = this.alertCtrl;
@@ -68,25 +61,6 @@ export class TotlesSearch {
       return new Promise((resolve, reject) => resolve('success'));
     });
   }*/
-
-  sendRequest(locationData){
-    if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
-  }
 
   createMarkerLocation(locationData){
     // TODO: there shud be a way to wrap this
@@ -169,36 +143,16 @@ export class TotlesSearch {
 
     let searchData = { latlng: latLng, role: searchRole };
 
-    if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
-
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.totlesSearch;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'X-Parse-Application-Id': this.applicationId,
-        'X-Parse-Master-Key': this.masterKey,
-        'Content-Type': this.contentType
-      })
-    };
-    let body = searchData;
+    let API = this.smartieApi.getApi(
+      'totlesSearch',
+      searchData
+    );
 
     return new Promise(resolve => {
-      this.http.post(postUrl, body, httpOptions ).subscribe(response => {
-        let searchResults = response;
+      interface Response {
+        result: any
+      }
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(searchResults => {
         var mapOptions = {
             zoom: 1,
             // center: latLng,

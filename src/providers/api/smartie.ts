@@ -1,21 +1,25 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Constants } from '../../app/app.constants';
+import { Constants } from './constants';
 
 /*
-  Generated class for the SmartieApiProvider provider.
+  Generated class for the SmartieAPI provider.
 
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
 */
 @Injectable()
-export class SmartieApiProvider {
+export class SmartieAPI {
   private baseUrl: string;
   private applicationId: string;
   private masterKey: string;
   private contentType: string;
 
-  getApiKeys(endPoint){
+  constructor(public http: HttpClient) {
+
+  }
+
+  getApi(endPoint, body){
     if(Constants.API_ENDPOINTS.env === 'local'){
       this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
       this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
@@ -41,12 +45,7 @@ export class SmartieApiProvider {
       })
     };
 
-    return { apiUrl: this.baseUrl + Constants.API_ENDPOINTS.paths.fn + '/' + endPoint, apiHeaders: httpOptions }
+    return { apiUrl: this.baseUrl + Constants.API_ENDPOINTS.paths.fn + '/' + endPoint, apiBody: JSON.stringify(body), apiHeaders: httpOptions }
 
   }
-
-  constructor(public http: HttpClient) {
-    console.log('Hello SmartieApiProvider Provider');
-  }
-
 }

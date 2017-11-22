@@ -1,12 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-//import { HttpModule, Http } from '@angular/http';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-// import { Auth } from '@ionic/cloud-angular';
 
 import { MyApp } from './app.component';
 
@@ -57,7 +55,7 @@ import { ParseProvider } from '../providers/parse';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { Stripe } from '@ionic-native/stripe';
-import { SmartieApiProvider } from '../providers/smartie-api/smartie-api';
+import { SmartieAPI } from '../providers/api/smartie';
 
 // AoT requires an exported function for factories
 /*
@@ -163,7 +161,7 @@ export function createTranslateLoader(http: HttpClient) {
     //Parse,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ParseProvider,
-    SmartieApiProvider
+    SmartieAPI
   ]
 })
 export class AppModule {}

@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-//import { Http, Headers } from '@angular/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SmartieAPI } from '../../../providers/api/smartie';
 import 'rxjs/add/operator/toPromise';
 import { PaymentThankyou } from './../payment-thankyou/payment-thankyou';
-import { Constants } from '../../../app/app.constants';
 import { Stripe } from '@ionic-native/stripe';
 
 /**
@@ -24,12 +22,8 @@ export class PaymentConfirm {
   private PaymentForm: FormGroup;
   public currentEmail: string;
   public token: any;
-  private baseUrl: string;
-  private applicationId: string;
-  private masterKey: string;
-  private contentType: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, public http: HttpClient, private stripe: Stripe) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, private smartieApi: SmartieAPI, private stripe: Stripe) {
     this.currentEmail = navParams.data.email;
     this.PaymentForm = formBuilder.group({
       emailPayment: ['', Validators.required],
@@ -50,25 +44,6 @@ export class PaymentConfirm {
       data.emailPayment = this.currentEmail;
     }
 
-    // TODO: following block of code should be a straightforward refactor,
-    // as it is occurring in more than one .ts now
-    if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
-
     this.stripe.setPublishableKey('pk_test_HZ10V0AINd5NjEOyoEAeYSEe');
 
     let card = {
@@ -78,20 +53,20 @@ export class PaymentConfirm {
       cvc: '220'
     };
 
-    // now it's secure, with aligned design mod+discussion ;-)
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.createCustomer;
-    let headers = new HttpHeaders();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
-    let body = { emailPayment: data.emailPayment, card: card, profileId: this.navParams.data.profileId  };
-
-    return this.http.post(postUrl, body, { headers: headers }).toPromise().then((res) =>{
-      console.log(data.emailPayment);
-/*    if(res.status == 200){
-        this.navCtrl.push(PaymentThankyou, { emailId: data.emailPayment });
+    let API = this.smartieApi.getApi(
+      'createCustomer',
+      { emailPayment: data.emailPayment, card: card, profileId: this.navParams.data.profileId  }
+    );
+    return new Promise(resolve => {
+      interface Response {
+        status: number
       }
-*/
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(res => {
+        console.log(data.emailPayment);
+        if(res.status == 200){
+          this.navCtrl.push(PaymentThankyou, { emailId: data.emailPayment });
+        }
+      });
     });
 
     // happens backend since this has "the token" inside it
@@ -99,8 +74,6 @@ export class PaymentConfirm {
     this.stripe.createCardToken(card).then((token) => {
 
     })*/
-
-
   }
 
 }

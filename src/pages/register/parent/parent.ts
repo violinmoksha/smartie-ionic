@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Constants } from '../../../app/app.constants';
-//import { Http, Headers } from '@angular/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SmartieAPI } from '../../../providers/api/smartie';
 import { Parse } from 'parse';
 import { TotlesSearch } from '../../totles-search/totles-search';
 import { Camera } from '@ionic-native/camera';
@@ -26,14 +24,10 @@ export class RegisterParent {
   photoTaken: boolean;
   cameraUrl: string;
   photoSelected: boolean;
-  private baseUrl: string;
-  private applicationId: string;
-  private masterKey: string;
-  private contentType: string;
 
   private formBuilder: FormBuilder;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, private actionSheetCtrl: ActionSheetController, private http: HttpClient, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, private actionSheetCtrl: ActionSheetController, private smartieApi: SmartieAPI, private alertCtrl: AlertController) {
 
     //Password matcher customValidator
     function passwordMatcher(c: AbstractControl){
@@ -135,58 +129,43 @@ export class RegisterParent {
   }
 
   ParentSubmit(parentData){
-    if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
+    let API = this.smartieApi.getApi(
+      'signupParentOrStudent',
+      {role: 'student', username: parentData.username, password: parentData.passwords.password, email: parentData.email, fullname: parentData.name, phone: parentData.phone, profileabout: parentData.studentMessage, langreq: parentData.expertiseLangNeed, levelreq: parentData.requiredLevel, preflocation: parentData.preferedLearningLocation, prefpayrate: parentData.desiredHourlyPriceRange, partofschool: parentData.partOfSchool, schoolname: parentData.parentSchoolName, langpref: 'en'}
+    );
 
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.signupParentOrStudent;
-    let headers = new HttpHeaders();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
+    return new Promise(resolve => {
+      interface Response {
+        result: any
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
+        signupResult => {
+          localStorage.setItem("parentSignupUserProfile", JSON.stringify(signupResult.result));
 
-    let body = {role: 'student', username: parentData.username, password: parentData.passwords.password, email: parentData.email, fullname: parentData.name, phone: parentData.phone, profileabout: parentData.studentMessage, langreq: parentData.expertiseLangNeed, levelreq: parentData.requiredLevel, preflocation: parentData.preferedLearningLocation, prefpayrate: parentData.desiredHourlyPriceRange, partofschool: parentData.partOfSchool, schoolname: parentData.parentSchoolName, langpref: 'en'}
-
-    return this.http.post(postUrl, body, { headers: headers }).subscribe(
-      data => {
-//        let signupResult = JSON.parse(data.text());
-//        localStorage.setItem("parentSignupUserProfile", JSON.stringify(signupResult.result));
-
-        if(localStorage.getItem('profilePhotoDataUrl') == null){
-          this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
-        }else{
-          this.setProfilePic().then((pictureResolve) => {
+          if(localStorage.getItem('profilePhotoDataUrl') == null){
             this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
-          }).catch((pictureReject) => {
-            console.log(pictureReject);
-          });
-        }
+          }else{
+            this.setProfilePic().then((pictureResolve) => {
+              this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
+            }).catch((pictureReject) => {
+              console.log(pictureReject);
+            });
+          }
 
-      },
-      err => {
-        let signupError = JSON.parse(err.text());
-        // console.log(signupError);
-        let alert = this.alertCtrl.create({
-          title: 'Signup Failed !',
-          subTitle: signupError.error.split(':')[2],
-          buttons: ['OK']
-        });
-        alert.present();
-      }
-    )
+        },
+        err => {
+          let signupError = JSON.parse(err.text());
+          // console.log(signupError);
+          let alert = this.alertCtrl.create({
+            title: 'Signup Failed !',
+            subTitle: signupError.error.split(':')[2],
+            buttons: ['OK']
+          });
+          alert.present();
+        }
+      )
+    });
+
   }
 
   setProfilePic(){

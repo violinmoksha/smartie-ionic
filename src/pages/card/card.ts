@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-//import { Http, Headers } from '@angular/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Constants } from '../../app/app.constants';
+import { SmartieAPI } from '../../providers/api/smartie';
 import { Stripe } from '@ionic-native/stripe';
 
 /**
@@ -19,13 +17,9 @@ import { Stripe } from '@ionic-native/stripe';
 export class CardPage {
 
   private CardForm: FormGroup;
-  private baseUrl: string;
-  private applicationId: string;
-  private masterKey: string;
-  private contentType: string;
   private formBuilder: FormBuilder;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private stripe: Stripe, private http: HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private stripe: Stripe, private smartieApi: SmartieAPI) {
 
     this.CardForm = this.formBuilder.group({
       cardname: ['', Validators.required],
@@ -36,50 +30,21 @@ export class CardPage {
   }
 
   pay(cardData){
-    if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
-
     this.stripe.setPublishableKey('pk_test_HZ10V0AINd5NjEOyoEAeYSEe');
 
     let customerToken = JSON.parse(localStorage.getItem(this.navParams.data.customerId + 'customerToken'));
     console.log(customerToken);
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.createTransaction;
-    let headers = new HttpHeaders();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
+    let API = this.smartieApi.getApi(
+      'createTransaction',
+      { customerToken: customerToken, customerId: this.navParams.data.customerId }
+    );
 
-    let data = { customerToken: customerToken, customerId: this.navParams.data.customerId };
-
-    this.http.post(postUrl, data, { headers: headers }).toPromise().then((res) => {
-      console.log(res);
-    })
-
-
-
-    // let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.createTransaction;
-    // let headers = new Headers();
-    // headers.append('X-Parse-Application-Id', this.applicationId);
-    // headers.append('X-Parse-Master-Key', this.masterKey);
-    // headers.append('Content-Type', this.contentType);
-    //
-    // return this.http.post(postUrl, { headers: headers }).toPromise().then((res) => {
-    //   console.log(res);
-    // })
+    return new Promise(resolve => {
+      interface Response {};
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(res => {
+        console.log(res);
+      });
+    });
   }
 
 }
