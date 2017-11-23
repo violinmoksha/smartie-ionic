@@ -47,8 +47,8 @@ input {
 
 .checkbox input:checked {
   &:before, + .checkbox-icon:before {
-    background: #009345;
-    border-color: #009345;
+    background: #00BC5B;
+    border-color: #00BC5B;
   }
 }
 
@@ -149,7 +149,7 @@ input {
 }
 
 .button.button-positive {
-  background-color: #009345;
+  background-color: #00BC5B;
   &:hover {
     background-color: #006838;
   }

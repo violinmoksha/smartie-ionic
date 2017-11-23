@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController } from 'ionic-angular';
-import { AbstractControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, Validators, ValidatorFn, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { RegisterTeacherStep2 } from './../teacher-step2/teacher-step2';
 
@@ -13,7 +13,6 @@ export class RegisterTeacher {
 
   pageProfileSrc:string = './assets/img/dummy_prof_pic.png';
   private Teacherstep1Form: FormGroup;
-
   cameraData: string;
   photoTaken: boolean;
   cameraUrl: string;
@@ -27,7 +26,36 @@ export class RegisterTeacher {
       return c.get('password').value === c.get('confPassword').value ? null : { 'notmatch' : true };
     }
 
-    this.Teacherstep1Form = this.formBuilder.group({
+    static equalTo(equalControlName): ValidatorFn {
+
+      return (control: AbstractControl): {
+        [key: string]: any
+      } => {
+        if (!control['_parent']) return null;
+
+        if (!control['_parent'].controls[equalControlName])
+        throw new TypeError('Form Control ' + equalControlName + ' does not exists.');
+
+        var controlMatch = control['_parent'].controls[equalControlName];
+
+        return controlMatch.value == control.value ? null : {
+          'equalTo': true
+        };
+      };
+    }
+  }
+
+    this.Teacherstep1Form = new FormGroup({
+      name: new FormControl('', Validators.required),
+      username: new FormControl('', Validators.required),
+      // passwords = new FormGroup({
+        password: new FormControl('', [Validators.required]),
+        confPassword: new FormControl('', [Validators.required, this.equalto('password')])
+      // })
+    })
+
+
+    /*this.Teacherstep1Form = this.formBuilder.group({
       name: ['', Validators.required],
       username: ['', Validators.required],
       passwords: this.formBuilder.group({
@@ -41,7 +69,7 @@ export class RegisterTeacher {
       nationality: ['', Validators.required],
       profileTitle: ['', Validators.required],
       teacherMessage: ['', Validators.required],
-    });
+    });*/
 
   }
 

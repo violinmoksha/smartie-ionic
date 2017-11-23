@@ -2,7 +2,7 @@
   min-height: 43px;
 }
 .toolbar-title-md {
-  color: #009345;
+  color: #00BC5B;
   padding: 0;
   font-size: 17px;
   font-weight: normal;
@@ -10,7 +10,7 @@
 }
 
 .bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default {
-  color: #009345;
+  color: #00BC5B;
 }
 
 .logo-icon {
@@ -23,12 +23,12 @@
   display: block;
   text-align: center;
   h1{
-    color: #009345;
+    color: #00BC5B;
   }
 }
 
 .item.item-role {
-  background-color: #009345;
+  background-color: #00BC5B;
   color: #fff;
   padding: 16px;
   cursor: pointer;
@@ -62,4 +62,29 @@ a.item {
 .bar-button-menutoggle-md, .back-button.show-back-button{
   position: absolute;
   z-index: 1;
+}
+
+.bg-teacher{
+  background-color: #00BC5B!important;
+}
+.cl-teacher{
+  color: #00BC5B!important;
+}
+.bg-parent{
+  background-color: #F97533!important;
+}
+.cl-parent{
+  color: #F97533!important;
+}
+.bg-school{
+  background-color: #F31C62!important;
+}
+.cl-school{
+  color: #F31C62!important;
+}
+.bg-student{
+  background-color: #0096D7!important;
+}
+.cl-student{
+  color:#0096D7!important;
 }

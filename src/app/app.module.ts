@@ -47,7 +47,7 @@ import { TotlesLogin } from '../pages/totles/login';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-//import { Camera } from '@ionic-native/camera';
+import { Camera } from '@ionic-native/camera';
 //import { Geolocation } from '@ionic-native/geolocation';
 
 import { ParseProvider } from '../providers/parse';
@@ -64,9 +64,9 @@ export function HttpLoaderFactory(http: Http) {
 }
 */
 
-export function createTranslateLoader(http: HttpClient) {
+/*export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
+}*/
 
 @NgModule({
   declarations: [
@@ -105,13 +105,13 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     BrowserModule,
     HttpClientModule,
-    TranslateModule.forRoot({
+    /*TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    }),
+    }),*/
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],
@@ -156,7 +156,7 @@ export function createTranslateLoader(http: HttpClient) {
     GoogleMaps,
     Stripe,
     // Auth,
-    //Camera, // ???
+    Camera, // ???
     //Geolocation, // ???
     //Parse,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

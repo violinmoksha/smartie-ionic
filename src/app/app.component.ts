@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+// import { TranslateService } from '@ngx-translate/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -36,7 +36,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private translate: TranslateService, private storage: Storage) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage) {
     this.platform = platform;
     this.initializeApp();
 
@@ -60,16 +60,17 @@ export class MyApp {
       //Parse.initialize("948b9456-8c0a-4755-9e84-71be3723d338", "49bc1a33-dfe7-4a32-bdcc-ee30b7ed8447");
       //Parse.serverURL = 'https://test.t0tl3s.com/parse';
 
-      this.translate.setDefaultLang('en');
+      // this.translate.setDefaultLang('en');
 
       // test
       //this.storage.set('userLang', 'th');
 
-      this.storage.get('userLang').then((val) => {
+      //Commenting TranslateModule
+      /*this.storage.get('userLang').then((val) => {
         this.translate.use(val);
       }).catch((err) => {
         this.translate.use('en');
-      });
+      });*/
 
       /* document.addEventListener("deviceready", function() {
         console.log(navigator.globalization);
