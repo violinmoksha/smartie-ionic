@@ -10,7 +10,7 @@
       <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ 'teacherRegistration' }}</ion-title>
+    <ion-title>Expertise & Fees</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -28,6 +28,24 @@
 
     <div class="list list-inset registration teacher step3">
 
+      <div class="reg-section">
+        <div class="reg-sub-title"><h3>Languages and Expertise</h3></div>
+
+        <ion-item *ngFor="let lang of languages">
+          <ion-label>{{ lang.name }}</ion-label>
+          <ion-checkbox (ionChange)="onChangeTeacherLanguage(lang.name, $event.checked)"></ion-checkbox>
+        </ion-item>
+      </div>
+
+      <div class="reg-section">
+        <div class="reg-sub-title"><h3>Levels Capable</h3></div>
+        <ion-item *ngFor="let level of levels">
+          <ion-label>{{ level.name }}</ion-label>
+          <ion-checkbox (ionChange)="onChangeLevelLanguage(level.name, $event.checked)" ></ion-checkbox>
+        </ion-item>
+      </div>
+
+      <!--
       <label class="item item-input">
         <span class="input-label">Years of Experience in Teaching</span>
         <ion-input placeholder="10 Years" type="text" formControlName="experience"></ion-input>
@@ -114,7 +132,7 @@
         <div class="button button-cv">Upload Your CV and Certificates</div>
         <span class="input-label">Credentials verifiable via phone camera</span>
       </div>
-
+    -->
     </div>
 
     <button class="button button-positive" [disabled]="!Teacherstep3Form.valid" ion-button full>Submit</button>

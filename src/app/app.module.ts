@@ -156,7 +156,7 @@ export function HttpLoaderFactory(http: Http) {
     GoogleMaps,
     Stripe,
     // Auth,
-    Camera, // ???
+    Camera,
     //Geolocation, // ???
     //Parse,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

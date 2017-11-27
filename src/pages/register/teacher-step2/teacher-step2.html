@@ -10,7 +10,7 @@
       <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ 'teacherRegistration' }}</ion-title>
+    <ion-title>Teacher Information</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -26,49 +26,88 @@
   <form [formGroup]="Teacherstep2Form" name="Teacherstep2Form" (ngSubmit)="next(Teacherstep2Form.value)" novalidate>
 
     <div class="list list-inset registration teacher step2">
-      <div class="reg-section">
-        <div class="reg-sub-title"><h3>Languages and Expertise</h3></div>
 
-        <!-- <ul class="list">
-          <li class="item item-checkbox" *ngFor="let lang of languages">
-            {{ lang.name }}
-            <label class="checkbox">
-              <input type="checkbox" color="dark" (change)="onChangeTeacherLanguage(lang.name, $event.target.checked)" required/>
-            </label>
-          </li>
-        </ul> -->
-
-        <ion-item *ngFor="let lang of languages">
-          <ion-label>{{ lang.name }}</ion-label>
-          <ion-checkbox (ionChange)="onChangeTeacherLanguage(lang.name, $event.checked)"></ion-checkbox>
-        </ion-item>
-        <!-- <div class="item item-message" *ngIf="Teacherstep2Form.get('teacherLanguage').invalid" >
-          Please choose any one language
-        </div> -->
+      <div class="tagline">
+        <p>Tell us about yourself</p>
       </div>
 
-
-      <div class="reg-section">
-        <div class="reg-sub-title"><h3>Levels Capable</h3></div>
-
-        <!-- <ul class="list">
-          <li class="item item-checkbox" *ngFor="let level of levels">
-            {{ level.name }}
-            <label class="checkbox">
-              <input type="checkbox" (change)="onChangeLevelLanguage(level.name, $event.target.checked)"/>
-            </label>
-          </li>
-        </ul> -->
-
-        <ion-item *ngFor="let level of levels">
-          <ion-label>{{ level.name }}</ion-label>
-          <ion-checkbox (ionChange)="onChangeLevelLanguage(level.name, $event.checked)" ></ion-checkbox>
-        </ion-item>
-        <!-- <div class="item item-message" *ngIf="Teacherstep2Form.get('teacherLevel').invalid && Teacherstep2Form.get('teacherLevel').touched" >
-          Please choose any one level
-        </div> -->
-
+      <div class="profile-pic">
+        <img id="picForDisplay" (click)="chooseUploadType($event)" [src]="pageProfileSrc" width="150px" *ngIf="!photoSelected && !photoTaken" />
+        <img (click)="chooseUploadType($event)" [src]="cameraData" *ngIf="photoTaken" width="150px">
+        <img (click)="chooseUploadType($event)" [src]="cameraUrl" *ngIf="photoSelected" width="150px">
+        <span class="input-label">Upload your photo</span>
       </div>
+
+      <!-- Name -->
+      <label class="item item-input">
+        <span class="input-label">Name</span>
+        <ion-input placeholder="eg: John Doe" type="tel" formControlName="name"></ion-input>
+      </label>
+
+      <div *ngIf="!Teacherstep2Form.controls['name'].valid && Teacherstep2Form.controls['name'].touched" class="item item-message">
+        Name is required
+      </div>
+
+      <!-- Phone -->
+      <label class="item item-input">
+        <span class="input-label">Phone No</span>
+        <ion-input placeholder="9999 999 999" type="tel" formControlName="phone"></ion-input>
+      </label>
+
+      <div *ngIf="!Teacherstep2Form.controls['phone'].valid && Teacherstep2Form.controls['phone'].touched" class="item item-message">
+        Phone number is required
+      </div>
+
+      <!-- Age -->
+      <label class="item item-input">
+        <span class="input-label">Age</span>
+        <ion-input placeholder="28" type="number" formControlName="age"></ion-input>
+      </label>
+
+      <div *ngIf="!Teacherstep2Form.controls['age'].valid && Teacherstep2Form.controls['age'].touched" class="item item-message">
+        Age is required
+      </div>
+
+      <!-- Native Language -->
+      <label class="item item-input">
+        <span class="input-label">Native Language</span>
+        <ion-input placeholder="Thai" type="type" formControlName="native"></ion-input>
+      </label>
+
+      <div *ngIf="!Teacherstep2Form.controls['native'].valid && Teacherstep2Form.controls['native'].touched" class="item item-message">
+        Native Language is required
+      </div>
+
+      <!-- Nationality -->
+      <label class="item item-input">
+        <span class="input-label">Nationality</span>
+        <ion-input placeholder="Thailand" type="type" formControlName="nationality"></ion-input>
+      </label>
+
+      <div *ngIf="!Teacherstep2Form.controls['nationality'].valid && Teacherstep2Form.controls['nationality'].touched" class="item item-message">
+        Nationality is required
+      </div>
+
+      <!-- Profile Title -->
+      <label class="item item-input">
+        <span class="input-label">Profile Title</span>
+        <ion-input placeholder="I am a Teacher" type="type" formControlName="profileTitle"></ion-input>
+      </label>
+
+      <div *ngIf="!Teacherstep2Form.controls['profileTitle'].valid && Teacherstep2Form.controls['profileTitle'].touched" class="item item-message">
+        Profile Title is required
+      </div>
+
+      <!-- Profile Message -->
+      <label class="item item-input">
+        <span class="input-label">Profile Message</span>
+        <ion-textarea formControlName="profileMessage" placeholder="Put any comment..."></ion-textarea>
+      </label>
+
+      <div *ngIf="!Teacherstep2Form.controls['profileMessage'].valid && Teacherstep2Form.controls['profileMessage'].touched" class="item item-message">
+        Profile Message is required
+      </div>
+
     </div>
 
     <button class="button button-positive" [disabled]="!Teacherstep2Form.valid" ion-button full>Next</button>
@@ -76,4 +115,3 @@
   </form>
 
 </ion-content>
-<!--  -->

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { SmartieAPI } from '../../../providers/api/smartie';
 import { Parse } from 'parse';
 import { TotlesSearch } from '../../totles-search/totles-search';
@@ -25,6 +25,42 @@ export class RegisterTeacherStep3 {
   private form2Values: any;
   private formBuilder: FormBuilder;
 
+  public languages = [{
+      langid: 1,
+      name: "English",
+      value: "englsh"
+    }, {
+      langid: 2,
+      name: "Thai",
+      value: "thai"
+    }, {
+      langid: 3,
+      name: "Chinese",
+      value: "chinese"
+    }, {
+      langid: 4,
+      name: "Japanese",
+      value: "japanese"
+    },{
+      langid: 5,
+      name: "French",
+      value: "french"
+    }];
+
+  public levels = [{
+    "name": "K",
+    "value": "k"
+  }, {
+    "name": "Primary",
+    "value": "primary"
+  }, {
+    "name": "High School",
+    "value": "highSchool"
+  },{
+    "name": "University",
+    "value": "university"
+  }];
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController) {
 
     function dateValidator(c: AbstractControl){
@@ -38,20 +74,37 @@ export class RegisterTeacherStep3 {
 
     this.form1Values = navParams.data.form1Value;
     this.form2Values = navParams.data.form2Value;
-    this.Teacherstep3Form = this.formBuilder.group({
-      experience: ['', Validators.required],
-      prefLocation: ['', Validators.required],
-      prefPayRate: ['', Validators.required],
-      dates: this.formBuilder.group({
-        startDate: ['', Validators.compose([Validators.required])],
-        endDate: ['', Validators.compose([Validators.required])],
-      }, {validator : dateValidator}),
-      times: this.formBuilder.group({
-        startTime: ['', Validators.compose([Validators.required])],
-        endTime: ['', Validators.compose([Validators.required])],
-      }, {validator : timeValidator}),
-      teacherCvCerts: ['']
-    });
+
+    this.Teacherstep3Form = new FormGroup({
+      teacherLanguage: new FormArray([
+        new FormControl('', Validators.required),
+      ]),
+      teacherLevel: new FormArray([
+        new FormControl('', Validators.required),
+      ]),
+    })
+  }
+
+  onChangeTeacherLanguage(name: string, isChecked: boolean) {
+    const knownLanguage = <FormArray>this.Teacherstep3Form.controls.teacherLanguage;
+
+    if(isChecked) {
+      knownLanguage.push(new FormControl(name));
+    } else {
+      let index = knownLanguage.controls.findIndex(x => x.value == name)
+      knownLanguage.removeAt(index);
+    }
+  }
+
+  onChangeLevelLanguage(name: string, isChecked: boolean) {
+    const knownLevel = <FormArray>this.Teacherstep3Form.controls.teacherLevel;
+
+    if(isChecked) {
+      knownLevel.push(new FormControl(name));
+    } else {
+      let index = knownLevel.controls.findIndex(x => x.value == name)
+      knownLevel.removeAt(index);
+    }
   }
 
   addTeacherCvCert(files){
