@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, AlertController, Slides } from 'ionic-angular';
 import { AbstractControl, FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { SmartieAPI } from '../../../providers/api/smartie';
 import { Parse } from 'parse';
+import { ParseProvider } from '../../../providers/parse';
 import { TotlesSearch } from '../../totles-search/totles-search';
 
 /**
@@ -23,45 +24,83 @@ export class RegisterTeacherStep3 {
   public fileData: any;
   private form1Values: any;
   private form2Values: any;
-  private formBuilder: FormBuilder;
+  // private formBuilder: FormBuilder;
+  @ViewChild(Slides) yearExp: Slides;
+  @ViewChild(Slides) hourRate: Slides;
+  @ViewChild(Slides) curr: Slides;
+  private yearExperience: any;
+  private hourlyRate: any;
+  private userCurrency: any;
 
-  public languages = [{
-      langid: 1,
-      name: "English",
-      value: "englsh"
-    }, {
-      langid: 2,
-      name: "Thai",
-      value: "thai"
-    }, {
-      langid: 3,
-      name: "Chinese",
-      value: "chinese"
-    }, {
-      langid: 4,
-      name: "Japanese",
-      value: "japanese"
-    },{
-      langid: 5,
-      name: "French",
-      value: "french"
-    }];
+  public languages = [
+    { langid: 1, name: "English", value: "englsh" },
+    { langid: 2, name: "Thai", value: "thai" },
+    { langid: 3, name: "Chinese", value: "chinese" },
+    { langid: 4, name: "Japanese", value: "japanese" },
+    { langid: 5, name: "French", value: "french" }
+  ];
 
-  public levels = [{
-    "name": "K",
-    "value": "k"
-  }, {
-    "name": "Primary",
-    "value": "primary"
-  }, {
-    "name": "High School",
-    "value": "highSchool"
-  },{
-    "name": "University",
-    "value": "university"
-  }];
+  public levels = [
+    { "name": "K", "value": "k"},
+    { "name": "Primary", "value": "primary" },
+    { "name": "High School", "value": "highSchool" },
+    { "name": "University", "value": "university" }
+  ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController) {
+  public years = [
+    { "value": 1, "text": '1' },
+    { "value": 2, "text": '2' },
+    { "value": 3, "text": '3' },
+    { "value": 4, "text": '4' },
+    { "value": 5, "text": '5' },
+    { "value": 6, "text": '6' },
+    { "value": 7, "text": '7' },
+    { "value": 8, "text": '8' },
+    { "value": 9, "text": '9' },
+    { "value": 10, "text": '10' },
+    { "value": 11, "text": '11' },
+    { "value": 12, "text": '12' },
+    { "value": 13, "text": '13' },
+    { "value": 14, "text": '14' },
+    { "value": 15, "text": '15' },
+    { "value": 16, "text": '16' },
+    { "value": 17, "text": '17' },
+    { "value": 18, "text": '18' },
+    { "value": 19, "text": '19' },
+    { "value": 20, "text": 'More than 20' }
+  ];
+
+  public hourRates = [
+    { "value": 5, "text": '5' },
+    { "value": 10, "text": '10' },
+    { "value": 15, "text": '15' },
+    { "value": 20, "text": '20' },
+    { "value": 25, "text": '25' },
+    { "value": 30, "text": '30' },
+    { "value": 35, "text": '35' },
+    { "value": 40, "text": '40' },
+    { "value": 45, "text": '45' },
+    { "value": 50, "text": '50' },
+    { "value": 55, "text": '55' },
+    { "value": 60, "text": '60' },
+    { "value": 65, "text": '65' },
+    { "value": 70, "text": '70' },
+    { "value": 75, "text": '75' },
+    { "value": 80, "text": '80' },
+    { "value": 85, "text": '85' },
+    { "value": 90, "text": '90' },
+    { "value": 95, "text": '95' },
+    { "value": 100, "text": '100' }
+  ];
+
+  public currencies = [
+    { "value": 'USD', "text": 'US Dollar' },
+    { "value": 'EUR', "text": 'Euro' },
+    { "value": 'AUD', "text": 'Aus Dollar' },
+    { "value": 'INR', "text": 'Rupee' },
+  ]
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider) {
 
     function dateValidator(c: AbstractControl){
       return c.get('startDate').value < c.get('endDate').value ? null : { 'dateGreater' : true };
@@ -76,13 +115,46 @@ export class RegisterTeacherStep3 {
     this.form2Values = navParams.data.form2Value;
 
     this.Teacherstep3Form = new FormGroup({
-      teacherLanguage: new FormArray([
-        new FormControl('', Validators.required),
-      ]),
-      teacherLevel: new FormArray([
-        new FormControl('', Validators.required),
-      ]),
+      teacherLanguage: new FormArray([], Validators.required),
+      teacherLevel: new FormArray([], Validators.required),
+      teacherCvCerts: new FormControl('')
     })
+  }
+
+  public filterYear(years: number): void {
+    // Handle what to do when a category is selected
+    console.log(years);
+    this.yearExperience = years;
+  }
+
+  // Method executed when the slides are changed
+  public yearChanged(): void {
+    let currentIndex = this.yearExp.getActiveIndex();
+    console.log(currentIndex);
+  }
+
+  public filterRate(rate: number): void {
+    // Handle what to do when a category is selected
+    console.log(rate);
+    this.hourlyRate = rate;
+  }
+
+  // Method executed when the slides are changed
+  public rateChanged(): void {
+    let currentIndex = this.hourRate.getActiveIndex();
+    console.log(currentIndex);
+  }
+
+  public filterCurrency(curr: number): void {
+    // Handle what to do when a category is selected
+    console.log(curr);
+    this.userCurrency = curr;
+  }
+
+  // Method executed when the slides are changed
+  public currencyChanged(): void {
+    let currentIndex = this.curr.getActiveIndex();
+    console.log(currentIndex);
   }
 
   onChangeTeacherLanguage(name: string, isChecked: boolean) {
@@ -98,6 +170,7 @@ export class RegisterTeacherStep3 {
 
   onChangeLevelLanguage(name: string, isChecked: boolean) {
     const knownLevel = <FormArray>this.Teacherstep3Form.controls.teacherLevel;
+    console.log(knownLevel);
 
     if(isChecked) {
       knownLevel.push(new FormControl(name));
@@ -117,15 +190,12 @@ export class RegisterTeacherStep3 {
         parseCvFile.save().then(function(cvFile){
           TeacherCVs.push(cvFile);
         });
-
       });
-
     }
     this.TeacherFiles = TeacherCVs;
     this.TeacherFilesView = TeacherCVsView;
     //storing object in localstorage using JSON.stringify
     localStorage.setItem('teacherCreds', JSON.stringify(TeacherCVs));
-
   }
 
   getBase64(file) {
@@ -138,7 +208,6 @@ export class RegisterTeacherStep3 {
         toResolve.name = file.name;
         toResolve.data = this.result;
         resolve(toResolve);
-
       };
       reader.onerror = function (error) {
         //  console.log('Error: ', error);

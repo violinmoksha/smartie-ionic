@@ -10,7 +10,7 @@
       <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Teacher Information</ion-title>
+    <ion-title>{{ 'teacherInformation' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -110,7 +110,7 @@
 
     </div>
 
-    <button class="button button-positive" [disabled]="!Teacherstep2Form.valid" ion-button full>Next</button>
+    <button class="button button-positive" [disabled]="Teacherstep2Form.valid" ion-button full>Next</button>
 
   </form>
 

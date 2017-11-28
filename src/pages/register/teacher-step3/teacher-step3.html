@@ -10,23 +10,27 @@
       <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Expertise & Fees</ion-title>
+    <ion-title>{{ 'expertiseAndFees' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-  <!-- <div>
+   <!--<div>
     <h4>Debug</h4>
     <pre>Form : {{Teacherstep3Form.value | json }}</pre>
     <pre>Form Status : {{Teacherstep3Form.status }}</pre>
     <pre>Form StartDate Status : {{Teacherstep3Form.get('dates.startDate').value }}</pre>
     <pre>Form StartDate Status : {{Teacherstep3Form.get('dates.endDate').value }}</pre>
-  </div> -->
+  </div>-->
 
   <form [formGroup]="Teacherstep3Form" name="Teacherstep3Form" (ngSubmit)="finalTeacherSubmit(Teacherstep3Form.value)" novalidate>
 
     <div class="list list-inset registration teacher step3">
+
+      <div class="tagline">
+        <p>What's your Expertise</p>
+      </div>
 
       <div class="reg-section">
         <div class="reg-sub-title"><h3>Languages and Expertise</h3></div>
@@ -44,6 +48,45 @@
           <ion-checkbox (ionChange)="onChangeLevelLanguage(level.name, $event.checked)" ></ion-checkbox>
         </ion-item>
       </div>
+
+      <ion-slides (ionSlideDidChange)="yearChanged()" slidesPerView="10">
+        <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">
+          <p>{{ year.text }}</p>
+        </ion-slide>
+      </ion-slides>
+
+      <ion-list>
+        <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
+          {{cert.name}}
+          <a href="javascript:" (click)="deleteTeacherCert(cert)"><img src="./assets/img/delete-icon.png"></a>
+        </ion-item>
+      </ion-list>
+
+      <div class="teacher-cv">
+        <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="">
+        <div class="button button-cv">Upload Your CV and Certificates</div>
+        <span class="input-label">Credentials verifiable via phone camera</span>
+      </div>
+
+      <div class="tagline">
+        <p>What's your Fee</p>
+      </div>
+
+      <ion-slides (ionSlideDidChange)="yearChanged()" slidesPerView="10">
+        <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
+          <p>{{ rate.text }}</p>
+        </ion-slide>
+      </ion-slides>
+
+      <div class="tagline">
+        <p>Currency</p>
+      </div>
+
+      <ion-slides (ionSlideDidChange)="currencyChanged()" slidesPerView="2">
+        <ion-slide (click)="filterCurrency(currency.value)" [ngClass]="{'active': userCurrency == currency.value}" *ngFor="let currency of currencies">
+          <p>{{ currency.text }}</p>
+        </ion-slide>
+      </ion-slides>
 
       <!--
       <label class="item item-input">
@@ -120,18 +163,7 @@
         </div>
       </div>
 
-      <ion-list>
-        <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
-          {{cert.name}}
-          <a href="javascript:" (click)="deleteTeacherCert(cert)"><img src="./assets/img/delete-icon.png"></a>
-        </ion-item>
-      </ion-list>
 
-      <div class="teacher-cv">
-        <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="">
-        <div class="button button-cv">Upload Your CV and Certificates</div>
-        <span class="input-label">Credentials verifiable via phone camera</span>
-      </div>
     -->
     </div>
 

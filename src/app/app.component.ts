@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-// import { TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -36,7 +36,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private translate: TranslateService) {
     this.platform = platform;
     this.initializeApp();
 
@@ -47,6 +47,10 @@ export class MyApp {
        this.rootPage = Login;
      }
     })
+
+    translate.setDefaultLang('en');
+     // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use('en');
   }
 
   initializeApp() {

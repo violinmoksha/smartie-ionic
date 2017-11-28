@@ -58,15 +58,13 @@ import { Stripe } from '@ionic-native/stripe';
 import { SmartieAPI } from '../providers/api/smartie';
 
 // AoT requires an exported function for factories
-/*
-export function HttpLoaderFactory(http: Http) {
+export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
 }
-*/
 
-/*export function createTranslateLoader(http: HttpClient) {
+export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}*/
+}
 
 @NgModule({
   declarations: [
@@ -105,13 +103,13 @@ export function HttpLoaderFactory(http: Http) {
   imports: [
     BrowserModule,
     HttpClientModule,
-    /*TranslateModule.forRoot({
+    TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    }),*/
+    }),
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],
