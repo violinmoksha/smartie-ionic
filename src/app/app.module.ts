@@ -48,6 +48,7 @@ import { TotlesLogin } from '../pages/totles/login';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
+import { CalendarModule } from "ion2-calendar";
 //import { Geolocation } from '@ionic-native/geolocation';
 
 import { ParseProvider } from '../providers/parse';
@@ -111,7 +112,8 @@ export function createTranslateLoader(http: HttpClient) {
       }
     }),
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    CalendarModule    
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -48,8 +48,9 @@
           <ion-checkbox (ionChange)="onChangeLevelLanguage(level.name, $event.checked)" ></ion-checkbox>
         </ion-item>
       </div>
+      <h3>Years of Experiene in Teaching</h3>
 
-      <ion-slides (ionSlideDidChange)="yearChanged()" slidesPerView="10">
+      <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="10">
         <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">
           <p>{{ year.text }}</p>
         </ion-slide>
@@ -71,31 +72,23 @@
       <div class="tagline">
         <p>What's your Fee</p>
       </div>
-
-      <ion-slides (ionSlideDidChange)="yearChanged()" slidesPerView="10">
+      <h3>Preferred Hourly Rates</h3>
+      <ion-slides (ionSlideDidChange)="yearChanged()" slidesPerView="11">
         <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
           <p>{{ rate.text }}</p>
         </ion-slide>
       </ion-slides>
 
-      <div class="tagline">
-        <p>Currency</p>
-      </div>
+    <h3>Currency</h3>
 
-      <ion-slides (ionSlideDidChange)="currencyChanged()" slidesPerView="2">
+      <ion-slides (ionSlideDidChange)="currencyChanged()" slidesPerView="5">
         <ion-slide (click)="filterCurrency(currency.value)" [ngClass]="{'active': userCurrency == currency.value}" *ngFor="let currency of currencies">
           <p>{{ currency.text }}</p>
         </ion-slide>
       </ion-slides>
 
-      <!--
-      <label class="item item-input">
-        <span class="input-label">Years of Experience in Teaching</span>
-        <ion-input placeholder="10 Years" type="text" formControlName="experience"></ion-input>
-      </label>
-
-      <div *ngIf="!Teacherstep3Form.controls['experience'].valid && Teacherstep3Form.controls['experience'].touched" class="item item-message">
-        Experience is required
+      <div class="tagline">
+        <p>Your Availability</p>
       </div>
 
       <label class="item item-input">
@@ -105,6 +98,51 @@
 
       <div *ngIf="!Teacherstep3Form.controls['prefLocation'].valid && Teacherstep3Form.controls['prefLocation'].touched" class="item item-message">
         Enter your prefered location.
+      </div>
+      <div class="available-date">
+      <h3>Available Timing</h3>
+      <label class="item item-input">
+
+        <!-- <button ion-button >Start Date</button> -->
+        <ion-input type="text" (click)="startDateCalendar()" value="{{ startDate }}"></ion-input>
+      </label>
+      <div class="to-text">
+      </div>
+      <label class="item item-input">
+        <!-- <button ion-button>End Date</button> -->
+        <ion-input type="text" (click)="endDateCalendar()" value="{{ endDate }}"></ion-input>
+      </label>
+    </div>
+      <label class="item item-input">
+        <span class="input-label">Start Time</span>
+        <ion-datetime displayFormat="HH-mm" formControlName="startTime"></ion-datetime>
+      </label>
+
+      <div *ngIf="Teacherstep3Form.get('startTime').invalid && Teacherstep3Form.get('startTime').touched" class="item item-message">
+        Start time is required.
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">End Time</span>
+        <ion-datetime displayFormat="HH-mm" formControlName="endTime"></ion-datetime>
+      </label>
+
+      <div *ngIf="Teacherstep3Form.get('endTime').invalid && Teacherstep3Form.get('endTime').touched" class="item item-message">
+        End time is required.
+      </div>
+      <div *ngIf="Teacherstep3Form.get('endTime').touched" class="item item-message">
+        End time should greater than Start time.
+      </div>
+
+
+      <!--
+      <label class="item item-input">
+        <span class="input-label">Years of Experience in Teaching</span>
+        <ion-input placeholder="10 Years" type="text" formControlName="experience"></ion-input>
+      </label>
+
+      <div *ngIf="!Teacherstep3Form.controls['experience'].valid && Teacherstep3Form.controls['experience'].touched" class="item item-message">
+        Experience is required
       </div>
 
       <label class="item item-input">

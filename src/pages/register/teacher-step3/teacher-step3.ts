@@ -1,11 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, AlertController, Slides } from 'ionic-angular';
-import { AbstractControl, FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { NavController, NavParams, AlertController, Slides, ModalController } from 'ionic-angular';
+import { AbstractControl, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { SmartieAPI } from '../../../providers/api/smartie';
 import { Parse } from 'parse';
 import { ParseProvider } from '../../../providers/parse';
 import { TotlesSearch } from '../../totles-search/totles-search';
-
+import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "ion2-calendar";
 /**
  * Generated class for the TeacherStep3Page page.
  *
@@ -31,6 +31,8 @@ export class RegisterTeacherStep3 {
   private yearExperience: any;
   private hourlyRate: any;
   private userCurrency: any;
+  private startDate: any;
+  private endDate: any;
 
   public languages = [
     { langid: 1, name: "English", value: "englsh" },
@@ -100,7 +102,7 @@ export class RegisterTeacherStep3 {
     { "value": 'INR', "text": 'Rupee' },
   ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController) {
 
     function dateValidator(c: AbstractControl){
       return c.get('startDate').value < c.get('endDate').value ? null : { 'dateGreater' : true };
@@ -117,7 +119,48 @@ export class RegisterTeacherStep3 {
     this.Teacherstep3Form = new FormGroup({
       teacherLanguage: new FormArray([], Validators.required),
       teacherLevel: new FormArray([], Validators.required),
-      teacherCvCerts: new FormControl('')
+      teacherCvCerts: new FormControl(''),
+      prefLocation: new FormControl('', Validators.required),
+      startTime: new FormControl('', Validators.required),
+      endTime: new FormControl('', Validators.required)
+    })
+  }
+
+  startDateCalendar() {
+    const options: CalendarModalOptions = {
+      title: 'BASIC',
+      pickMode: 'single',
+      monthFormat: 'MMM YYYY'
+    };
+    let myCalendar =  this.modalCtrl.create(CalendarModal, {
+      options: options
+    });
+
+    myCalendar.present();
+
+    myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
+      if(date){
+        this.startDate = date.date + '-' + date.months + '-' + date.years;
+        console.log(this.startDate);
+      }
+    })
+  }
+
+  endDateCalendar() {
+    const options: CalendarModalOptions = {
+      title: 'BASIC',
+    };
+    let myCalendar =  this.modalCtrl.create(CalendarModal, {
+      options: options
+    });
+
+    myCalendar.present();
+
+    myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
+      if(date){
+        this.endDate = date.date + '-' + date.months + '-' + date.years;
+        console.log(this.endDate);
+      }
     })
   }
 
@@ -227,7 +270,7 @@ export class RegisterTeacherStep3 {
   finalTeacherSubmit(form3Values){
     let API = this.smartieApi.getApi(
       'signupTeacher',
-      {role: 'teacher', username: this.form1Values.username, password: this.form1Values.passwords.password, email: this.form1Values.email, fullname: this.form1Values.name, phone: this.form1Values.phone, age: this.form1Values.age, nativelang: this.form1Values.native, nationality: this.form1Values.nationality, profiletitle: this.form1Values.profileTitle, profileabout: this.form1Values.teacherMessage, expertlangs: this.form2Values.teacherLanguage, levelscapable: this.form2Values.teacherLevel, yrsexperience: form3Values.experience, preflocation: form3Values.prefLocation, prefpayrate: form3Values.prefPayRate, defstartdate: form3Values.startDate, defenddate: form3Values.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
+      {role: 'teacher', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form1Values.name, phone: this.form1Values.phone, age: this.form1Values.age, nativelang: this.form1Values.native, nationality: this.form1Values.nationality, profiletitle: this.form1Values.profileTitle, profileabout: this.form1Values.teacherMessage, expertlangs: this.form2Values.teacherLanguage, levelscapable: this.form2Values.teacherLevel, yrsexperience: form3Values.experience, preflocation: form3Values.prefLocation, prefpayrate: form3Values.prefPayRate, defstartdate: form3Values.startDate, defenddate: form3Values.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
     );
 
     return new Promise(resolve => {

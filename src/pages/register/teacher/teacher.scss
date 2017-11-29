@@ -150,6 +150,15 @@ input {
 
 .button.button-positive {
   background-color: #00BC5B;
+  padding: 0px;
+  font-size: 18px;
+  border-radius:5px;
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  box-shadow:none;
+  border:0;
+  margin: 20px 0;
   &:hover {
     background-color: #006838;
   }
@@ -174,4 +183,25 @@ input {
   background-color: #fceded;
   margin-left: 15px;
   font-size: 13px;
+}
+
+.tagline{
+  background-color: #00BC5B;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  padding:5px 10px;
+  margin:10px -15px;
+  margin-bottom: 10px
+}
+
+.profile-pic{
+  width:100%;
+  margin: auto;
+  img{width:130px;}
+
+}
+.scroll-content{
+  padding-top: 0!important;
+  margin-top: -5px;
 }

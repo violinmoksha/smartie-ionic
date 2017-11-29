@@ -75,4 +75,100 @@ ion-list{
     color: #00BC5B
   }
 
+  .my-class {
+  .toolbar-background-md, .toolbar-background-ios, ion-calendar-week .week-title {
+    background-color: #424242;
+  }
+  .month-box {
+    background: #343434;
+    border-bottom: none;
+    h4 {
+      color: #fff;
+    }
+    button.days-btn > p {
+      color: #fff;
+    }
+  }
+}
+
+.my-cal {
+  button.days-btn.my-day {
+    small {
+      color: #fff;
+      background-color: red;
+    }
+  }
+}
+
+}
+.swiper-slide{
+  width:auto;
+
+}
+.swiper-slide.active{
+  border:1px solid #00BC5B!important;
+  padding:0 0;
+  border-radius: 200px;
+  padding: 0 20px;
+  width: auto!important;
+}
+h3{
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+  margin-top:30px;
+  font-weight:500;
+}
+#year-teaching {
+    .swiper-slide{
+      &:last-child{
+        width: 120px!important;
+      }
+    }
+    .swiper-slide.active{
+      &:last-child{
+        width: 160px!important;
+      }
+    }
+}
+.available-date{
+  position: relative;
+  clear: both;
+  h3{
+    margin-top: 30px!important;
+  }
+  .to-text{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top:45px;
+    margin: auto;
+    width: 25px;
+    font-size: 18px;
+    text-align: center;
+  }
+  .item-input{
+    width: 45%!important;
+    float: left!important;
+    margin-right: 10%!important;
+    border:2px solid #00BC5B!important;
+    min-height: 30px!important;
+    margin-bottom: 20px;
+    .text-input{
+      border:0!important;
+      padding-right: 0!important;
+      padding-left:40px!important;
+      background-image:url(../../assets/img/delete-icon.png);
+      background-repeat: no-repeat;
+      background-size: 20px;
+      background-position:10px center;
+    }
+
+    &:last-child{
+      margin-right: 0!important;
+      float: right;
+    }
+  }
 }
