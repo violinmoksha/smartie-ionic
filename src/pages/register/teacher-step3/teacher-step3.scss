@@ -102,14 +102,19 @@ ion-list{
 
 }
 .swiper-slide{
-  width:auto;
-
+  width:auto!important;
+  padding:13px 15px;
+  border:1px solid transparent;
+  p{
+    margin: 0;
+    line-height:15px;
+  }
 }
 .swiper-slide.active{
   border:1px solid #00BC5B!important;
   padding:0 0;
   border-radius: 200px;
-  padding: 0 20px;
+  padding:13px 15px;
   width: auto!important;
 }
 h3{
@@ -138,16 +143,33 @@ h3{
   clear: both;
   h3{
     margin-top: 30px!important;
+    margin-bottom:20px!important;
   }
   .to-text{
     position: absolute;
     left: 0;
     right: 0;
-    top:45px;
+    top:50px;
     margin: auto;
     width: 25px;
     font-size: 18px;
     text-align: center;
+  }
+  .date-icon {
+    width: 100%;
+    height: 40px;
+    background: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    img{
+      width: 22px;
+      float: left;
+      margin-left: 10px;
+      margin-top:8px;
+
+    }
   }
   .item-input{
     width: 45%!important;
@@ -156,19 +178,82 @@ h3{
     border:2px solid #00BC5B!important;
     min-height: 30px!important;
     margin-bottom: 20px;
+    padding: 0!important;
     .text-input{
       border:0!important;
       padding-right: 0!important;
-      padding-left:40px!important;
-      background-image:url(../../assets/img/delete-icon.png);
-      background-repeat: no-repeat;
-      background-size: 20px;
-      background-position:10px center;
+      padding-left:45px!important;
+      font-size: 16px;
     }
 
     &:last-child{
       margin-right: 0!important;
       float: right;
     }
+  }
+}
+
+.available-time{
+  position: relative;
+  clear: both;
+  padding-bottom: 30px;
+  h3{
+    margin-top: 30px!important;
+    margin-bottom:20px!important;
+  }
+  .to-text{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top:12px;
+    margin: auto;
+    width: 25px;
+    font-size: 18px;
+    text-align: center;
+  }
+  .clock-icon {
+    width: 100%;
+    height: 40px;
+    background: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    img{
+      width: 25px;
+      float: left;
+      margin-left: 10px;
+      margin-top:8px;
+
+    }
+  }
+  .item-input{
+    width: 45%!important;
+    float: left!important;
+    margin-right: 10%!important;
+    border:2px solid #00BC5B!important;
+    min-height: 30px!important;
+    margin-bottom: 20px;
+    padding: 0!important;
+    .datetime{
+      border:0!important;
+      padding-right: 0!important;
+      padding-left:45px!important;
+      font-size: 16px;
+    }
+  }
+  .right-box{
+    margin-right: 0!important;
+    float: right;
+    margin-bottom:60px;
+  }
+  .item-message{
+    position: absolute;
+    left: 0;
+    right:0;
+    margin: auto;
+    top: 60px;
+    text-align: center;
+    font-size: 15px;
   }
 }

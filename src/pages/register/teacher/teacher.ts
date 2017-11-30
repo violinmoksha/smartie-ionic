@@ -20,11 +20,6 @@ export class RegisterTeacher {
 
   constructor(public navCtrl: NavController, private camera: Camera, public actionSheetCtrl: ActionSheetController) {
 
-    //Password matcher customValidator
-    /*function passwordMatcher(c: AbstractControl){
-      return c.get('password').value === c.get('confPassword').value ? null : { 'notmatch' : true };
-    }*/
-
     this.Teacherstep1Form = new FormGroup({
       email: new FormControl('', Validators.required),
       username: new FormControl('', Validators.required),
@@ -33,21 +28,6 @@ export class RegisterTeacher {
     });
 
   }
-    /*this.Teacherstep1Form = this.formBuilder.group({
-      name: ['', Validators.required],
-      username: ['', Validators.required],
-      passwords: this.formBuilder.group({
-        password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-        confPassword: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-      }, {validator : passwordMatcher}),
-      phone: ['', Validators.required],
-      email: ['', Validators.required],
-      age: ['', Validators.required],
-      native: ['', Validators.required],
-      nationality: ['', Validators.required],
-      profileTitle: ['', Validators.required],
-      teacherMessage: ['', Validators.required],
-    });*/
 
     equalTo(equalControlName): ValidatorFn {
       return (control: AbstractControl): {

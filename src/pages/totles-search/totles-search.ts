@@ -40,7 +40,9 @@ export class TotlesSearch {
     this.role = navParams.data.role;
     this.fromWhere = navParams.data.fromWhere;
     this.alert = this.alertCtrl;
-    this.notifyCount = JSON.parse(localStorage.getItem(navParams.data.loggedProfileId+'notificationCount')).result;
+    if(localStorage.getItem(navParams.data.loggedProfileId+'notificationCount')){
+      this.notifyCount = JSON.parse(localStorage.getItem(navParams.data.loggedProfileId+'notificationCount')).result;
+    }
   }
 
   ionViewDidLoad(){

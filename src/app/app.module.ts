@@ -15,6 +15,8 @@ import { RegisterTeacher } from '../pages/register/teacher/teacher';
 import { RegisterTeacherStep2 } from '../pages/register/teacher-step2/teacher-step2';
 import { RegisterTeacherStep3 } from '../pages/register/teacher-step3/teacher-step3';
 import { RegisterStudent } from '../pages/register/student/student';
+import { RegisterStudentStep2 } from '../pages/register/student/student-step2/student-step2';
+import { RegisterStudentStep3 } from '../pages/register/student/student-step3/student-step3';
 import { RegisterParent } from '../pages/register/parent/parent';
 import { RegisterSchool } from '../pages/register/school/school';
 import { Payment } from '../pages/payment/payment';
@@ -75,6 +77,8 @@ export function createTranslateLoader(http: HttpClient) {
     RegisterTeacherStep2,
     RegisterTeacherStep3,
     RegisterStudent,
+    RegisterStudentStep2,
+    RegisterStudentStep3,
     RegisterParent,
     RegisterSchool,
     Payment,
@@ -113,7 +117,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    CalendarModule    
+    CalendarModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -123,6 +127,8 @@ export function createTranslateLoader(http: HttpClient) {
     RegisterTeacherStep2,
     RegisterTeacherStep3,
     RegisterStudent,
+    RegisterStudentStep2,
+    RegisterStudentStep3,
     RegisterParent,
     RegisterSchool,
     Payment,

@@ -1,0 +1,23 @@
+page-student-step2 {
+  .cl-student .toolbar-title{
+    color: #0096D7 !important
+  }
+  .back-button{
+    color: #0096D7 !important
+  }
+  .swiper-wrapper{
+    width: 120px;
+    margin: auto;
+    .swiper-slide.active{
+      border-color: #0096D7 !important;
+    }
+  }
+  .school-information{
+    text-align: center;
+    padding-top: 20px;
+    h2{
+      font-size: 23px;
+      color: #0096D7;
+    }
+  }
+}

@@ -16,13 +16,14 @@
 
 <ion-content padding>
 
-   <!--<div>
+   <!-- <div>
     <h4>Debug</h4>
     <pre>Form : {{Teacherstep3Form.value | json }}</pre>
     <pre>Form Status : {{Teacherstep3Form.status }}</pre>
-    <pre>Form StartDate Status : {{Teacherstep3Form.get('dates.startDate').value }}</pre>
+    <pre>Form End Time Status : {{Teacherstep3Form.get('endTime').value }}</pre>
+    <pre>Form End Time Status : {{Teacherstep3Form.get('endTime').status }}</pre>
     <pre>Form StartDate Status : {{Teacherstep3Form.get('dates.endDate').value }}</pre>
-  </div>-->
+  </div> -->
 
   <form [formGroup]="Teacherstep3Form" name="Teacherstep3Form" (ngSubmit)="finalTeacherSubmit(Teacherstep3Form.value)" novalidate>
 
@@ -50,7 +51,7 @@
       </div>
       <h3>Years of Experiene in Teaching</h3>
 
-      <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="10">
+      <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
         <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">
           <p>{{ year.text }}</p>
         </ion-slide>
@@ -73,7 +74,7 @@
         <p>What's your Fee</p>
       </div>
       <h3>Preferred Hourly Rates</h3>
-      <ion-slides (ionSlideDidChange)="yearChanged()" slidesPerView="11">
+      <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="7">
         <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
           <p>{{ rate.text }}</p>
         </ion-slide>
@@ -81,7 +82,7 @@
 
     <h3>Currency</h3>
 
-      <ion-slides (ionSlideDidChange)="currencyChanged()" slidesPerView="5">
+      <ion-slides (ionSlideDidChange)="currencyChanged()" slidesPerView="4">
         <ion-slide (click)="filterCurrency(currency.value)" [ngClass]="{'active': userCurrency == currency.value}" *ngFor="let currency of currencies">
           <p>{{ currency.text }}</p>
         </ion-slide>
@@ -104,105 +105,49 @@
       <label class="item item-input">
 
         <!-- <button ion-button >Start Date</button> -->
+        <div class="date-icon">
+          <img src="../../assets/img/date-icon.png" />
+        </div>
         <ion-input type="text" (click)="startDateCalendar()" value="{{ startDate }}"></ion-input>
       </label>
       <div class="to-text">
+          To
       </div>
       <label class="item item-input">
         <!-- <button ion-button>End Date</button> -->
+        <div class="date-icon">
+          <img src="../../assets/img/date-icon.png" />
+        </div>
         <ion-input type="text" (click)="endDateCalendar()" value="{{ endDate }}"></ion-input>
       </label>
     </div>
+
+    <div class="available-time">
       <label class="item item-input">
-        <span class="input-label">Start Time</span>
+        <div class="clock-icon">
+          <img src="../../assets/img/clock-icon.png" />
+        </div>
         <ion-datetime displayFormat="HH-mm" formControlName="startTime"></ion-datetime>
       </label>
 
       <div *ngIf="Teacherstep3Form.get('startTime').invalid && Teacherstep3Form.get('startTime').touched" class="item item-message">
         Start time is required.
       </div>
-
-      <label class="item item-input">
-        <span class="input-label">End Time</span>
+      <div class="to-text">
+          To
+      </div>
+      <label class="item item-input right-box">
+        <div class="clock-icon">
+          <img src="../../assets/img/clock-icon.png" />
+        </div>
         <ion-datetime displayFormat="HH-mm" formControlName="endTime"></ion-datetime>
       </label>
 
       <div *ngIf="Teacherstep3Form.get('endTime').invalid && Teacherstep3Form.get('endTime').touched" class="item item-message">
         End time is required.
       </div>
-      <div *ngIf="Teacherstep3Form.get('endTime').touched" class="item item-message">
-        End time should greater than Start time.
-      </div>
 
-
-      <!--
-      <label class="item item-input">
-        <span class="input-label">Years of Experience in Teaching</span>
-        <ion-input placeholder="10 Years" type="text" formControlName="experience"></ion-input>
-      </label>
-
-      <div *ngIf="!Teacherstep3Form.controls['experience'].valid && Teacherstep3Form.controls['experience'].touched" class="item item-message">
-        Experience is required
-      </div>
-
-      <label class="item item-input">
-        <span class="input-label">Prefered Hourly Rates</span>
-        <ion-input placeholder="10$ per Hour" type="text" formControlName="prefPayRate"></ion-input>
-      </label>
-
-      <div *ngIf="!Teacherstep3Form.controls['prefPayRate'].valid && Teacherstep3Form.controls['prefPayRate'].touched" class="item item-message">
-        Enter your Hourly rate.
-      </div>
-
-      <div formGroupName="dates">
-        <span class="input-label">Schedule Availability</span>
-        <label class="item item-input">
-          <span class="input-label">Start Date</span>
-          <ion-datetime displayFormat="DD-MMM-YYYY" formControlName="startDate"></ion-datetime>
-        </label>
-
-        <div *ngIf="Teacherstep3Form.get('dates.startDate').invalid && Teacherstep3Form.get('dates.startDate').touched" class="item item-message">
-          Start date is required.
-        </div>
-
-        <label class="item item-input">
-          <span class="input-label">End Date</span>
-          <ion-datetime displayFormat="DD-MMM-YYYY" formControlName="endDate"></ion-datetime>
-        </label>
-
-        <div *ngIf="Teacherstep3Form.get('dates.endDate').invalid && Teacherstep3Form.get('dates.endDate').touched" class="item item-message">
-          End date is required.
-        </div>
-        <div *ngIf="Teacherstep3Form.get('dates').errors !== null && Teacherstep3Form.get('dates.endDate').touched" class="item item-message">
-          End date should greater than Start date.
-        </div>
-      </div>
-
-      <div formGroupName="times">
-        <label class="item item-input">
-          <span class="input-label">Start Time</span>
-          <ion-datetime displayFormat="HH-mm" formControlName="startTime"></ion-datetime>
-        </label>
-
-        <div *ngIf="Teacherstep3Form.get('times.startTime').invalid && Teacherstep3Form.get('times.startTime').touched" class="item item-message">
-          Start time is required.
-        </div>
-
-        <label class="item item-input">
-          <span class="input-label">End Time</span>
-          <ion-datetime displayFormat="HH-mm" formControlName="endTime"></ion-datetime>
-        </label>
-
-        <div *ngIf="Teacherstep3Form.get('times.endTime').invalid && Teacherstep3Form.get('times.endTime').touched" class="item item-message">
-          End time is required.
-        </div>
-        <div *ngIf="Teacherstep3Form.get('times').errors !== null && Teacherstep3Form.get('times.endTime').touched" class="item item-message">
-          End time should greater than Start time.
-        </div>
-      </div>
-
-
-    -->
+    </div>
     </div>
 
     <button class="button button-positive" [disabled]="!Teacherstep3Form.valid" ion-button full>Submit</button>

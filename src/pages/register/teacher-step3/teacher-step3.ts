@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, Slides, ModalController } from 'ionic-angular';
-import { AbstractControl, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { SmartieAPI } from '../../../providers/api/smartie';
 import { Parse } from 'parse';
 import { ParseProvider } from '../../../providers/parse';
@@ -50,49 +50,49 @@ export class RegisterTeacherStep3 {
   ];
 
   public years = [
-    { "value": 1, "text": '1' },
-    { "value": 2, "text": '2' },
-    { "value": 3, "text": '3' },
-    { "value": 4, "text": '4' },
-    { "value": 5, "text": '5' },
-    { "value": 6, "text": '6' },
-    { "value": 7, "text": '7' },
-    { "value": 8, "text": '8' },
-    { "value": 9, "text": '9' },
-    { "value": 10, "text": '10' },
-    { "value": 11, "text": '11' },
-    { "value": 12, "text": '12' },
-    { "value": 13, "text": '13' },
-    { "value": 14, "text": '14' },
-    { "value": 15, "text": '15' },
-    { "value": 16, "text": '16' },
-    { "value": 17, "text": '17' },
-    { "value": 18, "text": '18' },
-    { "value": 19, "text": '19' },
-    { "value": 20, "text": 'More than 20' }
+    { "value": '1', "text": '1' },
+    { "value": '2', "text": '2' },
+    { "value": '3', "text": '3' },
+    { "value": '4', "text": '4' },
+    { "value": '5', "text": '5' },
+    { "value": '6', "text": '6' },
+    { "value": '7', "text": '7' },
+    { "value": '8', "text": '8' },
+    { "value": '9', "text": '9' },
+    { "value": '10', "text": '10' },
+    { "value": '11', "text": '11' },
+    { "value": '12', "text": '12' },
+    { "value": '13', "text": '13' },
+    { "value": '14', "text": '14' },
+    { "value": '15', "text": '15' },
+    { "value": '16', "text": '16' },
+    { "value": '17', "text": '17' },
+    { "value": '18', "text": '18' },
+    { "value": '19', "text": '19' },
+    { "value": '20', "text": 'More than 20' }
   ];
 
   public hourRates = [
-    { "value": 5, "text": '5' },
-    { "value": 10, "text": '10' },
-    { "value": 15, "text": '15' },
-    { "value": 20, "text": '20' },
-    { "value": 25, "text": '25' },
-    { "value": 30, "text": '30' },
-    { "value": 35, "text": '35' },
-    { "value": 40, "text": '40' },
-    { "value": 45, "text": '45' },
-    { "value": 50, "text": '50' },
-    { "value": 55, "text": '55' },
-    { "value": 60, "text": '60' },
-    { "value": 65, "text": '65' },
-    { "value": 70, "text": '70' },
-    { "value": 75, "text": '75' },
-    { "value": 80, "text": '80' },
-    { "value": 85, "text": '85' },
-    { "value": 90, "text": '90' },
-    { "value": 95, "text": '95' },
-    { "value": 100, "text": '100' }
+    { "value": '5', "text": '5' },
+    { "value": '10', "text": '10' },
+    { "value": '15', "text": '15' },
+    { "value": '20', "text": '20' },
+    { "value": '25', "text": '25' },
+    { "value": '30', "text": '30' },
+    { "value": '35', "text": '35' },
+    { "value": '40', "text": '40' },
+    { "value": '45', "text": '45' },
+    { "value": '50', "text": '50' },
+    { "value": '55', "text": '55' },
+    { "value": '60', "text": '60' },
+    { "value": '65', "text": '65' },
+    { "value": '70', "text": '70' },
+    { "value": '75', "text": '75' },
+    { "value": '80', "text": '80' },
+    { "value": '85', "text": '85' },
+    { "value": '90', "text": '90' },
+    { "value": '95', "text": '95' },
+    { "value": '100', "text": '100' }
   ];
 
   public currencies = [
@@ -100,6 +100,7 @@ export class RegisterTeacherStep3 {
     { "value": 'EUR', "text": 'Euro' },
     { "value": 'AUD', "text": 'Aus Dollar' },
     { "value": 'INR', "text": 'Rupee' },
+    { "value": 'THB', "text": 'Thai Baht' },
   ]
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController) {
@@ -122,8 +123,22 @@ export class RegisterTeacherStep3 {
       teacherCvCerts: new FormControl(''),
       prefLocation: new FormControl('', Validators.required),
       startTime: new FormControl('', Validators.required),
-      endTime: new FormControl('', Validators.required)
+      endTime: new FormControl('', [Validators.required, this.gretarThan('startTime')])
     })
+  }
+
+  gretarThan(equalControlName): ValidatorFn {
+    return (control: AbstractControl): {
+      [key: string]: any
+    } => {
+      if (!control['_parent']) return null;
+      if (!control['_parent'].controls[equalControlName])
+      throw new TypeError('Form Control ' + equalControlName + ' does not exists.');
+      var controlMatch = control['_parent'].controls[equalControlName];
+      return controlMatch.value < control.value ? null : {
+        'gretarThan': true
+      };
+    };
   }
 
   startDateCalendar() {
@@ -268,9 +283,10 @@ export class RegisterTeacherStep3 {
   }
 
   finalTeacherSubmit(form3Values){
+
     let API = this.smartieApi.getApi(
       'signupTeacher',
-      {role: 'teacher', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form1Values.name, phone: this.form1Values.phone, age: this.form1Values.age, nativelang: this.form1Values.native, nationality: this.form1Values.nationality, profiletitle: this.form1Values.profileTitle, profileabout: this.form1Values.teacherMessage, expertlangs: this.form2Values.teacherLanguage, levelscapable: this.form2Values.teacherLevel, yrsexperience: form3Values.experience, preflocation: form3Values.prefLocation, prefpayrate: form3Values.prefPayRate, defstartdate: form3Values.startDate, defenddate: form3Values.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
+      {role: 'teacher', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, age: this.form2Values.age, nativelang: this.form2Values.native, nationality: this.form2Values.nationality, profiletitle: this.form2Values.profileTitle, profileabout: this.form2Values.profileMessage, expertlangs: form3Values.teacherLanguage, levelscapable: form3Values.teacherLevel, yrsexperience: this.yearExperience, preflocation: form3Values.prefLocation, prefpayrate: this.hourlyRate, defstartdate: this.startDate, defenddate: this.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
     );
 
     return new Promise(resolve => {
@@ -312,7 +328,7 @@ export class RegisterTeacherStep3 {
         },
         err => {
           let signupError = JSON.parse(err.text());
-          // console.log(signupError);
+          console.log(signupError);
           let alert = this.alertCtrl.create({
             title: 'Signup Failed !',
             subTitle: signupError.error.split(':')[2],

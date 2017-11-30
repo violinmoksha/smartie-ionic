@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { SmartieAPI } from '../../../providers/api/smartie';
 import { Parse } from 'parse';
 import { TotlesSearch } from '../../totles-search/totles-search';
+import { RegisterStudentStep2 } from './student-step2/student-step2';
 
 /**
  * Generated class for the StudentPage page.
@@ -19,7 +20,7 @@ import { TotlesSearch } from '../../totles-search/totles-search';
 export class RegisterStudent {
 
   pageProfileSrc:string = './assets/img/dummy_prof_pic.png';
-  private StudentForm : FormGroup;
+  private StudentStep1Form : FormGroup;
   cameraData: string;
   photoTaken: boolean;
   cameraUrl: string;
@@ -29,8 +30,14 @@ export class RegisterStudent {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, private actionSheetCtrl: ActionSheetController, private smartieApi: SmartieAPI, private alertCtrl: AlertController) {
 
+    this.StudentStep1Form = new FormGroup({
+      email: new FormControl('', Validators.required),
+      username: new FormControl('', Validators.required),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      confPassword: new FormControl('', [Validators.required, Validators.minLength(6),  this.equalTo('password')])
+    });
     //Password matcher customValidator
-    function passwordMatcher(c: AbstractControl){
+    /*function passwordMatcher(c: AbstractControl){
       return c.get('password').value === c.get('confPassword').value ? null : { 'notmatch' : true };
     }
 
@@ -54,9 +61,29 @@ export class RegisterStudent {
     });
 
     this.StudentForm.get('partOfSchool').valueChanges.subscribe(data => this.onpartOfSchoolValueChanged(data));
+    */
   }
 
-  onpartOfSchoolValueChanged(value){
+  equalTo(equalControlName): ValidatorFn {
+    return (control: AbstractControl): {
+      [key: string]: any
+    } => {
+      if (!control['_parent']) return null;
+      if (!control['_parent'].controls[equalControlName])
+      throw new TypeError('Form Control ' + equalControlName + ' does not exists.');
+      var controlMatch = control['_parent'].controls[equalControlName];
+      return controlMatch.value == control.value ? null : {
+        'equalTo': true
+      };
+    };
+  }
+
+  next(form1Value){
+    this.navCtrl.push(RegisterStudentStep2, { form1Value : form1Value });
+  }
+
+
+  /*onpartOfSchoolValueChanged(value){
     let studentSchoolNameControl = this.StudentForm.get('studentSchoolName');
     if(value){
       studentSchoolNameControl.setValidators([Validators.required]);
@@ -65,71 +92,10 @@ export class RegisterStudent {
     }
 
     studentSchoolNameControl.updateValueAndValidity(); //Need to call this to trigger a update
-  }
+  }*/
 
 
-  chooseUploadType(inputEvent){
-    let actionSheet = this.actionSheetCtrl.create({
-      title: 'How you like to upload your photos',
-      buttons: [
-        {
-          text: 'Take Picture',
-          role: 'destructive',
-          icon: 'camera',
-          handler: () => {
-            var options = {
-              sourceType: this.camera.PictureSourceType.CAMERA,
-              destinationType: this.camera.DestinationType.DATA_URL
-            };
-            this.camera.getPicture(options).then((imageData) => {
-              this.cameraData = 'data:image/jpeg;base64,' + imageData;
-              localStorage.setItem('profilePhotoDataUrl', this.cameraData);
-              this.photoTaken = true;
-              this.photoSelected = false;
-            }, (err) => {
-            // Handle error
-              console.log(err);
-            });
-          }
-        },{
-          text: 'Open Gallery',
-          role: 'openGallery',
-          icon: 'image',
-          handler: () => {
-            console.log('Gallery clicked');
-            let options = {
-              sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-              destinationType: this.camera.DestinationType.DATA_URL,
-              quality : 100
-            };
-
-            this.camera.getPicture(options).then((imageData) => {
-             // imageData is either a base64 encoded string or a file URI
-             // If it's base64:
-              this.cameraUrl = "data:image/jpeg;base64," + imageData;
-              localStorage.setItem('profilePhotoDataUrl', this.cameraUrl);
-              // console.log(this.cameraUrl);
-              this.photoSelected = true;
-              this.photoTaken = false;
-            }, (err) => {
-             // Handle error
-             console.log(err);
-            });
-          }
-        },{
-          text: 'Cancel',
-          role: 'cancel',
-          icon: 'close',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    actionSheet.present();
-  }
-
-  StudentSubmit(studentData){
+  /*StudentSubmit(studentData){
     let API = this.smartieApi.getApi(
       'signupParentOrStudent',
       {role: 'student', username: studentData.username, password: studentData.passwords.password, email: studentData.email, fullname: studentData.name, phone: studentData.phone, profileabout: studentData.studentMessage, langreq: studentData.expertiseLangNeed, levelreq: studentData.requiredLevel, preflocation: studentData.preferedLearningLocation, prefpayrate: studentData.desiredHourlyPriceRange, partofschool: studentData.partOfSchool, schoolname: studentData.parentSchoolName, langpref: 'en'}
@@ -167,9 +133,9 @@ export class RegisterStudent {
       )
     });
 
-  }
+  } */
 
-  setProfilePic(){
+  /* setProfilePic(){
     return new Promise(function(resolve, reject){
 
       let parseFile = new Parse.File('photo.jpg', {base64: localStorage.getItem('profilePhotoDataUrl')});
@@ -190,6 +156,6 @@ export class RegisterStudent {
         });
       });
     });
-  }
+  } */
 
 }
