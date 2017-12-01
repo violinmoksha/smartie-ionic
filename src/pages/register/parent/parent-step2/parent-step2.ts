@@ -2,41 +2,42 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, Slides } from 'ionic-angular';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
-import { RegisterStudentStep3 } from './../student-step3/student-step3';
+import { RegisterParentStep3 } from './../parent-step3/parent-step3';
 
 /**
- * Generated class for the StudentStep2Page page.
+ * Generated class for the ParentStep2Page page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
 @Component({
-  selector: 'page-student-step2',
-  templateUrl: 'student-step2.html',
+  selector: 'page-parent-step2',
+  templateUrl: 'parent-step2.html',
 })
-export class RegisterStudentStep2 {
+export class RegisterParentStep2 {
 
-  private Studentstep2Form: FormGroup;
+  private Parentstep2Form: FormGroup;
   private form1Values: any;
-  pageProfileSrc:string = './assets/img/user-img-student.png';
+  pageProfileSrc:string = './assets/img/user-img-parent.png';
   cameraData: string;
   photoTaken: boolean;
   cameraUrl: string;
   photoSelected: boolean;
   partOfSchool: string;
-  @ViewChild(Slides) studentSchool: Slides;
+  @ViewChild(Slides) parentSchool: Slides;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController) {
 
     this.form1Values = navParams.data.form1Value;
 
-    this.Studentstep2Form = new FormGroup({
+    this.Parentstep2Form = new FormGroup({
       name: new FormControl('', Validators.required),
       phone: new FormControl('', Validators.required),
       profileMessage: new FormControl('', Validators.required),
-      studentSchoolName: new FormControl('')
+      parentSchoolName: new FormControl('')
     })
+
   }
 
   chooseUploadType(inputEvent){
@@ -104,19 +105,19 @@ export class RegisterStudentStep2 {
     // Handle what to do when a category is selected
     console.log(result);
     if(result == 'yes'){
-      this.Studentstep2Form.get('studentSchoolName').setValidators([Validators.required]);
+      this.Parentstep2Form.get('parentSchoolName').setValidators([Validators.required]);
     }else{
-      this.Studentstep2Form.get('studentSchoolName').setValidators([]);
+      this.Parentstep2Form.get('parentSchoolName').setValidators([]);
     }
     this.partOfSchool = result;
   }
 
   next(form2Value){
-    this.navCtrl.push(RegisterStudentStep3, { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool });
+    this.navCtrl.push(RegisterParentStep3, { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool });
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad StudentStep2Page');
+    console.log('ionViewDidLoad ParentStep2Page');
   }
 
 }

@@ -1,5 +1,5 @@
 <!--
-  Generated template for the StudentStep3Page page.
+  Generated template for the SchoolStep3Page page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -10,26 +10,27 @@
       <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title class="cl-student">{{ 'tutionAndFees' | translate }}</ion-title>
+    <ion-title class="cl-school">{{ 'tutionAndFees' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
+
 
 <ion-content padding>
 
    <!-- <div>
     <h4>Debug</h4>
-    <pre>Form : {{Studentstep3Form.value | json }}</pre>
-    <pre>Form Status : {{Studentstep3Form.status }}</pre>
-    <pre>Form End Time Status : {{Studentstep3Form.get('endTime').value }}</pre>
-    <pre>Form End Time Status : {{Studentstep3Form.get('endTime').status }}</pre>
-    <pre>Form StartDate Status : {{Studentstep3Form.get('dates.endDate').value }}</pre>
+    <pre>Form : {{Schoolstep3Form.value | json }}</pre>
+    <pre>Form Status : {{Schoolstep3Form.status }}</pre>
+    <pre>Form End Time Status : {{Schoolstep3Form.get('endTime').value }}</pre>
+    <pre>Form End Time Status : {{Schoolstep3Form.get('endTime').status }}</pre>
+    <pre>Form StartDate Status : {{Schoolstep3Form.get('dates.endDate').value }}</pre>
   </div> -->
 
-  <form [formGroup]="Studentstep3Form" name="Studentstep3Form" (ngSubmit)="StudentSubmit(Studentstep3Form.value)" novalidate>
+  <form [formGroup]="Schoolstep3Form" name="Schoolstep3Form" (ngSubmit)="SchoolSubmit(Schoolstep3Form.value)" novalidate>
 
     <div class="list list-inset registration teacher step3">
 
-      <div class="tagline bg-student">
+      <div class="tagline bg-school">
         <p>Expertise your need ?</p>
       </div>
       <div class="clear"></div>
@@ -38,7 +39,7 @@
 
         <ion-item *ngFor="let lang of languages">
           <ion-label>{{ lang.name }}</ion-label>
-          <ion-checkbox (ionChange)="onChangeStudentLanguage(lang.name, $event.checked)"></ion-checkbox>
+          <ion-checkbox (ionChange)="onChangeSchoolLanguage(lang.name, $event.checked)"></ion-checkbox>
         </ion-item>
       </div>
 
@@ -46,14 +47,15 @@
         <div class="reg-sub-title"><h3>Levels Required</h3></div>
         <ion-item *ngFor="let level of levels">
           <ion-label>{{ level.name }}</ion-label>
-          <ion-checkbox (ionChange)="onChangeStudentLevel(level.name, $event.checked)" ></ion-checkbox>
+          <ion-checkbox (ionChange)="onChangeSchoolLevel(level.name, $event.checked)" ></ion-checkbox>
         </ion-item>
       </div>
         <div class="clear"></div>
 
-      <div class="tagline bg-student">
+      <div class="tagline bg-school">
         <p>The fee you can pay</p>
       </div>
+
       <h3>Desired hourly price range</h3>
       <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="7">
         <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
@@ -69,7 +71,7 @@
         </ion-slide>
       </ion-slides>
 
-      <div class="tagline bg-student">
+      <div class="tagline bg-school">
         <p>Your Location</p>
       </div>
 
@@ -78,13 +80,13 @@
         <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
       </label>
 
-      <div *ngIf="!Studentstep3Form.controls['prefLocation'].valid && Studentstep3Form.controls['prefLocation'].touched" class="item item-message">
+      <div *ngIf="!Schoolstep3Form.controls['prefLocation'].valid && Schoolstep3Form.controls['prefLocation'].touched" class="item item-message">
         Enter your prefered location.
       </div>
 
     </div>
 
-    <button class="button button-positive bg-student" [disabled]="!Studentstep3Form.valid" ion-button full>Complete Registration</button>
+    <button class="button button-positive bg-school" [disabled]="!Schoolstep3Form.valid" ion-button full>Complete Registration</button>
 
   </form>
 

@@ -46,13 +46,13 @@ export class TotlesSearch {
   }
 
   ionViewDidLoad(){
-    let latLngUser = JSON.parse(localStorage.getItem(this.navParams.data.role+'userProfile')).profileData.latlng;
+    let latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profile.latlng;
     this.totlesSearchResult(latLngUser, this.navParams.data.role);
     // this.initMap();
   }
 
   initMap(){
-    let latLngUser = JSON.parse(localStorage.getItem(this.navParams.data.role+'userProfile')).profileData.latlng;
+    let latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profile.latlng;
     this.totlesSearchResult(latLngUser, this.navParams.data.role);
   }
 

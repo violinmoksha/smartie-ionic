@@ -18,7 +18,11 @@ import { RegisterStudent } from '../pages/register/student/student';
 import { RegisterStudentStep2 } from '../pages/register/student/student-step2/student-step2';
 import { RegisterStudentStep3 } from '../pages/register/student/student-step3/student-step3';
 import { RegisterParent } from '../pages/register/parent/parent';
+import { RegisterParentStep2 } from '../pages/register/parent/parent-step2/parent-step2';
+import { RegisterParentStep3 } from '../pages/register/parent/parent-step3/parent-step3';
 import { RegisterSchool } from '../pages/register/school/school';
+import { RegisterSchoolStep2 } from '../pages/register/school/school-step2/school-step2';
+import { RegisterSchoolStep3 } from '../pages/register/school/school-step3/school-step3';
 import { Payment } from '../pages/payment/payment';
 import { PaymentConfirm } from '../pages/payment/payment-confirm/payment-confirm';
 import { PaymentThankyou } from '../pages/payment/payment-thankyou/payment-thankyou';
@@ -80,7 +84,11 @@ export function createTranslateLoader(http: HttpClient) {
     RegisterStudentStep2,
     RegisterStudentStep3,
     RegisterParent,
+    RegisterParentStep2,
+    RegisterParentStep3,
     RegisterSchool,
+    RegisterSchoolStep2,
+    RegisterSchoolStep3,
     Payment,
     PaymentConfirm,
     PaymentThankyou,
@@ -130,7 +138,11 @@ export function createTranslateLoader(http: HttpClient) {
     RegisterStudentStep2,
     RegisterStudentStep3,
     RegisterParent,
+    RegisterParentStep2,
+    RegisterParentStep3,
     RegisterSchool,
+    RegisterSchoolStep2,
+    RegisterSchoolStep3,
     Payment,
     PaymentConfirm,
     PaymentThankyou,

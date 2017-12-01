@@ -8,18 +8,19 @@ import { TotlesSearch } from '../../../totles-search/totles-search';
 import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "ion2-calendar";
 
 /**
- * Generated class for the StudentStep3Page page.
+ * Generated class for the ParentStep3Page page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-@Component({
-  selector: 'page-student-step3',
-  templateUrl: 'student-step3.html',
-})
-export class RegisterStudentStep3 {
 
-  private Studentstep3Form : FormGroup;
+@Component({
+  selector: 'page-parent-step3',
+  templateUrl: 'parent-step3.html',
+})
+export class RegisterParentStep3 {
+
+  private Parentstep3Form : FormGroup;
   private form1Values: any;
   private form2Values: any;
   private partOfSchool: any;
@@ -80,11 +81,12 @@ export class RegisterStudentStep3 {
     this.form2Values = navParams.data.form2Value;
     this.partOfSchool = navParams.data.partOfSchool;
 
-    this.Studentstep3Form = new FormGroup({
+    this.Parentstep3Form = new FormGroup({
       requiredLang: new FormArray([], Validators.required),
       requiredLevel: new FormArray([], Validators.required),
       prefLocation: new FormControl('', Validators.required)
     })
+
   }
 
   public filterRate(rate: number): void {
@@ -111,8 +113,8 @@ export class RegisterStudentStep3 {
     console.log(currentIndex);
   }
 
-  onChangeStudentLanguage(name: string, isChecked: boolean) {
-    const knownLanguage = <FormArray>this.Studentstep3Form.controls.requiredLang;
+  onChangeParentLanguage(name: string, isChecked: boolean) {
+    const knownLanguage = <FormArray>this.Parentstep3Form.controls.requiredLang;
 
     if(isChecked) {
       knownLanguage.push(new FormControl(name));
@@ -122,8 +124,8 @@ export class RegisterStudentStep3 {
     }
   }
 
-  onChangeStudentLevel(name: string, isChecked: boolean) {
-    const knownLevel = <FormArray>this.Studentstep3Form.controls.requiredLevel;
+  onChangeParentLevel(name: string, isChecked: boolean) {
+    const knownLevel = <FormArray>this.Parentstep3Form.controls.requiredLevel;
     console.log(knownLevel);
 
     if(isChecked) {
@@ -134,13 +136,13 @@ export class RegisterStudentStep3 {
     }
   }
 
-  StudentSubmit(studentData){
-    // console.log(studentData);
+  ParentSubmit(parentData){
+    // console.log(parentData);
     // console.log(this.form1Values);
     // console.log(this.form2Values);
     let API = this.smartieApi.getApi(
       'signupParentOrStudent',
-      {role: 'student', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, profileabout: this.form2Values.profileMessage, langreq: studentData.requiredLang, levelreq: studentData.requiredLevel, preflocation: studentData.prefLocation, prefpayrate: this.hourlyRate, partofschool: this.partOfSchool, schoolname: this.form2Values.studentSchoolName, langpref: 'en'}
+      {role: 'parent', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, profileabout: this.form2Values.profileMessage, langreq: parentData.requiredLang, levelreq: parentData.requiredLevel, preflocation: parentData.prefLocation, prefpayrate: this.hourlyRate, partofschool: this.partOfSchool, schoolname: this.form2Values.parentSchoolName, langpref: 'en'}
     );
 
     return new Promise(resolve => {
@@ -201,7 +203,7 @@ export class RegisterStudentStep3 {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad StudentStep3Page');
+    console.log('ionViewDidLoad ParentStep3Page');
   }
 
 }

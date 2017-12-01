@@ -8,18 +8,19 @@ import { TotlesSearch } from '../../../totles-search/totles-search';
 import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "ion2-calendar";
 
 /**
- * Generated class for the StudentStep3Page page.
+ * Generated class for the SchoolStep3Page page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-@Component({
-  selector: 'page-student-step3',
-  templateUrl: 'student-step3.html',
-})
-export class RegisterStudentStep3 {
 
-  private Studentstep3Form : FormGroup;
+@Component({
+  selector: 'page-school-step3',
+  templateUrl: 'school-step3.html',
+})
+export class RegisterSchoolStep3 {
+
+  private Schoolstep3Form : FormGroup;
   private form1Values: any;
   private form2Values: any;
   private partOfSchool: any;
@@ -78,9 +79,8 @@ export class RegisterStudentStep3 {
 
     this.form1Values = navParams.data.form1Value;
     this.form2Values = navParams.data.form2Value;
-    this.partOfSchool = navParams.data.partOfSchool;
 
-    this.Studentstep3Form = new FormGroup({
+    this.Schoolstep3Form = new FormGroup({
       requiredLang: new FormArray([], Validators.required),
       requiredLevel: new FormArray([], Validators.required),
       prefLocation: new FormControl('', Validators.required)
@@ -111,8 +111,8 @@ export class RegisterStudentStep3 {
     console.log(currentIndex);
   }
 
-  onChangeStudentLanguage(name: string, isChecked: boolean) {
-    const knownLanguage = <FormArray>this.Studentstep3Form.controls.requiredLang;
+  onChangeSchoolLanguage(name: string, isChecked: boolean) {
+    const knownLanguage = <FormArray>this.Schoolstep3Form.controls.requiredLang;
 
     if(isChecked) {
       knownLanguage.push(new FormControl(name));
@@ -122,8 +122,8 @@ export class RegisterStudentStep3 {
     }
   }
 
-  onChangeStudentLevel(name: string, isChecked: boolean) {
-    const knownLevel = <FormArray>this.Studentstep3Form.controls.requiredLevel;
+  onChangeSchoolLevel(name: string, isChecked: boolean) {
+    const knownLevel = <FormArray>this.Schoolstep3Form.controls.requiredLevel;
     console.log(knownLevel);
 
     if(isChecked) {
@@ -134,13 +134,11 @@ export class RegisterStudentStep3 {
     }
   }
 
-  StudentSubmit(studentData){
-    // console.log(studentData);
-    // console.log(this.form1Values);
-    // console.log(this.form2Values);
+  SchoolSubmit(schoolData){
+
     let API = this.smartieApi.getApi(
-      'signupParentOrStudent',
-      {role: 'student', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, profileabout: this.form2Values.profileMessage, langreq: studentData.requiredLang, levelreq: studentData.requiredLevel, preflocation: studentData.prefLocation, prefpayrate: this.hourlyRate, partofschool: this.partOfSchool, schoolname: this.form2Values.studentSchoolName, langpref: 'en'}
+      'signupSchool',
+      {role: 'school', username: this.form1Values.username, password: this.form1Values.passwords.password, email: this.form1Values.email, schoolname: this.form2Values.schoolName, contactname: this.form2Values.contactName, contactposition: this.form2Values.contactPosition, phone: this.form2Values.phone, levelreq: schoolData.requiredLevel, langreq: schoolData.requiredLang, profileabout: this.form2Values.profileMessage, preflocation: schoolData.prefLocation, prefpayrate: this.hourlyRate, langpref: 'en'}
     );
 
     return new Promise(resolve => {
@@ -149,17 +147,17 @@ export class RegisterStudentStep3 {
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         signupResult => {
-          localStorage.setItem("studentSignupUserProfile", JSON.stringify(signupResult.result));
+          localStorage.setItem("schoolSignupUserProfile", JSON.stringify(signupResult.result));
 
-          if(localStorage.getItem('profilePhotoDataUrl') == null){
-            this.navCtrl.push(TotlesSearch, {role: 'student', fromwhere: 'signUp'});
-          }else{
-            this.setProfilePic().then((pictureResolve) => {
-              this.navCtrl.push(TotlesSearch, {role: 'student', fromwhere: 'signUp'});
-            }).catch((pictureReject) => {
-              console.log(pictureReject);
-            });
-          }
+          // if(localStorage.getItem('profilePhotoDataUrl') == null && localStorage.getItem('schoolPhotoDataUrl') == null ){
+            this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
+          // }else{
+          //   this.setProfilePic().then((pictureResolve) => {
+          //     this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
+          //   }).catch((pictureReject) => {
+          //     console.log(pictureReject);
+          //   });
+          // }
 
         },
         err => {
@@ -177,31 +175,8 @@ export class RegisterStudentStep3 {
 
   }
 
-  setProfilePic(){
-    return new Promise(function(resolve, reject){
-
-      let parseFile = new Parse.File('photo.jpg', {base64: localStorage.getItem('profilePhotoDataUrl')});
-      parseFile.save().then((file) => {
-        let studentSignupUserProfile = JSON.parse(localStorage.getItem("studentSignupUserProfile"));
-        let profileId = studentSignupUserProfile.profile.objectId;
-        let profQuery = new Parse.Query(new Parse.Object.extend('Profile'));
-
-        profQuery.get(profileId, {
-          success: function(profile) {
-            profile.set('profilePhoto', file);
-            profile.save();
-            resolve('success');
-          }, error: function(profile, error) {
-            // TODO: internet connection problem err
-            reject('failed');
-          }
-        });
-      });
-    });
-  }
-
   ionViewDidLoad() {
-    console.log('ionViewDidLoad StudentStep3Page');
+    console.log('ionViewDidLoad SchoolStep3Page');
   }
 
 }

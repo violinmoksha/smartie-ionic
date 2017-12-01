@@ -1,5 +1,5 @@
 <!--
-  Generated template for the TeacherStep2Page page.
+  Generated template for the ParentStep2Page page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -10,24 +10,23 @@
       <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title class="cl-student">{{ 'studentInformation' | translate }}</ion-title>
+    <ion-title class="cl-parent">{{ 'parentInformation' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
-
 
 <ion-content padding>
 
   <!-- <div>
     <h4>Debug</h4>
-    <pre>Form : {{Studentstep2Form.value | json }}</pre>
-    <pre>Form Status : {{Studentstep2Form.status }}</pre>
+    <pre>Form : {{Parentstep2Form.value | json }}</pre>
+    <pre>Form Status : {{Parentstep2Form.status }}</pre>
   </div> -->
 
-  <form [formGroup]="Studentstep2Form" name="Studentstep2Form" (ngSubmit)="next(Studentstep2Form.value)" novalidate>
+  <form [formGroup]="Parentstep2Form" name="Parentstep2Form" (ngSubmit)="next(Parentstep2Form.value)" novalidate>
 
-    <div class="list list-inset registration teacher step2">
+    <div class="list list-inset registration parent step2">
 
-      <div class="tagline bg-student">
+      <div class="tagline bg-parent">
         <p>Tell us about yourself</p>
       </div>
 
@@ -41,10 +40,10 @@
       <!-- Name -->
       <label class="item item-input">
         <span class="input-label">Name</span>
-        <ion-input placeholder="eg: John Doe" type="tel" formControlName="name"></ion-input>
+        <ion-input placeholder="eg: John Doe" type="text" formControlName="name"></ion-input>
       </label>
 
-      <div *ngIf="!Studentstep2Form.controls['name'].valid && Studentstep2Form.controls['name'].touched" class="item item-message">
+      <div *ngIf="!Parentstep2Form.controls['name'].valid && Parentstep2Form.controls['name'].touched" class="item item-message">
         Name is required
       </div>
 
@@ -54,7 +53,7 @@
         <ion-input placeholder="9999 999 999" type="tel" formControlName="phone"></ion-input>
       </label>
 
-      <div *ngIf="!Studentstep2Form.controls['phone'].valid && Studentstep2Form.controls['phone'].touched" class="item item-message">
+      <div *ngIf="!Parentstep2Form.controls['phone'].valid && Parentstep2Form.controls['phone'].touched" class="item item-message">
         Phone number is required
       </div>
 
@@ -64,12 +63,12 @@
         <ion-textarea formControlName="profileMessage" placeholder="Put any comment..."></ion-textarea>
       </label>
 
-      <div *ngIf="!Studentstep2Form.controls['profileMessage'].valid && Studentstep2Form.controls['profileMessage'].touched" class="item item-message">
+      <div *ngIf="!Parentstep2Form.controls['profileMessage'].valid && Parentstep2Form.controls['profileMessage'].touched" class="item item-message">
         Profile Message is required
       </div>
 
       <h3>Are you part of a school</h3>
-      <ion-slides id="student-school" slidesPerView="2">
+      <ion-slides id="parent-school" slidesPerView="2">
         <ion-slide (click)="filterpartOfSchool(true)" [ngClass]="{'active': partOfSchool == true}">
           <p>Yes</p>
         </ion-slide>
@@ -82,17 +81,17 @@
         <h2>School Information</h2>
         <label class="item item-input">
           <span class="input-label">School Name</span>
-          <ion-input placeholder="eg: St. John High School" type="tel" formControlName="studentSchoolName"></ion-input>
+          <ion-input placeholder="eg: St. John High School" type="tel" formControlName="parentSchoolName"></ion-input>
         </label>
 
-        <div *ngIf="!Studentstep2Form.controls['studentSchoolName'].valid && Studentstep2Form.controls['studentSchoolName'].touched" class="item item-message">
+        <div *ngIf="!Parentstep2Form.controls['parentSchoolName'].valid && Parentstep2Form.controls['parentSchoolName'].touched" class="item item-message">
           School Name is required
         </div>
       </div>
 
     </div>
 
-    <button class="button button-positive bg-student" [disabled]="!Studentstep2Form.valid" ion-button full>Next</button>
+    <button class="button button-positive bg-parent" [disabled]="Parentstep2Form.valid" ion-button full>Next</button>
 
   </form>
 

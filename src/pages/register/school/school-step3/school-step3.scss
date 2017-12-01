@@ -1,0 +1,28 @@
+page-school-step3 {
+  .clear{
+    clear: both;
+  }
+  .cl-school .toolbar-title{
+    color: #F31C62 !important
+  }
+  .back-button{
+    color: #F31C62 !important
+  }
+  .registration{
+      .item-md{
+          .checkbox-md{
+            .checkbox-checked{
+              background-color: #F31C62 !important;
+              border-color: #F31C62 !important;
+            }
+          }
+      }
+  }
+  .swiper-wrapper{
+    .swiper-slide.active{
+      border-color: #F31C62 !important;
+    }
+  }
+
+
+}

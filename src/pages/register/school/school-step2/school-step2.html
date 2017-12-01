@@ -1,0 +1,92 @@
+<!--
+  Generated template for the SchoolStep2Page page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="cl-school">{{ 'schoolInformation' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <form [formGroup]="SchoolStep2Form" name="SchoolStep2Form" (ngSubmit)="next(SchoolStep2Form.value)" novalidate>
+    <div class="list list-inset registration school step2">
+
+      <div class="tagline bg-school">
+        <p>Tell us about yourself</p>
+      </div>
+
+      <div class="school-pic">
+        <img id="picForSchool" (click)="chooseUploadType($event, 'school')" [src]="pageSchoolSrc" width="300px" *ngIf="!schoolPhotoSelected && !schoolPhotoTaken" />
+        <img (click)="chooseUploadType($event, 'school')" [src]="schoolCameraData" *ngIf="schoolPhotoTaken" width="150px">
+        <img (click)="chooseUploadType($event, 'school')" [src]="schoolCameraUrl" *ngIf="schoolPhotoSelected" width="150px">
+        <span class="input-label">Upload your school photo</span>
+      </div>
+
+      <div class="profile-pic">
+        <img id="picForDisplay" (click)="chooseUploadType($event,'prof')" [src]="pageProfileSrc" width="150px" *ngIf="!profilePhotoSelected && !profilePhotoTaken" />
+        <img (click)="chooseUploadType($event,'prof')" [src]="profileCameraData" *ngIf="profilePhotoTaken" width="150px">
+        <img (click)="chooseUploadType($event,'prof')" [src]="profileCameraUrl" *ngIf="profilePhotoSelected" width="150px">
+        <span class="input-label">Upload your photo</span>
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">School Name</span>
+        <ion-input placeholder="eg: St. John High School" type="text" formControlName="schoolName"></ion-input>
+      </label>
+
+      <div *ngIf="!SchoolStep2Form.controls['schoolName'].valid && SchoolStep2Form.controls['schoolName'].touched" class="item item-message">
+        School Name is required
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">Representative / Contact Person Name</span>
+        <ion-input placeholder="eg: John Doe" type="text" formControlName="contactName"></ion-input>
+      </label>
+
+      <div *ngIf="!SchoolStep2Form.controls['contactName'].valid && SchoolStep2Form.controls['contactName'].touched" class="item item-message">
+        Contact Person Name is required
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">Representative / Contact Position at School</span>
+        <ion-input placeholder="eg: Principle" type="text" formControlName="contactPosition"></ion-input>
+      </label>
+
+      <div *ngIf="!SchoolStep2Form.controls['contactPosition'].valid && SchoolStep2Form.controls['contactPosition'].touched" class="item item-message">
+        Contact Position is required
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">Phone No</span>
+        <ion-input placeholder="9999 999 999" type="tel" formControlName="phone"></ion-input>
+      </label>
+
+      <div *ngIf="!SchoolStep2Form.controls['phone'].valid && SchoolStep2Form.controls['phone'].touched" class="item item-message">
+        Phone number is required
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">Profile Message</span>
+        <ion-textarea formControlName="profileMessage" placeholder="Put any comment..."></ion-textarea>
+      </label>
+
+      <div *ngIf="!SchoolStep2Form.controls['profileMessage'].valid && SchoolStep2Form.controls['profileMessage'].touched" class="item item-message">
+        Profile Message is required
+      </div>
+
+    </div>
+
+    <button class="button button-positive bg-school" [disabled]="!SchoolStep2Form.valid" ion-button full>Next</button>
+
+  </form>
+
+</ion-content>

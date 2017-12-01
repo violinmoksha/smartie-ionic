@@ -295,7 +295,7 @@ export class RegisterTeacherStep3 {
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         signupResult => {
-          localStorage.setItem("teacherSignupUserProfile", JSON.stringify(signupResult.result));
+          localStorage.setItem("teacherUserProfile", JSON.stringify(signupResult.result));
 
           let cvPromises = [];
           // console.log(this.TeacherFiles);
@@ -348,8 +348,8 @@ export class RegisterTeacherStep3 {
       }else{
         let parseFile = new Parse.File('photo.jpg', {base64: localStorage.getItem('profilePhotoDataUrl')});
         parseFile.save().then((file) => {
-          let teacherSignupUserProfile = JSON.parse(localStorage.getItem("teacherSignupUserProfile"));
-          let profileId = teacherSignupUserProfile.profile.objectId;
+          let teacherUserProfile = JSON.parse(localStorage.getItem("teacherUserProfile"));
+          let profileId = teacherUserProfile.profile.objectId;
           let profQuery = new Parse.Query(new Parse.Object.extend('Profile'));
 
           profQuery.get(profileId, {

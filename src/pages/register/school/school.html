@@ -10,7 +10,7 @@
       <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ 'schoolRegistration' | translate }}</ion-title>
+    <ion-title class="cl-school">{{ 'schoolRegistration' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -23,10 +23,52 @@
     <pre>Toggle Status : {{ SchoolForm.get('partOfSchool').value }}</pre>
   </div> -->
 
-  <form [formGroup]="SchoolForm" name="SchoolForm" (ngSubmit)="SchoolSubmit(SchoolForm.value)" novalidate>
+  <form [formGroup]="SchoolStep1Form" name="SchoolStep1Form" (ngSubmit)="next(SchoolStep1Form.value)" novalidate>
     <div class="list list-inset registration school">
 
-      <div class="school-pic">
+      <div class="tagline bg-school">
+        <p>Let's create your account information</p>
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">Email</span>
+        <ion-input placeholder="yourmail@mail.com" type="email" formControlName="email"></ion-input>
+      </label>
+
+      <div *ngIf="!SchoolStep1Form.controls['email'].valid && SchoolStep1Form.controls['email'].touched" class="item item-message">
+        Email is required
+      </div>
+
+      <label class="item item-input">
+        <span class="input-label">Username</span>
+        <ion-input placeholder="johndoe" type="text" formControlName="username"></ion-input>
+      </label>
+
+      <div *ngIf="!SchoolStep1Form.controls['username'].valid && SchoolStep1Form.controls['username'].touched" class="item item-message">
+        User name is required
+      </div>
+
+      <div>
+        <label class="item item-input">
+          <span class="input-label">Password</span>
+          <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
+        </label>
+
+        <div class="item item-message" *ngIf="SchoolStep1Form.get('password').invalid && SchoolStep1Form.get('password').touched">
+          Password is required, Password must be longer than 6 characters
+        </div>
+
+        <label class="item item-input">
+          <span class="input-label">Confirm Password</span>
+          <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
+        </label>
+
+        <div class="item item-message" *ngIf="SchoolStep1Form.get('confPassword').invalid && SchoolStep1Form.get('confPassword').touched">
+          Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
+        </div>
+      </div>
+
+      <!-- <div class="school-pic">
         <img id="picForSchool" (click)="chooseUploadType($event, 'school')" [src]="pageSchoolSrc" width="300px" *ngIf="!schoolPhotoSelected && !schoolPhotoTaken" />
         <img (click)="chooseUploadType($event, 'school')" [src]="schoolCameraData" *ngIf="schoolPhotoTaken" width="150px">
         <img (click)="chooseUploadType($event, 'school')" [src]="schoolCameraUrl" *ngIf="schoolPhotoSelected" width="150px">
@@ -67,15 +109,6 @@
         Contact Position is required
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">Username</span>
-        <ion-input placeholder="johndoe" type="text" formControlName="username"></ion-input>
-      </label>
-
-      <div *ngIf="!SchoolForm.controls['username'].valid && SchoolForm.controls['username'].touched" class="item item-message">
-        User name is required
-      </div>
-
       <div formGroupName="passwords">
         <label class="item item-input">
           <span class="input-label">Password</span>
@@ -107,15 +140,6 @@
 
       <div *ngIf="!SchoolForm.controls['phone'].valid && SchoolForm.controls['phone'].touched" class="item item-message">
         Phone number is required
-      </div>
-
-      <label class="item item-input">
-        <span class="input-label">Email</span>
-        <ion-input placeholder="yourmail@mail.com" type="email" formControlName="email"></ion-input>
-      </label>
-
-      <div *ngIf="!SchoolForm.controls['email'].valid && SchoolForm.controls['email'].touched" class="item item-message">
-        Email is required
       </div>
 
       <ion-item>
@@ -171,9 +195,9 @@
 
       <div *ngIf="!SchoolForm.controls['desiredHourlyPriceRange'].valid && SchoolForm.controls['desiredHourlyPriceRange'].touched" class="item item-message">
         Desired Hourly Price Range is required
-      </div>
+      </div> -->
     </div>
-    <button class="button button-positive" [disabled]="!SchoolForm.valid" ion-button full>Submit</button>
+    <button class="button button-positive bg-school" [disabled]="!SchoolStep1Form.valid" ion-button full>Next</button>
   </form>
 
 </ion-content>
