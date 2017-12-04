@@ -138,7 +138,7 @@ export class RegisterSchoolStep3 {
 
     let API = this.smartieApi.getApi(
       'signupSchool',
-      {role: 'school', username: this.form1Values.username, password: this.form1Values.passwords.password, email: this.form1Values.email, schoolname: this.form2Values.schoolName, contactname: this.form2Values.contactName, contactposition: this.form2Values.contactPosition, phone: this.form2Values.phone, levelreq: schoolData.requiredLevel, langreq: schoolData.requiredLang, profileabout: this.form2Values.profileMessage, preflocation: schoolData.prefLocation, prefpayrate: this.hourlyRate, langpref: 'en'}
+      {role: 'school', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, schoolname: this.form2Values.schoolName, contactname: this.form2Values.contactName, contactposition: this.form2Values.contactPosition, phone: this.form2Values.phone, levelreq: schoolData.requiredLevel.toString(), langreq: schoolData.requiredLang.toString(), profileabout: this.form2Values.profileMessage, preflocation: schoolData.prefLocation, prefpayrate: this.hourlyRate, langpref: 'en'}
     );
 
     return new Promise(resolve => {
@@ -147,7 +147,7 @@ export class RegisterSchoolStep3 {
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         signupResult => {
-          localStorage.setItem("schoolSignupUserProfile", JSON.stringify(signupResult.result));
+          localStorage.setItem("schoolUserProfile", JSON.stringify(signupResult.result));
 
           // if(localStorage.getItem('profilePhotoDataUrl') == null && localStorage.getItem('schoolPhotoDataUrl') == null ){
             this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});
@@ -161,7 +161,7 @@ export class RegisterSchoolStep3 {
 
         },
         err => {
-          let signupError = JSON.parse(err.text());
+          let signupError = err.error;
           // console.log(signupError);
           let alert = this.alertCtrl.create({
             title: 'Signup Failed !',

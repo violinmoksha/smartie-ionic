@@ -327,8 +327,7 @@ export class RegisterTeacherStep3 {
           }
         },
         err => {
-          let signupError = JSON.parse(err.text());
-          console.log(signupError);
+          let signupError = err.error;
           let alert = this.alertCtrl.create({
             title: 'Signup Failed !',
             subTitle: signupError.error.split(':')[2],

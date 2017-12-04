@@ -41,7 +41,7 @@
       <!-- Name -->
       <label class="item item-input">
         <span class="input-label">Name</span>
-        <ion-input placeholder="eg: John Doe" type="tel" formControlName="name"></ion-input>
+        <ion-input placeholder="eg: John Doe" type="text" formControlName="name"></ion-input>
       </label>
 
       <div *ngIf="!Studentstep2Form.controls['name'].valid && Studentstep2Form.controls['name'].touched" class="item item-message">
@@ -82,7 +82,7 @@
         <h2>School Information</h2>
         <label class="item item-input">
           <span class="input-label">School Name</span>
-          <ion-input placeholder="eg: St. John High School" type="tel" formControlName="studentSchoolName"></ion-input>
+          <ion-input placeholder="eg: St. John High School" type="text" formControlName="studentSchoolName"></ion-input>
         </label>
 
         <div *ngIf="!Studentstep2Form.controls['studentSchoolName'].valid && Studentstep2Form.controls['studentSchoolName'].touched" class="item item-message">

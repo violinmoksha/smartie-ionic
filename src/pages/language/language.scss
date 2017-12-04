@@ -1,0 +1,20 @@
+page-language {
+  .item-radio{
+    .radio-icon{
+      display: none;
+    }
+  }
+  .item-radio-checked{
+    background-image:url(../../assets/img/tick-mark.png);
+    background-size: 20px;
+    background-position: 98% center;
+    background-repeat: no-repeat;
+    color: #00BC5B;
+    .radio-icon{
+      display: none;
+    }
+    .label{
+      color: #00BC5B!important;
+    }
+  }
+}

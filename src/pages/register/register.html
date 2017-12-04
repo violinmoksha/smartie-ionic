@@ -16,20 +16,20 @@
   </div>
 
   <div class="reg-text">
-    <h1>Who are you ?</h1>
+    <h1>{{ "whoAreYou" | translate }}</h1>
   </div>
 
   <ion-item class="roles">
-    <a class="item item-role bg-teacher" (click)="pushPage('teacher')"> Teacher</a>
+    <a class="item item-role bg-teacher" (click)="pushPage('teacher')"> {{ "teacher" | translate }}</a>
   </ion-item>
   <ion-item class="roles">
-    <a class="item item-role bg-student" (click)="pushPage('student')"> Student</a>
+    <a class="item item-role bg-student" (click)="pushPage('student')"> {{ "student" | translate }}</a>
   </ion-item>
   <ion-item class="roles">
-    <a class="item item-role bg-parent" (click)="pushPage('parent')"> Parent</a>
+    <a class="item item-role bg-parent" (click)="pushPage('parent')"> {{ "parent" | translate }}</a>
   </ion-item>
   <ion-item class="roles">
-    <a class="item item-role bg-school" (click)="pushPage('school')"> School</a>
+    <a class="item item-role bg-school" (click)="pushPage('school')"> {{ "school" | translate }}</a>
   </ion-item>
   <!--<button ion-button secondary menuToggle>Toggle Menu</button>-->
 </ion-content>

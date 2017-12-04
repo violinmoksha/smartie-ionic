@@ -8,10 +8,10 @@
   <ion-content class="side-bar-menu">
     <ion-list>
       <!-- remove pipe translate since TranslateModule is commented -->
-      <ion-item nav-clear menu-close class="lang" href="#/language">{{ 'translateViewTitle' }}</ion-item>
-      <ion-item nav-clear menu-close class="profile" href="#/profileSettings">{{ 'profileSettings' }}</ion-item>
-      <ion-item nav-clear menu-close (click)="pushPage('payment')" class="payment">{{ 'paymentDetails' }}</ion-item>
-      <ion-item nav-clear menu-close (click)="pushPage('qrcode')" class="qr-code">{{ 'QrScannerText' }}</ion-item>
+      <ion-item nav-clear menu-close (click)="pushPage('language')" class="lang" href="#/language">{{ 'translateViewTitle' | translate  }}</ion-item>
+      <ion-item nav-clear menu-close class="profile" href="#/profileSettings">{{ 'profileSettings' | translate }}</ion-item>
+      <ion-item nav-clear menu-close (click)="pushPage('payment')" class="payment">{{ 'paymentDetails' | translate }}</ion-item>
+      <ion-item nav-clear menu-close (click)="pushPage('qrcode')" class="qr-code">{{ 'QrScannerText' | translate }}</ion-item>
       <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
       </button>-->

@@ -140,7 +140,7 @@ export class RegisterStudentStep3 {
     // console.log(this.form2Values);
     let API = this.smartieApi.getApi(
       'signupParentOrStudent',
-      {role: 'student', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, profileabout: this.form2Values.profileMessage, langreq: studentData.requiredLang, levelreq: studentData.requiredLevel, preflocation: studentData.prefLocation, prefpayrate: this.hourlyRate, partofschool: this.partOfSchool, schoolname: this.form2Values.studentSchoolName, langpref: 'en'}
+      {role: 'student', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, profileabout: this.form2Values.profileMessage, langreq: studentData.requiredLang.toString(), levelreq: studentData.requiredLevel.toString(), preflocation: studentData.prefLocation, prefpayrate: this.hourlyRate, partofschool: this.partOfSchool, schoolname: this.form2Values.studentSchoolName, langpref: 'en'}
     );
 
     return new Promise(resolve => {
@@ -149,7 +149,7 @@ export class RegisterStudentStep3 {
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         signupResult => {
-          localStorage.setItem("studentSignupUserProfile", JSON.stringify(signupResult.result));
+          localStorage.setItem("studentUserProfile", JSON.stringify(signupResult.result));
 
           if(localStorage.getItem('profilePhotoDataUrl') == null){
             this.navCtrl.push(TotlesSearch, {role: 'student', fromwhere: 'signUp'});
@@ -163,7 +163,7 @@ export class RegisterStudentStep3 {
 
         },
         err => {
-          let signupError = JSON.parse(err.text());
+          let signupError = err.error;
           // console.log(signupError);
           let alert = this.alertCtrl.create({
             title: 'Signup Failed !',
@@ -182,8 +182,8 @@ export class RegisterStudentStep3 {
 
       let parseFile = new Parse.File('photo.jpg', {base64: localStorage.getItem('profilePhotoDataUrl')});
       parseFile.save().then((file) => {
-        let studentSignupUserProfile = JSON.parse(localStorage.getItem("studentSignupUserProfile"));
-        let profileId = studentSignupUserProfile.profile.objectId;
+        let studentUserProfile = JSON.parse(localStorage.getItem("studentUserProfile"));
+        let profileId = studentUserProfile.profile.objectId;
         let profQuery = new Parse.Query(new Parse.Object.extend('Profile'));
 
         profQuery.get(profileId, {

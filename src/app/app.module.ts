@@ -32,6 +32,7 @@ import { TeacherJobAccepted } from '../pages/teacher-job-accepted/teacher-job-ac
 import { AllAccepteds } from '../pages/all-accepteds/all-accepteds';
 import { JobRequests } from '../pages/job-requests/job-requests';
 import { CardPage } from '../pages/card/card';
+import { Language } from '../pages/language/language';
 import { Dashboard } from '../pages/dashboard/dashboard';
 import { QrCodeScanner } from '../pages/qr-code-scanner/qr-code-scanner';
 import { GoogleMaps } from '@ionic-native/google-maps';
@@ -94,6 +95,7 @@ export function createTranslateLoader(http: HttpClient) {
     PaymentThankyou,
     Login,
     TotlesSearch,
+    Language,
     TeacherJobAccepted,
     AllAccepteds,
     JobRequests,
@@ -148,6 +150,7 @@ export function createTranslateLoader(http: HttpClient) {
     PaymentThankyou,
     Login,
     TotlesSearch,
+    Language,
     TeacherJobAccepted,
     AllAccepteds,
     JobRequests,

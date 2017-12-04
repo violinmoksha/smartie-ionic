@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ViewController, MenuController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Register } from '../register/register';
 import { TotlesSearch } from '../totles-search/totles-search';
@@ -22,7 +22,7 @@ export class Login {
 
   private LoginForm: FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private viewCtrl: ViewController) {
 
     this.LoginForm = new FormGroup({
       username: new FormControl(''),

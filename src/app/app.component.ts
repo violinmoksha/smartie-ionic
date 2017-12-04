@@ -7,6 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Dashboard } from '../pages/dashboard/dashboard';
 import { Payment } from '../pages/payment/payment';
 import { QrCodeScanner } from '../pages/qr-code-scanner/qr-code-scanner';
+import { Language } from '../pages/language/language';
 import { Login } from '../pages/login/login';
 /*
 import { RegisterTeacher } from '../pages/register/teacher';
@@ -101,6 +102,8 @@ export class MyApp {
   }
 
   pushPage(item){
+    if(item == 'language')
+      this.nav.push(Language);
     if(item == 'payment')
       this.nav.push(Payment);
     if(item == 'qrcode')
