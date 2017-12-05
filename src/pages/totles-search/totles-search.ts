@@ -46,15 +46,15 @@ export class TotlesSearch {
   }
 
   ionViewDidLoad(){
-    let latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profile.latlng;
+    let latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
     this.totlesSearchResult(latLngUser, this.navParams.data.role);
     // this.initMap();
   }
 
-  initMap(){
-    let latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profile.latlng;
+  /*initMap(){
+    let latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
     this.totlesSearchResult(latLngUser, this.navParams.data.role);
-  }
+  }*/
 
 
   /*sendRequestProgress(alertCtrl) {
@@ -142,6 +142,8 @@ export class TotlesSearch {
   }
 
   totlesSearchResult(latLng, searchRole){
+    console.log(latLng);
+    console.log(searchRole);
 
     let searchData = { latlng: latLng, role: searchRole };
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ViewController, MenuController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Register } from '../register/register';
 import { TotlesSearch } from '../totles-search/totles-search';
@@ -43,8 +43,7 @@ export class Login {
           result: any
         }
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data => {
-          console.log(data);
-          localStorage.setItem(data.result.profileData.role+'userProfile', JSON.stringify(data.result));
+          localStorage.setItem(data.result.profileData.role+'UserProfile', JSON.stringify(data.result));
           this.storage.set('sessionToken', data.result.userData.sessionToken);
 
           if(data.result.profileData.role !== 'teacher'){
@@ -78,8 +77,16 @@ export class Login {
               })
             })
           }
-        }, err => {
-          console.log(err);
+        },
+        err => {
+          let loginError = err.error;
+          // console.log(signupError);
+          let alert = this.alertCtrl.create({
+            title: 'Login Failed !',
+            subTitle: loginError.error.split(':')[2],
+            buttons: ['OK']
+          });
+          alert.present();
         });
       });
     }else{

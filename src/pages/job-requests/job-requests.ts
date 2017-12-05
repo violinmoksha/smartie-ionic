@@ -23,7 +23,7 @@ export class JobRequests {
   }
 
   ionViewDidLoad() {
-    let roleProfile = JSON.parse(localStorage.getItem(this.params.loggedRole + 'userProfile'));
+    let roleProfile = JSON.parse(localStorage.getItem(this.params.loggedRole + 'UserProfile'));
 
     if(this.params.loggedRole === 'teacher'){
       this.body = { requestingProfileId: roleProfile.profileData.objectId, requestedProfileId: this.params.requestedId };
@@ -56,9 +56,9 @@ export class JobRequests {
   sendRequest(){
 
     if(this.params.loggedRole === 'teacher'){
-      this.body = { requestingProfileId: JSON.parse(localStorage.getItem(this.params.loggedRole+'userProfile')).profileData.objectId, requestedProfileId: this.params.requestedId  };
+      this.body = { requestingProfileId: JSON.parse(localStorage.getItem(this.params.loggedRole+'UserProfile')).profileData.objectId, requestedProfileId: this.params.requestedId  };
     }else{
-      this.body = { requestingProfileId: this.params.requestedId, requestedProfileId: JSON.parse(localStorage.getItem(this.params.loggedRole+'userProfile')).profileData.objectId  }
+      this.body = { requestingProfileId: this.params.requestedId, requestedProfileId: JSON.parse(localStorage.getItem(this.params.loggedRole+'UserProfile')).profileData.objectId  }
     }
     let API = this.smartieApi.getApi(
       'setJobRequest',

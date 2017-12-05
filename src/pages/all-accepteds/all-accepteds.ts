@@ -22,9 +22,9 @@ export class AllAccepteds {
 
   ionViewDidLoad() {
     if(this.navParams.data.activeRole == 'teacher'){
-      this.body = { requestingProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'userProfile')).profileData.objectId, role: this.navParams.data.activeRole };
+      this.body = { requestingProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'UserProfile')).profileData.objectId, role: this.navParams.data.activeRole };
     }else{
-      this.body = { requestedProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'userProfile')).profileData.objectId };
+      this.body = { requestedProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'UserProfile')).profileData.objectId };
     }
     let API = this.smartieApi.getApi('getAllAccepteds', this.body);
 
