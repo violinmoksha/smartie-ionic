@@ -20,6 +20,7 @@ export class JobRequests {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI) {
     this.params = navParams.data;
+    console.log(this.params);
   }
 
   ionViewDidLoad() {
@@ -38,7 +39,8 @@ export class JobRequests {
       );
       interface Response {};
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        if(response){
+
+        if(Object.keys(response).length > 0){
           this.requestSent = true;
         }else{
           this.requestSent = false;

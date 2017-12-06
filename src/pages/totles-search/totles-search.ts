@@ -31,6 +31,8 @@ export class TotlesSearch {
   private expertlang: string;
   private alert: any;
   private notifyCount: any;
+  private latLngUser: any;
+  private searchLogo:string = './assets/img/smartie-horzontal-logo.png';
   //private alertOpts: any;
   // private infoWindow: any;
 
@@ -38,7 +40,7 @@ export class TotlesSearch {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController) {
     this.role = navParams.data.role;
-    this.fromWhere = navParams.data.fromWhere;
+    this.fromWhere = navParams.data.fromwhere;
     this.alert = this.alertCtrl;
     if(localStorage.getItem(navParams.data.loggedProfileId+'notificationCount')){
       this.notifyCount = JSON.parse(localStorage.getItem(navParams.data.loggedProfileId+'notificationCount')).result;
@@ -46,10 +48,19 @@ export class TotlesSearch {
   }
 
   ionViewDidLoad(){
-    let latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
-    this.totlesSearchResult(latLngUser, this.navParams.data.role);
+    // console.log(this.fromWhere);
+    if(this.fromWhere == 'signUp'){
+      this.latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profile.latlng;
+    }else{
+      this.latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
+    }
+    this.totlesSearchResult(this.latLngUser, this.navParams.data.role);
     // this.initMap();
   }
+
+  /*findJobsSearch(searchLoc){
+    this.totlesSearchResult(null, this.navParams.data.role, searchLoc);
+  }*/
 
   /*initMap(){
     let latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
@@ -95,9 +106,15 @@ export class TotlesSearch {
       this.profilePhoto = './assets/img/user-round-icon.png';
     }
 
-    if(locationData.expertlangs){
-      this.expertlang = locationData.expertlangs.join();
-    }
+    // if(locationData.expertlangs !== undefined){
+    //   console.log(locationData);
+      this.expertlang = locationData.expertlangs;
+    // }else{
+    //   this.expertlang = '';
+    // }
+
+
+
 
     // this.infoWindow = new google.maps.InfoWindow({
     //   content: this._contentTitle + this._contentMessage
@@ -112,12 +129,16 @@ export class TotlesSearch {
           role: locationData.role,
           prefPayRate: locationData.prefpayrate,
           experience: locationData.yrsexperience,
-          expertLangs: this.expertlang,
+          expertLangs: locationData.expertlangs,
           profileAbout: locationData.profileabout,
           prefLocation: locationData.preflocation,
           phone: locationData.phone,
           requestedId: locationData.profileId,
           loggedRole: this.role,
+          defStartDate: locationData.defstartdate,
+          defEndDate: locationData.defenddate,
+          defStartTime: locationData.defstarttime,
+          defEndTime: locationData.defendtime,
         },
         {
           cssClass: 'totles-search-alert'
@@ -142,8 +163,6 @@ export class TotlesSearch {
   }
 
   totlesSearchResult(latLng, searchRole){
-    console.log(latLng);
-    console.log(searchRole);
 
     let searchData = { latlng: latLng, role: searchRole };
 

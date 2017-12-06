@@ -4,7 +4,7 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-header [ngClass]="role">
   <ion-navbar>
     <button ion-button menuToggle>
       <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
@@ -14,11 +14,15 @@
       <button class="notification" (click)="pushAccepteds()"><span>{{ notifyCount }}</span></button>
 
     </ion-buttons>
-    <ion-title>Totles Search</ion-title>
+    <ion-title><img [src]="searchLogo" ></ion-title>
   </ion-navbar>
 </ion-header>
 
 
-<ion-content class="totles-search" padding>
+<ion-content class="totles-search" [ngClass]="role" padding>
   <div #map id="map"></div>
+  <div class="bottom-search-box">
+    <input class="item item-input" name="searchloc" type="text" placeholder="305 mont Nomsod">
+    <button class="button button-positive">Find Jobs</button>
+  </div>
 </ion-content>
