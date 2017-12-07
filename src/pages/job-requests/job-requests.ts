@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
+import { ViewProfile } from '../view-profile/view-profile';
 
 /**
  * Generated class for the JobRequestsPage page.
@@ -20,7 +21,7 @@ export class JobRequests {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI) {
     this.params = navParams.data;
-    console.log(this.params);
+    // console.log(this.params);
   }
 
   ionViewDidLoad() {
@@ -79,7 +80,11 @@ export class JobRequests {
         }, 5000);
       })
     })
+  }
 
+  viewProfile(){
+    console.log(this.params);
+    this.navCtrl.setRoot(ViewProfile, this.params);
   }
 
 }

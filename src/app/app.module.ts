@@ -30,6 +30,7 @@ import { Login } from '../pages/login/login';
 import { TotlesSearch } from '../pages/totles-search/totles-search';
 import { TeacherJobAccepted } from '../pages/teacher-job-accepted/teacher-job-accepted';
 import { AllAccepteds } from '../pages/all-accepteds/all-accepteds';
+import { ViewProfile } from '../pages/view-profile/view-profile';
 import { JobRequests } from '../pages/job-requests/job-requests';
 import { CardPage } from '../pages/card/card';
 import { Language } from '../pages/language/language';
@@ -98,6 +99,7 @@ export function createTranslateLoader(http: HttpClient) {
     Language,
     TeacherJobAccepted,
     AllAccepteds,
+    ViewProfile,
     JobRequests,
     CardPage,
     Dashboard,
@@ -153,6 +155,7 @@ export function createTranslateLoader(http: HttpClient) {
     Language,
     TeacherJobAccepted,
     AllAccepteds,
+    ViewProfile,
     JobRequests,
     CardPage,
     Dashboard,

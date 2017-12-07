@@ -54,13 +54,13 @@ export class TotlesSearch {
     }else{
       this.latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
     }
-    this.totlesSearchResult(this.latLngUser, this.navParams.data.role);
+    this.totlesSearchResult(this.latLngUser, this.navParams.data.role, null);
     // this.initMap();
   }
 
-  /*findJobsSearch(searchLoc){
+  findJobsSearch(searchLoc){
     this.totlesSearchResult(null, this.navParams.data.role, searchLoc);
-  }*/
+  }
 
   /*initMap(){
     let latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
@@ -106,20 +106,8 @@ export class TotlesSearch {
       this.profilePhoto = './assets/img/user-round-icon.png';
     }
 
-    // if(locationData.expertlangs !== undefined){
-    //   console.log(locationData);
-      this.expertlang = locationData.expertlangs;
-    // }else{
-    //   this.expertlang = '';
-    // }
-
-
-
-
-    // this.infoWindow = new google.maps.InfoWindow({
-    //   content: this._contentTitle + this._contentMessage
-    // });
-
+    this.expertlang = locationData.expertlangs;
+    
     marker.addListener('click', ()=> {
 
       let profileModal = this.modalCtrl.create(JobRequests,
@@ -128,6 +116,7 @@ export class TotlesSearch {
           fullname: locationData.fullname,
           role: locationData.role,
           prefPayRate: locationData.prefpayrate,
+          prefCurrency: locationData.prefcurrency,
           experience: locationData.yrsexperience,
           expertLangs: locationData.expertlangs,
           profileAbout: locationData.profileabout,
@@ -141,7 +130,7 @@ export class TotlesSearch {
           defEndTime: locationData.defendtime,
         },
         {
-          cssClass: 'totles-search-alert'
+          cssClass: 'totles-search-alert ' + this.role
         }
       );
       profileModal.present();
@@ -162,9 +151,15 @@ export class TotlesSearch {
     return this.sanitizer.bypassSecurityTrustHtml(this._contentMessage);
   }
 
-  totlesSearchResult(latLng, searchRole){
+  totlesSearchResult(latLng, searchRole, searchLoc){
+    let searchData;
+    if(latLng !== null){
+      searchData = { latlng: latLng, role: searchRole };
+    }else if(searchLoc !== null){
+      searchData = { role: searchRole, searchloc: searchLoc };
+    }
 
-    let searchData = { latlng: latLng, role: searchRole };
+    // let searchData = { latlng: latLng, role: searchRole };
 
     let API = this.smartieApi.getApi(
       'totlesSearch',

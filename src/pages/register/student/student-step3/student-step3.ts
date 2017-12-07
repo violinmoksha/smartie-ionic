@@ -140,7 +140,7 @@ export class RegisterStudentStep3 {
     // console.log(this.form2Values);
     let API = this.smartieApi.getApi(
       'signupParentOrStudent',
-      {role: 'student', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, profileabout: this.form2Values.profileMessage, langreq: studentData.requiredLang.toString(), levelreq: studentData.requiredLevel.toString(), preflocation: studentData.prefLocation, prefpayrate: this.hourlyRate, partofschool: this.partOfSchool, schoolname: this.form2Values.studentSchoolName, langpref: 'en'}
+      {role: 'student', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, profileabout: this.form2Values.profileMessage, langreq: studentData.requiredLang.toString(), levelreq: studentData.requiredLevel.toString(), preflocation: studentData.prefLocation, prefpayrate: this.hourlyRate, prefcurrency: this.userCurrency, partofschool: this.partOfSchool, schoolname: this.form2Values.studentSchoolName, langpref: 'en'}
     );
 
     return new Promise(resolve => {

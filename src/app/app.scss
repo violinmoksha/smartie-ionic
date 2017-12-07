@@ -20,3 +20,73 @@
     right: 0;
   }
 }*/
+.alert-button{
+  border-radius: 5px!important;
+  font-size: 16px;
+}
+.jobprofile-buttons{
+  .button{
+    height: 40px!important;
+    img{
+      width:15px;
+      margin-right:10px;
+    }
+  }
+  .button-positive{
+    background-color: #eee!important;
+  }
+}
+.student{
+    .notification{
+      span{
+          background-color: #0096D7!important;
+      }
+    }
+    .bottom-search-box{
+      width: 100%;
+      .item-input{
+        width: 100%;
+        margin: 0;
+        border:1px solid #cfcfcf;
+        border-radius: 5px;
+        text-indent: 10px;
+        margin-top:15px;
+        padding-left:25px;
+        height: 40px;
+        background-image: url(../../assets/img/student-map-icon30px.png);
+        background-size:20px;
+        background-position: 8px center;
+        background-repeat: no-repeat;
+      }
+      .button{
+          background-color: #0096D7!important;
+          color: #fff;
+          width: 100%;
+          padding: 15px 10px;
+          height: auto;
+          line-height: 15px;
+          margin:10px 0;
+      }
+    }
+    .header{
+      .back-button{
+        color: #0096D7!important;
+      }
+      .toolbar-title{
+        color: #0096D7!important;
+      }
+      .bar-button-default-md{
+        color: #0096D7!important;
+      }
+    }
+    .content{
+      .price{
+        color: #0096D7!important;
+      }
+      .alert-button{
+        background-color: #0096D7!important;
+        border-radius: 5px!important;
+      }
+    }
+
+}
