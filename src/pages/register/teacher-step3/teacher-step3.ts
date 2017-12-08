@@ -6,6 +6,8 @@ import { Parse } from 'parse';
 import { ParseProvider } from '../../../providers/parse';
 import { TotlesSearch } from '../../totles-search/totles-search';
 import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "ion2-calendar";
+import { Geolocation } from '@ionic-native/geolocation';
+import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder';
 /**
  * Generated class for the TeacherStep3Page page.
  *
@@ -33,14 +35,17 @@ export class RegisterTeacherStep3 {
   private userCurrency: any;
   private startDate: any;
   private endDate: any;
+  private countryCode: any;
+  private state: any;
+  private languages: any;
 
-  public languages = [
+  /*public languages = [
     { langid: 1, name: "English", value: "englsh" },
     { langid: 2, name: "Thai", value: "thai" },
     { langid: 3, name: "Chinese", value: "chinese" },
     { langid: 4, name: "Japanese", value: "japanese" },
     { langid: 5, name: "French", value: "french" }
-  ];
+  ];*/
 
   public levels = [
     { "name": "K", "value": "k"},
@@ -103,7 +108,7 @@ export class RegisterTeacherStep3 {
     { "value": 'THB', "text": 'Thai Baht' },
   ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, private geolocation: Geolocation, private nativeGeocoder: NativeGeocoder) {
 
     function dateValidator(c: AbstractControl){
       return c.get('startDate').value < c.get('endDate').value ? null : { 'dateGreater' : true };
@@ -125,6 +130,39 @@ export class RegisterTeacherStep3 {
       startTime: new FormControl('', Validators.required),
       endTime: new FormControl('', [Validators.required, this.gretarThan('startTime')])
     })
+  }
+
+  ionViewDidLoad() {
+  this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+     // resp.coords.latitude
+     // resp.coords.longitude
+      console.log(resp);
+      this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude).then((res: NativeGeocoderReverseResult) => {
+        var result = res;
+        this.countryCode = result.countryCode;
+        this.state = result.administrativeArea;
+
+        let LangAPI = this.smartieApi.getApi(
+          'getLanguagesPerPhoneLocation',
+          { country: this.countryCode, state: this.state }
+        );
+
+        return new Promise(resolve => {
+          interface Response {
+            result: any;
+          };
+          this.smartieApi.http.post<Response>(LangAPI.apiUrl, LangAPI.apiBody, LangAPI.apiHeaders).subscribe(res => {
+            var result = res.result;
+            this.languages = result.languages;
+          })
+        })
+      }).catch((error: any) => {
+       console.log(error);
+     });
+
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
   }
 
   gretarThan(equalControlName): ValidatorFn {

@@ -57,7 +57,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 import { CalendarModule } from "ion2-calendar";
-//import { Geolocation } from '@ionic-native/geolocation';
+import { Geolocation } from '@ionic-native/geolocation';
+import { NativeGeocoder } from '@ionic-native/native-geocoder'
 
 import { ParseProvider } from '../providers/parse';
 
@@ -181,7 +182,8 @@ export function createTranslateLoader(http: HttpClient) {
     Stripe,
     // Auth,
     Camera,
-    //Geolocation, // ???
+    Geolocation,
+    NativeGeocoder,
     //Parse,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ParseProvider,

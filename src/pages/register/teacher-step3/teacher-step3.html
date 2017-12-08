@@ -37,8 +37,8 @@
         <div class="reg-sub-title"><h3>{{ "langsOfExpertise" | translate }}</h3></div>
 
         <ion-item *ngFor="let lang of languages">
-          <ion-label>{{ lang.name }}</ion-label>
-          <ion-checkbox (ionChange)="onChangeTeacherLanguage(lang.name, $event.checked)"></ion-checkbox>
+          <ion-label>{{ lang}}</ion-label>
+          <ion-checkbox (ionChange)="onChangeTeacherLanguage(lang, $event.checked)"></ion-checkbox>
         </ion-item>
       </div>
 
