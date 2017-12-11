@@ -62,10 +62,10 @@ export class TotlesSearch {
     this.totlesSearchResult(null, this.navParams.data.role, searchLoc);
   }
 
-  /*initMap(){
+  initMap(){
     let latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
-    this.totlesSearchResult(latLngUser, this.navParams.data.role);
-  }*/
+    this.totlesSearchResult(latLngUser, this.navParams.data.role, null);
+  }
 
 
   /*sendRequestProgress(alertCtrl) {
@@ -107,7 +107,7 @@ export class TotlesSearch {
     }
 
     this.expertlang = locationData.expertlangs;
-    
+
     marker.addListener('click', ()=> {
 
       let profileModal = this.modalCtrl.create(JobRequests,

@@ -68,6 +68,29 @@
           margin:10px 0;
       }
     }
+    .alert-button{
+      background-color: #0096D7!important;
+      color: #fff;
+      width: 100%;
+      padding: 15px 10px;
+      height: auto;
+      line-height: 15px;
+      margin:10px 0;
+    }
+    .content{
+      .price{
+        color: #0096D7!important;
+      }
+      .alert-button{
+        background-color: #0096D7!important;
+        border-radius: 5px!important;
+      }
+    }
+    .notification{
+      .price{
+        color: #0096D7!important;
+      }
+    }
     .header{
       .back-button{
         color: #0096D7!important;
@@ -79,14 +102,16 @@
         color: #0096D7!important;
       }
     }
-    .content{
-      .price{
-        color: #0096D7!important;
-      }
-      .alert-button{
-        background-color: #0096D7!important;
-        border-radius: 5px!important;
-      }
-    }
 
+}
+.student.header{
+  .back-button{
+    color: #0096D7!important;
+  }
+  .toolbar-title{
+    color: #0096D7!important;
+  }
+  .bar-button-default-md{
+    color: #0096D7!important;
+  }
 }

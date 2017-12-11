@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { Reviews } from '../reviews/reviews';
 
 /**
  * Generated class for the ViewProfilePage page.
@@ -23,6 +24,10 @@ export class ViewProfile {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ViewProfilePage');
+  }
+
+  viewReviews(profileId){
+    this.navCtrl.push(Reviews, this.params.requestedId);
   }
 
 }

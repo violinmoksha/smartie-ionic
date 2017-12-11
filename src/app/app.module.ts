@@ -37,6 +37,9 @@ import { Language } from '../pages/language/language';
 import { Dashboard } from '../pages/dashboard/dashboard';
 import { QrCodeScanner } from '../pages/qr-code-scanner/qr-code-scanner';
 import { GoogleMaps } from '@ionic-native/google-maps';
+import { StarRatingModule } from 'angular-star-rating';
+import { Reviews } from '../pages/reviews/reviews';
+import { SetReview } from '../pages/reviews/set-review';
 /*
 import { RegisterTeacher } from '../pages/register/teacher';
 import { RegisterTeacherStep2 } from '../pages/register/teacher2';
@@ -104,6 +107,8 @@ export function createTranslateLoader(http: HttpClient) {
     JobRequests,
     CardPage,
     Dashboard,
+    Reviews,
+    SetReview,
     QrCodeScanner/*,
     RegisterTeacherStep2,
     RegisterTeacherStep3,
@@ -130,6 +135,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
+    StarRatingModule.forRoot(),
     CalendarModule
   ],
   bootstrap: [IonicApp],
@@ -160,6 +166,8 @@ export function createTranslateLoader(http: HttpClient) {
     JobRequests,
     CardPage,
     Dashboard,
+    Reviews,
+    SetReview,
     QrCodeScanner/*,
     RegisterTeacherStep2,
     RegisterTeacherStep3,

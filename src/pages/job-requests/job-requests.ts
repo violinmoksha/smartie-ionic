@@ -83,8 +83,7 @@ export class JobRequests {
   }
 
   viewProfile(){
-    console.log(this.params);
-    this.navCtrl.setRoot(ViewProfile, this.params);
+    this.navCtrl.push(ViewProfile, this.params);
   }
 
 }

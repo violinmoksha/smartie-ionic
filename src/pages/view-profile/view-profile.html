@@ -1,8 +1,8 @@
 <!--
-  Generated template for the ViewProfilePage page.
+Generated template for the ViewProfilePage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
+See http://ionicframework.com/docs/components/#navigation for more info on
+Ionic pages and navigation.
 -->
 
 <ion-header [ngClass]="params.loggedRole">
@@ -34,7 +34,7 @@
   </div>
 
   <div class="jobprofile-content">
-  <h2>Hi I am a {{ params.experience }} Years Experience {{ params.expertLangs }} Teacher</h2>
+    <h2>Hi I am a {{ params.experience }} Years Experience {{ params.expertLangs }} Teacher</h2>
     <div class="jobprofile-details">
       <h3>Details:</h3>
       <p>{{ params.profileAbout }}</p>
@@ -46,25 +46,33 @@
         {{ params.prefLocation }}
       </p>
       <div class="clear"></div>
-      </div>
-      <div class="job-availablity-details">
-        <h3>Available Timings</h3>
-        <p>{{ params.defStartTime }} to {{ params.defEndTime}} on {{ params.defStartDate}} to {{ params.defEndDate}}</p>
-      </div>
-      <div class="job-lang-details">
-        <h3>Languages of Expertise</h3>
-        <p>{{ params.expertLangs }}</p>
-      </div>
-      <div class="jobprofile-buttons">
-        <!-- <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/img/job-profile-icon.png" /> View Job Proife</button> -->
-        <button class="button button-positive" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/img/view-mail-icon.png" /> Send Mail</button>
-      </div>
     </div>
-    <div class="alert-button-group">
-        <button ion-button="alert-button" [disabled]="requestSent" (click)="sendRequest()" class="alert-button alert-button-md alert-button-default alert-button-default-md">
-        <span class="button-inner" *ngIf="!requestSent">Send Request</span>
-        <span class="button-inner" *ngIf="requestSent">Invite Sent</span>
+    <div class="job-availablity-details">
+      <h3>Available Timings</h3>
+      <p>{{ params.defStartTime }} to {{ params.defEndTime}} on {{ params.defStartDate}} to {{ params.defEndDate}}</p>
+    </div>
+    <div class="job-lang-details">
+      <h3>Languages of Expertise</h3>
+      <p>{{ params.expertLangs }}</p>
+    </div>
+    <div class="jobprofile-details">
+      <h3>Levels Capable</h3>
+      <p>
+        P1, P2, P3 & H1
+      </p>
+      <div class="clear"></div>
+    </div>
+    <div class="jobprofile-buttons">
+      <!-- <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/img/job-profile-icon.png" /> View Job Proife</button> -->
+      <button class="button button-positive" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/img/view-mail-icon.png" /> Send Mail</button>
+      <button (click)="viewReviews(params.requestedId)" class="button button-positive" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/img/view-review-icon.png" /> View Reviews</button>
+    </div>
+  </div>
+  <div class="alert-button-group">
+    <button ion-button="alert-button" [disabled]="requestSent" (click)="sendRequest()" class="alert-button alert-button-md alert-button-default alert-button-default-md">
+      <span class="button-inner" *ngIf="!requestSent">Send Request</span>
+      <span class="button-inner" *ngIf="requestSent">Invite Sent</span>
       <div class="button-effect"></div></button>
 
     </div>
-</ion-content>
+  </ion-content>

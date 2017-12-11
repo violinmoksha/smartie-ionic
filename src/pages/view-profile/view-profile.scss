@@ -49,7 +49,7 @@ page-view-profile {
         .price {
           color: #009345;
           font-weight: bold;
-          font-size: 18px;
+          font-size: 22px;
           line-height: 18px;
           margin-top: 4px;
         }
@@ -77,6 +77,7 @@ page-view-profile {
       color: #000;
     }
     .jobprofile-details{
+      border-bottom: 1px soild #cfcfcf;
       h3 {
         color: #333333;
         font-size: 15px;
@@ -134,9 +135,9 @@ page-view-profile {
   .alert-button-group{
     padding: 8px;
     .alert-button-default-md{
-      width: 49%!important;
-      padding: 10px 5px;
-      font-size: 13px;
+      width: 100%!important;
+      padding: 17px 5px;
+      font-size: 16px;
       background-color: #009345;
       color: #fff;
       text-align: center;
@@ -163,8 +164,24 @@ page-view-profile {
       font-size: 13px;
       font-weight: normal;
       margin: 0;
-      margin-bottom: 20px;
+      margin-bottom:10px;
       color: #333333;
     }
   }
+
+
+  .jobprofile-details{
+    border-bottom: 1px solid #cfcfcf;
+    margin-bottom: 15px;
+  }
+  .job-availablity-details{
+    border-bottom: 1px solid #cfcfcf;
+    margin-bottom: 15px;
+  }
+  .job-lang-details{
+    border-bottom: 1px solid #cfcfcf;
+    margin-bottom: 15px;
+  }
+
+
 }
