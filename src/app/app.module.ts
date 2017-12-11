@@ -61,7 +61,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 import { CalendarModule } from "ion2-calendar";
 import { Geolocation } from '@ionic-native/geolocation';
-import { NativeGeocoder } from '@ionic-native/native-geocoder'
+import { NativeGeocoder } from '@ionic-native/native-geocoder';
 
 import { ParseProvider } from '../providers/parse';
 

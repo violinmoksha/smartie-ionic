@@ -7,7 +7,7 @@ import { ParseProvider } from '../../../providers/parse';
 import { TotlesSearch } from '../../totles-search/totles-search';
 import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "ion2-calendar";
 import { Geolocation } from '@ionic-native/geolocation';
-import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder';
+import { NativeGeocoder, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 /**
  * Generated class for the TeacherStep3Page page.
  *
@@ -48,8 +48,8 @@ export class RegisterTeacherStep3 {
   ];*/
 
   public levels = [
-    { "name": "K", "value": "k"},
-    { "name": "Primary", "value": "primary" },
+    { "name": "Elementary K-5", "value": "k5"},
+    { "name": "Middle School", "value": "middle" },
     { "name": "High School", "value": "highSchool" },
     { "name": "University", "value": "university" }
   ];

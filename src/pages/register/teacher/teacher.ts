@@ -24,7 +24,7 @@ export class RegisterTeacher {
       email: new FormControl('', Validators.required),
       username: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      confPassword: new FormControl('', [Validators.required, Validators.minLength(6),  this.equalTo('password')])
+      confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
     });
 
   }
