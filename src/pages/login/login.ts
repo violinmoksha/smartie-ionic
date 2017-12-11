@@ -35,7 +35,7 @@ export class Login {
 
       let API = this.smartieApi.getApi(
         'loginUser',
-        {username: data.username, password: data.password}
+        {username: data.username.toLowerCase(), password: data.password}
       );
 
       return new Promise(resolve => {

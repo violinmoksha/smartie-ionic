@@ -1,9 +1,10 @@
+import { SmartieErrorHandler } from '../providers/err';
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicModule } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import { MyApp } from './app.component';
@@ -193,9 +194,11 @@ export function createTranslateLoader(http: HttpClient) {
     Geolocation,
     NativeGeocoder,
     //Parse,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
     ParseProvider,
-    SmartieAPI
+    // API
+    SmartieAPI,
+    // Errors
+    SmartieErrorHandler
   ]
 })
 export class AppModule {}

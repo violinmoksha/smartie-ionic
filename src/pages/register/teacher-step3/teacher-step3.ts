@@ -8,6 +8,8 @@ import { TotlesSearch } from '../../totles-search/totles-search';
 import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "ion2-calendar";
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
+import { SmartieErrorHandler } from '../../../providers/err';
+
 /**
  * Generated class for the TeacherStep3Page page.
  *
@@ -108,7 +110,7 @@ export class RegisterTeacherStep3 {
     { "value": 'THB', "text": 'Thai Baht' },
   ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, private geolocation: Geolocation, private nativeGeocoder: NativeGeocoder) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, private geolocation: Geolocation, private nativeGeocoder: NativeGeocoder, private smartieErrorHandler: SmartieErrorHandler) {
 
     function dateValidator(c: AbstractControl){
       return c.get('startDate').value < c.get('endDate').value ? null : { 'dateGreater' : true };
@@ -138,9 +140,10 @@ export class RegisterTeacherStep3 {
      // resp.coords.longitude
       console.log(resp);
       this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude).then((res: NativeGeocoderReverseResult) => {
-        var result = res;
-        this.countryCode = result.countryCode;
-        this.state = result.administrativeArea;
+        this.smartieErrorHandler.handleError(JSON.stringify(res));
+
+        this.countryCode = res.countryCode;
+        this.state = res.administrativeArea;
 
         let LangAPI = this.smartieApi.getApi(
           'getLanguagesPerPhoneLocation',
@@ -149,11 +152,10 @@ export class RegisterTeacherStep3 {
 
         return new Promise(resolve => {
           interface Response {
-            result: any;
+            languages: any;
           };
           this.smartieApi.http.post<Response>(LangAPI.apiUrl, LangAPI.apiBody, LangAPI.apiHeaders).subscribe(res => {
-            var result = res.result;
-            this.languages = result.languages;
+            this.languages = res.languages;
           })
         })
       }).catch((error: any) => {
@@ -324,7 +326,7 @@ export class RegisterTeacherStep3 {
 
     let API = this.smartieApi.getApi(
       'signupTeacher',
-      {role: 'teacher', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, age: this.form2Values.age, nativelang: this.form2Values.native, nationality: this.form2Values.nationality, profiletitle: this.form2Values.profileTitle, profileabout: this.form2Values.profileMessage, expertlangs: form3Values.teacherLanguage, levelscapable: form3Values.teacherLevel, yrsexperience: this.yearExperience, preflocation: form3Values.prefLocation, prefpayrate: this.hourlyRate, prefcurrency: this.userCurrency, defstartdate: this.startDate, defenddate: this.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
+      {role: 'teacher', username: this.form1Values.username.toLowerCase(), password: this.form1Values.password, email: this.form1Values.email.toLowerCase(), fullname: this.form2Values.name, phone: this.form2Values.phone, age: this.form2Values.age, nativelang: this.form2Values.native, nationality: this.form2Values.nationality, profiletitle: this.form2Values.profileTitle, profileabout: this.form2Values.profileMessage, expertlangs: form3Values.teacherLanguage, levelscapable: form3Values.teacherLevel, yrsexperience: this.yearExperience, preflocation: form3Values.prefLocation, prefpayrate: this.hourlyRate, prefcurrency: this.userCurrency, defstartdate: this.startDate, defenddate: this.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
     );
 
     return new Promise(resolve => {

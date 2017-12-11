@@ -41,7 +41,7 @@
       <!-- Name -->
       <label class="item item-input">
         <span class="input-label">{{ "name" | translate}}</span>
-        <ion-input placeholder="eg: John Doe" type="text" formControlName="name"></ion-input>
+        <ion-input placeholder="i.e. John Smith" type="text" formControlName="name"></ion-input>
       </label>
 
       <div *ngIf="!Teacherstep2Form.controls['name'].valid && Teacherstep2Form.controls['name'].touched" class="item item-message">
@@ -51,7 +51,7 @@
       <!-- Phone -->
       <label class="item item-input">
         <span class="input-label">{{ "phoneNumber" | translate }}</span>
-        <ion-input placeholder="9999 999 999" type="tel" formControlName="phone"></ion-input>
+        <ion-input placeholder="510-555-0162" type="tel" formControlName="phone"></ion-input>
       </label>
 
       <div *ngIf="!Teacherstep2Form.controls['phone'].valid && Teacherstep2Form.controls['phone'].touched" class="item item-message">
@@ -71,7 +71,7 @@
       <!-- Native Language -->
       <label class="item item-input">
         <span class="input-label">{{ "nativeLanguage" | translate }}</span>
-        <ion-input placeholder="Thai" type="type" formControlName="native"></ion-input>
+        <ion-input placeholder="English" type="type" formControlName="native"></ion-input>
       </label>
 
       <div *ngIf="!Teacherstep2Form.controls['native'].valid && Teacherstep2Form.controls['native'].touched" class="item item-message">
@@ -81,7 +81,7 @@
       <!-- Nationality -->
       <label class="item item-input">
         <span class="input-label">{{ "nationality" | translate }}</span>
-        <ion-input placeholder="Thailand" type="type" formControlName="nationality"></ion-input>
+        <ion-input placeholder="Korean American" type="type" formControlName="nationality"></ion-input>
       </label>
 
       <div *ngIf="!Teacherstep2Form.controls['nationality'].valid && Teacherstep2Form.controls['nationality'].touched" class="item item-message">
@@ -91,7 +91,7 @@
       <!-- Profile Title -->
       <label class="item item-input">
         <span class="input-label">{{ "profileTitle" | translate}}</span>
-        <ion-input placeholder="I am a Teacher" type="type" formControlName="profileTitle"></ion-input>
+        <ion-input placeholder="Certified TOEFL Instructor" type="type" formControlName="profileTitle"></ion-input>
       </label>
 
       <div *ngIf="!Teacherstep2Form.controls['profileTitle'].valid && Teacherstep2Form.controls['profileTitle'].touched" class="item item-message">
@@ -101,7 +101,7 @@
       <!-- Profile Message -->
       <label class="item item-input">
         <span class="input-label">{{ "message" | translate }}</span>
-        <ion-textarea formControlName="profileMessage" placeholder="Put any comment..."></ion-textarea>
+        <ion-textarea formControlName="profileMessage" placeholder="Although I am certified in TOEFL I also have a passion for teaching Korean. Please book a session with me, you'll be amazed at the quick learning results!"></ion-textarea>
       </label>
 
       <div *ngIf="!Teacherstep2Form.controls['profileMessage'].valid && Teacherstep2Form.controls['profileMessage'].touched" class="item item-message">
