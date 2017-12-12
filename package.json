@@ -77,7 +77,7 @@
       "cordova-plugin-ionic": {
         "APP_ID": "51a6d7d8",
         "CHANNEL_NAME": "Master",
-        "UPDATE_METHOD": "auto",
+        "UPDATE_METHOD": "background",
         "UPDATE_API": "https://api.ionicjs.com",
         "MAX_STORE": "2"
       }
