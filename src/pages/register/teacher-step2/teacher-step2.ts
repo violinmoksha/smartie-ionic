@@ -163,7 +163,7 @@ export class RegisterTeacherStep2 {
   }
 
   next(form2Value){
-    this.navCtrl.push(RegisterTeacherStep3, { form1Value: this.form1Values, form2Value : form2Value });
+    this.navCtrl.push(RegisterTeacherStep3, { form1Value : this.form1Values, form2Value : form2Value });
   }
   // updateTeacherLanguage(event){
   //   console.log(event);
