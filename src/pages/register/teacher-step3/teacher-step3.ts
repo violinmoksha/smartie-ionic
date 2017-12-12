@@ -140,7 +140,7 @@ export class RegisterTeacherStep3 {
      // resp.coords.longitude
       console.log(resp);
       this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude).then((res: NativeGeocoderReverseResult) => {
-        this.smartieErrorHandler.handleError(JSON.stringify(res));
+        this.smartieErrorHandler.log(JSON.stringify(res), null, null);
 
         this.countryCode = res.countryCode;
         this.state = res.administrativeArea;
