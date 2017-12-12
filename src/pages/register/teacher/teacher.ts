@@ -23,12 +23,11 @@ export class RegisterTeacher {
       email: new FormControl('', Validators.required),
       username: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      confPassword: new FormControl('', [Validators.required, Validators.minLength(6)])
+      confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
     });
 
   }
 
-/*
     equalTo(equalControlName): ValidatorFn {
       return (control: AbstractControl): {
         [key: string]: any
@@ -42,7 +41,7 @@ export class RegisterTeacher {
         };
       };
     }
-*/
+
 
   next(form1Value){
     this.navCtrl.push(RegisterTeacherStep2, { form1Value : form1Value });
