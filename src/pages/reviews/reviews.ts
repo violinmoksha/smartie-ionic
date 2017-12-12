@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Http, Headers } from '@angular/http';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { SetReview } from './set-review';
 
@@ -17,13 +16,8 @@ import { SetReview } from './set-review';
 export class Reviews {
 
   private reviewId: any;
-  private baseUrl: string;
-  private applicationId: string;
-  private masterKey: string;
-  private contentType: string;
   private reviews: any;
   private body: any;
-  private profilePhoto: './assets/img/user-round-icon.png';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public smartieApi: SmartieAPI) {
     this.reviewId = navParams.data;
@@ -42,8 +36,7 @@ export class Reviews {
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
         let userReviews = response;
         console.log(userReviews);
-        // this.reviews = userReviews.result;
-        // console.log(this.reviews);
+        this.reviews = userReviews;
       }, err => {
         console.log(err);
       })

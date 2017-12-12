@@ -19,13 +19,9 @@ export class SetReview {
 
   private params: any;
   private ReviewForm : FormGroup;
-  private baseUrl: string;
-  private applicationId: string;
-  private masterKey: string;
-  private contentType: string;
   private body: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, private http: Http) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder) {
     this.params = navParams.data;
 
     console.log(this.params);

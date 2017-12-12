@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController } from 'ionic-angular';
 import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
-import { Camera } from '@ionic-native/camera';
 import { RegisterTeacherStep2 } from './../teacher-step2/teacher-step2';
 
 @Component({
@@ -10,14 +9,9 @@ import { RegisterTeacherStep2 } from './../teacher-step2/teacher-step2';
 })
 
 export class RegisterTeacher {
-  pageProfileSrc:string = './assets/img/dummy_prof_pic.png';
   private Teacherstep1Form: FormGroup;
-  cameraData: string;
-  photoTaken: boolean;
-  cameraUrl: string;
-  photoSelected: boolean;
 
-  constructor(public navCtrl: NavController, private camera: Camera, public actionSheetCtrl: ActionSheetController) {
+  constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController) {
 
     this.Teacherstep1Form = new FormGroup({
       email: new FormControl('', Validators.required),
