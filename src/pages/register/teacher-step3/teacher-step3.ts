@@ -8,7 +8,7 @@ import { TotlesSearch } from '../../totles-search/totles-search';
 import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "ion2-calendar";
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
-import { SmartieErrorHandler } from '../../../providers/err';
+//import { SmartieErrorHandler } from '../../../providers/err';
 
 /**
  * Generated class for the TeacherStep3Page page.
@@ -110,7 +110,7 @@ export class RegisterTeacherStep3 {
     { "value": 'THB', "text": 'Thai Baht' },
   ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, private geolocation: Geolocation, private nativeGeocoder: NativeGeocoder, private smartieErrorHandler: SmartieErrorHandler) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, private geolocation: Geolocation, private nativeGeocoder: NativeGeocoder) {
 
     function dateValidator(c: AbstractControl){
       return c.get('startDate').value < c.get('endDate').value ? null : { 'dateGreater' : true };
@@ -140,7 +140,7 @@ export class RegisterTeacherStep3 {
      // resp.coords.longitude
       console.log(resp);
       this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude).then((res: NativeGeocoderReverseResult) => {
-        this.smartieErrorHandler.log(JSON.stringify(res), null, null);
+        //this.smartieErrorHandler.log(JSON.stringify(res), null, null);
         console.log(JSON.stringify(res));
 
         this.countryCode = res.countryCode;

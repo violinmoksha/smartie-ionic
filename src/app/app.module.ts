@@ -5,7 +5,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-import { SmartieErrorHandler } from '../providers/err';
+//import { SmartieErrorHandler } from '../providers/err';
 
 import { MyApp } from './app.component';
 
@@ -198,8 +198,8 @@ export function createTranslateLoader(http: HttpClient) {
     // API
     SmartieAPI,
     // Errors
-    IonicErrorHandler,
-    [{ provide: ErrorHandler, useClass: SmartieErrorHandler }]
+    //IonicErrorHandler,
+    //[{ provide: ErrorHandler, useClass: SmartieErrorHandler }]
   ]
 })
 export class AppModule {}
