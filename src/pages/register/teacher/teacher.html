@@ -55,7 +55,7 @@
         <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
       </label>
 
-      <div class="item item-message" *ngIf="!Teacherstep1Form.get('password').valid && Teacherstep1Form.get('password').touched">
+      <div class="item item-message" *ngIf="!Teacherstep1Form.controls['password'].valid && Teacherstep1Form.controls['password'].touched">
         Password is required, Password must be longer than 6 characters
       </div>
 
@@ -64,7 +64,7 @@
         <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
       </label>
 
-      <div class="item item-message" *ngIf="!Teacherstep1Form.get('confPassword').valid && Teacherstep1Form.get('confPassword').touched">
+      <div class="item item-message" *ngIf="!Teacherstep1Form.controls['confPassword'].valid && Teacherstep1Form.controls['confPassword'].touched">
         Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
       </div>
 
