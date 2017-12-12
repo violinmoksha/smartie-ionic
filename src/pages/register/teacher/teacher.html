@@ -17,7 +17,7 @@
 
 
 <ion-content padding>
-  <form [formGroup]="Teacherstep1Form" name="Teacherstep1Form" (ngSubmit)="next(Teacherstep1Form.value)">
+  <form [formGroup]="Teacherstep1Form" name="Teacherstep1Form" (ngSubmit)="next(Teacherstep1Form.value)" novalidate>
 
     <!--<div>
       <h4>Debug</h4>
@@ -37,7 +37,7 @@
         <ion-input placeholder="yourmail@mail.com" type="text" formControlName="email"></ion-input>
       </label>
 
-      <div *ngIf="!Teacherstep1Form.controls['email'].valid && Teacherstep1Form.controls['email'].touched" class="item item-message">
+      <div *ngIf="Teacherstep1Form.controls['email'].invalid && Teacherstep1Form.controls['email'].touched" class="item item-message">
         Email is required
       </div>
 
@@ -46,7 +46,7 @@
         <ion-input placeholder="johndoe" type="text" formControlName="username"></ion-input>
       </label>
 
-      <div *ngIf="!Teacherstep1Form.controls['username'].valid && Teacherstep1Form.controls['username'].touched" class="item item-message">
+      <div *ngIf="Teacherstep1Form.controls['username'].invalid && Teacherstep1Form.controls['username'].touched" class="item item-message">
         User name is required
       </div>
 
@@ -71,7 +71,7 @@
       </div>
 
     </div>
-    <button class="button button-positive" [disabled]="!Teacherstep1Form.valid" ion-button full>{{ "next" | translate }}</button>
+    <button class="button button-positive" [disabled]="Teacherstep1Form.invalid" ion-button full>{{ "next" | translate }}</button>
 
   </form>
 </ion-content>
