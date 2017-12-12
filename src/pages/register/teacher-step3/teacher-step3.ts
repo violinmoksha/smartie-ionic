@@ -110,7 +110,7 @@ export class RegisterTeacherStep3 {
     { "value": 'THB', "text": 'Thai Baht' },
   ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, private geolocation: Geolocation, private nativeGeocoder: NativeGeocoder) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, private geolocation: Geolocation, private nativeGeocoder: NativeGeocoder, private smartieErrorHandler: SmartieErrorHandler) {
 
     function dateValidator(c: AbstractControl){
       return c.get('startDate').value < c.get('endDate').value ? null : { 'dateGreater' : true };
@@ -140,7 +140,7 @@ export class RegisterTeacherStep3 {
      // resp.coords.longitude
       console.log(resp);
       this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude).then((res: NativeGeocoderReverseResult) => {
-        SmartieErrorHandler.log(JSON.stringify(res), null, null);
+        this.smartieErrorHandler.log(JSON.stringify(res), null, null);
         console.log(JSON.stringify(res));
 
         this.countryCode = res.countryCode;
