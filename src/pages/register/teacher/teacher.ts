@@ -10,18 +10,16 @@ import { RegisterTeacherStep2 } from './../teacher-step2/teacher-step2';
 
 export class RegisterTeacher {
   private Teacherstep1Form: FormGroup;
-  private passwords: FormGroup;
 
   constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController) {
 
     this.Teacherstep1Form = new FormGroup({
       email: new FormControl('', Validators.required),
       username: new FormControl('', Validators.required),
-      passwords: new FormGroup({
-        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-        confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
-      })
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
     });
+
   }
 
   equalTo(equalControlName): ValidatorFn {
