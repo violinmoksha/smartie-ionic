@@ -50,24 +50,22 @@
         User name is required
       </div>
 
-      <div>
-        <label class="item item-input">
-          <span class="input-label">{{ "password" | translate }}</span>
-          <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
-        </label>
+      <label class="item item-input">
+        <span class="input-label">{{ "password" | translate }}</span>
+        <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
+      </label>
 
-        <div class="item item-message" *ngIf="Teacherstep1Form.get('password').invalid && Teacherstep1Form.get('password').touched">
-          Password is required, Password must be longer than 6 characters
-        </div>
+      <div class="item item-message" *ngIf="Teacherstep1Form.get('password').invalid && Teacherstep1Form.get('password').touched">
+        Password is required, Password must be longer than 6 characters
+      </div>
 
-        <label class="item item-input">
-          <span class="input-label">{{ "confirmPassword" | translate }}</span>
-          <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
-        </label>
+      <label class="item item-input">
+        <span class="input-label">{{ "confirmPassword" | translate }}</span>
+        <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
+      </label>
 
-        <div class="item item-message" *ngIf="Teacherstep1Form.get('confPassword').invalid && Teacherstep1Form.get('confPassword').touched">
-          Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
-        </div>
+      <div class="item item-message" *ngIf="Teacherstep1Form.get('confPassword').invalid && Teacherstep1Form.get('confPassword').touched">
+        Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
       </div>
 
     </div>
