@@ -32,10 +32,10 @@
         <p>{{ "letsCreateAccountInformation" | translate }}</p>
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">{{ "email" | translate }}</span>
+      <ion-item>
+        <ion-label class="item item-input">{{ "email" | translate }}</ion-label>
         <ion-input placeholder="yourmail@mail.com" type="text" formControlName="email"></ion-input>
-      </label>
+      </ion-item>
 
       <div *ngIf="!Teacherstep1Form.controls['email'].valid && Teacherstep1Form.controls['email'].touched" class="item item-message">
         Email is required
