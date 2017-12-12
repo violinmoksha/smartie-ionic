@@ -16,13 +16,12 @@ export class RegisterTeacher {
 
     this.Teacherstep1Form = new FormGroup({
       email: new FormControl('', Validators.required),
-      username: new FormControl('', Validators.required)
+      username: new FormControl('', Validators.required),
+      passwords: new FormGroup({
+        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+        confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
+      })
     });
-
-    this.passwords = new FormGroup({
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
-    })
   }
 
   equalTo(equalControlName): ValidatorFn {
