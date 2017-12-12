@@ -50,7 +50,7 @@
         User name is required
       </div>
 
-      <div formGroupName="passwords">
+      <div [formGroup]="passwords">
         <label class="item item-input">
           <span class="input-label">{{ "password" | translate }}</span>
           <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
