@@ -4,7 +4,7 @@ import { RegisterTeacher } from './teacher/teacher';
 import { RegisterStudent } from './student/student';
 import { RegisterParent } from './parent/parent';
 import { RegisterSchool } from './school/school';
-import { Pro } from '@ionic/pro';
+//import { Pro } from '@ionic/pro';
 
 @Component({
   selector: 'page-register',
@@ -13,12 +13,12 @@ import { Pro } from '@ionic/pro';
 export class Register {
 
   constructor(public navCtrl: NavController) {
-    Pro.getApp().monitoring.log('Register.construct', { level: 'error' });
+    //Pro.getApp().monitoring.log('Register.construct', { level: 'error' });
   }
 
   pushPage(item){
     if(item == 'teacher')
-      Pro.getApp().monitoring.log('Trying to push RegisterTeacher.', { level: 'error' });
+      //Pro.getApp().monitoring.log('Trying to push RegisterTeacher.', { level: 'error' });
       this.navCtrl.push(RegisterTeacher);
     if(item == 'student')
       this.navCtrl.push(RegisterStudent);

@@ -1,14 +1,11 @@
-import { ErrorHandler } from '@angular/core';
-import { IonicErrorHandler } from 'ionic-angular';
-import { SmartieErrorHandler } from '../providers/err';
-
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { IonicApp, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { SmartieErrorHandler } from '../providers/err';
 
 import { MyApp } from './app.component';
 
