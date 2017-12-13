@@ -35,7 +35,7 @@ import { ViewProfile } from '../pages/view-profile/view-profile';
 import { JobRequests } from '../pages/job-requests/job-requests';
 import { CardPage } from '../pages/card/card';
 import { Language } from '../pages/language/language';
-import { Dashboard } from '../pages/dashboard/dashboard';
+// import { Dashboard } from '../pages/dashboard/dashboard';
 import { QrCodeScanner } from '../pages/qr-code-scanner/qr-code-scanner';
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { StarRatingModule } from 'angular-star-rating';
@@ -107,7 +107,7 @@ export function createTranslateLoader(http: HttpClient) {
     ViewProfile,
     JobRequests,
     CardPage,
-    Dashboard,
+    // Dashboard,
     Reviews,
     SetReview,
     QrCodeScanner/*,
@@ -166,7 +166,7 @@ export function createTranslateLoader(http: HttpClient) {
     ViewProfile,
     JobRequests,
     CardPage,
-    Dashboard,
+    // Dashboard,
     Reviews,
     SetReview,
     QrCodeScanner/*,
