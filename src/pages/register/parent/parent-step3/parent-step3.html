@@ -54,7 +54,7 @@
       <div class="tagline bg-parent">
         <p>The fee you can pay</p>
       </div>
-      
+
       <h3>Desired hourly price range</h3>
       <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="7">
         <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
@@ -74,10 +74,10 @@
         <p>Your Location</p>
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">Prefered Teaching Location</span>
+      <ion-item>
+        <ion-label fixed>Prefered Teaching Location</ion-label>
         <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
-      </label>
+      </ion-item>
 
       <div *ngIf="!Parentstep3Form.controls['prefLocation'].valid && Parentstep3Form.controls['prefLocation'].touched" class="item item-message">
         Enter your prefered location.

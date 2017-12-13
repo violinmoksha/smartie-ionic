@@ -38,46 +38,46 @@
         <span class="input-label">Upload your photo</span>
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">School Name</span>
+      <ion-item>
+        <ion-label fixed>School Name</ion-label>
         <ion-input placeholder="eg: St. John High School" type="text" formControlName="schoolName"></ion-input>
-      </label>
+      </ion-item>
 
       <div *ngIf="!SchoolStep2Form.controls['schoolName'].valid && SchoolStep2Form.controls['schoolName'].touched" class="item item-message">
         School Name is required
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">Representative / Contact Person Name</span>
+      <ion-item>
+        <ion-label fixed>Representative / Contact Person Name</ion-label>
         <ion-input placeholder="eg: John Doe" type="text" formControlName="contactName"></ion-input>
-      </label>
+      </ion-item>
 
       <div *ngIf="!SchoolStep2Form.controls['contactName'].valid && SchoolStep2Form.controls['contactName'].touched" class="item item-message">
         Contact Person Name is required
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">Representative / Contact Position at School</span>
+      <ion-item>
+        <ion-label fixed>Representative / Contact Position at School</ion-label>
         <ion-input placeholder="eg: Principle" type="text" formControlName="contactPosition"></ion-input>
-      </label>
+      </ion-item>
 
       <div *ngIf="!SchoolStep2Form.controls['contactPosition'].valid && SchoolStep2Form.controls['contactPosition'].touched" class="item item-message">
         Contact Position is required
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">Phone No</span>
+      <ion-item>
+        <ion-label fixed>Phone No</ion-label>
         <ion-input placeholder="9999 999 999" type="tel" formControlName="phone"></ion-input>
-      </label>
+      </ion-item>
 
       <div *ngIf="!SchoolStep2Form.controls['phone'].valid && SchoolStep2Form.controls['phone'].touched" class="item item-message">
         Phone number is required
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">Profile Message</span>
+      <ion-item>
+        <ion-label fixed>Profile Message</ion-label>
         <ion-textarea formControlName="profileMessage" placeholder="Put any comment..."></ion-textarea>
-      </label>
+      </ion-item>
 
       <div *ngIf="!SchoolStep2Form.controls['profileMessage'].valid && SchoolStep2Form.controls['profileMessage'].touched" class="item item-message">
         Profile Message is required

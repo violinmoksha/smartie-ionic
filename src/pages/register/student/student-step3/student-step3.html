@@ -73,10 +73,11 @@
         <p>Your Location</p>
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">Prefered Teaching Location</span>
+      <ion-item>
+        <ion-label fixed>Prefered Teaching Location</ion-label>
         <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
-      </label>
+      </ion-item>
+
 
       <div *ngIf="!Studentstep3Form.controls['prefLocation'].valid && Studentstep3Form.controls['prefLocation'].touched" class="item item-message">
         Enter your prefered location.

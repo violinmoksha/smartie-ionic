@@ -30,172 +30,43 @@
         <p>Let's create your account information</p>
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">Email</span>
+      <ion-item>
+        <ion-label fixed>Email</ion-label>
         <ion-input placeholder="yourmail@mail.com" type="email" formControlName="email"></ion-input>
-      </label>
+      </ion-item>
 
       <div *ngIf="!SchoolStep1Form.controls['email'].valid && SchoolStep1Form.controls['email'].touched" class="item item-message">
         Email is required
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">Username</span>
+      <ion-item>
+        <ion-label fixed>Username</ion-label>
         <ion-input placeholder="johndoe" type="text" formControlName="username"></ion-input>
-      </label>
+      </ion-item>
 
       <div *ngIf="!SchoolStep1Form.controls['username'].valid && SchoolStep1Form.controls['username'].touched" class="item item-message">
         User name is required
       </div>
 
       <div>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
+        <ion-item>
+          <ion-label fixed>Password</ion-label>
           <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
-        </label>
+        </ion-item>
 
         <div class="item item-message" *ngIf="SchoolStep1Form.get('password').invalid && SchoolStep1Form.get('password').touched">
           Password is required, Password must be longer than 6 characters
         </div>
 
-        <label class="item item-input">
-          <span class="input-label">Confirm Password</span>
+        <ion-item>
+          <ion-label fixed>Confirm Password</ion-label>
           <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
-        </label>
+        </ion-item>
 
         <div class="item item-message" *ngIf="SchoolStep1Form.get('confPassword').invalid && SchoolStep1Form.get('confPassword').touched">
           Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
         </div>
       </div>
-
-      <!-- <div class="school-pic">
-        <img id="picForSchool" (click)="chooseUploadType($event, 'school')" [src]="pageSchoolSrc" width="300px" *ngIf="!schoolPhotoSelected && !schoolPhotoTaken" />
-        <img (click)="chooseUploadType($event, 'school')" [src]="schoolCameraData" *ngIf="schoolPhotoTaken" width="150px">
-        <img (click)="chooseUploadType($event, 'school')" [src]="schoolCameraUrl" *ngIf="schoolPhotoSelected" width="150px">
-        <span class="input-label">Upload your school photo</span>
-      </div>
-
-      <div class="profile-pic">
-        <img id="picForDisplay" (click)="chooseUploadType($event,'prof')" [src]="pageProfileSrc" width="150px" *ngIf="!profilePhotoSelected && !profilePhotoTaken" />
-        <img (click)="chooseUploadType($event,'prof')" [src]="profileCameraData" *ngIf="profilePhotoTaken" width="150px">
-        <img (click)="chooseUploadType($event,'prof')" [src]="profileCameraUrl" *ngIf="profilePhotoSelected" width="150px">
-        <span class="input-label">Upload your photo</span>
-      </div>
-
-      <label class="item item-input">
-        <span class="input-label">School Name</span>
-        <ion-input placeholder="eg: St. John High School" type="text" formControlName="schoolName"></ion-input>
-      </label>
-
-      <div *ngIf="!SchoolForm.controls['schoolName'].valid && SchoolForm.controls['schoolName'].touched" class="item item-message">
-        School Name is required
-      </div>
-
-      <label class="item item-input">
-        <span class="input-label">Representative / Contact Person Name</span>
-        <ion-input placeholder="eg: John Doe" type="text" formControlName="contactName"></ion-input>
-      </label>
-
-      <div *ngIf="!SchoolForm.controls['contactName'].valid && SchoolForm.controls['contactName'].touched" class="item item-message">
-        Contact Person Name is required
-      </div>
-
-      <label class="item item-input">
-        <span class="input-label">Representative / Contact Position at School</span>
-        <ion-input placeholder="eg: Principle" type="text" formControlName="contactPosition"></ion-input>
-      </label>
-
-      <div *ngIf="!SchoolForm.controls['contactPosition'].valid && SchoolForm.controls['contactPosition'].touched" class="item item-message">
-        Contact Position is required
-      </div>
-
-      <div formGroupName="passwords">
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
-        </label>
-
-        <div class="item item-message" *ngIf="SchoolForm.get('passwords.password').invalid && SchoolForm.get('passwords.password').touched">
-          Password is required, Password must be longer than 6 characters
-        </div>
-
-        <label class="item item-input">
-          <span class="input-label">Confirm Password</span>
-          <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
-        </label>
-
-        <div class="item item-message" *ngIf="SchoolForm.get('passwords.confPassword').invalid && SchoolForm.get('passwords.confPassword').touched">
-          Confirm Password is required, Confirm Password must be longer than 6 characters
-        </div>
-        <div class="item item-message" *ngIf="SchoolForm.get('passwords').errors !== null && SchoolForm.get('passwords.confPassword').touched">
-          Password not match
-        </div>
-      </div>
-
-
-      <label class="item item-input">
-        <span class="input-label">Phone No</span>
-        <ion-input placeholder="9999 999 999" type="tel" formControlName="phone"></ion-input>
-      </label>
-
-      <div *ngIf="!SchoolForm.controls['phone'].valid && SchoolForm.controls['phone'].touched" class="item item-message">
-        Phone number is required
-      </div>
-
-      <ion-item>
-        <ion-label>Levels Required</ion-label>
-        <ion-select formControlName="requiredLevel">
-          <ion-option value="">Select</ion-option>
-          <ion-option value="k">K</ion-option>
-          <ion-option value="primary">Primary</ion-option>
-          <ion-option value="highSchool">High School</ion-option>
-          <ion-option value="university">University</ion-option>
-        </ion-select>
-      </ion-item>
-
-      <div *ngIf="!SchoolForm.controls['requiredLevel'].valid && SchoolForm.controls['requiredLevel'].touched" class="item item-message">
-        Please select any one
-      </div>
-
-      <ion-item>
-        <ion-label>Needed Language of expertise</ion-label>
-        <ion-select formControlName="expertiseLangNeed">
-          <ion-option value="">Select</ion-option>
-          <ion-option value="english">English</ion-option>
-          <ion-option value="thai">Thai</ion-option>
-        </ion-select>
-      </ion-item>
-
-      <div *ngIf="!SchoolForm.controls['expertiseLangNeed'].valid && SchoolForm.controls['expertiseLangNeed'].touched" class="item item-message">
-        Please select any one
-      </div>
-
-      <label class="item item-input">
-        <span class="input-label">Info about you (This will be displayed in your profile)</span>
-        <ion-input placeholder="Message" type="text" formControlName="schoolMessage"></ion-input>
-      </label>
-
-      <div *ngIf="!SchoolForm.controls['schoolMessage'].valid && SchoolForm.controls['schoolMessage'].touched" class="item item-message">
-        School Message is required
-      </div>
-
-      <label class="item item-input">
-        <span class="input-label">Prefered Learning Location</span>
-        <ion-input placeholder="Location name" type="text" formControlName="preferedLearningLocation"></ion-input>
-      </label>
-
-      <div *ngIf="!SchoolForm.controls['preferedLearningLocation'].valid && SchoolForm.controls['preferedLearningLocation'].touched" class="item item-message">
-        Prefered Learning Location is required
-      </div>
-
-      <label class="item item-input">
-        <span class="input-label">Desired Hourly Price Range</span>
-        <ion-input placeholder="10$ Per Hour" type="text" formControlName="desiredHourlyPriceRange"></ion-input>
-      </label>
-
-      <div *ngIf="!SchoolForm.controls['desiredHourlyPriceRange'].valid && SchoolForm.controls['desiredHourlyPriceRange'].touched" class="item item-message">
-        Desired Hourly Price Range is required
-      </div> -->
     </div>
     <button class="button button-positive bg-school" [disabled]="!SchoolStep1Form.valid" ion-button full>Next</button>
   </form>

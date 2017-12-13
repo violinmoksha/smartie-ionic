@@ -38,38 +38,38 @@
         <span class="input-label">Upload your photo</span>
       </div> -->
 
-      <label class="item item-input">
-        <span class="input-label">Email</span>
-        <ion-input placeholder="yourmail@mail.com" type="text" formControlName="email"></ion-input>
-      </label>
+      <ion-item>
+        <ion-label fixed>Email</ion-label>
+        <ion-input placeholder="yourmail@mail.com" type="email" formControlName="email"></ion-input>
+      </ion-item>
 
       <div *ngIf="!ParentStep1Form.controls['email'].valid && ParentStep1Form.controls['email'].touched" class="item item-message">
         Email is required
       </div>
 
-      <label class="item item-input">
-        <span class="input-label">Username</span>
+      <ion-item>
+        <ion-label fixed>Username</ion-label>
         <ion-input placeholder="johndoe" type="text" formControlName="username"></ion-input>
-      </label>
+      </ion-item>
 
       <div *ngIf="!ParentStep1Form.controls['username'].valid && ParentStep1Form.controls['username'].touched" class="item item-message">
         User name is required
       </div>
 
       <div>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
+        <ion-item>
+          <ion-label fixed>Password</ion-label>
           <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
-        </label>
+        </ion-item>
 
         <div class="item item-message" *ngIf="ParentStep1Form.get('password').invalid && ParentStep1Form.get('password').touched">
           Password is required, Password must be longer than 6 characters
         </div>
 
-        <label class="item item-input">
-          <span class="input-label">Confirm Password</span>
+        <ion-item>
+          <ion-label fixed>Confirm Password</ion-label>
           <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
-        </label>
+        </ion-item>
 
         <div class="item item-message" *ngIf="ParentStep1Form.get('confPassword').invalid && ParentStep1Form.get('confPassword').touched">
           Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch

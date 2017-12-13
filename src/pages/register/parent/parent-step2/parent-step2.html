@@ -38,30 +38,30 @@
       </div>
 
       <!-- Name -->
-      <label class="item item-input">
-        <span class="input-label">Name</span>
+      <ion-item>
+        <ion-label fixed>Name</ion-label>
         <ion-input placeholder="eg: John Doe" type="text" formControlName="name"></ion-input>
-      </label>
+      </ion-item>
 
       <div *ngIf="!Parentstep2Form.controls['name'].valid && Parentstep2Form.controls['name'].touched" class="item item-message">
         Name is required
       </div>
 
       <!-- Phone -->
-      <label class="item item-input">
-        <span class="input-label">Phone No</span>
+      <ion-item>
+        <ion-label fixed>Phone No</ion-label>
         <ion-input placeholder="9999 999 999" type="tel" formControlName="phone"></ion-input>
-      </label>
+      </ion-item>
 
       <div *ngIf="!Parentstep2Form.controls['phone'].valid && Parentstep2Form.controls['phone'].touched" class="item item-message">
         Phone number is required
       </div>
 
       <!-- Profile Message -->
-      <label class="item item-input">
-        <span class="input-label">Profile Message</span>
+      <ion-item>
+        <ion-label fixed>Profile Message</ion-label>
         <ion-textarea formControlName="profileMessage" placeholder="Put any comment..."></ion-textarea>
-      </label>
+      </ion-item>
 
       <div *ngIf="!Parentstep2Form.controls['profileMessage'].valid && Parentstep2Form.controls['profileMessage'].touched" class="item item-message">
         Profile Message is required
@@ -79,10 +79,10 @@
 
       <div [hidden]="partOfSchool != true" class="school-information">
         <h2>School Information</h2>
-        <label class="item item-input">
-          <span class="input-label">School Name</span>
+        <ion-item>
+          <ion-label fixed>School Name</ion-label>
           <ion-input placeholder="eg: St. John High School" type="text" formControlName="parentSchoolName"></ion-input>
-        </label>
+        </ion-item>
 
         <div *ngIf="!Parentstep2Form.controls['parentSchoolName'].valid && Parentstep2Form.controls['parentSchoolName'].touched" class="item item-message">
           School Name is required

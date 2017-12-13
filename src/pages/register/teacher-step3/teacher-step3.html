@@ -92,10 +92,14 @@
         <p>{{ "yourAvailability" | translate}}</p>
       </div>
 
-      <label class="item item-input">
+      <!-- <label class="item item-input">
         <span class="input-label">{{ "preferredTeachingLocation" | translate }}</span>
         <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
-      </label>
+      </label> -->
+      <ion-item>
+        <ion-label fixed>{{ "preferredTeachingLocation" | translate}}</ion-label>
+        <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
+      </ion-item>
 
       <div *ngIf="!Teacherstep3Form.controls['prefLocation'].valid && Teacherstep3Form.controls['prefLocation'].touched" class="item item-message">
         {{ "prefLearnLoc" | translate }}
@@ -106,7 +110,7 @@
 
         <!-- <button ion-button >Start Date</button> -->
         <div class="date-icon">
-          <img src="../../assets/img/date-icon.png" />
+          <img src="./assets/img/date-icon.png" />
         </div>
         <ion-input type="text" (click)="startDateCalendar()" value="{{ startDate }}"></ion-input>
       </label>
@@ -116,7 +120,7 @@
       <label class="item item-input">
         <!-- <button ion-button>End Date</button> -->
         <div class="date-icon">
-          <img src="../../assets/img/date-icon.png" />
+          <img src="./assets/img/date-icon.png" />
         </div>
         <ion-input type="text" (click)="endDateCalendar()" value="{{ endDate }}"></ion-input>
       </label>
@@ -125,7 +129,7 @@
     <div class="available-time">
       <label class="item item-input">
         <div class="clock-icon">
-          <img src="../../assets/img/clock-icon.png" />
+          <img src="./assets/img/clock-icon.png" />
         </div>
         <ion-datetime displayFormat="HH-mm" formControlName="startTime"></ion-datetime>
       </label>
@@ -138,7 +142,7 @@
       </div>
       <label class="item item-input right-box">
         <div class="clock-icon">
-          <img src="../../assets/img/clock-icon.png" />
+          <img src="./assets/img/clock-icon.png" />
         </div>
         <ion-datetime displayFormat="HH-mm" formControlName="endTime"></ion-datetime>
       </label>
