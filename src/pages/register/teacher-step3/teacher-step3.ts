@@ -138,9 +138,9 @@ export class RegisterTeacherStep3 {
   this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
      // resp.coords.latitude
      // resp.coords.longitude
-      Pro.getApp().monitoring.log('Got coordinates: '+JSON.stringify(resp), { level: 'warn' })
+      Pro.getApp().monitoring.log('Got coordinates: '+JSON.stringify(resp), { level: 'error' })
       this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude).then((res: NativeGeocoderReverseResult) => {
-        Pro.getApp().monitoring.log('result of reverseGeocode: '+JSON.stringify(res), { level: 'warn' })
+        Pro.getApp().monitoring.log('result of reverseGeocode: '+JSON.stringify(res), { level: 'error' })
 
         this.countryCode = res.countryCode;
         this.state = res.administrativeArea;
