@@ -135,11 +135,14 @@ export class RegisterTeacherStep3 {
   }
 
   ionViewDidLoad() {
-  this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
-     // resp.coords.latitude
-     // resp.coords.longitude
+    this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+      // resp.coords.latitude
+      // resp.coords.longitude
+
+      console.log('Got coordinates: '+JSON.stringify(resp));
       Pro.getApp().monitoring.log('Got coordinates: '+JSON.stringify(resp), { level: 'error' })
       this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude).then((res: NativeGeocoderReverseResult) => {
+        console.log('result of reverseGeocode: '+JSON.stringify(res));
         Pro.getApp().monitoring.log('result of reverseGeocode: '+JSON.stringify(res), { level: 'error' })
 
         this.countryCode = res.countryCode;
@@ -159,7 +162,7 @@ export class RegisterTeacherStep3 {
           })
         })
       }).catch((error: any) => {
-       console.log(error);
+        console.log(error);
      });
 
     }).catch((error) => {
