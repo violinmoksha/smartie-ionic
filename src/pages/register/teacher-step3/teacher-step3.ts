@@ -8,7 +8,7 @@ import { TotlesSearch } from '../../totles-search/totles-search';
 import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "ion2-calendar";
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
-//import { SmartieErrorHandler } from '../../../providers/err';
+import { Pro } from '@ionic/pro';
 
 /**
  * Generated class for the TeacherStep3Page page.
@@ -138,10 +138,9 @@ export class RegisterTeacherStep3 {
   this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
      // resp.coords.latitude
      // resp.coords.longitude
-      console.log(resp);
+      Pro.getApp().monitoring.log('Got coordinates: '+JSON.stringify(resp), { level: 'warn' })
       this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude).then((res: NativeGeocoderReverseResult) => {
-        //this.smartieErrorHandler.log(JSON.stringify(res), null, null);
-        console.log(JSON.stringify(res));
+        Pro.getApp().monitoring.log('result of reverseGeocode: '+JSON.stringify(res), { level: 'warn' })
 
         this.countryCode = res.countryCode;
         this.state = res.administrativeArea;
