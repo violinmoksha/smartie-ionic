@@ -1,12 +1,11 @@
 import { Pro } from '@ionic/pro';
-
-// These are the imports required for the code below,
-// feel free to merge into existing imports.
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { IonicErrorHandler } from 'ionic-angular';
 
-const IonicPro = Pro.init('51a6d7d8', {
-  appVersion: "0.0.1"
+export { ErrorHandler, IonicErrorHandler };
+
+const IonicPro = Pro.init('APP_ID', {
+  appVersion: "APP_VERSION"
 });
 
 @Injectable()
@@ -26,10 +25,6 @@ export class SmartieErrorHandler implements ErrorHandler {
     IonicPro.monitoring.handleNewError(err);
     // Remove this if you want to disable Ionic's auto exception handling
     // in development mode.
-    //this.ionicErrorHandler && this.ionicErrorHandler.handleError(err);
-  }
-
-  log(msg: string, options: any, extra: any): void {
-    IonicPro.monitoring.log(msg, options, extra);
+    this.ionicErrorHandler && this.ionicErrorHandler.handleError(err);
   }
 }

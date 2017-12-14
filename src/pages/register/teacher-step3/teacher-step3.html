@@ -37,14 +37,14 @@
         <div class="reg-sub-title"><h3>{{ "langsOfExpertise" | translate }}</h3></div>
 
         <ion-item *ngFor="let lang of languages">
-          <ion-label>{{ lang}}</ion-label>
+          <ion-label>{{lang}}</ion-label>
           <ion-checkbox (ionChange)="onChangeTeacherLanguage(lang, $event.checked)"></ion-checkbox>
         </ion-item>
       </div>
 
       <div class="reg-section">
         <div class="reg-sub-title"><h3>{{ "levelsCapable" | translate }}</h3></div>
-        <ion-item *ngFor="let level of levels">
+        <ion-item *ngFor="let level of this.levels">
           <ion-label>{{ level.name }}</ion-label>
           <ion-checkbox (ionChange)="onChangeLevelLanguage(level.name, $event.checked)" ></ion-checkbox>
         </ion-item>

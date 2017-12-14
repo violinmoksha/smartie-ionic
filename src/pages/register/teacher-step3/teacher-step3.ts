@@ -6,8 +6,6 @@ import { Parse } from 'parse';
 import { ParseProvider } from '../../../providers/parse';
 import { TotlesSearch } from '../../totles-search/totles-search';
 import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "ion2-calendar";
-import { Geolocation } from '@ionic-native/geolocation';
-import { NativeGeocoder, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 import { Pro } from '@ionic/pro';
 
 /**
@@ -37,9 +35,7 @@ export class RegisterTeacherStep3 {
   private userCurrency: any;
   private startDate: any;
   private endDate: any;
-  private countryCode: any;
-  private state: any;
-  private languages: any;
+  public languages: any;
 
   /*public languages = [
     { langid: 1, name: "English", value: "englsh" },
@@ -110,7 +106,10 @@ export class RegisterTeacherStep3 {
     { "value": 'THB', "text": 'Thai Baht' },
   ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, private geolocation: Geolocation, private nativeGeocoder: NativeGeocoder) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController) {
+
+    this.languages = navParams.data.form2Value.languages;
+    //this.languages = ['English', 'Spanish', 'Chinese', 'Hindi'];
 
     function dateValidator(c: AbstractControl){
       return c.get('startDate').value < c.get('endDate').value ? null : { 'dateGreater' : true };
@@ -119,7 +118,6 @@ export class RegisterTeacherStep3 {
     function timeValidator(c: AbstractControl){
       return c.get('startTime').value < c.get('endTime').value ? null : { 'timeGreater' : true };
     }
-
 
     this.form1Values = navParams.data.form1Value;
     this.form2Values = navParams.data.form2Value;
@@ -132,42 +130,6 @@ export class RegisterTeacherStep3 {
       startTime: new FormControl('', Validators.required),
       endTime: new FormControl('', [Validators.required, this.gretarThan('startTime')])
     })
-  }
-
-  ionViewDidLoad() {
-    this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
-      // resp.coords.latitude
-      // resp.coords.longitude
-
-      console.log('Got coordinates: '+JSON.stringify(resp));
-      Pro.getApp().monitoring.log('Got coordinates: '+JSON.stringify(resp), { level: 'error' })
-      this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude).then((res: NativeGeocoderReverseResult) => {
-        console.log('result of reverseGeocode: '+JSON.stringify(res));
-        Pro.getApp().monitoring.log('result of reverseGeocode: '+JSON.stringify(res), { level: 'error' })
-
-        this.countryCode = res.countryCode;
-        this.state = res.administrativeArea;
-
-        let LangAPI = this.smartieApi.getApi(
-          'getLanguagesPerPhoneLocation',
-          { country: this.countryCode, state: this.state }
-        );
-
-        return new Promise(resolve => {
-          interface Response {
-            languages: any;
-          };
-          this.smartieApi.http.post<Response>(LangAPI.apiUrl, LangAPI.apiBody, LangAPI.apiHeaders).subscribe(res => {
-            this.languages = res.languages;
-          })
-        })
-      }).catch((error: any) => {
-        console.log(error);
-     });
-
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
   }
 
   gretarThan(equalControlName): ValidatorFn {

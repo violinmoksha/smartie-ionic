@@ -1,3 +1,43 @@
+.reg-section {
+  ion-item {
+    width: 100% !important;
+  }
+
+  .item-ios.item-block .item-inner,
+  .item.item-ios .checkbox-ios {
+    display: inline-block;
+  }
+
+  .item-ios.item-block .item-inner, .item.item-ios .checkbox-ios {
+    height: 22px;
+  }
+
+  // put this one everywhere
+  .item-ios.item-block .item-inner {
+    border-bottom: 0;
+  }
+
+  .ios {
+    .registration .item-checkbox {
+      height: 50px;
+      line-height: 50px;
+    }
+
+    ion-label {
+      height: 50px;
+      line-height: 50px;
+    }
+
+    .input-wrapper {
+      height: 50px;
+    }
+
+    .label-ios {
+      margin: 0;
+    }
+  }
+}
+
 ion-list{
   .teacher-certs{
     border: none;

@@ -23,7 +23,7 @@
     "@ionic-native/barcode-scanner": "^4.4.2",
     "@ionic-native/camera": "^4.4.2",
     "@ionic-native/core": "4.4.0",
-    "@ionic-native/geolocation": "^4.4.2",
+    "@ionic-native/globalization": "^4.5.2",
     "@ionic-native/google-maps": "^4.4.2",
     "@ionic-native/native-geocoder": "^4.4.2",
     "@ionic-native/splash-screen": "4.4.0",
@@ -39,7 +39,7 @@
     "cordova-plugin-add-swift-support": "^1.7.0",
     "cordova-plugin-camera": "^3.0.0",
     "cordova-plugin-device": "^1.1.6",
-    "cordova-plugin-geolocation": "^3.0.0",
+    "cordova-plugin-globalization": "^1.0.8",
     "cordova-plugin-ionic": "^2.0.3",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-nativegeocoder": "^2.0.4",
@@ -66,9 +66,6 @@
       "ionic-plugin-keyboard": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-geolocation": {
-        "GEOLOCATION_USAGE_DESCRIPTION": "To locate user"
-      },
       "cordova-plugin-nativegeocoder": {
         "LOCATION_WHEN_IN_USE_DESCRIPTION": "Use geocoder service"
       },
@@ -80,7 +77,8 @@
         "MAX_STORE": "2"
       },
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-device": {}
+      "cordova-plugin-device": {},
+      "cordova-plugin-globalization": {}
     },
     "platforms": [
       "android",

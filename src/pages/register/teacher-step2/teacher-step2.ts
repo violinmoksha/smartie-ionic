@@ -3,6 +3,8 @@ import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { RegisterTeacherStep3 } from './../teacher-step3/teacher-step3';
+import { Globalization } from '@ionic-native/globalization';
+import { SmartieAPI } from '../../../providers/api/smartie';
 
 /**
  * Generated class for the TeacherStep2Page page.
@@ -19,6 +21,7 @@ export class RegisterTeacherStep2 {
 
   private Teacherstep2Form: FormGroup;
   private form1Values: any;
+  private languages: any;
 
   pageProfileSrc:string = './assets/img/user-img-teacher.png';
   cameraData: string;
@@ -64,7 +67,7 @@ export class RegisterTeacherStep2 {
 
   // private formBuilder: FormBuilder;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, private globalization: Globalization, private smartieApi: SmartieAPI) {
     this.form1Values = navParams.data.form1Value;
 
     this.Teacherstep2Form = new FormGroup({
@@ -77,6 +80,23 @@ export class RegisterTeacherStep2 {
       profileMessage: new FormControl('', Validators.required)
     })
 
+    this.globalization.getLocaleName().then((locale) => {
+      let LangAPI = this.smartieApi.getApi(
+        'getNationalLanguages',
+        { country: locale.value.split('-')[1] }
+      );
+
+      return new Promise(resolve => {
+        interface Response {
+          result: any;
+        };
+        this.smartieApi.http.post<Response>(LangAPI.apiUrl, LangAPI.apiBody, LangAPI.apiHeaders).subscribe(res => {
+          this.languages = res.result.languages;
+        })
+      })
+    }).catch((error: any) => {
+      console.log(error);
+    });
   }
 
   /*onChangeTeacherLanguage(name: string, isChecked: boolean) {
@@ -163,14 +183,14 @@ export class RegisterTeacherStep2 {
   }
 
   next(form2Value){
+    form2Value.languages = this.languages;
     this.navCtrl.push(RegisterTeacherStep3, { form1Value : this.form1Values, form2Value : form2Value });
   }
   // updateTeacherLanguage(event){
   //   console.log(event);
   // }
 
-  // ionViewDidLoad() {
-  //   console.log('ionViewDidLoad TeacherStep2Page');
-  // }
+  ionViewDidLoad() {
+  }
 
 }

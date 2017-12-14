@@ -56,8 +56,16 @@ a.item {
   border: none;
 }
 
+.item-ios.item-block .item-inner {
+  padding-right: 0;
+}
+
 .label-md{
   margin: 0px;
+}
+
+.label-ios .item {
+  border-radius:5px;
 }
 
 .bar-button-menutoggle-md, .back-button.show-back-button{

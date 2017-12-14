@@ -1,48 +1,16 @@
-import { Pro } from '@ionic/pro';
+// SmartieErrorHandler, must load first
+import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from '../providers/err';
 
-// These are the imports required for the code below,
-// feel free to merge into existing imports.
-import { ErrorHandler, Injectable, Injector } from '@angular/core';
-import { IonicErrorHandler } from 'ionic-angular';
-
-const IonicPro = Pro.init('APP_ID', {
-  appVersion: "APP_VERSION"
-});
-
-@Injectable()
-export class SmartieErrorHandler implements ErrorHandler {
-  ionicErrorHandler: IonicErrorHandler;
-
-  constructor(injector: Injector) {
-    try {
-      this.ionicErrorHandler = injector.get(IonicErrorHandler);
-    } catch(e) {
-      // Unable to get the IonicErrorHandler provider, ensure
-      // IonicErrorHandler has been added to the providers list below
-    }
-  }
-
-  handleError(err: any): void {
-    IonicPro.monitoring.handleNewError(err);
-    // Remove this if you want to disable Ionic's auto exception handling
-    // in development mode.
-    this.ionicErrorHandler && this.ionicErrorHandler.handleError(err);
-  }
-}
-
+// core app dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicModule } from 'ionic-angular';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-//import { SmartieErrorHandler } from '../providers/err';
-
 import { MyApp } from './app.component';
 
-//import { HomePage } from '../pages/home/home';
-//import { ListPage } from '../pages/list/list';
+// pages
 import { Register } from '../pages/register/register';
 import { RegisterTeacher } from '../pages/register/teacher/teacher';
 import { RegisterTeacherStep2 } from '../pages/register/teacher-step2/teacher-step2';
@@ -67,42 +35,26 @@ import { ViewProfile } from '../pages/view-profile/view-profile';
 import { JobRequests } from '../pages/job-requests/job-requests';
 import { CardPage } from '../pages/card/card';
 import { Language } from '../pages/language/language';
-// import { Dashboard } from '../pages/dashboard/dashboard';
 import { QrCodeScanner } from '../pages/qr-code-scanner/qr-code-scanner';
-import { GoogleMaps } from '@ionic-native/google-maps';
 import { StarRatingModule } from 'angular-star-rating';
 import { Reviews } from '../pages/reviews/reviews';
 import { SetReview } from '../pages/reviews/set-review';
-/*
-import { RegisterTeacher } from '../pages/register/teacher';
-import { RegisterTeacherStep2 } from '../pages/register/teacher2';
-import { RegisterTeacherStep3 } from '../pages/register/teacher3';
-import { TeacherNotification } from '../pages/notification/teacher';
-import { RegisterParentPage } from '../pages/register/parent';
-import { RegisterSchoolPage } from '../pages/register/school';
-import { StudentJobProfile } from '../pages/job/student';
-import { SchoolJobProfile } from '../pages/job/school';
-import { JobAccept } from '../pages/job/accept';
-import { JobNotification } from '../pages/job/notification';
-import { Reviews } from '../pages/reviews/reviews';
-import { TotlesSearch } from '../pages/totles/search';
-import { TotlesLogin } from '../pages/totles/login';
-*/
 
+// providers: @ionic-native plugins + custom
+import { GoogleMaps } from '@ionic-native/google-maps';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 import { CalendarModule } from "ion2-calendar";
-import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
-
-import { ParseProvider } from '../providers/parse';
-
+import { Globalization } from '@ionic-native/globalization';
 import { IonicStorageModule } from '@ionic/storage';
-
 import { Stripe } from '@ionic-native/stripe';
+import { ParseProvider } from '../providers/parse';
 import { SmartieAPI } from '../providers/api/smartie';
 
+// translation helpers for v2
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
@@ -139,22 +91,9 @@ export function createTranslateLoader(http: HttpClient) {
     ViewProfile,
     JobRequests,
     CardPage,
-    // Dashboard,
     Reviews,
     SetReview,
-    QrCodeScanner/*,
-    RegisterTeacherStep2,
-    RegisterTeacherStep3,
-    TeacherNotification,
-    RegisterParent,
-    RegisterSchool,
-    StudentJob,
-    SchoolJob,
-    JobAccept,
-    JobNotification,
-    Reviews,
-    TotlesSearch,
-    TotlesLogin*/
+    QrCodeScanner
   ],
   imports: [
     BrowserModule,
@@ -198,22 +137,9 @@ export function createTranslateLoader(http: HttpClient) {
     ViewProfile,
     JobRequests,
     CardPage,
-    // Dashboard,
     Reviews,
     SetReview,
-    QrCodeScanner/*,
-    RegisterTeacherStep2,
-    RegisterTeacherStep3,
-    TeacherNotification,
-    RegisterParent,
-    RegisterSchool,
-    StudentJob,
-    SchoolJob,
-    JobAccept,
-    JobNotification,
-    Reviews,
-    TotlesSearch,
-    TotlesLogin*/
+    QrCodeScanner
   ],
   providers: [
     StatusBar,
@@ -221,13 +147,10 @@ export function createTranslateLoader(http: HttpClient) {
     BarcodeScanner,
     GoogleMaps,
     Stripe,
-    // Auth,
     Camera,
-    Geolocation,
     NativeGeocoder,
-    //Parse,
+    Globalization,
     ParseProvider,
-    // API
     SmartieAPI,
     // Errors
     IonicErrorHandler,
