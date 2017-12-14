@@ -181,6 +181,7 @@ h3{
 .available-date{
   position: relative;
   clear: both;
+  display: block;
   h3{
     margin-top: 30px!important;
     margin-bottom:20px!important;
@@ -203,6 +204,7 @@ h3{
     top: 0;
     left: 0;
     z-index: 2;
+    display: block;
     img{
       width: 22px;
       float: left;
@@ -216,14 +218,19 @@ h3{
     float: left!important;
     margin-right: 10%!important;
     border:2px solid #00BC5B!important;
-    min-height: 30px!important;
+    min-height: 40px!important;
     margin-bottom: 20px;
     padding: 0!important;
-    .text-input{
+    display: block;
+    .input.input-md{
       border:0!important;
       padding-right: 0!important;
       padding-left:45px!important;
       font-size: 16px;
+      display: block;
+      .text-input.text-input-md{
+        margin: 0;
+      }
     }
 
     &:last-child{
@@ -296,4 +303,5 @@ h3{
     text-align: center;
     font-size: 15px;
   }
+
 }
