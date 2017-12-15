@@ -49,7 +49,7 @@ export class MyApp {
      }else{
        this.rootPage = Login;
      }*/
-     this.rootPage = RegisterTeacherStep3;
+     this.rootPage = Login;
     })
 
     this.translate.setDefaultLang('en');
