@@ -109,13 +109,13 @@
 
       <div class="available-date">
         <div class="left">
-          <ion-label class="item item-input">
+          <label class="item item-input">
             <!-- <button ion-button >Start Date</button> -->
             <div class="date-icon">
               <img src="./assets/img/date-icon.png" />
             </div>
-          </ion-label>
-          <ion-input type="text" (click)="startDateCalendar()" value="{{ startDate }}"></ion-input>
+          </label>
+          <input type="text" (click)="startDateCalendar()" value="{{ startDate }}" />
 
           <div class="to-text">
             To
@@ -123,24 +123,24 @@
         </div>
 
         <div class="right">
-          <ion-label class="item item-input">
+          <label class="item item-input">
             <!-- <button ion-button>End Date</button> -->
             <div class="date-icon">
               <img src="./assets/img/date-icon.png" />
             </div>
-          </ion-label>
-          <ion-input type="text" (click)="endDateCalendar()" value="{{ endDate }}"></ion-input>
+          </label>
+          <input type="text" (click)="endDateCalendar()" value="{{ endDate }}" />
         </div>
 
       </div>
 
       <div class="available-time">
         <div class="left">
-          <ion-label class="item item-input">
+          <label class="item item-input">
             <div class="clock-icon">
               <img src="./assets/img/clock-icon.png" />
             </div>
-          </ion-label>
+          </label>
           <ion-datetime displayFormat="HH-mm" formControlName="startTime"></ion-datetime>
 
           <div *ngIf="Teacherstep3Form.get('startTime').invalid && Teacherstep3Form.get('startTime').touched" class="item item-message">
@@ -152,11 +152,11 @@
         </div>
 
         <div class="right">
-          <ion-label class="item item-input right-box">
+          <label class="item item-input right-box">
             <div class="clock-icon">
               <img src="./assets/img/clock-icon.png" />
             </div>
-          </ion-label>
+          </label>
           <ion-datetime displayFormat="HH-mm" formControlName="endTime"></ion-datetime>
 
           <div *ngIf="Teacherstep3Form.get('endTime').invalid && Teacherstep3Form.get('endTime').touched" class="item item-message">

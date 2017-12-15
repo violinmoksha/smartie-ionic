@@ -146,7 +146,7 @@ h3{
     position: absolute;
     left: 0;
     right: 0;
-    top:20px;
+    top: 0;
     margin: auto;
     width: 25px;
     font-size: 18px;
@@ -157,14 +157,14 @@ h3{
     height: 40px;
     background: none;
     position: absolute;
-    top: 20px;
+    top: 7px;
     left: 0;
     z-index: 2;
     display: block;
     img{
       width: 22px;
       float: left;
-      margin-left: 10px;
+      margin-left: 5px;
     }
   }
   .item-input{
@@ -214,13 +214,13 @@ h3{
     height: 40px;
     background: none;
     position: absolute;
-    top: 20px;
+    top: 5px;
     left: 0;
     z-index: 2;
     img{
       width: 25px;
       float: left;
-      margin-left: 10px;
+      margin-left: 5px;
     }
   }
   .item-input{
@@ -263,7 +263,7 @@ h3{
   .left {
     float: left !important;
 
-    ion-label {
+    label {
       width:90% !important;
     }
 
@@ -276,8 +276,9 @@ h3{
 
     input {
       position: absolute;
-      top: 0px;
-      left: 25px;
+      top: 5px;
+      left: 30px;
+      width: 90px;
     }
 
     .to-text {
@@ -286,7 +287,7 @@ h3{
 
     .datetime-text {
       position: absolute;
-      top: 25px;
+      top: 0px;
       left: 25px;
     }
   }
@@ -294,20 +295,21 @@ h3{
   .right {
     float: right !important;
 
-    ion-label {
+    label {
       width: 90% !important;
       margin-left: 11%;
     }
 
     input {
       position: absolute;
-      top: 0;
-      left: 40px;
+      top: 5px;
+      right: 40px;
+      width: 80px;
     }
 
     .datetime-text {
       position: absolute;
-      top: 25px;
+      top: 0;
       right: 25px;
     }
 
