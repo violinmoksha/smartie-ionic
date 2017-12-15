@@ -65,7 +65,7 @@
       </ion-list>
 
       <div class="teacher-cv">
-        <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="">
+        <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="" />
         <div class="button button-cv">{{ "uploadCreds" | translate }}</div>
         <span class="input-label">{{ "credsVerify" | translate }}</span>
       </div>
@@ -80,7 +80,7 @@
         </ion-slide>
       </ion-slides>
 
-    <h3>{{ "currency" | translate }}</h3>
+      <h3>{{ "currency" | translate }}</h3>
 
       <ion-slides (ionSlideDidChange)="currencyChanged()" slidesPerView="4">
         <ion-slide (click)="filterCurrency(currency.value)" [ngClass]="{'active': userCurrency == currency.value}" *ngFor="let currency of currencies">
@@ -104,54 +104,67 @@
       <div *ngIf="!Teacherstep3Form.controls['prefLocation'].valid && Teacherstep3Form.controls['prefLocation'].touched" class="item item-message">
         {{ "prefLearnLoc" | translate }}
       </div>
-      <div class="available-date">
+
       <h3>{{ "availableTimings" | translate }}</h3>
-      <label class="item item-input">
 
-        <!-- <button ion-button >Start Date</button> -->
-        <div class="date-icon">
-          <img src="./assets/img/date-icon.png" />
-        </div>
-        <ion-input type="text" (click)="startDateCalendar()" value="{{ startDate }}"></ion-input>
-      </label>
-      <div class="to-text">
-          To
-      </div>
-      <label class="item item-input">
-        <!-- <button ion-button>End Date</button> -->
-        <div class="date-icon">
-          <img src="./assets/img/date-icon.png" />
-        </div>
-        <ion-input type="text" (click)="endDateCalendar()" value="{{ endDate }}"></ion-input>
-      </label>
-    </div>
+      <div class="available-date">
+        <div class="left">
+          <ion-label class="item item-input">
+            <!-- <button ion-button >Start Date</button> -->
+            <div class="date-icon">
+              <img src="./assets/img/date-icon.png" />
+            </div>
+          </ion-label>
+          <ion-input type="text" (click)="startDateCalendar()" value="{{ startDate }}"></ion-input>
 
-    <div class="available-time">
-      <label class="item item-input">
-        <div class="clock-icon">
-          <img src="./assets/img/clock-icon.png" />
+          <div class="to-text">
+            To
+          </div>
         </div>
-        <ion-datetime displayFormat="HH-mm" formControlName="startTime"></ion-datetime>
-      </label>
 
-      <div *ngIf="Teacherstep3Form.get('startTime').invalid && Teacherstep3Form.get('startTime').touched" class="item item-message">
-        Start time is required.
-      </div>
-      <div class="to-text">
-          To
-      </div>
-      <label class="item item-input right-box">
-        <div class="clock-icon">
-          <img src="./assets/img/clock-icon.png" />
+        <div class="right">
+          <ion-label class="item item-input">
+            <!-- <button ion-button>End Date</button> -->
+            <div class="date-icon">
+              <img src="./assets/img/date-icon.png" />
+            </div>
+          </ion-label>
+          <ion-input type="text" (click)="endDateCalendar()" value="{{ endDate }}"></ion-input>
         </div>
-        <ion-datetime displayFormat="HH-mm" formControlName="endTime"></ion-datetime>
-      </label>
 
-      <div *ngIf="Teacherstep3Form.get('endTime').invalid && Teacherstep3Form.get('endTime').touched" class="item item-message">
-        End time is required.
       </div>
 
-    </div>
+      <div class="available-time">
+        <div class="left">
+          <ion-label class="item item-input">
+            <div class="clock-icon">
+              <img src="./assets/img/clock-icon.png" />
+            </div>
+          </ion-label>
+          <ion-datetime displayFormat="HH-mm" formControlName="startTime"></ion-datetime>
+
+          <div *ngIf="Teacherstep3Form.get('startTime').invalid && Teacherstep3Form.get('startTime').touched" class="item item-message">
+            Start time is required.
+          </div>
+          <div class="to-text">
+            To
+          </div>
+        </div>
+
+        <div class="right">
+          <ion-label class="item item-input right-box">
+            <div class="clock-icon">
+              <img src="./assets/img/clock-icon.png" />
+            </div>
+          </ion-label>
+          <ion-datetime displayFormat="HH-mm" formControlName="endTime"></ion-datetime>
+
+          <div *ngIf="Teacherstep3Form.get('endTime').invalid && Teacherstep3Form.get('endTime').touched" class="item item-message">
+            End time is required.
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <button class="button button-positive" [disabled]="!Teacherstep3Form.valid" ion-button full>{{ "submit" | translate }}</button>

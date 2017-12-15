@@ -80,23 +80,27 @@ export class RegisterTeacherStep2 {
       profileMessage: new FormControl('', Validators.required)
     })
 
-    this.globalization.getLocaleName().then((locale) => {
-      let LangAPI = this.smartieApi.getApi(
-        'getNationalLanguages',
-        { country: locale.value.split('-')[1] }
-      );
+    if (this.globalization == undefined) {
+      this.globalization.getLocaleName().then((locale) => {
+        let LangAPI = this.smartieApi.getApi(
+          'getNationalLanguages',
+          { country: locale.value.split('-')[1] }
+        );
 
-      return new Promise(resolve => {
-        interface Response {
-          result: any;
-        };
-        this.smartieApi.http.post<Response>(LangAPI.apiUrl, LangAPI.apiBody, LangAPI.apiHeaders).subscribe(res => {
-          this.languages = res.result.languages;
+        return new Promise(resolve => {
+          interface Response {
+            result: any;
+          };
+          this.smartieApi.http.post<Response>(LangAPI.apiUrl, LangAPI.apiBody, LangAPI.apiHeaders).subscribe(res => {
+            this.languages = res.result.languages;
+          })
         })
-      })
-    }).catch((error: any) => {
-      console.log(error);
-    });
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    } else {
+      this.languages = ['English', 'Chinese', 'Spanish', 'Hindi', 'Portuguese', 'German', 'Italian', 'French', 'Japanese', 'Korean', 'Tamil', 'Thai', 'Swiss German'];
+    }
   }
 
   /*onChangeTeacherLanguage(name: string, isChecked: boolean) {

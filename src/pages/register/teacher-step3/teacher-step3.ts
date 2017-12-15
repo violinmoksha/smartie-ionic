@@ -108,7 +108,7 @@ export class RegisterTeacherStep3 {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController) {
 
-    this.languages = navParams.data.form2Value.languages;
+    //this.languages = navParams.data.form2Value.languages;
     //this.languages = ['English', 'Spanish', 'Chinese', 'Hindi'];
 
     function dateValidator(c: AbstractControl){

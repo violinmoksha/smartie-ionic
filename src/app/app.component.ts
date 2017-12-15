@@ -8,6 +8,9 @@ import { Payment } from '../pages/payment/payment';
 import { QrCodeScanner } from '../pages/qr-code-scanner/qr-code-scanner';
 import { Language } from '../pages/language/language';
 import { Login } from '../pages/login/login';
+
+import { RegisterTeacherStep3 } from '../pages/register/teacher-step3/teacher-step3';
+
 /*
 import { RegisterTeacher } from '../pages/register/teacher';
 import { RegisterTeacherStep2 } from '../pages/register/teacher2';
@@ -41,11 +44,12 @@ export class MyApp {
     this.initializeApp();
 
     this.storage.get('sessionToken').then((val) => {
-     if(val !== 'undefined'){
+     /*if(val !== 'undefined'){
        this.rootPage = Login;
      }else{
        this.rootPage = Login;
-     }
+     }*/
+     this.rootPage = RegisterTeacherStep3;
     })
 
     this.translate.setDefaultLang('en');
