@@ -138,186 +138,88 @@ h3{
       }
     }
 }
-.available-date {
-  position: relative;
-  clear: both;
-  display: block;
-  .to-text{
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    margin: auto;
-    width: 25px;
-    font-size: 18px;
-    text-align: center;
-  }
-  .date-icon {
-    width: 100%;
-    height: 40px;
-    background: none;
-    position: absolute;
-    top: 7px;
-    left: 0;
-    z-index: 2;
-    display: block;
-    img{
-      width: 22px;
-      float: left;
-      margin-left: 5px;
-    }
-  }
-  .item-input{
-    width: 35%!important;
-    float: left!important;
-    margin-right: 10%!important;
-    border:2px solid #00BC5B!important;
-    min-height: 40px!important;
-    margin-bottom: 20px;
-    padding: 0!important;
-    display: block;
-    .input.input-md{
-      border:0!important;
-      padding-right: 0!important;
-      padding-left:45px!important;
-      font-size: 16px;
-      display: block;
-      .text-input.text-input-md{
-        margin: 0;
-      }
-    }
 
-    &:last-child{
-      margin-right: 0!important;
-      float: right;
+.available-date{
+    width: 100%;
+    margin-bottom: 15px;
+    .left, .right{
+        float: left;
+        width: 45%;
+        .item-input{
+          padding: 0!important ;
+          position: relative;
+          ::after{
+            content: '';
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+          }
+          .input{
+            border:0!important;
+            padding-left:40px;
+            height: 45px;
+            position: relative;
+            border:2px solid #00BC5B!important;
+            width: 100%;
+            padding-left:45px!important;
+            background-image: url(../assets/img/date-icon.png);
+            background-size: 22px;
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            .text-input{
+              height: 45px;
+              line-height: 45px;
+              font-size: 15px;
+            }
+          }
+        }
     }
-  }
+    .to-text{
+      float: left;
+      width: 10%;
+      text-align: center;
+      line-height: 50px;
+    }
 }
 
 .available-time{
-  position: relative;
-  clear: both;
-  height:50px;
-  //padding-bottom: 30px;
-  .to-text{
-    position: absolute;
-    left: 0;
-    right: 0;
-    top:20px;
-    margin: auto;
-    width: 25px;
-    font-size: 18px;
-    text-align: center;
-  }
-  .clock-icon {
     width: 100%;
-    height: 40px;
-    background: none;
-    position: absolute;
-    top: 5px;
-    left: 0;
-    z-index: 2;
-    img{
-      width: 25px;
+    .left, .right{
+        float: left;
+        width: 45%;
+        .item-datetime{
+          padding: 0!important ;
+          position: relative;
+          .datetime{
+            border:0!important;
+            height: 45px;
+            position: relative;
+            border:2px solid #00BC5B!important;
+            width: 100%!important;
+            padding: 0!important;
+            padding-left:45px!important;
+            background-image: url(../assets/img/clock-icon.png);
+            background-size: 22px;
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            .datetime-text{
+              height: 45px;
+              line-height: 42px;
+              font-size: 15px!important;
+            }
+            .item-cover-default{
+              position: absolute;
+              width: 100%;
+            }
+          }
+        }
+    }
+    .to-text{
       float: left;
-      margin-left: 5px;
+      width: 10%;
+      text-align: center;
+      line-height: 50px;
     }
-  }
-  .item-input{
-    width: 45%!important;
-    float: left!important;
-    margin-right: 10%!important;
-    border:2px solid #00BC5B!important;
-    min-height: 40px!important;
-    margin-bottom: 20px;
-    padding: 0!important;
-    .datetime{
-      border:0!important;
-      padding-right: 0!important;
-      padding-left:45px!important;
-      font-size: 16px;
-    }
-  }
-  .right-box{
-    margin-right: 0!important;
-    float: right;
-    margin-bottom:60px;
-  }
-  .item-message{
-    position: absolute;
-    left: 0;
-    right:0;
-    margin: auto;
-    top: 60px;
-    text-align: center;
-    font-size: 15px;
-  }
-
-}
-
-.available-date, .available-time {
-  .left, .right {
-    width: 50% !important;
-  }
-
-  .left {
-    float: left !important;
-
-    label {
-      width:90% !important;
-    }
-
-    ion-datetime {
-      position: absolute;
-      width: 50% !important;
-      top: 0px;
-      height: 50px !important;
-    }
-
-    input {
-      position: absolute;
-      top: 5px;
-      left: 30px;
-      width: 90px;
-    }
-
-    .to-text {
-      width:20% !important;
-    }
-
-    .datetime-text {
-      position: absolute;
-      top: 0px;
-      left: 25px;
-    }
-  }
-
-  .right {
-    float: right !important;
-
-    label {
-      width: 90% !important;
-      margin-left: 11%;
-    }
-
-    input {
-      position: absolute;
-      top: 5px;
-      right: 40px;
-      width: 80px;
-    }
-
-    .datetime-text {
-      position: absolute;
-      top: 0;
-      right: 25px;
-    }
-
-  }
-}
-
-.available-time .left {
-  .datetime-text {
-    left: 45px !important;
-  }
 }
