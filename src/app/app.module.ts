@@ -28,6 +28,7 @@ import { Payment } from '../pages/payment/payment';
 import { PaymentConfirm } from '../pages/payment/payment-confirm/payment-confirm';
 import { PaymentThankyou } from '../pages/payment/payment-thankyou/payment-thankyou';
 import { Login } from '../pages/login/login';
+import { ForgotPassword } from '../pages/forgot-password/forgot-password';
 import { TotlesSearch } from '../pages/totles-search/totles-search';
 import { TeacherJobAccepted } from '../pages/teacher-job-accepted/teacher-job-accepted';
 import { AllAccepteds } from '../pages/all-accepteds/all-accepteds';
@@ -84,6 +85,7 @@ export function createTranslateLoader(http: HttpClient) {
     PaymentConfirm,
     PaymentThankyou,
     Login,
+    ForgotPassword,
     TotlesSearch,
     Language,
     TeacherJobAccepted,
@@ -130,6 +132,7 @@ export function createTranslateLoader(http: HttpClient) {
     PaymentConfirm,
     PaymentThankyou,
     Login,
+    ForgotPassword,
     TotlesSearch,
     Language,
     TeacherJobAccepted,

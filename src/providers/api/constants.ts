@@ -46,6 +46,7 @@ export class Constants {
 
     // login
     loginUser: '/loginUser',
+    forgotPassword: '/forgotPassword',
     totlesSearch: '/totlesSearch',
     getNotifyCount: '/getNotifyCount',
     totlesSearchRole: '/totlesSearchRole',

@@ -42,6 +42,9 @@
     <img src="./assets/img/facebook-icon.png" width="12px"> {{ "loginFb" | translate }}
   </a>
 
-  <div class="register-block">{{ "dontHaveAcct" | translate }} <a (click)="pushItem()">{{ "signUp" | translate }}</a></div>
+  <div class="register-block">
+    {{ "dontHaveAcct" | translate }} <a (click)="pushRegister()">{{ "signUp" | translate }}</a><br/>
+    <br /><a (click)="pushForgotPassword()">Forgot your password?</a>
+  </div>
 </div>
 </ion-content>

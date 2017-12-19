@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Register } from '../register/register';
+import { ForgotPassword } from '../forgot-password/forgot-password';
 import { TotlesSearch } from '../totles-search/totles-search';
 import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
 import { Storage } from '@ionic/storage';
@@ -121,8 +122,11 @@ export class Login {
     })
   }
 
-  pushItem(){
+  pushRegister(){
     this.navCtrl.push(Register);
   }
 
+  pushForgotPassword(){
+    this.navCtrl.push(ForgotPassword);
+  }
 }
