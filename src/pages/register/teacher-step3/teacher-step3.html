@@ -37,7 +37,7 @@
         <div class="reg-sub-title"><h3>{{ "langsOfExpertise" | translate }}</h3></div>
 
         <ion-item *ngFor="let lang of languages">
-          <ion-label>{{lang}}</ion-label>
+          <ion-label class="lang-level-label">{{lang}}</ion-label>
           <ion-checkbox (ionChange)="onChangeTeacherLanguage(lang, $event.checked)"></ion-checkbox>
         </ion-item>
       </div>
@@ -45,7 +45,7 @@
       <div class="reg-section">
         <div class="reg-sub-title"><h3>{{ "levelsCapable" | translate }}</h3></div>
         <ion-item *ngFor="let level of this.levels">
-          <ion-label>{{ level.name }}</ion-label>
+          <ion-label class="lang-level-label">{{ level.name }}</ion-label>
           <ion-checkbox (ionChange)="onChangeLevelLanguage(level.name, $event.checked)" ></ion-checkbox>
         </ion-item>
       </div>
@@ -127,7 +127,7 @@
       <div class="available-time">
         <div class="left">
           <ion-item>
-            <ion-datetime displayFormat="HH-mm" formControlName="startTime"></ion-datetime>
+            <ion-datetime displayFormat="HH:mm" formControlName="startTime"></ion-datetime>
           </ion-item>
           <div *ngIf="Teacherstep3Form.get('startTime').invalid && Teacherstep3Form.get('startTime').touched" class="item item-message">
             Start time is required.
@@ -138,7 +138,7 @@
         </div>
         <div class="right">
           <ion-item>
-            <ion-datetime displayFormat="HH-mm" formControlName="endTime"></ion-datetime>
+            <ion-datetime displayFormat="HH:mm" formControlName="endTime"></ion-datetime>
           </ion-item>
           <div *ngIf="Teacherstep3Form.get('endTime').invalid && Teacherstep3Form.get('endTime').touched" class="item item-message">
             End time is required.
@@ -146,11 +146,6 @@
         </div>
         <div class="clear"></div>
       </div>
-
-
-
-
-
     </div>
 
     <button class="button button-positive" [disabled]="!Teacherstep3Form.valid" ion-button full>{{ "submit" | translate }}</button>

@@ -44,12 +44,14 @@ export class MyApp {
     this.initializeApp();
 
     this.storage.get('sessionToken').then((val) => {
-     /*if(val !== 'undefined'){
+     if(val !== 'undefined'){
        this.rootPage = Login;
      }else{
        this.rootPage = Login;
-     }*/
-     this.rootPage = Login;
+     }
+     // TODO @john: any time u need to fix a specific page UI
+     // just uncomment the following line and recomment the above logic
+     //this.rootPage = RegisterTeacherStep3;
     })
 
     this.translate.setDefaultLang('en');
