@@ -20,14 +20,14 @@
   <form [formGroup]="ReviewForm" name="ReviewForm" (ngSubmit)="ReviewSubmit(ReviewForm.value)" novalidate>
     <div class="profile-column">
       <div class="pr-review-top">
-        <span class="reveiwer-image"><img src="{{ params.profileData.profilePhoto.url }}"></span>
+        <span class="reveiwer-image" *ngIf="params.profileData.profilePhoto"><img src="{{ params.profileData.profilePhoto.url }}"></span>
         <span class="reviewer-name">{{ params.profileData.fullname }}</span>
         <span class="reviewer-type">{{ params.profileData.role }}</span>
       </div>
       <div class="pr-review-middle">
       <span>How many Golden star would you give for </span>
       <span class="re-name">{{ params.profileData.fullname }}</span>
-      <star-rating-comp formControlName="rating" [starType]="'svg'" [rating]="0"></star-rating-comp>
+      <star-rating-comp [starType]="'svg'" [rating]="0"></star-rating-comp>
       </div>
       <div class="pr-review-bottom">
         <label for="">Your Feedback</label>

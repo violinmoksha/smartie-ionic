@@ -18,7 +18,6 @@ export class ViewProfile {
   private params: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    console.log(navParams.data);
     this.params = navParams.data;
   }
 
@@ -27,7 +26,7 @@ export class ViewProfile {
   }
 
   viewReviews(profileId){
-    this.navCtrl.push(Reviews, this.params.requestedId);
+    this.navCtrl.push(Reviews, this.params);
   }
 
 }

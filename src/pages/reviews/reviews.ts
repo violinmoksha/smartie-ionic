@@ -17,10 +17,16 @@ export class Reviews {
 
   private reviewId: any;
   private reviews: any;
+  private reviewCount: any;
+  private profileData: any;
+  private loggedUserName: any;
+  private loggedRole: any;
   private body: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public smartieApi: SmartieAPI) {
-    this.reviewId = navParams.data;
+    this.reviewId = navParams.data.requestedId;
+    this.loggedUserName = navParams.data.fullname;
+    this.loggedRole = navParams.data.loggedRole;
   }
 
   ionViewDidLoad() {
@@ -32,11 +38,15 @@ export class Reviews {
         'getReviews',
         this.body
       );
-      interface Response {};
+      interface Response {
+        result: any
+      }
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        let userReviews = response;
-        console.log(userReviews);
-        this.reviews = userReviews;
+        let userReviews = response.result;
+        this.reviews = userReviews.reviews;
+        this.reviewCount = this.reviews.length;
+        this.profileData = userReviews.reviewedProfile;
+        console.log(this.reviews);
       }, err => {
         console.log(err);
       })
@@ -75,7 +85,7 @@ export class Reviews {
   }
 
   addReview(){
-    this.navCtrl.push(SetReview, { profileData : this.reviewId });
+    this.navCtrl.push(SetReview, { profileData : this.profileData });
   }
 
 }
