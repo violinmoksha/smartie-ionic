@@ -52,6 +52,7 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { Globalization } from '@ionic-native/globalization';
 import { IonicStorageModule } from '@ionic/storage';
 import { Stripe } from '@ionic-native/stripe';
+import { Push, PushObject } from '@ionic-native/push';
 import { ParseProvider } from '../providers/parse';
 import { SmartieAPI } from '../providers/api/smartie';
 
@@ -155,6 +156,8 @@ export function createTranslateLoader(http: HttpClient) {
     Globalization,
     ParseProvider,
     SmartieAPI,
+    Push,
+    PushObject,
     // Errors
     IonicErrorHandler,
     [{ provide: ErrorHandler, useClass: SmartieErrorHandler }]
