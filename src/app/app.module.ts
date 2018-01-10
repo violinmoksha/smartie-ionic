@@ -54,6 +54,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Stripe } from '@ionic-native/stripe';
 import { ParseProvider } from '../providers/parse';
 import { SmartieAPI } from '../providers/api/smartie';
+import {Push, PushObject, PushOptions} from "@ionic-native/push";
 
 // translation helpers for v2
 // AoT requires an exported function for factories
@@ -157,6 +158,7 @@ export function createTranslateLoader(http: HttpClient) {
     SmartieAPI,
     // Errors
     IonicErrorHandler,
+    Push,
     [{ provide: ErrorHandler, useClass: SmartieErrorHandler }]
   ]
 })
