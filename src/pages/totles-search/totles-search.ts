@@ -138,7 +138,7 @@ export class TotlesSearch {
     });
 
     marker.setMap(this.map);
-    this.map.setZoom(4);
+    this.map.setZoom(5);
     // map.setCenter(marker.getPosition());
     // map.panTo(marker.getPosition())
     this.map.fitBounds(this.bounds);

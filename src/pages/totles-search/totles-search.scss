@@ -2,7 +2,7 @@ page-totles-search {
 
   #map {
     width: 100%;
-    height: 100%;
+    height: 80%;
   }
 
   .notification{
@@ -185,7 +185,9 @@ page-totles-search {
   }
 
   .bottom-search-box{
-    width: 100%;
+    width: 90%;
+    position: fixed;
+    bottom: 0;
     .item-input{
       width: 100%;
       margin: 0;

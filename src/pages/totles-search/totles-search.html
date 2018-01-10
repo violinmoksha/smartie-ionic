@@ -5,17 +5,15 @@
   Ionic pages and navigation.
 -->
 <ion-header [ngClass]="role">
-  <ion-navbar>
+  <ion-toolbar>
     <button ion-button menuToggle>
-      <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-buttons end>
       <button class="notification" (click)="pushAccepteds()"><span>{{ notifyCount }}</span></button>
-
     </ion-buttons>
     <ion-title><img [src]="searchLogo" ></ion-title>
-  </ion-navbar>
+  </ion-toolbar>
 </ion-header>
 
 
