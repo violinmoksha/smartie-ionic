@@ -3,8 +3,10 @@
 
   "menu": "Menu",
   "language": "Language",
-  "profile": "Profile",
-  "payment": "Payment",
+  "profile": "Profile Settings",
+  "payment": "Payment Details",
+  "orders": "Manage Orders",
+  "feedback": "Give Feedback",
 
   "username": "Username",
   "password": "Password",
