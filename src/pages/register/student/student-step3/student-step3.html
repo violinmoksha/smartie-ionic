@@ -85,7 +85,7 @@
 
     </div>
 
-    <button class="button button-positive bg-student" [disabled]="!Studentstep3Form.valid" ion-button full>Complete Registration</button>
+    <button class="button button-positive bg-student" [disabled]="!Studentstep3Form.valid || submitInProgress" ion-button full>Complete Registration</button>
 
   </form>
 

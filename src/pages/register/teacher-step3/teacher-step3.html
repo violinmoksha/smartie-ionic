@@ -148,7 +148,7 @@
       </div>
     </div>
 
-    <button class="button button-positive" [disabled]="!Teacherstep3Form.valid" ion-button full>{{ "submit" | translate }}</button>
+    <button class="button button-positive" [disabled]="!Teacherstep3Form.valid || submitInProgress" ion-button full>{{ "submit" | translate }}</button>
 
   </form>
 

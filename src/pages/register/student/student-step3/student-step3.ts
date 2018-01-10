@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, AlertController, Slides, ModalController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Slides, ModalController, LoadingController } from 'ionic-angular';
 import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { SmartieAPI } from '../../../../providers/api/smartie';
 import { Parse } from 'parse';
@@ -19,6 +19,8 @@ import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "
 })
 export class RegisterStudentStep3 {
 
+  private submitInProgress: boolean;
+  private loading: any;
   private Studentstep3Form : FormGroup;
   private form1Values: any;
   private form2Values: any;
@@ -74,7 +76,11 @@ export class RegisterStudentStep3 {
     { "value": 'THB', "text": 'Thai Baht' },
   ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, private loadingCtrl: LoadingController) {
+    this.submitInProgress = false;
+    this.loading = this.loadingCtrl.create({
+      content: 'Creating Account...'
+    });
 
     this.form1Values = navParams.data.form1Value;
     this.form2Values = navParams.data.form2Value;
@@ -138,6 +144,10 @@ export class RegisterStudentStep3 {
     // console.log(studentData);
     // console.log(this.form1Values);
     // console.log(this.form2Values);
+
+    this.submitInProgress = true;
+    this.loading.present();
+
     let API = this.smartieApi.getApi(
       'signupParentOrStudent',
       {role: 'student', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, profileabout: this.form2Values.profileMessage, langreq: studentData.requiredLang.toString(), levelreq: studentData.requiredLevel.toString(), preflocation: studentData.prefLocation, prefpayrate: this.hourlyRate, prefcurrency: this.userCurrency, partofschool: this.partOfSchool, schoolname: this.form2Values.studentSchoolName, langpref: 'en'}

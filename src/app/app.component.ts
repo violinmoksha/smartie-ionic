@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Push, PushObject, PushOptions } from '@ionic-native/push';
+//import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
 import { Payment } from '../pages/payment/payment';
 import { QrCodeScanner } from '../pages/qr-code-scanner/qr-code-scanner';
@@ -40,7 +40,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private translate: TranslateService, private push: Push) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private translate: TranslateService) {
     this.platform = platform;
     this.initializeApp();
 
@@ -70,7 +70,7 @@ export class MyApp {
 
       // init Push, see https://ionicframework.com/docs/native/push/
       // to check if we have permission
-      this.push.hasPermission().then((res: any) => {
+      /*this.push.hasPermission().then((res: any) => {
         if (res.isEnabled) {
           console.log('We have permission to send push notifications');
         } else {
@@ -114,6 +114,8 @@ export class MyApp {
       pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
 
       pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+
+      */
 
       //Parse.initialize("948b9456-8c0a-4755-9e84-71be3723d338", "49bc1a33-dfe7-4a32-bdcc-ee30b7ed8447");
       //Parse.serverURL = 'https://test.t0tl3s.com/parse';

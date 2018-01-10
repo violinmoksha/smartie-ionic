@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, AlertController, Slides, ModalController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Slides, ModalController, LoadingController } from 'ionic-angular';
 import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { SmartieAPI } from '../../../../providers/api/smartie';
 import { Parse } from 'parse';
@@ -20,6 +20,8 @@ import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "
 })
 export class RegisterSchoolStep3 {
 
+  private submitInProgress: boolean;
+  private loading: any;
   private Schoolstep3Form : FormGroup;
   private form1Values: any;
   private form2Values: any;
@@ -75,7 +77,11 @@ export class RegisterSchoolStep3 {
     { "value": 'THB', "text": 'Thai Baht' },
   ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, private loadingCtrl: LoadingController) {
+    this.submitInProgress = false;
+    this.loading = this.loadingCtrl.create({
+      content: 'Creating Account...'
+    });
 
     this.form1Values = navParams.data.form1Value;
     this.form2Values = navParams.data.form2Value;
@@ -135,6 +141,8 @@ export class RegisterSchoolStep3 {
   }
 
   SchoolSubmit(schoolData){
+    this.submitInProgress = true;
+    this.loading.present();
 
     let API = this.smartieApi.getApi(
       'signupSchool',

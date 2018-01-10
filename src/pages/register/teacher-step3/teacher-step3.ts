@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, AlertController, Slides, ModalController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Slides, ModalController, LoadingController } from 'ionic-angular';
 import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { SmartieAPI } from '../../../providers/api/smartie';
 import { Parse } from 'parse';
@@ -20,6 +20,8 @@ import { Pro } from '@ionic/pro';
 })
 export class RegisterTeacherStep3 {
 
+  private submitInProgress: boolean;
+  private loading: any;
   private Teacherstep3Form : FormGroup;
   public TeacherFiles: any;
   public TeacherFilesView: any;
@@ -106,7 +108,11 @@ export class RegisterTeacherStep3 {
     { "value": 'THB', "text": 'Thai Baht' },
   ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, public loadingCtrl: LoadingController) {
+    this.submitInProgress = false;
+    this.loading = this.loadingCtrl.create({
+      content: 'Creating Account...'
+    });
 
     //this.languages = navParams.data.form2Value.languages;
     this.languages = ['English', 'Spanish', 'Chinese', 'Hindi'];
@@ -288,6 +294,8 @@ export class RegisterTeacherStep3 {
   }
 
   finalTeacherSubmit(form3Values){
+    this.submitInProgress = true;
+    this.loading.present();
 
     let API = this.smartieApi.getApi(
       'signupTeacher',
@@ -318,15 +326,18 @@ export class RegisterTeacherStep3 {
             Promise.all(cvPromises).then(()=>{
               this.setProfilePic().then((pictureResolve) => {
                 this.navCtrl.push(TotlesSearch, {role: 'teacher', fromwhere: 'signUp'});
+                this.loading.dismiss();
               }).catch((pictureReject) => {
+                // TODO: do something in a modal?
                 console.log(pictureReject);
               });
             })
           }else{
             this.setProfilePic().then((pictureResolve) => {
-              console.log('test');
               this.navCtrl.push(TotlesSearch, {role: 'teacher', fromwhere: 'signUp'});
+              this.loading.dismiss();
             }).catch((pictureReject) => {
+              // TODO: do something in the UX here!!
               console.log(pictureReject);
             });
           }
@@ -338,11 +349,11 @@ export class RegisterTeacherStep3 {
             subTitle: signupError.error.split(':')[2],
             buttons: ['OK']
           });
+          this.loading.dismiss();
           alert.present();
         }
       )
     });
-
   }
 
   setProfilePic() {
