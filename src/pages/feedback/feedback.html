@@ -30,7 +30,7 @@
       </ion-item>
     </ion-list>
 
-    <button class="button button-positive" ion-button full>Send Feedback</button>
+    <button class="button button-positive" ion-button full [disabled]="sendInProgress">Send Feedback</button>
   </form>
 </div>
 </ion-content>

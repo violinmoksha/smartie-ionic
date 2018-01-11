@@ -34,6 +34,7 @@ export class Feedback {
   }
 
   sendFeedback(value){
+    this.sendInProgress = true;
     this.loading.present();
     console.log(JSON.stringify(value));
 
