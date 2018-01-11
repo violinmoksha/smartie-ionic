@@ -7,7 +7,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Payment } from '../pages/payment/payment';
 import { QrCodeScanner } from '../pages/qr-code-scanner/qr-code-scanner';
-import { Language } from '../pages/language/language';
+//import { Language } from '../pages/language/language';
+import { Feedback } from '../pages/feedback/feedback';
 import { Login } from '../pages/login/login';
 
 import { RegisterTeacherStep3 } from '../pages/register/teacher-step3/teacher-step3';
@@ -156,12 +157,8 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
-  pushPage(item){
-    if(item == 'language')
-      this.nav.push(Language);
-    if(item == 'payment')
-      this.nav.push(Payment);
-    if(item == 'qrcode')
-      this.nav.push(QrCodeScanner);
+  pushPage(item) {
+    if (item == 'feedback')
+      this.nav.push(Feedback);
   }
 }

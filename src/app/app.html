@@ -5,14 +5,14 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content class="side-bar-menu">
+  <ion-content class="side-bar-menu" padding>
     <ion-list>
-      <!-- <ion-item nav-clear menu-close (click)="pushPage('language')" class="lang" href="#/language">{{ 'translateViewTitle' | translate  }}</ion-item> -->
-      <ion-item nav-clear menu-close (click)="pushPage('profile')"><ion-icon name="settings"></ion-icon>{{ 'profile' | translate }}</ion-item>
-      <ion-item nav-clear menu-close (click)="pushPage('payment')"><ion-icon name="card"></ion-icon>{{ 'payment' | translate }}</ion-item>
-      <ion-item nav-clear menu-close (click)="pushPage('orders')"><ion-icon name="book"></ion-icon>{{ 'orders' | translate }}</ion-item>
-      <ion-item nav-clear menu-close (click)="pushPage('qrcode')"><ion-icon name="qr-scanner"></ion-icon>{{ 'QrScannerText' | translate }}</ion-item>
-      <ion-item nav-clear menu-close (click)="pushPage('feedback')"><ion-icon name="paper"></ion-icon>{{ 'feedback' | translate }}</ion-item>
+      <!-- <ion-item nav-clear menu-close (click)="this.nav.push('language')" class="lang" href="#/language">{{ 'translateViewTitle' | translate  }}</ion-item> -->
+      <button ion-item nav-clear menuClose icon-start><ion-icon name="settings"></ion-icon>{{ 'profile' | translate }}</button>
+      <button ion-item nav-clear menuClose icon-start><ion-icon name="card"></ion-icon>{{ 'payment' | translate }}</button>
+      <button ion-item nav-clear menuClose icon-start><ion-icon name="book"></ion-icon>{{ 'orders' | translate }}</button>
+      <button ion-item nav-clear menuClose icon-start><ion-icon name="qr-scanner"></ion-icon>{{ 'QrScannerText' | translate }}</button>
+      <button (click)="pushPage('feedback')" ion-item nav-clear menuClose icon-start><ion-icon name="paper"></ion-icon>{{ 'feedback' | translate }}</button>
 
       <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}

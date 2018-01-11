@@ -57,7 +57,10 @@ export class Constants {
     setJobRequest: '/setJobRequest',
     getAcceptedJobRequest: '/getAcceptedJobRequest',
     getRequestedJobRequest: '/getRequestedJobRequest',
-    getAllAccepteds: '/getAllAccepteds'
+    getAllAccepteds: '/getAllAccepteds',
+
+    //Mailgun-integrated Endpoints
+    sendFeedback: '/sendFeedback'
   }
 
   public static DEFAULT_LANGUAGE = 'en';
