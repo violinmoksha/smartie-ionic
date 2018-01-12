@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Register } from '../register/register';
 import { ForgotPassword } from '../forgot-password/forgot-password';
@@ -23,7 +23,7 @@ export class Login {
 
   private LoginForm: FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI) {
 
     this.LoginForm = new FormGroup({
       username: new FormControl(''),

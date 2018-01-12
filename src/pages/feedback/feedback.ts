@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ViewController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { Login } from '../../pages/login/login';
 
 /**
  * Generated class for the LoginPage page.
@@ -20,7 +19,7 @@ export class Feedback {
   private loading: any;
   private FeedbackForm: FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private smartieApi: SmartieAPI, private viewCtrl: ViewController, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
     this.loading = this.loadingCtrl.create({
       content: 'Sending Feedback...'
     });

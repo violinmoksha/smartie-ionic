@@ -5,13 +5,11 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 //import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
-import { Payment } from '../pages/payment/payment';
-import { QrCodeScanner } from '../pages/qr-code-scanner/qr-code-scanner';
 //import { Language } from '../pages/language/language';
 import { Feedback } from '../pages/feedback/feedback';
 import { Login } from '../pages/login/login';
 
-import { RegisterTeacherStep3 } from '../pages/register/teacher-step3/teacher-step3';
+//import { RegisterTeacherStep3 } from '../pages/register/teacher-step3/teacher-step3';
 
 /*
 import { RegisterTeacher } from '../pages/register/teacher';
@@ -66,8 +64,11 @@ export class MyApp {
 
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+
+      if (this.platform.is('cordova')) {
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();
+      }
 
       // init Push, see https://ionicframework.com/docs/native/push/
       // to check if we have permission

@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Http, Headers } from '@angular/http';
-import { SmartieAPI } from '../../providers/api/smartie';
-import { Reviews } from '../reviews/reviews';
+//import { SmartieAPI } from '../../providers/api/smartie';
+//import { Reviews } from '../reviews/reviews';
 
 /**
  * Generated class for the SetReviewPage page.
@@ -19,14 +18,13 @@ export class SetReview {
 
   private params: any;
   private ReviewForm : FormGroup;
-  private body: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder) {
     this.params = navParams.data;
 
     console.log(this.params);
 
-    this.ReviewForm = formBuilder.group({
+    this.ReviewForm = this.formBuilder.group({
       review: ['', Validators.required],
       rating: ['']
     })
@@ -37,37 +35,9 @@ export class SetReview {
   }
 
   ReviewSubmit(ReviewData){
-    var currUserRole = localStorage.getItem('loggedUserRole');
-    var currProfile = JSON.parse(localStorage.getItem(currUserRole + 'userProfile'));
-
-    /*if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
-
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.setReview;
-    let headers = new Headers();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
-
-    this.body = { reviewedProfileId: this.params.profileData.objectId, reviewingProfileId: currProfile.profileData.objectId, reviewStars: ReviewData.rating, reviewFeedback: ReviewData.review }
-
-    this.http.post(postUrl, this.body, { headers: headers }).toPromise().then((res) => {
-      this.navCtrl.push(Reviews, { profileData : this.params.profileData });
-    }) */
+    // TODO: commented for a clean LINT, for now, pls proceed
+    //let currUserRole = localStorage.getItem('loggedUserRole');
+    //let currProfile = JSON.parse(localStorage.getItem(currUserRole + 'userProfile'));
   }
 
 }

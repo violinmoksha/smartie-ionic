@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { RegisterTeacherStep3 } from './../teacher-step3/teacher-step3';
 import { Globalization } from '@ionic-native/globalization';
@@ -64,8 +64,6 @@ export class RegisterTeacherStep2 {
     "name": "University",
     "value": "university"
   }];*/
-
-  // private formBuilder: FormBuilder;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, private globalization: Globalization, private smartieApi: SmartieAPI) {
     this.form1Values = navParams.data.form1Value;

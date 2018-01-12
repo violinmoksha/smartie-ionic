@@ -32,7 +32,6 @@ export class TotlesSearch {
   private alert: any;
   private notifyCount: any;
   private latLngUser: any;
-  private searchLogo:string = './assets/img/smartie-horzontal-logo.png';
   //private alertOpts: any;
   // private infoWindow: any;
 

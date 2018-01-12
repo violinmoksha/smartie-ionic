@@ -3,10 +3,9 @@ import { NavController, NavParams, AlertController, Slides, ModalController, Loa
 import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { SmartieAPI } from '../../../providers/api/smartie';
 import { Parse } from 'parse';
-import { ParseProvider } from '../../../providers/parse';
+//import { ParseProvider } from '../../../providers/parse';
 import { TotlesSearch } from '../../totles-search/totles-search';
-import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "ion2-calendar";
-import { Pro } from '@ionic/pro';
+import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 
 /**
  * Generated class for the TeacherStep3Page page.
@@ -108,7 +107,7 @@ export class RegisterTeacherStep3 {
     { "value": 'THB', "text": 'Thai Baht' },
   ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController) {
     this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
       content: 'Creating Account...'
@@ -117,13 +116,14 @@ export class RegisterTeacherStep3 {
     //this.languages = navParams.data.form2Value.languages;
     this.languages = ['English', 'Spanish', 'Chinese', 'Hindi'];
 
+    /*
     function dateValidator(c: AbstractControl){
       return c.get('startDate').value < c.get('endDate').value ? null : { 'dateGreater' : true };
     }
 
     function timeValidator(c: AbstractControl){
       return c.get('startTime').value < c.get('endTime').value ? null : { 'timeGreater' : true };
-    }
+    }*/
 
     this.form1Values = navParams.data.form1Value;
     this.form2Values = navParams.data.form2Value;

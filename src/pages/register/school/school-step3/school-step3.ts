@@ -1,11 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, AlertController, Slides, ModalController, LoadingController } from 'ionic-angular';
-import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
+import { NavController, NavParams, AlertController, Slides, LoadingController } from 'ionic-angular';
+import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { SmartieAPI } from '../../../../providers/api/smartie';
-import { Parse } from 'parse';
-import { ParseProvider } from '../../../../providers/parse';
 import { TotlesSearch } from '../../../totles-search/totles-search';
-import { CalendarModal, CalendarModalOptions, DayConfig, CalendarResult } from "ion2-calendar";
 
 /**
  * Generated class for the SchoolStep3Page page.
@@ -25,7 +22,6 @@ export class RegisterSchoolStep3 {
   private Schoolstep3Form : FormGroup;
   private form1Values: any;
   private form2Values: any;
-  private partOfSchool: any;
   @ViewChild(Slides) hourRate: Slides;
   @ViewChild(Slides) curr: Slides;
   private hourlyRate: any;
@@ -77,7 +73,7 @@ export class RegisterSchoolStep3 {
     { "value": 'THB', "text": 'Thai Baht' },
   ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private parse: ParseProvider, private modalCtrl: ModalController, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
       content: 'Creating Account...'
