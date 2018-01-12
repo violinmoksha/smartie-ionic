@@ -33,6 +33,7 @@ export class TotlesSearch {
   private notifyCount: any;
   private latLngUser: any;
   private searchLogo:string = './assets/img/smartie-horzontal-logo.png';
+  private marker: any;
   //private alertOpts: any;
   // private infoWindow: any;
 
@@ -91,10 +92,9 @@ export class TotlesSearch {
       this.userIcon = './assets/img/student-map-icon30px.png'
     }
 
-    let marker = new google.maps.Marker({
+    this.marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
-      // position: latLng
       position: latLng,
       icon: this.userIcon
     });
@@ -108,7 +108,7 @@ export class TotlesSearch {
 
     this.expertlang = locationData.expertlangs;
 
-    marker.addListener('click', ()=> {
+    this.marker.addListener('click', ()=> {
 
       let profileModal = this.modalCtrl.create(JobRequests,
         {
@@ -137,11 +137,11 @@ export class TotlesSearch {
 
     });
 
-    marker.setMap(this.map);
-    this.map.setZoom(5);
-    // map.setCenter(marker.getPosition());
-    // map.panTo(marker.getPosition())
-    this.map.fitBounds(this.bounds);
+    // this.marker.setMap(this.map);
+    // this.map.setZoom(5);
+    // // map.setCenter(marker.getPosition());
+    // // map.panTo(marker.getPosition())
+    // this.map.fitBounds(this.bounds);
   }
 
   public contentTitle() {
@@ -183,6 +183,15 @@ export class TotlesSearch {
         for(let searchResult of searchResults.result){
           this.createMarkerLocation(searchResult);
         }
+
+        // let myPlace = new google.maps.LatLng(34.0522, -118.2437);
+        // this.bounds.extend(myPlace);
+
+        this.marker.setMap(this.map);
+        this.map.setZoom(1);
+        // map.setCenter(marker.getPosition());
+        // map.panTo(marker.getPosition())
+        this.map.fitBounds(this.bounds);
       })
     })
   }
