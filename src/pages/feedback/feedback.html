@@ -19,18 +19,9 @@
   </div>
 
   <form [formGroup]="FeedbackForm" name="FeedbackForm" (ngSubmit)="sendFeedback(FeedbackForm.value)" novalidate>
-    <ion-list>
-      <ion-item>
-        <ion-label>Email:</ion-label>
-        <ion-input placeholder="youremail@mail.com" type="text" formControlName="email"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Feedback: </ion-label>
-        <ion-textarea placeholder="I think this app rocks but I have such-and-such issue with..." type="text" formControlName="feedback"></ion-textarea>
-      </ion-item>
-    </ion-list>
-
-    <button class="button button-positive" ion-button full [disabled]="sendInProgress">Send Feedback</button>
+    <ion-input class="form-element" placeholder="youremail@mail.com" type="text" formControlName="email"></ion-input>
+    <ion-textarea class="form-element text-input-md" placeholder="I think this app rocks but I have some feedback..." formControlName="feedback"></ion-textarea>
+    <button class="button button-positive" ion-button full>Send Feedback</button>
   </form>
 </div>
 </ion-content>

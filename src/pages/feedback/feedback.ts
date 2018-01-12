@@ -12,17 +12,15 @@ import { Login } from '../../pages/login/login';
  */
 
 @Component({
-  selector: 'page-feedback',
+  selector: 'feedback-page',
   templateUrl: 'feedback.html',
 })
 export class Feedback {
 
-  private sendInProgress: boolean;
   private loading: any;
   private FeedbackForm: FormGroup;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private smartieApi: SmartieAPI, private viewCtrl: ViewController, private loadingCtrl: LoadingController) {
-    this.sendInProgress = false;
     this.loading = this.loadingCtrl.create({
       content: 'Sending Feedback...'
     });
@@ -34,11 +32,13 @@ export class Feedback {
   }
 
   sendFeedback(value){
-    this.sendInProgress = true;
     this.loading.present();
-    console.log(JSON.stringify(value));
 
     // p0 man validation heh but this is reeaaally simple form
+    if (value.email == '' || value.feedback == '') {
+      this.loading.dismiss();
+    }
+
     if (value.email == '') {
       let alert = this.alertCtrl.create({
         title: 'Please specify your email!',
@@ -73,7 +73,6 @@ export class Feedback {
           });
           alert.present();
         }, err => {
-          console.log(JSON.stringify(err));
           this.loading.dismiss();
           if (err.error.error.indexOf('valid') !== -1) {
             let alert = this.alertCtrl.create({
@@ -94,41 +93,5 @@ export class Feedback {
       });
     }
   }
-
-  /*
-  forgotPassword(email){
-    if (email == '') {
-      let alert = this.alertCtrl.create({
-        title: 'Email Link failed!',
-        subTitle: 'Please specify your Email!',
-        buttons: ['OK']
-      });
-      alert.present();
-    } else if (email !== '') {
-      let API = this.smartieApi.getApi(
-        'forgotPassword',
-        {email: email}
-      );
-
-      return new Promise(resolve => {
-        interface Response {
-          sent: boolean
-        };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
-          if (res.sent == true) {
-            this.navCtrl.push(Login);
-          } else {
-            let alert = this.alertCtrl.create({
-              title: 'Email Link failed!',
-              subTitle: 'User unknown!',
-              buttons: ['OK']
-            });
-            alert.present();
-          }
-        });
-      });
-    }
-  }
-  */
 
 }

@@ -131,7 +131,11 @@
   button {
     font-size:2rem;
     ion-icon {
-      padding-right: 15px;
+      padding: 7px 15px 0 0;
     }
+  }
+
+  .scroll-content {
+    padding: 0 !important;
   }
 }

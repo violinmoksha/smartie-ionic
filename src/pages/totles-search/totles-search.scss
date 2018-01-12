@@ -9,15 +9,17 @@ page-totles-search {
     background: none!important;
     border: 0!important;
     width: 23px;
-    height: 23px;
+    height: 28px;
+    z-index: 10;
     position: relative;
     padding: 0;
-    background-image: url(./../assets/img/top-bar-alert-icon.png)!important;
+    background-image: url(./../assets/img/Logo-icon-small.png)!important;
     background-repeat: no-repeat!important;
     background-position: center;
     background-size: 100%!important;
     margin-top: 5px;
     margin-right: 22px;
+    overflow-y: auto;
     span{
       position: absolute;
       background: #00BC5B;
