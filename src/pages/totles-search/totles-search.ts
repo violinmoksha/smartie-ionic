@@ -38,7 +38,7 @@ export class TotlesSearch {
 
   private alertCtrl: AlertController;
 
-  private searchLogo = '/assets/img/smartie-horzontal-logo.png';
+  public searchLogo = '/assets/img/smartie-horzontal-logo.png';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController) {
     this.role = navParams.data.role;
@@ -197,9 +197,15 @@ export class TotlesSearch {
         result: any
       }
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(searchResults => {
+        let mapCenter;
+        if(latLng !== null){
+          mapCenter = latLng;
+        } else if (searchLoc !== null) {
+          mapCenter = searchResults.result.latLng;
+        }
         let mapOptions = {
           zoom: 5,
-          center: latLng,
+          center: mapCenter,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
@@ -207,14 +213,11 @@ export class TotlesSearch {
         // map always should cover 200km radius from Profile user
         // thus the actual applied trigonometry yaaaaaaay!!!!^$%^
         let radiusInKm = 200;
-        let pointSouthwest = this.destinationPoint(220, radiusInKm / 2, latLng);
-        let pointNortheast = this.destinationPoint(45, radiusInKm / 2, latLng);
+        let pointSouthwest = this.destinationPoint(220, radiusInKm / 2, mapCenter);
+        let pointNortheast = this.destinationPoint(45, radiusInKm / 2, mapCenter);
         this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
 
-        console.log(`southwest: ${pointSouthwest}`);
-        console.log(`northeast: ${pointNortheast}`);
-
-        for(let searchResult of searchResults.result){
+        for(let searchResult of searchResults.result.jobs){
           this.createMarkerLocation(searchResult);
         }
 
