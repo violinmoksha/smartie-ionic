@@ -12,7 +12,9 @@
       <button ion-item nav-clear menuClose icon-start><ion-icon name="card"></ion-icon>{{ 'payment' | translate }}</button>
       <button ion-item nav-clear menuClose icon-start><ion-icon name="book"></ion-icon>{{ 'orders' | translate }}</button>
       <button ion-item nav-clear menuClose icon-start><ion-icon name="qr-scanner"></ion-icon>{{ 'QrScannerText' | translate }}</button>
+
       <button (click)="pushPage('feedback')" ion-item nav-clear menuClose icon-start><ion-icon name="paper"></ion-icon>{{ 'feedback' | translate }}</button>
+      <button (click)="pushPage('login')" ion-item nav-clear menuClose icon-start><ion-icon name="log-out"></ion-icon>{{ 'logout' | translate }}</button>
 
       <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}

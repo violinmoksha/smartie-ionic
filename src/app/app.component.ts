@@ -161,5 +161,9 @@ export class MyApp {
   pushPage(item) {
     if (item == 'feedback')
       this.nav.push(Feedback);
+    else if (item == 'login') { // logout -->
+      localStorage.clear(); // dump session
+      this.nav.push(Login); // send to Login
+    }
   }
 }
