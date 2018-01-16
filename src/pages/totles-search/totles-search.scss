@@ -17,9 +17,8 @@ page-totles-search {
     background-repeat: no-repeat!important;
     background-position: center;
     background-size: 100%!important;
-    margin-top: 5px;
+    margin-top: 0px;
     margin-right: 22px;
-    overflow-y: auto;
     span{
       position: absolute;
       background: #00BC5B;
@@ -28,6 +27,7 @@ page-totles-search {
       left: 10px;
       top: -7px;
       border-radius: 18px;
+      z-index: 11;
     }
   }
   .totles-search-alert{

@@ -38,6 +38,8 @@ export class TotlesSearch {
 
   private alertCtrl: AlertController;
 
+  private searchLogo = '/assets/img/smartie-horzontal-logo.png';
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController) {
     this.role = navParams.data.role;
     this.fromWhere = navParams.data.fromwhere;
@@ -97,7 +99,7 @@ export class TotlesSearch {
       position: latLng,
       icon: this.userIcon
     });
-    this.bounds.extend(latLng);
+    //this.bounds.extend(latLng);
 
     if(locationData.profilephoto){
       this.profilePhoto = locationData.profilephoto.url;
@@ -150,6 +152,33 @@ export class TotlesSearch {
     return this.sanitizer.bypassSecurityTrustHtml(this._contentMessage);
   }
 
+  public toRad(pt) {
+    return pt * Math.PI / 180;
+  }
+
+  public toDeg(pt) {
+    return pt * 180 / Math.PI;
+  }
+
+  public destinationPoint(brng, dist, LatLng) {
+    dist = dist / 6371;
+    brng = this.toRad(brng);
+    let lat1 = this.toRad(LatLng.latitude);
+    let lon1 = this.toRad(LatLng.longitude);
+
+    let lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) +
+                          Math.cos(lat1) * Math.sin(dist) * Math.cos(brng));
+
+    let lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(dist) *
+                                  Math.cos(lat1),
+                                  Math.cos(dist) - Math.sin(lat1) *
+                                  Math.sin(lat2));
+
+    if (isNaN(lat2) || isNaN(lon2)) return null;
+
+    return new google.maps.LatLng(this.toDeg(lat2), this.toDeg(lon2));
+  }
+
   totlesSearchResult(latLng, searchRole, searchLoc){
     let searchData;
     if(latLng !== null){
@@ -157,8 +186,6 @@ export class TotlesSearch {
     }else if(searchLoc !== null){
       searchData = { role: searchRole, searchloc: searchLoc };
     }
-
-    // let searchData = { latlng: latLng, role: searchRole };
 
     let API = this.smartieApi.getApi(
       'totlesSearch',
@@ -170,24 +197,32 @@ export class TotlesSearch {
         result: any
       }
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(searchResults => {
-        var mapOptions = {
-            zoom: 1,
-            // center: latLng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+        let mapOptions = {
+          zoom: 5,
+          center: latLng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-        this.bounds = new google.maps.LatLngBounds();
+
+        // map always should cover 200km radius from Profile user
+        // thus the actual applied trigonometry yaaaaaaay!!!!^$%^
+        let radiusInKm = 200;
+        let pointSouthwest = this.destinationPoint(220, radiusInKm / 2, latLng);
+        let pointNortheast = this.destinationPoint(45, radiusInKm / 2, latLng);
+        this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
+
+        console.log(`southwest: ${pointSouthwest}`);
+        console.log(`northeast: ${pointNortheast}`);
 
         for(let searchResult of searchResults.result){
           this.createMarkerLocation(searchResult);
         }
 
-        // let myPlace = new google.maps.LatLng(34.0522, -118.2437);
-        // this.bounds.extend(myPlace);
+        //let myPlace = new google.maps.LatLng(34.0522, -118.2437);
+        //this.bounds.extend(myPlace);
 
-        this.marker.setMap(this.map);
-        this.map.setZoom(1);
+        //this.marker.setMap(this.map);
+        //this.map.setZoom(1);
         // map.setCenter(marker.getPosition());
         // map.panTo(marker.getPosition())
         this.map.fitBounds(this.bounds);
