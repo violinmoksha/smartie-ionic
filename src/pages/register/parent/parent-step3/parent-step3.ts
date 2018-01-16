@@ -177,7 +177,7 @@ export class RegisterParentStep3 {
           // console.log(signupError);
           let alert = this.alertCtrl.create({
             title: 'Signup Failed !',
-            subTitle: signupError.error.split(':')[2],
+            subTitle: signupError.error.split(':')[2].split(/[0-9]{3}\s/g)[1],
             buttons: ['OK']
           });
           alert.present();

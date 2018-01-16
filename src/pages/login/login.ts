@@ -84,7 +84,7 @@ export class Login {
           // console.log(signupError);
           let alert = this.alertCtrl.create({
             title: 'Login Failed !',
-            subTitle: loginError.error.split(':')[2],
+            subTitle: loginError.error.split(':')[2].split(/[0-9]{3}\s/g)[1],
             buttons: ['OK']
           });
           alert.present();

@@ -344,7 +344,7 @@ export class RegisterTeacherStep3 {
           let signupError = err.error;
           let alert = this.alertCtrl.create({
             title: 'Signup Failed !',
-            subTitle: signupError.error.split(':')[2],
+            subTitle: signupError.error.split(':')[2].split(/[0-9]{3}\s/g)[1],
             buttons: ['OK']
           });
           this.loading.dismiss();
