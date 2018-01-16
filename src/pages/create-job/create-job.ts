@@ -1,27 +1,25 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, Slides, ModalController, LoadingController } from 'ionic-angular';
 import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
-import { SmartieAPI } from '../../../providers/api/smartie';
+import { SmartieAPI } from '../../providers/api/smartie';
 import { Parse } from 'parse';
-//import { ParseProvider } from '../../../providers/parse';
-import { TotlesSearch } from '../../totles-search/totles-search';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 
 /**
- * Generated class for the TeacherStep3Page page.
+ * Generated class for the CreateJob page.
  *
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
 @Component({
-  selector: 'page-teacher-step3',
-  templateUrl: 'teacher-step3.html',
+  selector: 'page-create-job',
+  templateUrl: 'create-job.html',
 })
-export class RegisterTeacherStep3 {
+export class CreateJob {
 
   private submitInProgress: boolean;
   private loading: any;
-  private Teacherstep3Form : FormGroup;
+  private CreateJobForm : FormGroup;
   public TeacherFiles: any;
   public TeacherFilesView: any;
   public fileData: any;
@@ -47,6 +45,8 @@ export class RegisterTeacherStep3 {
   ];*/
 
   public levels = [
+    { "name": "Elementary K-5", "value": "k5"},
+    { "name": "Middle School", "value": "middle" },
     { "name": "High School", "value": "highSchool" },
     { "name": "University", "value": "university" }
   ];

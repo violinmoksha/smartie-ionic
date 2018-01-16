@@ -4,8 +4,8 @@ import { IonicErrorHandler } from 'ionic-angular';
 
 export { ErrorHandler, IonicErrorHandler };
 
-const IonicPro = Pro.init('APP_ID', {
-  appVersion: "APP_VERSION"
+const IonicPro = Pro.init('51a6d7d8', {
+  appVersion: "0.0.1"
 });
 
 @Injectable()

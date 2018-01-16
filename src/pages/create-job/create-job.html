@@ -74,7 +74,7 @@
         <p>{{ "whatsYourFee" | translate }}</p>
       </div>
       <h3>{{ "preferredHourlyRates" | translate }}</h3>
-      <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="6">
+      <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="7">
         <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
           <p>{{ rate.text }}</p>
         </ion-slide>
