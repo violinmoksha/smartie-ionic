@@ -1,0 +1,27 @@
+page-edit-profile-step3 {
+  .clear{
+    clear: both;
+  }
+  .cl-parent .toolbar-title{
+    color: #F97533 !important
+  }
+  .back-button{
+    color: #F97533 !important
+  }
+  .registration{
+      .item-md{
+          .checkbox-md{
+            .checkbox-checked{
+              background-color: #F97533 !important;
+              border-color: #F97533 !important;
+            }
+          }
+      }
+  }
+  .swiper-wrapper{
+    .swiper-slide.active{
+      border-color: #F97533 !important;
+    }
+  }
+
+}

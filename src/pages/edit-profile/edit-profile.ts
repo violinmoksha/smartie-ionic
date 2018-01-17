@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 import { EditProfileStep2 } from './edit-profile-step2/edit-profile-step2';
 
 /**
- * Generated class for the EditProfilePage page.
+ * Generated class for the EditProfile page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -17,6 +17,7 @@ import { EditProfileStep2 } from './edit-profile-step2/edit-profile-step2';
 })
 export class EditProfile {
 
+  userRole: string;
   email: string;
   username: string;
 
@@ -29,12 +30,15 @@ export class EditProfile {
       password: new FormControl('', [Validators.required, Validators.minLength(6)])
     });
 
-    this.email = JSON.parse(localStorage.getItem('teacherUserProfile')).userData.email;
-    this.username = JSON.parse(localStorage.getItem('teacherUserProfile')).userData.username;
+    this.storage.get("role").then(role => {
+      this.userRole = role;
+      this.email = JSON.parse(localStorage.getItem(`${role}UserProfile`)).userData.email;
+      this.username = JSON.parse(localStorage.getItem(`${role}UserProfile`)).userData.username;
+    })
   }
 
   getRole() {
-    return this.storage.get("role");
+    return this.userRole;
   }
 
   next(form1Value){

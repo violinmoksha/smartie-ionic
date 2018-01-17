@@ -12,6 +12,7 @@
 
 <ion-content padding>
   <form [formGroup]="EditProfilestep2Form" name="EditProfilestep2Form" (ngSubmit)="next(EditProfilestep2Form.value)" novalidate>
+    <!-- TODO: make these classes dynamic, like getRole() -->
     <ion-list class="list-inset registration teacher step2">
 
       <div class="tagline">
@@ -96,7 +97,7 @@
         Profile Message is required
       </ion-item>
 
-      <div *ngIf="userRole !== 'school'">
+      <div *ngIf="userRole == 'parent' || userRole == 'student'">
         <h3>Are you part of a school?</h3>
         <ion-slides id="student-school" slidesPerView="2">
           <ion-slide (click)="filterpartOfSchool(true)" [ngClass]="{'active': partOfSchool == true}">
@@ -119,11 +120,7 @@
           </ion-item>
         </div>
       </div>
-
     </ion-list>
-
-    <button class="button button-positive bg-student" [disabled]="!EditProfilestep2Form.valid" ion-button full>Next</button>
-
+    <button class="button button-positive" [disabled]="!EditProfilestep2Form.valid" ion-button full>Next</button>
   </form>
-
 </ion-content>

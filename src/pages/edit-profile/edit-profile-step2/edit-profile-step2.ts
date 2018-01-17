@@ -3,9 +3,10 @@ import { NavController, NavParams, ActionSheetController, Slides } from 'ionic-a
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
+import { EditProfileStep3 } from '../edit-profile-step3/edit-profile-step3';
 
 /**
- * Generated class for the EditProfileStep2Page page.
+ * Generated class for the EditProfileStep2 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -29,6 +30,14 @@ export class EditProfileStep2 {
   partOfSchool: string;
   @ViewChild(Slides) roleSchool: Slides;
 
+  fullName: string;
+  schoolName: string;
+  contactName: string;
+  contactPosition: string;
+  phone: string;
+  profileTitle: string;
+  profileMessage: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage) {
     this.storage.get("role").then(role => {
       this.userRole = role;
@@ -43,16 +52,24 @@ export class EditProfileStep2 {
         this.pageProfileSrc = './assets/img/user-img-school.png';
       }
 
+      this.phone = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.phone;
+      this.profileMessage = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.profileabout;
+
       if (role == 'school') {
+        this.schoolName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.schoolname;
+        this.contactName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.contactname;
+        this.contactPosition = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.contactposition;
         this.EditProfilestep2Form = new FormGroup({
           schoolName: new FormControl('', Validators.required),
           contactName: new FormControl('', Validators.required),
           contactPosition: new FormControl('', Validators.required),
           phone: new FormControl('', Validators.required),
-          profileTitle: new FormControl('', Validators.required),
           profileMessage: new FormControl('', Validators.required)
         });
-      } else {
+      } else if (role == 'teacher') {
+        this.profileTitle = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.profiletitle;
+        this.fullName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.fullname;
+
         this.EditProfilestep2Form = new FormGroup({
           name: new FormControl('', Validators.required),
           phone: new FormControl('', Validators.required),
@@ -60,7 +77,20 @@ export class EditProfileStep2 {
           profileMessage: new FormControl('', Validators.required),
           othersSchoolName: new FormControl('')
         });
+      } else {
+        this.partOfSchool = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.partOfSchool;
+        this.fullName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.fullname;
+
+        this.EditProfilestep2Form = new FormGroup({
+          name: new FormControl('', Validators.required),
+          phone: new FormControl('', Validators.required),
+          profileMessage: new FormControl('', Validators.required),
+          othersSchoolName: new FormControl('')
+        });
       }
+
+      // and get the pageProfileSrc from localStorage???
+      this.pageProfileSrc = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.profilePhoto.url;
     });
 
     this.form1Values = navParams.data.form1Value;
@@ -131,9 +161,9 @@ export class EditProfileStep2 {
     // Handle what to do when a category is selected
     console.log(result);
     if(result == 'yes'){
-      this.EditProfilestep2Form.get('studentSchoolName').setValidators([Validators.required]);
+      this.EditProfilestep2Form.get('othersSchoolName').setValidators([Validators.required]);
     }else{
-      this.EditProfilestep2Form.get('studentSchoolName').setValidators([]);
+      this.EditProfilestep2Form.get('othersSchoolName').setValidators([]);
     }
     this.partOfSchool = result;
   }
@@ -143,7 +173,7 @@ export class EditProfileStep2 {
   }
 
   next(form2Value){
-    //this.navCtrl.push(EditProfileStep3, { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool });
+    this.navCtrl.push(EditProfileStep3, { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool });
   }
 
 }

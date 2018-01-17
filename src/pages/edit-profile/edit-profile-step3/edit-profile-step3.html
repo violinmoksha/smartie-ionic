@@ -1,0 +1,59 @@
+<!--
+  Generated template for the ParentStep3Page page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title class="getRole()">Level, Location, and Misc.</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="EditProfilestep3Form" name="EditProfilestep3Form" (ngSubmit)="EditProfileSubmit(EditProfilestep3Form.value)" novalidate>
+    <!-- TODO: same, make these classes role-specific via something like getRole() -->
+    <ion-list class="list-inset registration teacher step3">
+
+      <div class="tagline bg-parent">
+        <p>Expertise your need ?</p>
+      </div>
+      <div class="clear"></div>
+
+      <div class="reg-section">
+        <div class="reg-sub-title"><h3>Levels Required</h3></div>
+        <ion-item *ngFor="let level of levels">
+          <ion-label>{{ level.name }}</ion-label>
+          <ion-checkbox (ionChange)="onChangeParentLevel(level.name, $event.checked)" ></ion-checkbox>
+        </ion-item>
+      </div>
+
+      <div class="clear"></div>
+
+      <div class="tagline">
+        <p>The fee you can pay</p>
+      </div>
+
+      <h3>Desired hourly price range</h3>
+      <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="7">
+        <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
+          <p>{{ rate.text }}</p>
+        </ion-slide>
+      </ion-slides>
+
+      <div class="tagline">
+        <p>Your Location</p>
+      </div>
+
+      <ion-item>
+        <ion-label fixed>Prefered Teaching Location</ion-label>
+        <ion-input [value]="prefLocation" type="text" formControlName="prefLocation"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="!EditProfilestep3Form.controls['prefLocation'].valid && !EditProfilestep3Form.controls['prefLocation'].pristine" class="item-message">
+        Enter your prefered location.
+      </ion-item>
+    </ion-list>
+    <button class="button button-positive" [disabled]="!EditProfilestep3Form.valid || submitInProgress" ion-button full>Submit</button>
+  </form>
+</ion-content>

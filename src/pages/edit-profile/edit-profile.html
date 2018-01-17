@@ -6,11 +6,11 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title (class)="getRole()">Edit User</ion-title>
+    <ion-title [class]="getRole()">Edit User</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content (class)="getRole()" padding>
+<ion-content padding>
   <form [formGroup]="EditProfileForm" name="EditProfileForm" (ngSubmit)="next(EditProfileForm.value)" novalidate>
     <ion-list class="list-inset registration">
       <div class="tagline">
