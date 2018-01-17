@@ -17,12 +17,6 @@ import { EditProfileStep2 } from './edit-profile-step2/edit-profile-step2';
 })
 export class EditProfile {
 
-  pageProfileDefaultSrc:string = './assets/img/dummy_prof_pic.png';
-  pageSchoolDefaultSrc:string = './assets/img/school-img.png';
-  cameraData: string;
-  photoTaken: boolean;
-  cameraUrl: string;
-  photoSelected: boolean;
   email: string;
   username: string;
 
@@ -32,8 +26,7 @@ export class EditProfile {
     this.EditProfileForm = new FormGroup({
       email: new FormControl('', Validators.required),
       username: new FormControl('', Validators.required),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      newPassword: new FormControl('', [Validators.minLength(6)])
+      password: new FormControl('', [Validators.required, Validators.minLength(6)])
     });
 
     this.email = JSON.parse(localStorage.getItem('teacherUserProfile')).userData.email;

@@ -44,15 +44,6 @@
         <ion-item class="item-message" *ngIf="EditProfileForm.get('password').invalid && EditProfileForm.get('password').touched">
           Password is required to edit your account
         </ion-item>
-
-        <ion-item>
-          <ion-label fixed>New Password (optional)</ion-label>
-          <ion-input placeholder="********" type="password" formControlName="newPassword"></ion-input>
-        </ion-item>
-
-        <ion-item class="item-message" *ngIf="EditProfileForm.get('newPassword').invalid && !EditProfileForm.get('newPassword').pristine">
-          New Password must be longer than 6 characters
-        </ion-item>
       </div>
     </ion-list>
     <button class="button button-positive" [disabled]="!EditProfileForm.valid" ion-button full>Next</button>

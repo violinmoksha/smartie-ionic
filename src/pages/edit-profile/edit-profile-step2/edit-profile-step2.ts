@@ -17,6 +17,7 @@ import { Storage } from '@ionic/storage';
 })
 export class EditProfileStep2 {
 
+  private userRole: string;
   private EditProfilestep2Form: FormGroup;
   private form1Values: any;
   pageProfileSrc: string;
@@ -30,6 +31,8 @@ export class EditProfileStep2 {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage) {
     this.storage.get("role").then(role => {
+      this.userRole = role;
+
       if (role == 'teacher') {
         this.pageProfileSrc = './assets/img/user-img-teacher.png';
       } else if (role == 'student') {
@@ -39,16 +42,28 @@ export class EditProfileStep2 {
       } else if (role == 'school') {
         this.pageProfileSrc = './assets/img/user-img-school.png';
       }
+
+      if (role == 'school') {
+        this.EditProfilestep2Form = new FormGroup({
+          schoolName: new FormControl('', Validators.required),
+          contactName: new FormControl('', Validators.required),
+          contactPosition: new FormControl('', Validators.required),
+          phone: new FormControl('', Validators.required),
+          profileTitle: new FormControl('', Validators.required),
+          profileMessage: new FormControl('', Validators.required)
+        });
+      } else {
+        this.EditProfilestep2Form = new FormGroup({
+          name: new FormControl('', Validators.required),
+          phone: new FormControl('', Validators.required),
+          profileTitle: new FormControl('', Validators.required),
+          profileMessage: new FormControl('', Validators.required),
+          othersSchoolName: new FormControl('')
+        });
+      }
     });
 
     this.form1Values = navParams.data.form1Value;
-
-    this.EditProfilestep2Form = new FormGroup({
-      name: new FormControl('', Validators.required),
-      phone: new FormControl('', Validators.required),
-      profileMessage: new FormControl('', Validators.required),
-      roleSchoolName: new FormControl('')
-    })
   }
 
   chooseUploadType(inputEvent){
@@ -124,7 +139,7 @@ export class EditProfileStep2 {
   }
 
   getRole() {
-    return this.storage.get('role');
+    return this.userRole;
   }
 
   next(form2Value){

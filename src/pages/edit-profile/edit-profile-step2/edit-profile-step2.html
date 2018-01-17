@@ -14,7 +14,7 @@
   <form [formGroup]="EditProfilestep2Form" name="EditProfilestep2Form" (ngSubmit)="next(EditProfilestep2Form.value)" novalidate>
     <ion-list class="list-inset registration teacher step2">
 
-      <div class="tagline bg-student">
+      <div class="tagline">
         <p>Tell us about yourself</p>
       </div>
 
@@ -25,55 +25,98 @@
         <span class="input-label">Upload your photo</span>
       </div>
 
-      <!-- Name -->
-      <ion-item>
-        <ion-label fixed>Name</ion-label>
-        <ion-input placeholder="eg: John Doe" type="text" formControlName="name"></ion-input>
-      </ion-item>
+      <!-- Name for non-School users -->
+      <div *ngIf="userRole !== 'school'">
+        <ion-item>
+          <ion-label fixed>Name</ion-label>
+          <ion-input [value]="fullName" type="text" formControlName="name"></ion-input>
+        </ion-item>
 
-      <div *ngIf="!EditProfilestep2Form.controls['name'].valid && EditProfilestep2Form.controls['name'].touched" class="item item-message">
-        Name is required
+        <ion-item *ngIf="!EditProfilestep2Form.controls['name'].valid && !EditProfilestep2Form.controls['name'].pristine" class="item-message">
+          Name is required
+        </ion-item>
+      </div>
+
+      <!-- Names for School users -->
+      <div *ngIf="userRole == 'school'">
+        <ion-item>
+          <ion-label fixed>School Name</ion-label>
+          <ion-input [value]="schoolName" type="text" formControlName="schoolName"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="!EditProfilestep2Form.controls['schoolName'].valid && !EditProfilestep2Form.controls['schoolName'].pristine" class="item-message">
+          School Name is required
+        </ion-item>
+
+        <ion-item>
+          <ion-label fixed>Contact Name</ion-label>
+          <ion-input [value]="contactName" type="text" formControlName="contactName"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="!EditProfilestep2Form.controls['contactName'].valid && !EditProfilestep2Form.controls['contactName'].pristine" class="item-message">
+          Contact Name is required
+        </ion-item>
+
+        <ion-item>
+          <ion-label fixed>Contact Position</ion-label>
+          <ion-input [value]="contactPosition" type="text" formControlName="contactPosition"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="!EditProfilestep2Form.controls['contactPosition'].valid && !EditProfilestep2Form.controls['contactPosition'].pristine" class="item-message">
+          Contact Position is required
+        </ion-item>
       </div>
 
       <!-- Phone -->
       <ion-item>
-        <ion-label fixed>Phone No</ion-label>
-        <ion-input placeholder="9999 999 999" type="tel" formControlName="phone"></ion-input>
+        <ion-label fixed>Phone Number</ion-label>
+        <ion-input [value]="phone" type="tel" formControlName="phone"></ion-input>
       </ion-item>
 
-      <div *ngIf="!EditProfilestep2Form.controls['phone'].valid && EditProfilestep2Form.controls['phone'].touched" class="item item-message">
+      <ion-item *ngIf="!EditProfilestep2Form.controls['phone'].valid && !EditProfilestep2Form.controls['phone'].pristine" class="item-message">
         Phone number is required
-      </div>
+      </ion-item>
 
-      <!-- Profile Message -->
+      <!-- Profile Title and Message -->
+      <ion-item>
+        <ion-label fixed>Profile Title</ion-label>
+        <ion-input [value]="profileTitle" formControlName="profileTitle"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="!EditProfilestep2Form.controls['profileTitle'].valid && !EditProfilestep2Form.controls['profileTitle'].pristine" class="item-message">
+        Profile Title is required
+      </ion-item>
+
       <ion-item>
         <ion-label fixed>Profile Message</ion-label>
-        <ion-textarea formControlName="profileMessage" placeholder="Put any comment..."></ion-textarea>
+        <ion-textarea [value]="profileMessage" formControlName="profileMessage"></ion-textarea>
       </ion-item>
 
-      <div *ngIf="!EditProfilestep2Form.controls['profileMessage'].valid && EditProfilestep2Form.controls['profileMessage'].touched" class="item item-message">
+      <ion-item *ngIf="!EditProfilestep2Form.controls['profileMessage'].valid && !EditProfilestep2Form.controls['profileMessage'].pristine" class="item-message">
         Profile Message is required
-      </div>
+      </ion-item>
 
-      <h3>Are you part of a school</h3>
-      <ion-slides id="student-school" slidesPerView="2">
-        <ion-slide (click)="filterpartOfSchool(true)" [ngClass]="{'active': partOfSchool == true}">
-          <p>Yes</p>
-        </ion-slide>
-        <ion-slide (click)="filterpartOfSchool(false)" [ngClass]="{'active': partOfSchool == false}">
-          <p>No</p>
-        </ion-slide>
-      </ion-slides>
+      <div *ngIf="userRole !== 'school'">
+        <h3>Are you part of a school?</h3>
+        <ion-slides id="student-school" slidesPerView="2">
+          <ion-slide (click)="filterpartOfSchool(true)" [ngClass]="{'active': partOfSchool == true}">
+            <p>Yes</p>
+          </ion-slide>
+          <ion-slide (click)="filterpartOfSchool(false)" [ngClass]="{'active': partOfSchool == false}">
+            <p>No</p>
+          </ion-slide>
+        </ion-slides>
 
-      <div [hidden]="partOfSchool != true" class="school-information">
-        <h2>School Information</h2>
-        <ion-item>
-          <ion-label fixed>School Name</ion-label>
-          <ion-input placeholder="eg: St. John High School" type="text" formControlName="roleSchoolName"></ion-input>
-        </ion-item>
+        <div [hidden]="partOfSchool != true" class="school-information">
+          <h2>School Information</h2>
+          <ion-item>
+            <ion-label fixed>Your School Name</ion-label>
+            <ion-input [value]="othersSchoolName" type="text" formControlName="othersSchoolName"></ion-input>
+          </ion-item>
 
-        <div *ngIf="!EditProfilestep2Form.controls['roleSchoolName'].valid && EditProfilestep2Form.controls['roleSchoolName'].touched" class="item item-message">
-          School Name is required
+          <ion-item *ngIf="!EditProfilestep2Form.controls['othersSchoolName'].valid && !EditProfilestep2Form.controls['othersSchoolName'].pristine" class="item-message">
+            Your School Name is required
+          </ion-item>
         </div>
       </div>
 
