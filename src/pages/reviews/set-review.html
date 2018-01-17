@@ -16,6 +16,11 @@
 
 
 <ion-content padding>
+  <!-- <div>
+   <h4>Debug</h4>
+   <pre>Form : {{ReviewForm.value | json }}</pre>
+   <pre>Form Status : {{ReviewForm.status }}</pre>
+ </div> -->
 
   <form [formGroup]="ReviewForm" name="ReviewForm" (ngSubmit)="ReviewSubmit(ReviewForm.value)" novalidate>
     <div class="profile-column">

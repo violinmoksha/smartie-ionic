@@ -29,10 +29,10 @@
       <div class="notification-wrapper review-pop-search" id="profile-info">
         <div class="notification">
           <div class="left">
-            <div class="avatar"><img src="./assets/img/user-round-icon.png"></div>
+            <div class="avatar"><img src="{{ review.profilePhoto }}"></div>
             <div class="u-detail">
-              <div class="name">{{ profileData.fullname }}</div>
-              <div class="profile-type">{{ profileData.role }}</div>
+              <div class="name">{{ review.fullname }}</div>
+              <div class="profile-type">{{ review.role }}</div>
             </div>
           </div>
           <div *ngIf="review.reviewStars == 1" class="right">

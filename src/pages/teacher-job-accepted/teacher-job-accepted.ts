@@ -22,7 +22,6 @@ export class TeacherJobAccepted {
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     // console.log(JSON.parse(localStorage.getItem('TeacherJobAcceptedResult')));
     this.profileData = navParams.data.data.prof;
-    console.log(this.profileData);
   }
 
 

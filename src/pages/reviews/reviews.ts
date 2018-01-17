@@ -16,26 +16,26 @@ import { SetReview } from './set-review';
 export class Reviews {
 
   private reviewId: any;
-  private reviews: any;
+  private reviews: any = [];
   private reviewCount: any;
   private profileData: any;
   private loggedUserName: any;
   private loggedRole: any;
   private body: any;
+  private profilePhoto: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public smartieApi: SmartieAPI) {
-    console.log("Nav Params");
-    console.log(navParams);
     if(navParams.data.objectId){
       this.reviewId = navParams.data.objectId;
     }else{
       this.reviewId = navParams.data.requestedId;
-    }    
+    }
     this.loggedUserName = navParams.data.fullname;
     this.loggedRole = navParams.data.loggedRole;
   }
 
   ionViewDidLoad() {
+    console.log(this.reviewId);
 
     this.body = { reviewedProfileId: this.reviewId }
 
@@ -49,45 +49,36 @@ export class Reviews {
       }
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
         let userReviews = response.result;
-        this.reviews = userReviews.reviews;
-        this.reviewCount = this.reviews.length;
+        this.reviewCount = userReviews.reviews.length;
         this.profileData = userReviews.reviewedProfile;
-        console.log(this.reviews);
+
+        for(let review of userReviews.reviews){
+          this.getReviewingProfileData(review);
+        }
       }, err => {
         console.log(err);
       })
     })
+  }
 
-    /*if(Constants.API_ENDPOINTS.env === 'local'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'test'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
-      this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
-    }else if(Constants.API_ENDPOINTS.env === 'prod'){
-      this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
-      this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
-      this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
-    }
-
-    let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getReviews;
-    let headers = new Headers();
-    headers.append('X-Parse-Application-Id', this.applicationId);
-    headers.append('X-Parse-Master-Key', this.masterKey);
-    headers.append('Content-Type', this.contentType);
-
-    this.body = { reviewedProfileId: this.params.profileData.objectId }
-
-    this.http.post(postUrl, this.body, { headers: headers }).toPromise().then((res) => {
-      let userReviews = JSON.parse(res.text());
-      this.reviews = userReviews.result;
-      console.log(this.reviews);
-    })*/
+  getReviewingProfileData(review){
+    return new Promise(resolve => {
+      let API = this.smartieApi.getApi(
+        'getReviewingProfile',
+        { reviewingProfileId: review.reviewingProfileId}
+      );
+      interface Response {
+        result: any
+      }
+      return this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+        if(response.result.reviewingProfile.profilePhoto){
+          this.profilePhoto = response.result.reviewingProfile.profilePhoto.url;
+        }else{
+          this.profilePhoto = "./assets/img/user-round-icon.png";
+        }
+        this.reviews.push({ 'fullname': response.result.reviewingProfile.fullname, 'role':  response.result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
+      })
+    })
   }
 
   addReview(){
