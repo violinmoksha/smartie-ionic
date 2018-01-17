@@ -45,6 +45,8 @@ export class Login {
         }
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data => {
           localStorage.setItem(data.result.profileData.role+'UserProfile', JSON.stringify(data.result));
+
+          this.storage.set('role', data.result.profileData.role);
           this.storage.set('sessionToken', data.result.userData.sessionToken);
 
           if(data.result.profileData.role !== 'teacher'){

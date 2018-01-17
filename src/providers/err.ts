@@ -4,9 +4,16 @@ import { IonicErrorHandler } from 'ionic-angular';
 
 export { ErrorHandler, IonicErrorHandler };
 
-const IonicPro = Pro.init('51a6d7d8', {
+// TODO delete this one in prod
+const IonicPro = Pro.init('APP_ID', {
   appVersion: "0.0.1"
 });
+
+// TODO uncomment this one for emails of errs in prod
+/*
+const IonicPro = Pro.init('51a6d7d8', {
+  appVersion: "0.0.1"
+});*/
 
 @Injectable()
 export class SmartieErrorHandler implements ErrorHandler {

@@ -7,6 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 //import { Language } from '../pages/language/language';
 import { Feedback } from '../pages/feedback/feedback';
+import { EditProfile } from '../pages/edit-profile/edit-profile';
 import { Login } from '../pages/login/login';
 
 //import { RegisterTeacherStep3 } from '../pages/register/teacher-step3/teacher-step3';
@@ -161,6 +162,8 @@ export class MyApp {
   pushPage(item) {
     if (item == 'feedback')
       this.nav.push(Feedback);
+    else if (item == 'edit-profile')
+      this.nav.push(EditProfile);
     else if (item == 'login') { // logout -->
       localStorage.clear(); // dump session
       this.nav.push(Login); // send to Login

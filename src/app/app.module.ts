@@ -30,6 +30,8 @@ import { PaymentThankyou } from '../pages/payment/payment-thankyou/payment-thank
 import { Login } from '../pages/login/login';
 import { ForgotPassword } from '../pages/forgot-password/forgot-password';
 import { Feedback } from '../pages/feedback/feedback';
+import { EditProfile } from '../pages/edit-profile/edit-profile';
+import { EditProfileStep2 } from '../pages/edit-profile/edit-profile-step2/edit-profile-step2';
 import { TotlesSearch } from '../pages/totles-search/totles-search';
 import { TeacherJobAccepted } from '../pages/teacher-job-accepted/teacher-job-accepted';
 import { AllAccepteds } from '../pages/all-accepteds/all-accepteds';
@@ -89,6 +91,8 @@ export function createTranslateLoader(http: HttpClient) {
     Login,
     ForgotPassword,
     Feedback,
+    EditProfile,
+    EditProfileStep2,
     TotlesSearch,
     Language,
     TeacherJobAccepted,
@@ -137,6 +141,8 @@ export function createTranslateLoader(http: HttpClient) {
     Login,
     ForgotPassword,
     Feedback,
+    EditProfile,
+    EditProfileStep2,
     TotlesSearch,
     Language,
     TeacherJobAccepted,
