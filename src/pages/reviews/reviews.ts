@@ -24,7 +24,13 @@ export class Reviews {
   private body: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public smartieApi: SmartieAPI) {
-    this.reviewId = navParams.data.requestedId;
+    console.log("Nav Params");
+    console.log(navParams);
+    if(navParams.data.objectId){
+      this.reviewId = navParams.data.objectId;
+    }else{
+      this.reviewId = navParams.data.requestedId;
+    }    
     this.loggedUserName = navParams.data.fullname;
     this.loggedRole = navParams.data.loggedRole;
   }
