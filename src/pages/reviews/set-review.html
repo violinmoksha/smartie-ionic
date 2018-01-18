@@ -16,11 +16,11 @@
 
 
 <ion-content padding>
-  <!-- <div>
+  <div>
    <h4>Debug</h4>
    <pre>Form : {{ReviewForm.value | json }}</pre>
    <pre>Form Status : {{ReviewForm.status }}</pre>
- </div> -->
+ </div>
 
   <form [formGroup]="ReviewForm" name="ReviewForm" (ngSubmit)="ReviewSubmit(ReviewForm.value)" novalidate>
     <div class="profile-column">
@@ -35,7 +35,7 @@
       <star-rating-comp formControlName="rating" [starType]="'svg'" [rating]="0"></star-rating-comp>
       </div>
       <div class="pr-review-bottom">
-        <label for="">Your Feedback</label>
+        <ion-label for="">Your Feedback</ion-label>
         <ion-textarea formControlName="review" placeholder="Put any comment..."></ion-textarea>
         <div *ngIf="!ReviewForm.controls['review'].valid && ReviewForm.controls['review'].touched" class="item item-message">
           Your review is required
