@@ -22,18 +22,18 @@
         <ion-input [value]="email" type="email" formControlName="email"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="!EditProfileForm.controls['email'].valid && !EditProfileForm.controls['email'].pristine" class="item-message">
+      <div *ngIf="!EditProfileForm.controls['email'].valid && !EditProfileForm.controls['email'].pristine" class="item item-message">
         Email is required
-      </ion-item>
+      </div>
 
       <ion-item>
         <ion-label fixed>Username</ion-label>
         <ion-input [value]="username" type="text" formControlName="username"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="!EditProfileForm.controls['username'].valid && !EditProfileForm.controls['username'].pristine" class="item-message">
+      <div *ngIf="!EditProfileForm.controls['username'].valid && !EditProfileForm.controls['username'].pristine" class="item item-message">
         User name is required
-      </ion-item>
+      </div>
 
       <div>
         <ion-item>
@@ -41,9 +41,9 @@
           <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
         </ion-item>
 
-        <ion-item class="item-message" *ngIf="EditProfileForm.get('password').invalid && EditProfileForm.get('password').touched">
+        <div class="item item-message" *ngIf="EditProfileForm.get('password').invalid && EditProfileForm.get('password').touched">
           Password is required to edit your account
-        </ion-item>
+        </div>
       </div>
     </ion-list>
     <button class="button button-positive" [disabled]="!EditProfileForm.valid" ion-button full>Next</button>

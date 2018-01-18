@@ -6,35 +6,23 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title class="getRole()">Level, Location, and Misc.</ion-title>
+    <ion-title class="getRole()">Level and Location</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <form [formGroup]="EditProfilestep3Form" name="EditProfilestep3Form" (ngSubmit)="EditProfileSubmit(EditProfilestep3Form.value)" novalidate>
+  <form [formGroup]="EditProfilestep3Form" name="EditProfilestep3Form" (ngSubmit)="finalEditProfileSubmit(EditProfilestep3Form.value)" novalidate>
     <!-- TODO: same, make these classes role-specific via something like getRole() -->
     <ion-list class="list-inset registration teacher step3">
 
-      <div class="tagline bg-parent">
-        <p>Expertise your need ?</p>
-      </div>
-      <div class="clear"></div>
 
-      <div class="reg-section">
-        <div class="reg-sub-title"><h3>Levels Required</h3></div>
-        <ion-item *ngFor="let level of levels">
-          <ion-label>{{ level.name }}</ion-label>
-          <ion-checkbox (ionChange)="onChangeParentLevel(level.name, $event.checked)" ></ion-checkbox>
-        </ion-item>
-      </div>
-
-      <div class="clear"></div>
 
       <div class="tagline">
-        <p>The fee you can pay</p>
+        <p *ngIf="userRole !== 'teacher'">The fee you can pay</p>
+        <p *ngIf="userRole == 'teacher'">The fee you want to be paid</p>
       </div>
 
-      <h3>Desired hourly price range</h3>
+      <h3>Optimal hourly price range</h3>
       <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="7">
         <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
           <p>{{ rate.text }}</p>
@@ -46,13 +34,77 @@
       </div>
 
       <ion-item>
-        <ion-label fixed>Prefered Teaching Location</ion-label>
+        <ion-label fixed>Prefered Location</ion-label>
         <ion-input [value]="prefLocation" type="text" formControlName="prefLocation"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="!EditProfilestep3Form.controls['prefLocation'].valid && !EditProfilestep3Form.controls['prefLocation'].pristine" class="item-message">
+      <div *ngIf="!EditProfilestep3Form.controls['prefLocation'].valid && !EditProfilestep3Form.controls['prefLocation'].pristine" class="item item-message">
         Enter your prefered location.
-      </ion-item>
+      </div>
+
+      <div *ngIf="userRole == 'teacher'">
+        <h3 padding-top>{{ "yearsOfExperience" | translate }}</h3>
+        <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
+          <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">
+            <p>{{ year.text }}</p>
+          </ion-slide>
+        </ion-slides>
+
+        <ion-list>
+          <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
+            {{cert.name}}
+            <a href="javascript:" (click)="deleteTeacherCert(cert)"><img src="./assets/img/delete-icon.png"></a>
+          </ion-item>
+        </ion-list>
+
+        <div class="teacher-cv">
+          <input type="file" formControlName="teacherCvCerts" (ngChange)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="" />
+          <div class="button button-cv">{{ "uploadCreds" | translate }}</div>
+          <span class="input-label">{{ "credsVerify" | translate }}</span>
+        </div>
+
+        <h3>{{ "availableTimings" | translate }}</h3>
+
+        <div class="available-date">
+          <div class="left">
+            <ion-item (click)="startDateCalendar()">
+              <ion-input value="{{ startDate }}" type="text"></ion-input>
+            </ion-item>
+          </div>
+          <div class="to-text">
+            To
+          </div>
+          <div class="right">
+            <ion-item (click)="endDateCalendar()" >
+              <ion-input value="{{ endDate }}" type="text"></ion-input>
+            </ion-item>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="available-time">
+          <div class="left">
+            <ion-item>
+              <ion-datetime displayFormat="HH:mm" formControlName="startTime"></ion-datetime>
+            </ion-item>
+            <div *ngIf="EditProfilestep3Form.get('startTime').invalid && !EditProfilestep3Form.get('startTime').pristine" class="item item-message">
+              Start time is required.
+            </div>
+          </div>
+          <div class="to-text">
+            To
+          </div>
+          <div class="right">
+            <ion-item>
+              <ion-datetime displayFormat="HH:mm" formControlName="endTime"></ion-datetime>
+            </ion-item>
+            <div *ngIf="EditProfilestep3Form.get('endTime').invalid && !EditProfilestep3Form.get('endTime').pristine" class="item item-message">
+              End time is required.
+            </div>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </div>
     </ion-list>
     <button class="button button-positive" [disabled]="!EditProfilestep3Form.valid || submitInProgress" ion-button full>Submit</button>
   </form>

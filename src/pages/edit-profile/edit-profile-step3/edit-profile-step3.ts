@@ -168,31 +168,6 @@ export class EditProfileStep3 {
     console.log(currentIndex);
   }
 
-
-
-  onChangeTeacherLanguage(name: string, isChecked: boolean) {
-    const knownLanguage = <FormArray>this.EditProfilestep3Form.controls.teacherLanguage;
-
-    if(isChecked) {
-      knownLanguage.push(new FormControl(name));
-    } else {
-      let index = knownLanguage.controls.findIndex(x => x.value == name)
-      knownLanguage.removeAt(index);
-    }
-  }
-
-  onChangeLevelLanguage(name: string, isChecked: boolean) {
-    const knownLevel = <FormArray>this.EditProfilestep3Form.controls.teacherLevel;
-    console.log(knownLevel);
-
-    if(isChecked) {
-      knownLevel.push(new FormControl(name));
-    } else {
-      let index = knownLevel.controls.findIndex(x => x.value == name)
-      knownLevel.removeAt(index);
-    }
-  }
-
   addTeacherCvCert(files){
     let TeacherCVs = new Array();
     let TeacherCVsView = new Array();
@@ -237,13 +212,13 @@ export class EditProfileStep3 {
     this.addTeacherCvCert(this.TeacherFilesView);
   }
 
-  finalTeacherSubmit(form3Values){
+  finalEditProfileSubmit(form3Values){
     this.submitInProgress = true;
     this.loading.present();
 
     let API = this.smartieApi.getApi(
-      'signupTeacher',
-      {role: 'teacher', username: this.form1Values.username.toLowerCase(), password: this.form1Values.password, email: this.form1Values.email.toLowerCase(), fullname: this.form2Values.name, phone: this.form2Values.phone, age: this.form2Values.age, nativelang: this.form2Values.native, nationality: this.form2Values.nationality, profiletitle: this.form2Values.profileTitle, profileabout: this.form2Values.profileMessage, expertlangs: form3Values.teacherLanguage, levelscapable: form3Values.teacherLevel, yrsexperience: this.yearExperience, preflocation: form3Values.prefLocation, prefpayrate: this.hourlyRate, prefcurrency: this.userCurrency, defstartdate: this.startDate, defenddate: this.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
+      'editProfile',
+      {role: this.userRole, username: this.form1Values.username.toLowerCase(), password: this.form1Values.password, email: this.form1Values.email.toLowerCase(), fullname: this.form2Values.name, phone: this.form2Values.phone, age: this.form2Values.age, nativelang: this.form2Values.native, nationality: this.form2Values.nationality, profiletitle: this.form2Values.profileTitle, profileabout: this.form2Values.profileMessage, expertlangs: form3Values.teacherLanguage, levelscapable: form3Values.teacherLevel, yrsexperience: this.yearExperience, preflocation: form3Values.prefLocation, prefpayrate: this.hourlyRate, prefcurrency: this.userCurrency, defstartdate: this.startDate, defenddate: this.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
     );
 
     return new Promise(resolve => {
@@ -358,5 +333,29 @@ export class EditProfileStep3 {
         }
       });
     });
+  }
+
+  onChangeLevel(name: string, isChecked: boolean) {
+    const knownLevel = <FormArray>this.EditProfilestep3Form.controls.teacherLevel;
+    console.log(knownLevel);
+
+    if(isChecked) {
+      knownLevel.push(new FormControl(name));
+    } else {
+      let index = knownLevel.controls.findIndex(x => x.value == name)
+      knownLevel.removeAt(index);
+    }
+  }
+
+  public filterRate(rate: number): void {
+    // Handle what to do when a category is selected
+    console.log(rate);
+    this.hourlyRate = rate;
+  }
+
+  // Method executed when the slides are changed
+  public rateChanged(): void {
+    let currentIndex = this.hourRate.getActiveIndex();
+    console.log(currentIndex);
   }
 }
