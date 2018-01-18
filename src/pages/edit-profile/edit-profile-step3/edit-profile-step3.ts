@@ -204,7 +204,6 @@ export class EditProfileStep3 {
     })
   }
 
-
   deleteTeacherCert(fileName){
     this.TeacherFilesView = this.TeacherFilesView.filter(function(el) {
       return el !== fileName;
@@ -216,24 +215,102 @@ export class EditProfileStep3 {
     this.submitInProgress = true;
     this.loading.present();
 
-    let API = this.smartieApi.getApi(
-      'editProfile',
-      {role: this.userRole, username: this.form1Values.username.toLowerCase(), password: this.form1Values.password, email: this.form1Values.email.toLowerCase(), fullname: this.form2Values.name, phone: this.form2Values.phone, age: this.form2Values.age, nativelang: this.form2Values.native, nationality: this.form2Values.nationality, profiletitle: this.form2Values.profileTitle, profileabout: this.form2Values.profileMessage, expertlangs: form3Values.teacherLanguage, levelscapable: form3Values.teacherLevel, yrsexperience: this.yearExperience, preflocation: form3Values.prefLocation, prefpayrate: this.hourlyRate, prefcurrency: this.userCurrency, defstartdate: this.startDate, defenddate: this.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
-    );
+    let userData = JSON.parse(localStorage.getItem(`${this.userRole}UserProfile`)).userData;
+
+    let API;
+    if (this.userRole == 'teacher') {
+      API = this.smartieApi.getApi(
+        'editProfile',
+        {
+          role: this.userRole,
+          userData: userData,
+          password: this.form1Values.password,
+          editables: {
+            username: this.form1Values.username.toLowerCase(),
+            email: this.form1Values.email.toLowerCase(),
+            profile: {
+              profileabout: this.form2Values.profileMessage,
+              prefpayrate: this.hourlyRate,
+              phone: this.form2Values.phone,
+              fullname: this.form2Values.name,
+              preflocation: form3Values.prefLocation,
+            },
+            specificUser: {
+              yrsexperience: this.yearExperience,
+              profiletitle: this.form2Values.profileTitle,
+              defstartdate: this.startDate,
+              defenddate: this.endDate,
+              defstarttime: form3Values.startTime,
+              defendtime: form3Values.endTime
+            }
+          }
+        }
+      );
+    } else if (this.userRole == 'student' || this.userRole == 'parent') {
+      API = this.smartieApi.getApi(
+        'editProfile',
+        {
+          role: this.userRole,
+          userData: userData,
+          password: this.form1Values.password,
+          editables: {
+            username: this.form1Values.username.toLowerCase(),
+            email: this.form1Values.email.toLowerCase(),
+            profile: {
+              profileabout: this.form2Values.profileMessage,
+              prefpayrate: this.hourlyRate,
+              phone: this.form2Values.phone,
+              fullname: this.form2Values.name,
+              preflocation: form3Values.prefLocation,
+            },
+            specificUser: {
+              schoolname: this.form2Values.othersSchoolName,
+              partofschool:
+                (this.form2Values.othersSchoolName ? true : false)
+            }
+          }
+        }
+      );
+    } else { // school
+      API = this.smartieApi.getApi(
+        'editProfile',
+        {
+          role: this.userRole,
+          userData: userData,
+          password: this.form1Values.password,
+          editables: {
+            username: this.form1Values.username.toLowerCase(),
+            email: this.form1Values.email.toLowerCase(),
+            profile: {
+              profileabout: this.form2Values.profileMessage,
+              prefpayrate: this.hourlyRate,
+              phone: this.form2Values.phone,
+              fullname: this.form2Values.name,
+              preflocation: form3Values.prefLocation,
+            },
+            specificUser: {
+              schoolname: this.form2Values.schoolName,
+              contactname: this.form2Values.contactName,
+              contactposition: this.form2Values.contactPosition
+            }
+          }
+        }
+      );
+    }
 
     return new Promise(resolve => {
       interface Response {
         result: any
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
-        signupResult => {
-          localStorage.setItem("teacherUserProfile", JSON.stringify(signupResult.result));
+        editResult => {
+          localStorage.setItem(`${this.userRole}UserProfile`, JSON.stringify(editResult.result));
 
           let cvPromises = [];
           // console.log(this.TeacherFiles);
           if(this.TeacherFiles){
             for(let cvFile of this.TeacherFiles){
-              cvPromises.push(this.setTeacherCred(signupResult.result.objectId, cvFile).then((responseResult) => {
+              cvPromises.push(this.setTeacherCred(editResult.result.objectId, cvFile).then((responseResult) => {
                 console.log(responseResult);
               }).catch((rejectResult) => {
                 console.log(rejectResult);
@@ -244,7 +321,7 @@ export class EditProfileStep3 {
             // then setProfilePic()
             Promise.all(cvPromises).then(()=>{
               this.setProfilePic().then((pictureResolve) => {
-                this.navCtrl.push(TotlesSearch, {role: 'teacher', fromwhere: 'signUp'});
+                this.navCtrl.push(TotlesSearch, {role: this.userRole, fromwhere: 'editProfile'});
                 this.loading.dismiss();
               }).catch((pictureReject) => {
                 // TODO: do something in a modal?
@@ -253,7 +330,7 @@ export class EditProfileStep3 {
             })
           }else{
             this.setProfilePic().then((pictureResolve) => {
-              this.navCtrl.push(TotlesSearch, {role: 'teacher', fromwhere: 'signUp'});
+              this.navCtrl.push(TotlesSearch, {role: this.userRole, fromwhere: 'editProfile'});
               this.loading.dismiss();
             }).catch((pictureReject) => {
               // TODO: do something in the UX here!!
@@ -282,8 +359,8 @@ export class EditProfileStep3 {
       }else{
         let parseFile = new Parse.File('photo.jpg', {base64: localStorage.getItem('profilePhotoDataUrl')});
         parseFile.save().then((file) => {
-          let teacherUserProfile = JSON.parse(localStorage.getItem("teacherUserProfile"));
-          let profileId = teacherUserProfile.profile.objectId;
+          let roledUserProfile = JSON.parse(localStorage.getItem(`${this.userRole}UserProfile`));
+          let profileId = roledUserProfile.profile.objectId;
           let profQuery = new Parse.Query(new Parse.Object.extend('Profile'));
 
           profQuery.get(profileId, {
@@ -300,13 +377,7 @@ export class EditProfileStep3 {
       }
     });
 
-    // function pushSearch(){
-    //   console.log('test');
-    //   this.navCtrl.push(TotlesSearch, {role: 'teacher', fromwhere: 'signUp'});
-    // }
   }
-//setProfilePic ends here
-
 
   setTeacherCred(teacherId, cvFile){
     return new Promise((resolve, reject) => {
