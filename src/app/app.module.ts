@@ -32,6 +32,7 @@ import { ForgotPassword } from '../pages/forgot-password/forgot-password';
 import { Feedback } from '../pages/feedback/feedback';
 import { EditProfile } from '../pages/edit-profile/edit-profile';
 import { EditProfileStep2 } from '../pages/edit-profile/edit-profile-step2/edit-profile-step2';
+import { EditProfileStep3 } from '../pages/edit-profile/edit-profile-step3/edit-profile-step3';
 import { TotlesSearch } from '../pages/totles-search/totles-search';
 import { TeacherJobAccepted } from '../pages/teacher-job-accepted/teacher-job-accepted';
 import { AllAccepteds } from '../pages/all-accepteds/all-accepteds';
@@ -93,6 +94,7 @@ export function createTranslateLoader(http: HttpClient) {
     Feedback,
     EditProfile,
     EditProfileStep2,
+    EditProfileStep3,
     TotlesSearch,
     Language,
     TeacherJobAccepted,
@@ -143,6 +145,7 @@ export function createTranslateLoader(http: HttpClient) {
     Feedback,
     EditProfile,
     EditProfileStep2,
+    EditProfileStep3,
     TotlesSearch,
     Language,
     TeacherJobAccepted,

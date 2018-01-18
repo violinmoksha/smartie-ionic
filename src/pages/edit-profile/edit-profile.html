@@ -6,11 +6,11 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title (class)="getRole()">Edit User</ion-title>
+    <ion-title [class]="getRole()">Edit User</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content (class)="getRole()" padding>
+<ion-content padding>
   <form [formGroup]="EditProfileForm" name="EditProfileForm" (ngSubmit)="next(EditProfileForm.value)" novalidate>
     <ion-list class="list-inset registration">
       <div class="tagline">
@@ -22,18 +22,18 @@
         <ion-input [value]="email" type="email" formControlName="email"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="!EditProfileForm.controls['email'].valid && !EditProfileForm.controls['email'].pristine" class="item-message">
+      <div *ngIf="!EditProfileForm.controls['email'].valid && !EditProfileForm.controls['email'].pristine" class="item item-message">
         Email is required
-      </ion-item>
+      </div>
 
       <ion-item>
         <ion-label fixed>Username</ion-label>
         <ion-input [value]="username" type="text" formControlName="username"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="!EditProfileForm.controls['username'].valid && !EditProfileForm.controls['username'].pristine" class="item-message">
+      <div *ngIf="!EditProfileForm.controls['username'].valid && !EditProfileForm.controls['username'].pristine" class="item item-message">
         User name is required
-      </ion-item>
+      </div>
 
       <div>
         <ion-item>
@@ -41,18 +41,9 @@
           <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
         </ion-item>
 
-        <ion-item class="item-message" *ngIf="EditProfileForm.get('password').invalid && EditProfileForm.get('password').touched">
+        <div class="item item-message" *ngIf="EditProfileForm.get('password').invalid && EditProfileForm.get('password').touched">
           Password is required to edit your account
-        </ion-item>
-
-        <ion-item>
-          <ion-label fixed>New Password (optional)</ion-label>
-          <ion-input placeholder="********" type="password" formControlName="newPassword"></ion-input>
-        </ion-item>
-
-        <ion-item class="item-message" *ngIf="EditProfileForm.get('newPassword').invalid && !EditProfileForm.get('newPassword').pristine">
-          New Password must be longer than 6 characters
-        </ion-item>
+        </div>
       </div>
     </ion-list>
     <button class="button button-positive" [disabled]="!EditProfileForm.valid" ion-button full>Next</button>
