@@ -304,13 +304,11 @@ export class EditProfileStep3 {
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         editResult => {
-          localStorage.setItem(`${this.userRole}UserProfile`, JSON.stringify(editResult.result));
-
           let cvPromises = [];
           // console.log(this.TeacherFiles);
           if(this.TeacherFiles){
             for(let cvFile of this.TeacherFiles){
-              cvPromises.push(this.setTeacherCred(editResult.result.objectId, cvFile).then((responseResult) => {
+              cvPromises.push(this.setTeacherCred(JSON.parse(localStorage.getItem('teacherUserProfile')).specificUser.objectId, cvFile).then((responseResult) => {
                 console.log(responseResult);
               }).catch((rejectResult) => {
                 console.log(rejectResult);
