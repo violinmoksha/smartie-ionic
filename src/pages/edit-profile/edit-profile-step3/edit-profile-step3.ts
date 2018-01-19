@@ -70,6 +70,29 @@ export class EditProfileStep3 {
     { "value": '100', "text": '100' }
   ];
 
+  public years = [
+    { "value": '1', "text": '1' },
+    { "value": '2', "text": '2' },
+    { "value": '3', "text": '3' },
+    { "value": '4', "text": '4' },
+    { "value": '5', "text": '5' },
+    { "value": '6', "text": '6' },
+    { "value": '7', "text": '7' },
+    { "value": '8', "text": '8' },
+    { "value": '9', "text": '9' },
+    { "value": '10', "text": '10' },
+    { "value": '11', "text": '11' },
+    { "value": '12', "text": '12' },
+    { "value": '13', "text": '13' },
+    { "value": '14', "text": '14' },
+    { "value": '15', "text": '15' },
+    { "value": '16', "text": '16' },
+    { "value": '17', "text": '17' },
+    { "value": '18', "text": '18' },
+    { "value": '19', "text": '19' },
+    { "value": '20', "text": 'More than 20' }
+  ];
+
   //TODO post-<snip><snip> RE registration is: add back currency
   //In V2, but it must be done correctly next time with calculated pre-conversions
   //or maybe even plugged into an AI bot that knows the forex
@@ -88,8 +111,6 @@ export class EditProfileStep3 {
 
       if (role == 'teacher') {
         this.EditProfilestep3Form = new FormGroup({
-          teacherLanguage: new FormArray([], Validators.required),
-          teacherLevel: new FormArray([], Validators.required),
           teacherCvCerts: new FormControl(''),
           prefLocation: new FormControl('', Validators.required),
           startTime: new FormControl('', Validators.required),
@@ -97,7 +118,6 @@ export class EditProfileStep3 {
         })
       } else {
         this.EditProfilestep3Form = new FormGroup({
-          requiredLevel: new FormArray([], Validators.required),
           prefLocation: new FormControl('', Validators.required)
         })
       }
@@ -220,7 +240,7 @@ export class EditProfileStep3 {
     let API;
     if (this.userRole == 'teacher') {
       API = this.smartieApi.getApi(
-        'editProfile',
+        'editUser',
         {
           role: this.userRole,
           userData: userData,
@@ -248,7 +268,7 @@ export class EditProfileStep3 {
       );
     } else if (this.userRole == 'student' || this.userRole == 'parent') {
       API = this.smartieApi.getApi(
-        'editProfile',
+        'editUser',
         {
           role: this.userRole,
           userData: userData,
@@ -273,7 +293,7 @@ export class EditProfileStep3 {
       );
     } else { // school
       API = this.smartieApi.getApi(
-        'editProfile',
+        'editUser',
         {
           role: this.userRole,
           userData: userData,
@@ -301,9 +321,30 @@ export class EditProfileStep3 {
     return new Promise(resolve => {
       interface Response {
         result: any
-      };
+      }
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
-        editResult => {
+        res => {
+          // TODO: save new mega teacherUserProfile object to localstorage
+          localStorage.setItem(`${this.userRole}UserProfile`, JSON.stringify(res.result));
+
+          // now save the Parse.User since we are auth'd only here
+          // NB: this is only impossible due to opensrc Parse user save
+          /*
+          Parse.User.logIn(userData.username, this.form1Values.password, {
+            success: user => {
+              console.log('logIn success');
+              user.set("username", this.form1Values.username);  // attempt to change username
+              user.set("email", this.form1Values.email);
+              console.log('reset members?');
+              user.save({sessionToken: user.get('sessionToken'), useMasterKey: true}).then(user => {
+                console.log(`W00t saved ${user}`);
+              });
+            }, error: (err) => {
+
+            }
+          });
+          */
+
           let cvPromises = [];
           // console.log(this.TeacherFiles);
           if(this.TeacherFiles){
@@ -337,12 +378,22 @@ export class EditProfileStep3 {
           }
         },
         err => {
-          let signupError = err.error;
-          let alert = this.alertCtrl.create({
-            title: 'Signup Failed !',
-            subTitle: signupError.error.split(':')[2].split(/[0-9]{3}\s/g)[1],
-            buttons: ['OK']
-          });
+          let alert;
+          if (err.status == 400) {
+            alert = this.alertCtrl.create({
+              title: 'Edit Failed !',
+              subTitle: err.error.error,
+              buttons: ['OK']
+            });
+          } else { // Parse errs, 100-399
+            alert = this.alertCtrl.create({
+              title: 'Edit Failed !',
+              subTitle: err.message,
+              buttons: ['OK']
+            });
+          }
+
+          this.submitInProgress = false;
           this.loading.dismiss();
           alert.present();
         }

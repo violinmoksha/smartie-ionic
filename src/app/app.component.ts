@@ -5,6 +5,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 //import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
+import { ParseProvider } from '../providers/parse';
+
 //import { Language } from '../pages/language/language';
 import { Feedback } from '../pages/feedback/feedback';
 import { EditProfile } from '../pages/edit-profile/edit-profile';
@@ -40,7 +42,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private translate: TranslateService) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private translate: TranslateService, public parseProvider: ParseProvider) {
     this.platform = platform;
     this.initializeApp();
 
