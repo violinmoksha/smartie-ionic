@@ -1,8 +1,8 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { Reviews } from '../reviews/reviews';
 
 /**
  * Generated class for the SetReviewPage page.
@@ -10,7 +10,7 @@ import { Reviews } from '../reviews/reviews';
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@Component({
+@IonicPage()@Component({
   selector: 'page-set-review',
   templateUrl: 'set-review.html',
 })

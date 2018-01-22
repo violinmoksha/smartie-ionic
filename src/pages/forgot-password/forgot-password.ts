@@ -1,17 +1,17 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { Login } from '../../pages/login/login';
 
 /**
- * Generated class for the LoginPage page.
+ * Generated class for the ForgotPasswordPage page.
  *
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
 
-@Component({
+@IonicPage()@Component({
   selector: 'page-forgot-password',
   templateUrl: 'forgot-password.html',
 })
@@ -46,7 +46,7 @@ export class ForgotPassword {
         };
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
           if (res.sent == true) {
-            this.navCtrl.push(Login);
+            this.navCtrl.push("LoginPage");
           } else {
             let alert = this.alertCtrl.create({
               title: 'Email Link failed!',

@@ -1,0 +1,26 @@
+page-register-student-step3 {
+  .clear{
+    clear: both;
+  }
+  .cl-student .toolbar-title{
+    color: #0096D7 !important
+  }
+  .back-button{
+    color: #0096D7 !important
+  }
+  .registration{
+      .item-md{
+          .checkbox-md{
+            .checkbox-checked{
+              background-color: #0096D7 !important;
+              border-color: #0096D7 !important;
+            }
+          }
+      }
+  }
+  .swiper-wrapper{
+    .swiper-slide.active{
+      border-color: #0096D7 !important;
+    }
+  }
+}

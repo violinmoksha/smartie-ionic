@@ -1,10 +1,7 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Register } from '../register/register';
-import { ForgotPassword } from '../forgot-password/forgot-password';
-import { TotlesSearch } from '../totles-search/totles-search';
-import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 
@@ -15,11 +12,11 @@ import { SmartieAPI } from '../../providers/api/smartie';
  * on Ionic pages and navigation.
  */
 
-@Component({
+@IonicPage()@Component({
   selector: 'page-login',
   templateUrl: 'login.html',
 })
-export class Login {
+export class LoginPage {
 
   private LoginForm: FormGroup;
 
@@ -61,7 +58,7 @@ export class Login {
             return new Promise(resolve => {
               this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(notifyRes => {
                 localStorage.setItem(data.result.profileData.objectId + 'notificationCount', JSON.stringify(notifyRes));
-                this.navCtrl.push(TotlesSearch, { role: data.result.profileData.role, fromWhere: 'login', loggedProfileId: data.result.profileData.objectId });
+                this.navCtrl.push("TotlesSearch", { role: data.result.profileData.role, fromWhere: 'login', loggedProfileId: data.result.profileData.objectId });
               }, err => {
                 console.log(err);
               })
@@ -75,7 +72,7 @@ export class Login {
             return new Promise(resolve => {
               this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(notifyRes => {
                 localStorage.setItem(data.result.profileData.objectId + 'notificationCount', JSON.stringify(notifyRes));
-                this.navCtrl.push(TotlesSearch, { role: data.result.profileData.role, fromWhere: 'login', loggedProfileId: data.result.profileData.objectId  });
+                this.navCtrl.push("TotlesSearch", { role: data.result.profileData.role, fromWhere: 'login', loggedProfileId: data.result.profileData.objectId  });
               }, err => {
                 console.log(err);
               })
@@ -117,7 +114,7 @@ export class Login {
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
         if(res.status == 200){
           localStorage.setItem('TeacherJobAcceptedResult', JSON.stringify(res.result));
-          this.navCtrl.push(TeacherJobAccepted);
+          this.navCtrl.push("TeacherJobAccepted");
         }
       }, err => {
         console.log(err);
@@ -126,10 +123,10 @@ export class Login {
   }
 
   pushRegister(){
-    this.navCtrl.push(Register);
+    this.navCtrl.push("Register");
   }
 
   pushForgotPassword(){
-    this.navCtrl.push(ForgotPassword);
+    this.navCtrl.push("ForgotPassword");
   }
 }

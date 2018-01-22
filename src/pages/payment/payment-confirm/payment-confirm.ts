@@ -3,7 +3,6 @@ import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SmartieAPI } from '../../../providers/api/smartie';
 import 'rxjs/add/operator/toPromise';
-import { PaymentThankyou } from './../payment-thankyou/payment-thankyou';
 import { Stripe } from '@ionic-native/stripe';
 
 /**
@@ -14,8 +13,6 @@ import { Stripe } from '@ionic-native/stripe';
  */
 
 @Component({
-  selector: 'page-payment-confirm',
-  templateUrl: 'payment-confirm.html',
 })
 export class PaymentConfirm {
 
@@ -32,7 +29,6 @@ export class PaymentConfirm {
 
 
 
-    // this.stripe.createCardToken(card)
     //   .then((token) => {
     //     this.token = token;
     //   })  // ---> submitPayment
@@ -54,8 +50,7 @@ export class PaymentConfirm {
     };
 
     let API = this.smartieApi.getApi(
-      'createCustomer',
-      { emailPayment: data.emailPayment, card: card, profileId: this.navParams.data.profileId  }
+      'createCustomer', {}
     );
     return new Promise(resolve => {
       interface Response {
@@ -64,14 +59,13 @@ export class PaymentConfirm {
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(res => {
         console.log(data.emailPayment);
         if(res.status == 200){
-          this.navCtrl.push(PaymentThankyou, { emailId: data.emailPayment });
+          this.navCtrl.push("PaymentThankyou", { emailId: data.emailPayment });
         }
       });
     });
 
     // happens backend since this has "the token" inside it
     /*
-    this.stripe.createCardToken(card).then((token) => {
 
     })*/
   }

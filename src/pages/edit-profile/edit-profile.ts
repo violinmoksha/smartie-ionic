@@ -1,8 +1,8 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
-import { EditProfileStep2 } from './edit-profile-step2/edit-profile-step2';
 
 /**
  * Generated class for the EditProfile page.
@@ -11,11 +11,11 @@ import { EditProfileStep2 } from './edit-profile-step2/edit-profile-step2';
  * Ionic pages and navigation.
  */
 
-@Component({
+@IonicPage()@Component({
   selector: 'page-edit-profile',
   templateUrl: 'edit-profile.html',
 })
-export class EditProfile {
+export class EditProfilePage {
 
   userRole: string;
   email: string;
@@ -42,7 +42,7 @@ export class EditProfile {
   }
 
   next(form1Value){
-    this.navCtrl.push(EditProfileStep2, { form1Value : form1Value });
+    this.navCtrl.push("EditProfileStep2Page", { form1Value : form1Value });
   }
 
 }

@@ -1,6 +1,6 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Reviews } from '../reviews/reviews';
 
 /**
  * Generated class for the ViewProfilePage page.
@@ -9,7 +9,7 @@ import { Reviews } from '../reviews/reviews';
  * Ionic pages and navigation.
  */
 
-@Component({
+@IonicPage()@Component({
   selector: 'page-view-profile',
   templateUrl: 'view-profile.html',
 })

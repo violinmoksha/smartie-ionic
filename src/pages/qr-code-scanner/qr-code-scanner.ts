@@ -1,3 +1,4 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
@@ -8,11 +9,11 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@Component({
+@IonicPage()@Component({
   selector: 'page-qr-code-scanner',
   templateUrl: 'qr-code-scanner.html',
 })
-export class QrCodeScanner {
+export class QrCodeScannerPage {
 
   scannedCode = null;
 

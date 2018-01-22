@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Login } from '../../login/login';
 
 /**
  * Generated class for the PaymentThankyouPage page.
@@ -10,8 +9,6 @@ import { Login } from '../../login/login';
  */
 
 @Component({
-  selector: 'page-payment-thankyou',
-  templateUrl: 'payment-thankyou.html',
 })
 export class PaymentThankyou {
 
@@ -22,7 +19,7 @@ export class PaymentThankyou {
   }
 
   goTo(){
-    this.navCtrl.push(Login);
+    this.navCtrl.push("Login");
   }
 
   ionViewDidLoad() {

@@ -8,15 +8,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { ParseProvider } from '../providers/parse';
 
-//import { Language } from '../pages/language/language';
-import { Feedback } from '../pages/feedback/feedback';
-import { EditProfile } from '../pages/edit-profile/edit-profile';
-import { Login } from '../pages/login/login';
-
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class SmartieApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
@@ -29,9 +24,9 @@ export class MyApp {
 
     this.storage.get('sessionToken').then((val) => {
      if(val !== 'undefined'){
-       this.rootPage = Login;
+       this.rootPage = "LoginPage";
      }else{
-       this.rootPage = Login;
+       this.rootPage = "LoginPage";
      }
      // TODO @john: any time u need to fix a specific page UI
      // just uncomment the following line and recomment the above logic
@@ -143,12 +138,12 @@ export class MyApp {
 
   pushPage(item) {
     if (item == 'feedback')
-      this.nav.push(Feedback);
+      this.nav.push("Feedback");
     else if (item == 'edit-profile')
-      this.nav.push(EditProfile);
+      this.nav.push("EditProfile");
     else if (item == 'login') { // logout -->
       localStorage.clear(); // dump session
-      this.nav.push(Login); // send to Login
+      this.nav.push("LoginPage"); // send to Login
     }
   }
 }

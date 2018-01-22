@@ -1,6 +1,6 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { PaymentConfirm } from './payment-confirm/payment-confirm';
 
 /**
  * Generated class for the PaymentPage page.
@@ -9,11 +9,11 @@ import { PaymentConfirm } from './payment-confirm/payment-confirm';
  * on Ionic pages and navigation.
  */
 
-@Component({
+@IonicPage()@Component({
   selector: 'page-payment',
   templateUrl: 'payment.html',
 })
-export class Payment {
+export class PaymentPage {
 
   private teacherProfile: any;
   private fullname: any;
@@ -25,6 +25,6 @@ export class Payment {
   }
 
   goTo(paymentConfirm){
-    this.navCtrl.push(PaymentConfirm, { fullname: this.fullname, role: this.teacherProfile.profileData.role, phone: this.teacherProfile.profileData.phone, email: this.teacherProfile.userData.email, profileId: this.teacherProfile.profileData.objectId });
+    this.navCtrl.push("PaymentConfirm", { fullname: this.fullname, role: this.teacherProfile.profileData.role, phone: this.teacherProfile.profileData.phone, email: this.teacherProfile.userData.email, profileId: this.teacherProfile.profileData.objectId });
   }
 }

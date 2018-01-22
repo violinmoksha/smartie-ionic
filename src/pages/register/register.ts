@@ -1,16 +1,13 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { RegisterTeacher } from './teacher/teacher';
-import { RegisterStudent } from './student/student';
-import { RegisterParent } from './parent/parent';
-import { RegisterSchool } from './school/school';
 //import { Pro } from '@ionic/pro';
 
-@Component({
+@IonicPage()@Component({
   selector: 'page-register',
   templateUrl: 'register.html'
 })
-export class Register {
+export class RegisterPage {
 
   constructor(public navCtrl: NavController) {
     //Pro.getApp().monitoring.log('Register.construct', { level: 'error' });
@@ -19,13 +16,13 @@ export class Register {
   pushPage(item){
     if(item == 'teacher')
       //Pro.getApp().monitoring.log('Trying to push RegisterTeacher.', { level: 'error' });
-      this.navCtrl.push(RegisterTeacher);
+      this.navCtrl.push("RegisterTeacher");
     if(item == 'student')
-      this.navCtrl.push(RegisterStudent);
+      this.navCtrl.push("RegisterStudent");
     if(item == 'parent')
-      this.navCtrl.push(RegisterParent);
+      this.navCtrl.push("RegisterParent");
     if(item == 'school')
-      this.navCtrl.push(RegisterSchool);
+      this.navCtrl.push("RegisterSchool");
   }
 
 }

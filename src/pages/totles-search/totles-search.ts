@@ -1,9 +1,8 @@
+import { IonicPage } from 'ionic-angular';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { DomSanitizer } from '@angular/platform-browser';
-import { JobRequests } from '../job-requests/job-requests';
-import { AllAccepteds } from '../all-accepteds/all-accepteds';
 
 declare var google;
 
@@ -13,7 +12,7 @@ declare var google;
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@Component({
+@IonicPage()@Component({
   selector: 'page-totles-search',
   templateUrl: 'totles-search.html',
 })

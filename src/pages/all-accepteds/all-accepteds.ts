@@ -1,7 +1,7 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted';
 
 /**
  * Generated class for the AllAcceptedsPage page.
@@ -9,11 +9,11 @@ import { TeacherJobAccepted } from '../teacher-job-accepted/teacher-job-accepted
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@Component({
+@IonicPage()@Component({
   selector: 'page-all-accepteds',
   templateUrl: 'all-accepteds.html',
 })
-export class AllAccepteds {
+export class AllAcceptedsPage {
   private allAccepteds: any;
   private body: any;
 
@@ -51,7 +51,7 @@ export class AllAccepteds {
         result: any
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
-        this.navCtrl.push(TeacherJobAccepted, { data: res.result });
+        this.navCtrl.push("TeacherJobAccepted", { data: res.result });
       })
     });
 

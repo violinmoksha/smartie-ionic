@@ -1,7 +1,6 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { CardPage } from '../card/card';
-
 
 /**
  * Generated class for the TeacherJobAcceptedPage page.
@@ -9,11 +8,11 @@ import { CardPage } from '../card/card';
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@Component({
+@IonicPage()@Component({
   selector: 'page-teacher-job-accepted',
   templateUrl: 'teacher-job-accepted.html',
 })
-export class TeacherJobAccepted {
+export class TeacherJobAcceptedPage {
 
   profilePhoto:string = './assets/img/user-round-icon.png';
   profileLocationIcon:string = './assets/img/teacher-map-icon30px.png';
@@ -26,7 +25,7 @@ export class TeacherJobAccepted {
 
 
   payToTeacher(){
-    this.navCtrl.push(CardPage, { customerId : this.profileData.objectId });
+    this.navCtrl.push('CardPage', { customerId : this.profileData.objectId });
   }
 
 }

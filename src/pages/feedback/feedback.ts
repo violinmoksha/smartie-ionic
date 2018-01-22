@@ -1,20 +1,21 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
 
 /**
- * Generated class for the LoginPage page.
+ * Generated class for the FeedbackPage page.
  *
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
 
-@Component({
+@IonicPage()@Component({
   selector: 'feedback-page',
   templateUrl: 'feedback.html',
 })
-export class Feedback {
+export class FeedbackPage {
 
   private loading: any;
   private FeedbackForm: FormGroup;

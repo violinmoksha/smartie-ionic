@@ -1,0 +1,74 @@
+<!--
+  Generated template for the RegisterSchoolPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="cl-school">{{ 'schoolRegistration' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <!-- <div>
+    <h4>Debug</h4>
+    <pre>Form : {{SchoolForm.value | json }}</pre>
+    <pre>Form Status : {{SchoolForm.status }}</pre>
+    <pre>Toggle Status : {{ SchoolForm.get('partOfSchool').value }}</pre>
+  </div> -->
+
+  <form [formGroup]="SchoolStep1Form" name="SchoolStep1Form" (ngSubmit)="next(SchoolStep1Form.value)" novalidate>
+    <div class="list list-inset registration school">
+
+      <div class="tagline bg-school">
+        <p>Let's create your account information</p>
+      </div>
+
+      <ion-item>
+        <ion-label fixed>Email</ion-label>
+        <ion-input placeholder="yourmail@mail.com" type="email" formControlName="email"></ion-input>
+      </ion-item>
+
+      <div *ngIf="!SchoolStep1Form.controls['email'].valid && SchoolStep1Form.controls['email'].touched" class="item item-message">
+        Email is required
+      </div>
+
+      <ion-item>
+        <ion-label fixed>Username</ion-label>
+        <ion-input placeholder="johndoe" type="text" formControlName="username"></ion-input>
+      </ion-item>
+
+      <div *ngIf="!SchoolStep1Form.controls['username'].valid && SchoolStep1Form.controls['username'].touched" class="item item-message">
+        User name is required
+      </div>
+
+      <div>
+        <ion-item>
+          <ion-label fixed>Password</ion-label>
+          <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
+        </ion-item>
+
+        <div class="item item-message" *ngIf="SchoolStep1Form.get('password').invalid && SchoolStep1Form.get('password').touched">
+          Password is required, Password must be longer than 6 characters
+        </div>
+
+        <ion-item>
+          <ion-label fixed>Confirm Password</ion-label>
+          <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
+        </ion-item>
+
+        <div class="item item-message" *ngIf="SchoolStep1Form.get('confPassword').invalid && SchoolStep1Form.get('confPassword').touched">
+          Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
+        </div>
+      </div>
+    </div>
+    <button class="button button-positive bg-school" [disabled]="!SchoolStep1Form.valid" ion-button full>Next</button>
+  </form>
+
+</ion-content>

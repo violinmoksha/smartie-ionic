@@ -1,0 +1,23 @@
+page-register-parent-step2 {
+  .cl-parent .toolbar-title{
+    color: #F97533 !important
+  }
+  .back-button{
+    color: #F97533 !important
+  }
+  .swiper-wrapper{
+    width: 120px;
+    margin: auto;
+    .swiper-slide.active{
+      border-color: #F97533 !important;
+    }
+  }
+  .school-information{
+    text-align: center;
+    padding-top: 20px;
+    h2{
+      font-size: 23px;
+      color: #F97533;
+    }
+  }
+}

@@ -1,7 +1,7 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { ViewProfile } from '../view-profile/view-profile';
 
 /**
  * Generated class for the JobRequestsPage page.
@@ -9,11 +9,11 @@ import { ViewProfile } from '../view-profile/view-profile';
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@Component({
+@IonicPage()@Component({
   selector: 'page-job-requests',
   templateUrl: 'job-requests.html',
 })
-export class JobRequests {
+export class JobRequestsPage {
 
   private params: any;
   private requestSent: boolean;
@@ -83,7 +83,7 @@ export class JobRequests {
   }
 
   viewProfile(){
-    this.navCtrl.push(ViewProfile, this.params);
+    this.navCtrl.push("ViewProfile", this.params);
   }
 
 }

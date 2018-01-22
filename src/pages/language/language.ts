@@ -1,7 +1,7 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, MenuController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
-import { Login } from '../login/login';
 
 /**
  * Generated class for the LanguagePage page.
@@ -10,11 +10,11 @@ import { Login } from '../login/login';
  * Ionic pages and navigation.
  */
 
-@Component({
+@IonicPage()@Component({
   selector: 'page-language',
   templateUrl: 'language.html',
 })
-export class Language {
+export class LanguagePage {
 
   private userLang: any;
 
@@ -31,7 +31,7 @@ export class Language {
     this.translate.use(lang);
     // localStorage.setItem("userLang",lang)
     // console.log(this.translate.currentLang);
-    this.navCtrl.setRoot(Login);
+    this.navCtrl.setRoot("LoginPage");
   }
 
 }

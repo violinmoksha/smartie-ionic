@@ -1,3 +1,4 @@
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
@@ -9,11 +10,11 @@ import { SetReview } from './set-review';
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@Component({
+@IonicPage()@Component({
   selector: 'page-reviews',
   templateUrl: 'reviews.html',
 })
-export class Reviews {
+export class ReviewsPage {
 
   private reviewId: any;
   private reviews: any = [];

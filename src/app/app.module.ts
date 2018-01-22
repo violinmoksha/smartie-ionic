@@ -8,9 +8,10 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicModule } from 'ionic-angular';
-import { MyApp } from './app.component';
+import { SmartieApp } from './app.component';
 
 // pages
+/*
 import { Register } from '../pages/register/register';
 import { RegisterTeacher } from '../pages/register/teacher/teacher';
 import { RegisterTeacherStep2 } from '../pages/register/teacher-step2/teacher-step2';
@@ -38,12 +39,12 @@ import { TeacherJobAccepted } from '../pages/teacher-job-accepted/teacher-job-ac
 import { AllAccepteds } from '../pages/all-accepteds/all-accepteds';
 import { ViewProfile } from '../pages/view-profile/view-profile';
 import { JobRequests } from '../pages/job-requests/job-requests';
-import { CardPage } from '../pages/card/card';
 import { Language } from '../pages/language/language';
 import { QrCodeScanner } from '../pages/qr-code-scanner/qr-code-scanner';
 import { StarRatingModule } from 'angular-star-rating';
 import { Reviews } from '../pages/reviews/reviews';
 import { SetReview } from '../pages/reviews/set-review';
+*/
 
 // providers: @ionic-native plugins + custom
 import { GoogleMaps } from '@ionic-native/google-maps';
@@ -72,39 +73,7 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    MyApp,
-    Register,
-    RegisterTeacher,
-    RegisterTeacherStep2,
-    RegisterTeacherStep3,
-    RegisterStudent,
-    RegisterStudentStep2,
-    RegisterStudentStep3,
-    RegisterParent,
-    RegisterParentStep2,
-    RegisterParentStep3,
-    RegisterSchool,
-    RegisterSchoolStep2,
-    RegisterSchoolStep3,
-    Payment,
-    PaymentConfirm,
-    PaymentThankyou,
-    Login,
-    ForgotPassword,
-    Feedback,
-    EditProfile,
-    EditProfileStep2,
-    EditProfileStep3,
-    TotlesSearch,
-    Language,
-    TeacherJobAccepted,
-    AllAccepteds,
-    ViewProfile,
-    JobRequests,
-    CardPage,
-    Reviews,
-    SetReview,
-    QrCodeScanner
+    SmartieApp
   ],
   imports: [
     BrowserModule,
@@ -116,46 +85,14 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(SmartieApp),
     IonicStorageModule.forRoot(),
-    StarRatingModule.forRoot(),
+    //StarRatingModule.forRoot(),
     CalendarModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    Register,
-    RegisterTeacher,
-    RegisterTeacherStep2,
-    RegisterTeacherStep3,
-    RegisterStudent,
-    RegisterStudentStep2,
-    RegisterStudentStep3,
-    RegisterParent,
-    RegisterParentStep2,
-    RegisterParentStep3,
-    RegisterSchool,
-    RegisterSchoolStep2,
-    RegisterSchoolStep3,
-    Payment,
-    PaymentConfirm,
-    PaymentThankyou,
-    Login,
-    ForgotPassword,
-    Feedback,
-    EditProfile,
-    EditProfileStep2,
-    EditProfileStep3,
-    TotlesSearch,
-    Language,
-    TeacherJobAccepted,
-    AllAccepteds,
-    ViewProfile,
-    JobRequests,
-    CardPage,
-    Reviews,
-    SetReview,
-    QrCodeScanner
+    SmartieApp
   ],
   providers: [
     StatusBar,
