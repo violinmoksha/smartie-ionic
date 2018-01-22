@@ -325,7 +325,7 @@ export class EditProfileStep3 {
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         res => {
           // TODO: save new mega teacherUserProfile object to localstorage
-          localStorage.setItem(`${this.userRole}UserProfile`, JSON.stringify(res));
+          localStorage.setItem(`${this.userRole}UserProfile`, Object.keys(res)['result']);
 
           // now save the Parse.User since we are auth'd only here
           // NB: this is only impossible due to opensrc Parse user save

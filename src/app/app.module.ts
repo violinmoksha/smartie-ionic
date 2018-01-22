@@ -1,4 +1,4 @@
-// SmartieErrorHandler, must load first
+// SmartieErrorHandler, must load first for Monitoring
 import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from '../providers/err';
 
 // core app dependencies
@@ -119,7 +119,7 @@ export function createTranslateLoader(http: HttpClient) {
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     StarRatingModule.forRoot(),
-    CalendarModule
+    CalendarModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
