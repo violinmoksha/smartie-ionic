@@ -5,46 +5,8 @@ import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from '../provide
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { SmartieApp } from './app.component';
-
-// pages
-/*
-import { Register } from '../pages/register/register';
-import { RegisterTeacher } from '../pages/register/teacher/teacher';
-import { RegisterTeacherStep2 } from '../pages/register/teacher-step2/teacher-step2';
-import { RegisterTeacherStep3 } from '../pages/register/teacher-step3/teacher-step3';
-import { RegisterStudent } from '../pages/register/student/student';
-import { RegisterStudentStep2 } from '../pages/register/student/student-step2/student-step2';
-import { RegisterStudentStep3 } from '../pages/register/student/student-step3/student-step3';
-import { RegisterParent } from '../pages/register/parent/parent';
-import { RegisterParentStep2 } from '../pages/register/parent/parent-step2/parent-step2';
-import { RegisterParentStep3 } from '../pages/register/parent/parent-step3/parent-step3';
-import { RegisterSchool } from '../pages/register/school/school';
-import { RegisterSchoolStep2 } from '../pages/register/school/school-step2/school-step2';
-import { RegisterSchoolStep3 } from '../pages/register/school/school-step3/school-step3';
-import { Payment } from '../pages/payment/payment';
-import { PaymentConfirm } from '../pages/payment/payment-confirm/payment-confirm';
-import { PaymentThankyou } from '../pages/payment/payment-thankyou/payment-thankyou';
-import { Login } from '../pages/login/login';
-import { ForgotPassword } from '../pages/forgot-password/forgot-password';
-import { Feedback } from '../pages/feedback/feedback';
-import { EditProfile } from '../pages/edit-profile/edit-profile';
-import { EditProfileStep2 } from '../pages/edit-profile/edit-profile-step2/edit-profile-step2';
-import { EditProfileStep3 } from '../pages/edit-profile/edit-profile-step3/edit-profile-step3';
-import { TotlesSearch } from '../pages/totles-search/totles-search';
-import { TeacherJobAccepted } from '../pages/teacher-job-accepted/teacher-job-accepted';
-import { AllAccepteds } from '../pages/all-accepteds/all-accepteds';
-import { ViewProfile } from '../pages/view-profile/view-profile';
-import { JobRequests } from '../pages/job-requests/job-requests';
-import { Language } from '../pages/language/language';
-import { QrCodeScanner } from '../pages/qr-code-scanner/qr-code-scanner';
-import { StarRatingModule } from 'angular-star-rating';
-import { Reviews } from '../pages/reviews/reviews';
-import { SetReview } from '../pages/reviews/set-review';
-*/
 
 // providers: @ionic-native plugins + custom
 import { GoogleMaps } from '@ionic-native/google-maps';
@@ -61,16 +23,6 @@ import { Stripe } from '@ionic-native/stripe';
 import { ParseProvider } from '../providers/parse';
 import { SmartieAPI } from '../providers/api/smartie';
 
-// translation helpers for v2
-// AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient) {
-    return new TranslateHttpLoader(http);
-}
-
-export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
-
 @NgModule({
   declarations: [
     SmartieApp
@@ -78,13 +30,6 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     BrowserModule,
     HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    }),
     IonicModule.forRoot(SmartieApp),
     IonicStorageModule.forRoot(),
     //StarRatingModule.forRoot(),

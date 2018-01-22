@@ -6,7 +6,7 @@
 -->
 <ion-header>
   <ion-navbar hideBackButton="true">
-    <ion-title>{{ 'login' | translate }}</ion-title>
+    <ion-title>Login</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -20,23 +20,23 @@
     <img src="./assets/img/logo-icon.png" />
   </div>
 
-  <form [formGroup]="LoginForm" name="Teacherstep1Form" (ngSubmit)="login(LoginForm.value)" novalidate>
+  <form [formGroup]="LoginForm" name="LoginForm" (ngSubmit)="login(LoginForm.value)" novalidate>
     <div class="list list-inset">
-      <ion-input placeholder="{{ 'username' | translate }}" type="text" formControlName="username"></ion-input>
-      <ion-input placeholder="{{ 'password' | translate }}" type="password" formControlName="password"></ion-input>
+      <ion-input placeholder="Username" type="text" formControlName="username"></ion-input>
+      <ion-input placeholder="Password" type="password" formControlName="password"></ion-input>
     </div>
 
-    <button class="button button-positive" ion-button full>{{ "login" | translate }}</button>
+    <button class="button button-positive" ion-button full>Login</button>
   </form>
 
   <!-- TODO: uncomment in v2 for Facebook login -->
-  <!--<span>{{ "or" | translate }}</span>
+  <!--<span>-or-</span>
   <a class="button fb-login" ng-href="/#/">
-    <img src="./assets/img/facebook-icon.png" width="12px"> {{ "loginFb" | translate }}
+    <img src="./assets/img/facebook-icon.png" width="12px"> Login using Facebook
   </a>-->
 
   <div class="register-block">
-    {{ "dontHaveAcct" | translate }} <a (click)="pushRegister()">{{ "signUp" | translate }}</a><br/>
+    Don't have an account yet? <a (click)="pushRegister()">Sign Up</a><br/>
     <br /><a (click)="pushForgotPassword()">Forgot your password?</a>
   </div>
 </div>

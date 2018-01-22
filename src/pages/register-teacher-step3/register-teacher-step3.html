@@ -7,10 +7,9 @@
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
-      <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon name="menu">Menu</ion-icon>
     </button>
-    <ion-title>{{ 'expertiseAndFees' | translate }}</ion-title>
+    <ion-title>Expertise and Fees</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -29,27 +28,7 @@
 
     <div class="list list-inset registration teacher step3">
 
-      <div class="tagline">
-        <p>{{ "whatsYourExpertise" | translate }}</p>
-      </div>
-
-      <div class="reg-section">
-        <div class="reg-sub-title"><h3>{{ "langsOfExpertise" | translate }}</h3></div>
-
-        <ion-item *ngFor="let lang of languages">
-          <ion-label class="lang-level-label">{{lang}}</ion-label>
-          <ion-checkbox (ionChange)="onChangeTeacherLanguage(lang, $event.checked)"></ion-checkbox>
-        </ion-item>
-      </div>
-
-      <div class="reg-section">
-        <div class="reg-sub-title"><h3>{{ "levelsCapable" | translate }}</h3></div>
-        <ion-item *ngFor="let level of this.levels">
-          <ion-label class="lang-level-label">{{ level.name }}</ion-label>
-          <ion-checkbox (ionChange)="onChangeLevelLanguage(level.name, $event.checked)" ></ion-checkbox>
-        </ion-item>
-      </div>
-      <h3>{{ "yearsOfExperience" | translate }}</h3>
+      <h3>Years of Experience</h3>
 
       <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
         <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">
@@ -66,46 +45,38 @@
 
       <div class="teacher-cv">
         <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="" />
-        <div class="button button-cv">{{ "uploadCreds" | translate }}</div>
-        <span class="input-label">{{ "credsVerify" | translate }}</span>
+        <div class="button button-cv">Upload Your CV and Credentials</div>
+        <span class="input-label">Credentials verifiable via phone camera</span>
       </div>
 
       <div class="tagline">
-        <p>{{ "whatsYourFee" | translate }}</p>
+        <p>What's Your Fee?</p>
       </div>
-      <h3>{{ "preferredHourlyRates" | translate }}</h3>
+      <h3>Preferred Hourly Rates</h3>
       <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="6">
         <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
           <p>{{ rate.text }}</p>
         </ion-slide>
       </ion-slides>
 
-      <h3>{{ "currency" | translate }}</h3>
-
-      <ion-slides (ionSlideDidChange)="currencyChanged()" slidesPerView="4">
-        <ion-slide (click)="filterCurrency(currency.value)" [ngClass]="{'active': userCurrency == currency.value}" *ngFor="let currency of currencies">
-          <p>{{ currency.text }}</p>
-        </ion-slide>
-      </ion-slides>
-
       <div class="tagline">
-        <p>{{ "yourAvailability" | translate}}</p>
+        <p>Your Availability</p>
       </div>
 
       <!-- <label class="item item-input">
-        <span class="input-label">{{ "preferredTeachingLocation" | translate }}</span>
+        <span class="input-label">Preferred Teaching Location</span>
         <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
       </label> -->
       <ion-item>
-        <ion-label fixed>{{ "preferredTeachingLocation" | translate}}</ion-label>
+        <ion-label fixed>Preferred Teaching Location</ion-label>
         <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
       </ion-item>
 
       <div *ngIf="!Teacherstep3Form.controls['prefLocation'].valid && Teacherstep3Form.controls['prefLocation'].touched" class="item item-message">
-        {{ "prefLearnLoc" | translate }}
+        Preferred Location
       </div>
 
-      <h3>{{ "availableTimings" | translate }}</h3>
+      <h3>Available Timings</h3>
 
       <div class="available-date">
         <div class="left">
@@ -148,7 +119,7 @@
       </div>
     </div>
 
-    <button class="button button-positive" [disabled]="!Teacherstep3Form.valid || submitInProgress" ion-button full>{{ "submit" | translate }}</button>
+    <button class="button button-positive" [disabled]="!Teacherstep3Form.valid || submitInProgress" ion-button full>Submit</button>
 
   </form>
 

@@ -41,7 +41,7 @@
       </div>
 
       <div *ngIf="userRole == 'teacher'">
-        <h3 padding-top>{{ "yearsOfExperience" | translate }}</h3>
+        <h3 padding-top>Years of Experience</h3>
         <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
           <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">
             <p>{{ year.text }}</p>
@@ -57,11 +57,11 @@
 
         <div class="teacher-cv">
           <input type="file" formControlName="teacherCvCerts" (ngChange)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="" />
-          <div class="button button-cv">{{ "uploadCreds" | translate }}</div>
-          <span class="input-label">{{ "credsVerify" | translate }}</span>
+          <div class="button button-cv">Upload Your CV and Credentials</div>
+          <span class="input-label">Credentials verifiable via phone camera</span>
         </div>
 
-        <h3>{{ "availableTimings" | translate }}</h3>
+        <h3>Available Timings</h3>
 
         <div class="available-date">
           <div class="left">

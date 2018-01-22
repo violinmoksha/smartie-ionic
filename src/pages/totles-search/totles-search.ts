@@ -111,7 +111,7 @@ export class TotlesSearch {
 
     this.marker.addListener('click', ()=> {
 
-      let profileModal = this.modalCtrl.create(JobRequests,
+      let profileModal = this.modalCtrl.create("JobRequests",
         {
           profilePhoto: this.profilePhoto,
           fullname: locationData.fullname,
@@ -233,6 +233,6 @@ export class TotlesSearch {
   }
 
   pushAccepteds(){
-    this.navCtrl.push(AllAccepteds, { activeRole: this.role });
+    this.navCtrl.push("AllAccepteds", { activeRole: this.role });
   }
 }

@@ -7,10 +7,9 @@
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
-      <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon name="menu">Menu</ion-icon>
     </button>
-    <ion-title>{{ 'language' | translate }}</ion-title>
+    <ion-title>Languages</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -18,15 +17,15 @@
 <ion-content padding>
   <ion-list radio-group>
   <ion-item>
-    <ion-label>{{'english' | translate}}</ion-label>
+    <ion-label>English</ion-label>
     <ion-radio [checked]="userLang=='en'" (click)="changeLanguage('en')" value="en" ></ion-radio>
   </ion-item>
   <ion-item>
-    <ion-label>{{'thai' | translate}}</ion-label>
+    <ion-label>Thai</ion-label>
     <ion-radio [checked]="userLang=='th'" (click)="changeLanguage('th')" value="th"></ion-radio>
   </ion-item>
   <ion-item>
-    <ion-label>{{'german' | translate}}</ion-label>
+    <ion-label>German</ion-label>
     <ion-radio [checked]="userLang=='de'" (click)="changeLanguage('de')" value="de"></ion-radio>
   </ion-item>
 </ion-list>

@@ -18,7 +18,7 @@ export class SmartieApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private translate: TranslateService, public parseProvider: ParseProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public parseProvider: ParseProvider) {
     this.platform = platform;
     this.initializeApp();
 
@@ -31,11 +31,7 @@ export class SmartieApp {
      // TODO @john: any time u need to fix a specific page UI
      // just uncomment the following line and recomment the above logic
      //this.rootPage = EditUserComponent;
-    })
-
-    this.translate.setDefaultLang('en');
-     // the lang to use, if the lang isn't available, it will use the current loader to get them
-    this.translate.use('en');
+   });
   }
 
   initializeApp() {
@@ -100,18 +96,6 @@ export class SmartieApp {
         //Parse.initialize("948b9456-8c0a-4755-9e84-71be3723d338", "49bc1a33-dfe7-4a32-bdcc-ee30b7ed8447");
         //Parse.serverURL = 'https://test.t0tl3s.com/parse';
 
-        // this.translate.setDefaultLang('en');
-
-        // test
-        //this.storage.set('userLang', 'th');
-
-        //Commenting TranslateModule
-        /*this.storage.get('userLang').then((val) => {
-          this.translate.use(val);
-        }).catch((err) => {
-          this.translate.use('en');
-        });*/
-
         /* document.addEventListener("deviceready", function() {
           console.log(navigator.globalization);
 
@@ -138,9 +122,9 @@ export class SmartieApp {
 
   pushPage(item) {
     if (item == 'feedback')
-      this.nav.push("Feedback");
+      this.nav.push("FeedbackPage");
     else if (item == 'edit-profile')
-      this.nav.push("EditProfile");
+      this.nav.push("EditProfilePage");
     else if (item == 'login') { // logout -->
       localStorage.clear(); // dump session
       this.nav.push("LoginPage"); // send to Login

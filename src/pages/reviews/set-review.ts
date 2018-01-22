@@ -53,7 +53,7 @@ export class SetReview {
         status: number
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        this.navCtrl.push(Reviews, this.params.profileData);
+        this.navCtrl.push("Reviews", this.params.profileData);
       })
 
     })

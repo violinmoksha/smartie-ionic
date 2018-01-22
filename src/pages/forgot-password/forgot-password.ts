@@ -15,7 +15,7 @@ import { SmartieAPI } from '../../providers/api/smartie';
   selector: 'page-forgot-password',
   templateUrl: 'forgot-password.html',
 })
-export class ForgotPassword {
+export class ForgotPasswordPage {
 
   private ForgotForm: FormGroup;
 

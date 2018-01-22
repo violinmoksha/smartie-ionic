@@ -7,10 +7,9 @@
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
-      <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon name="menu">Menu</ion-icon>
     </button>
-    <ion-title>{{ 'teacherInformation' | translate }}</ion-title>
+    <ion-title>Teacher Information</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -28,23 +27,23 @@
     <div class="list list-inset registration teacher step2">
 
       <div class="tagline">
-        <p>{{ "tellUsAboutYourself" | translate }}</p>
+        <p>Tell us about yourself</p>
       </div>
 
       <div class="profile-pic">
         <img id="picForDisplay" (click)="chooseUploadType($event)" [src]="pageProfileSrc" width="150px" *ngIf="!photoSelected && !photoTaken" />
         <img (click)="chooseUploadType($event)" [src]="cameraData" *ngIf="photoTaken" width="150px">
         <img (click)="chooseUploadType($event)" [src]="cameraUrl" *ngIf="photoSelected" width="150px">
-        <span class="input-label">{{ "uploadYourPhoto" | translate }}</span>
+        <span class="input-label">Upload Your Photo</span>
       </div>
 
       <!-- Name -->
       <!-- <label class="item item-input">
-        <span class="input-label">{{ "name" | translate}}</span>
+        <span class="input-label">Name</span>
         <ion-input placeholder="i.e. John Smith" type="text" formControlName="name"></ion-input>
       </label> -->
       <ion-item>
-        <ion-label fixed>{{ "name" | translate}}</ion-label>
+        <ion-label fixed>Name</ion-label>
         <ion-input placeholder="i.e. John Smith" type="text" formControlName="name"></ion-input>
       </ion-item>
 
@@ -54,11 +53,11 @@
 
       <!-- Phone -->
       <!-- <label class="item item-input">
-        <span class="input-label">{{ "phoneNumber" | translate }}</span>
+        <span class="input-label">Phone Number</span>
         <ion-input placeholder="510-555-0162" type="tel" formControlName="phone"></ion-input>
       </label> -->
       <ion-item>
-        <ion-label fixed>{{ "phoneNumber" | translate}}</ion-label>
+        <ion-label fixed>Phone Number</ion-label>
         <ion-input placeholder="510-555-0162" type="tel" formControlName="phone"></ion-input>
       </ion-item>
 
@@ -66,56 +65,13 @@
         Phone number is required
       </div>
 
-      <!-- Age -->
-      <!-- <label class="item item-input">
-        <span class="input-label">{{ "age" | translate }}</span>
-        <ion-input placeholder="28" type="number" formControlName="age"></ion-input>
-      </label> -->
-      <ion-item>
-        <ion-label fixed>{{ "age" | translate}}</ion-label>
-        <ion-input placeholder="28" type="number" formControlName="age"></ion-input>
-      </ion-item>
-
-
-      <div *ngIf="!Teacherstep2Form.controls['age'].valid && Teacherstep2Form.controls['age'].touched" class="item item-message">
-        Age is required
-      </div>
-
-      <!-- Native Language -->
-      <!-- <label class="item item-input">
-        <span class="input-label">{{ "nativeLanguage" | translate }}</span>
-        <ion-input placeholder="English" type="type" formControlName="native"></ion-input>
-      </label> -->
-      <ion-item>
-        <ion-label fixed>{{ "nativeLanguage" | translate}}</ion-label>
-        <ion-input placeholder="English" type="type" formControlName="native"></ion-input>
-      </ion-item>
-
-      <div *ngIf="!Teacherstep2Form.controls['native'].valid && Teacherstep2Form.controls['native'].touched" class="item item-message">
-        Native Language is required
-      </div>
-
-      <!-- Nationality -->
-      <!-- <label class="item item-input">
-        <span class="input-label">{{ "nationality" | translate }}</span>
-        <ion-input placeholder="Korean American" type="type" formControlName="nationality"></ion-input>
-      </label> -->
-      <ion-item>
-        <ion-label fixed>{{ "nationality" | translate}}</ion-label>
-        <ion-input placeholder="Korean American" type="type" formControlName="nationality"></ion-input>
-      </ion-item>
-
-      <div *ngIf="!Teacherstep2Form.controls['nationality'].valid && Teacherstep2Form.controls['nationality'].touched" class="item item-message">
-        Nationality is required
-      </div>
-
       <!-- Profile Title -->
       <!-- <label class="item item-input">
-        <span class="input-label">{{ "profileTitle" | translate}}</span>
+        <span class="input-label">Profile Title</span>
         <ion-input placeholder="Certified TOEFL Instructor" type="type" formControlName="profileTitle"></ion-input>
       </label> -->
       <ion-item>
-        <ion-label fixed>{{ "profileTitle" | translate}}</ion-label>
+        <ion-label fixed>Profile Title</ion-label>
         <ion-input placeholder="Certified TOEFL Instructor" type="type" formControlName="profileTitle"></ion-input>
       </ion-item>
 
@@ -125,11 +81,11 @@
 
       <!-- Profile Message -->
       <!-- <label class="item item-input">
-        <span class="input-label">{{ "message" | translate }}</span>
+        <span class="input-label">Profile Message</span>
         <ion-textarea formControlName="profileMessage" placeholder="Although I am certified in TOEFL I also have a passion for teaching Korean. Please book a session with me, you'll be amazed at the quick learning results!"></ion-textarea>
       </label> -->
       <ion-item>
-        <ion-label fixed>{{ "message" | translate}}</ion-label>
+        <ion-label fixed>Profile Message</ion-label>
         <ion-textarea formControlName="profileMessage" placeholder="Although I am certified in TOEFL I also have a passion for teaching Korean. Please book a session with me, you'll be amazed at the quick learning results!"></ion-textarea>
       </ion-item>
 
