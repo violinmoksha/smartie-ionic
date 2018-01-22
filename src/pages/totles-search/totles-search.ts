@@ -33,6 +33,7 @@ export class TotlesSearch {
   private notifyCount: any;
   private latLngUser: any;
   private marker: any;
+  private searchData: any;
   //private alertOpts: any;
   // private infoWindow: any;
 
@@ -180,16 +181,15 @@ export class TotlesSearch {
   }
 
   totlesSearchResult(latLng, searchRole, searchLoc){
-    let searchData;
     if(latLng !== null){
-      searchData = { latlng: latLng, role: searchRole };
+      this.searchData = { latlng: latLng, role: searchRole };
     }else if(searchLoc !== null){
-      searchData = { role: searchRole, searchloc: searchLoc };
+      this.searchData = { role: searchRole, searchloc: searchLoc };
     }
 
     let API = this.smartieApi.getApi(
       'totlesSearch',
-      searchData
+      this.searchData
     );
 
     return new Promise(resolve => {
