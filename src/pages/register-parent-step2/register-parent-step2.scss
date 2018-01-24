@@ -20,4 +20,30 @@ page-register-parent-step2 {
       color: #F97533;
     }
   }
+  .swiper-slide{
+    width:auto!important;
+    padding:13px 15px;
+    border:1px solid transparent;
+    p{
+      margin: 0;
+      line-height:15px;
+    }
+  }
+  .swiper-slide.active{
+    border:1px solid #00BC5B!important;
+    padding:0 0;
+    border-radius: 200px;
+    padding:13px 15px;
+    width: auto!important;
+  }
+
+  h3{
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    margin-top:30px;
+    font-weight:500;
+  }
 }
