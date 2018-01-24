@@ -113,7 +113,7 @@ export class RegisterParentStep2Page {
   }
 
   next(form2Value){
-    this.navCtrl.push("RegisterParentStep3", { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool });
+    this.navCtrl.push("RegisterParentStep3Page", { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool });
   }
 
   ionViewDidLoad() {

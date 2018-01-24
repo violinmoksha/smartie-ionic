@@ -28,7 +28,7 @@ export class RegisterStudentStep3Page {
   private hourlyRate: any;
   private userCurrency: any;
 
-  public languages = [
+  /*public languages = [
     { langid: 1, name: "English", value: "englsh" },
     { langid: 2, name: "Thai", value: "thai" },
     { langid: 3, name: "Chinese", value: "chinese" },
@@ -41,7 +41,7 @@ export class RegisterStudentStep3Page {
     { "name": "Primary", "value": "primary" },
     { "name": "High School", "value": "highSchool" },
     { "name": "University", "value": "university" }
-  ];
+  ];*/
 
   public hourRates = [
     { "value": '5', "text": '5' },
@@ -66,13 +66,13 @@ export class RegisterStudentStep3Page {
     { "value": '100', "text": '100' }
   ];
 
-  public currencies = [
+  /*public currencies = [
     { "value": 'USD', "text": 'US Dollar' },
     { "value": 'EUR', "text": 'Euro' },
     { "value": 'AUD', "text": 'Aus Dollar' },
     { "value": 'INR', "text": 'Rupee' },
     { "value": 'THB', "text": 'Thai Baht' },
-  ]
+  ]*/
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.submitInProgress = false;
@@ -85,8 +85,8 @@ export class RegisterStudentStep3Page {
     this.partOfSchool = navParams.data.partOfSchool;
 
     this.Studentstep3Form = new FormGroup({
-      requiredLang: new FormArray([], Validators.required),
-      requiredLevel: new FormArray([], Validators.required),
+      // requiredLang: new FormArray([], Validators.required),
+      // requiredLevel: new FormArray([], Validators.required),
       prefLocation: new FormControl('', Validators.required)
     })
   }
@@ -103,7 +103,7 @@ export class RegisterStudentStep3Page {
     console.log(currentIndex);
   }
 
-  public filterCurrency(curr: number): void {
+  /*public filterCurrency(curr: number): void {
     // Handle what to do when a category is selected
     console.log(curr);
     this.userCurrency = curr;
@@ -136,7 +136,7 @@ export class RegisterStudentStep3Page {
       let index = knownLevel.controls.findIndex(x => x.value == name)
       knownLevel.removeAt(index);
     }
-  }
+  }*/
 
   StudentSubmit(studentData){
     // console.log(studentData);

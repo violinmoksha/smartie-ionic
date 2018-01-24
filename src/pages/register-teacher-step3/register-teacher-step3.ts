@@ -37,10 +37,10 @@ export class RegisterTeacherStep3Page {
   private startDate: any;
   private endDate: any;
 
-  public levels = [
+  /*public levels = [
     { "name": "High School", "value": "highSchool" },
     { "name": "University", "value": "university" }
-  ];
+  ];*/
 
   public years = [
     { "value": '1', "text": '1' },
@@ -88,13 +88,13 @@ export class RegisterTeacherStep3Page {
     { "value": '100', "text": '100' }
   ];
 
-  public currencies = [
+  /*public currencies = [
     { "value": 'USD', "text": 'US Dollar' },
     { "value": 'EUR', "text": 'Euro' },
     { "value": 'AUD', "text": 'Aus Dollar' },
     { "value": 'INR', "text": 'Rupee' },
     { "value": 'THB', "text": 'Thai Baht' },
-  ]
+  ]*/
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController) {
     this.submitInProgress = false;
@@ -102,22 +102,10 @@ export class RegisterTeacherStep3Page {
       content: 'Creating Account...'
     });
 
-
-    /*
-    function dateValidator(c: AbstractControl){
-      return c.get('startDate').value < c.get('endDate').value ? null : { 'dateGreater' : true };
-    }
-
-    function timeValidator(c: AbstractControl){
-      return c.get('startTime').value < c.get('endTime').value ? null : { 'timeGreater' : true };
-    }*/
-
     this.form1Values = navParams.data.form1Value;
     this.form2Values = navParams.data.form2Value;
 
     this.Teacherstep3Form = new FormGroup({
-      teacherLanguage: new FormArray([], Validators.required),
-      teacherLevel: new FormArray([], Validators.required),
       teacherCvCerts: new FormControl(''),
       prefLocation: new FormControl('', Validators.required),
       startTime: new FormControl('', Validators.required),

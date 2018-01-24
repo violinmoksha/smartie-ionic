@@ -43,6 +43,6 @@ export class RegisterParentPage {
   }
 
   next(form1Value){
-    this.navCtrl.push("RegisterParentStep2", { form1Value : form1Value });
+    this.navCtrl.push("RegisterParentStep2Page", { form1Value : form1Value });
   }
 }

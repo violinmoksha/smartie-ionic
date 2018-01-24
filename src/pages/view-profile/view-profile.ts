@@ -26,7 +26,7 @@ export class ViewProfile {
   }
 
   viewReviews(profileId){
-    this.navCtrl.push(Reviews, this.params);
+    this.navCtrl.push('ReviewsPage', this.params);
   }
 
 }

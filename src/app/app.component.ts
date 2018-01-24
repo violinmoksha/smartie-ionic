@@ -18,7 +18,7 @@ export class SmartieApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public parseProvider: ParseProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public parseProvider: ParseProvider, private translate: TranslateService) {
     this.platform = platform;
     this.initializeApp();
 
@@ -31,6 +31,11 @@ export class SmartieApp {
      // TODO @john: any time u need to fix a specific page UI
      // just uncomment the following line and recomment the above logic
      //this.rootPage = EditUserComponent;
+
+     this.translate.setDefaultLang('en');
+     // the lang to use, if the lang isn't available, it will use the current loader to get them
+     this.translate.use('en');
+
    });
   }
 

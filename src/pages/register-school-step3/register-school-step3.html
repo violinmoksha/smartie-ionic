@@ -29,7 +29,7 @@
 
     <div class="list list-inset registration teacher step3">
 
-      <div class="tagline bg-school">
+      <!-- <div class="tagline bg-school">
         <p>Expertise your need ?</p>
       </div>
       <div class="clear"></div>
@@ -49,7 +49,7 @@
           <ion-checkbox (ionChange)="onChangeSchoolLevel(level.name, $event.checked)" ></ion-checkbox>
         </ion-item>
       </div>
-        <div class="clear"></div>
+        <div class="clear"></div> -->
 
       <div class="tagline bg-school">
         <p>The fee you can pay</p>
@@ -62,13 +62,13 @@
         </ion-slide>
       </ion-slides>
 
-    <h3>Currency</h3>
+    <!-- <h3>Currency</h3>
 
       <ion-slides (ionSlideDidChange)="currencyChanged()" slidesPerView="4">
         <ion-slide (click)="filterCurrency(currency.value)" [ngClass]="{'active': userCurrency == currency.value}" *ngFor="let currency of currencies">
           <p>{{ currency.text }}</p>
         </ion-slide>
-      </ion-slides>
+      </ion-slides> -->
 
       <div class="tagline bg-school">
         <p>Your Location</p>

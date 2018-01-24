@@ -29,7 +29,7 @@ export class RegisterParentStep3Page {
   private hourlyRate: any;
   private userCurrency: any;
 
-  public languages = [
+  /*public languages = [
     { langid: 1, name: "English", value: "englsh" },
     { langid: 2, name: "Thai", value: "thai" },
     { langid: 3, name: "Chinese", value: "chinese" },
@@ -42,7 +42,7 @@ export class RegisterParentStep3Page {
     { "name": "Primary", "value": "primary" },
     { "name": "High School", "value": "highSchool" },
     { "name": "University", "value": "university" }
-  ];
+  ];*/
 
   public hourRates = [
     { "value": '5', "text": '5' },
@@ -67,13 +67,13 @@ export class RegisterParentStep3Page {
     { "value": '100', "text": '100' }
   ];
 
-  public currencies = [
+  /*public currencies = [
     { "value": 'USD', "text": 'US Dollar' },
     { "value": 'EUR', "text": 'Euro' },
     { "value": 'AUD', "text": 'Aus Dollar' },
     { "value": 'INR', "text": 'Rupee' },
     { "value": 'THB', "text": 'Thai Baht' },
-  ]
+  ]*/
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.submitInProgress = false;
@@ -86,8 +86,8 @@ export class RegisterParentStep3Page {
     this.partOfSchool = navParams.data.partOfSchool;
 
     this.Parentstep3Form = new FormGroup({
-      requiredLang: new FormArray([], Validators.required),
-      requiredLevel: new FormArray([], Validators.required),
+      // requiredLang: new FormArray([], Validators.required),
+      // requiredLevel: new FormArray([], Validators.required),
       prefLocation: new FormControl('', Validators.required)
     })
 

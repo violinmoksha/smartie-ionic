@@ -123,7 +123,7 @@ export class LoginPage {
   }
 
   pushRegister(){
-    this.navCtrl.push("Register");
+    this.navCtrl.push("RegisterPage");
   }
 
   pushForgotPassword(){

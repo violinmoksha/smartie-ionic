@@ -34,9 +34,6 @@ export class RegisterTeacherStep2Page {
     this.Teacherstep2Form = new FormGroup({
       name: new FormControl('', Validators.required),
       phone: new FormControl('', Validators.required),
-      age: new FormControl('', Validators.required),
-      native: new FormControl('', Validators.required),
-      nationality: new FormControl('', Validators.required),
       profileTitle: new FormControl('', Validators.required),
       profileMessage: new FormControl('', Validators.required)
     })
@@ -146,7 +143,7 @@ export class RegisterTeacherStep2Page {
   }
 
   next(form2Value){
-    this.navCtrl.push("RegisterTeacherStep3", { form1Value : this.form1Values, form2Value : form2Value });
+    this.navCtrl.push("RegisterTeacherStep3Page", { form1Value : this.form1Values, form2Value : form2Value });
   }
   // updateTeacherLanguage(event){
   //   console.log(event);
