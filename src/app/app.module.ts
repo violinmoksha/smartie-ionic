@@ -24,6 +24,7 @@ import { Stripe } from '@ionic-native/stripe';
 //import { Push, PushObject } from '@ionic-native/push';
 import { ParseProvider } from '../providers/parse';
 import { SmartieAPI } from '../providers/api/smartie';
+import { StarRatingModule } from 'angular-star-rating';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -52,7 +53,7 @@ export function createTranslateLoader(http: HttpClient) {
 
     IonicModule.forRoot(SmartieApp),
     IonicStorageModule.forRoot(),
-    //StarRatingModule.forRoot(),
+    StarRatingModule.forRoot(),
     CalendarModule,
   ],
   bootstrap: [IonicApp],

@@ -83,7 +83,7 @@ export class ReviewsPage {
   }
 
   addReview(){
-    this.navCtrl.push(SetReview, { profileData : this.profileData });
+    this.navCtrl.push('SetReview', { profileData : this.profileData });
   }
 
 }

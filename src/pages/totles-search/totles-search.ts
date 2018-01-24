@@ -50,7 +50,7 @@ export class TotlesSearch {
   }
 
   ionViewDidLoad(){
-    // console.log(this.fromWhere);
+    console.log(this.fromWhere);
     if(this.fromWhere == 'signUp'){
       this.latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profile.latlng;
     }else{
@@ -111,7 +111,7 @@ export class TotlesSearch {
 
     this.marker.addListener('click', ()=> {
 
-      let profileModal = this.modalCtrl.create("JobRequests",
+      let profileModal = this.modalCtrl.create("JobRequestsPage",
         {
           profilePhoto: this.profilePhoto,
           fullname: locationData.fullname,
