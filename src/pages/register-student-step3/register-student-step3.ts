@@ -1,7 +1,7 @@
 import { IonicPage } from 'ionic-angular';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, Slides, LoadingController } from 'ionic-angular';
-import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Parse } from 'parse';
 

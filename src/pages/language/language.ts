@@ -15,8 +15,6 @@ import { NavController, NavParams, MenuController } from 'ionic-angular';
 })
 export class LanguagePage {
 
-  private userLang: any;
-
   constructor(public navCtrl: NavController, public navParams: NavParams, private menuCtrl: MenuController) {
   }
 

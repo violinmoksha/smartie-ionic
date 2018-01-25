@@ -2,7 +2,6 @@ import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { SetReview } from './set-review';
 
 /**
  * Generated class for the ReviewsPage page.

@@ -42,12 +42,12 @@ export class PaymentConfirm {
 
     this.stripe.setPublishableKey('pk_test_HZ10V0AINd5NjEOyoEAeYSEe');
 
-    let card = {
-      number: '4242424242424242',
-      expMonth: 12,
-      expYear: 2020,
-      cvc: '220'
-    };
+    // let card = {
+    //   number: '4242424242424242',
+    //   expMonth: 12,
+    //   expYear: 2020,
+    //   cvc: '220'
+    // };
 
     let API = this.smartieApi.getApi(
       'createCustomer', {}

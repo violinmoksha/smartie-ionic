@@ -4,7 +4,7 @@ import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from '../provide
 // core app dependencies
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { SmartieApp } from './app.component';
 
