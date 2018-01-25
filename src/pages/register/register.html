@@ -2,11 +2,9 @@
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
-      <!-- <ion-icon name="{{ 'menu' | translate }}"></ion-icon> -->
-      <!-- remove pipe translate since TranslateModule is commented -->
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ 'registerOptions' | translate }}</ion-title>
+    <ion-title>Register Options </ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -16,20 +14,20 @@
   </div>
 
   <div class="reg-text">
-    <h1>{{ "whoAreYou" | translate }}</h1>
+    <h1>Who are you? </h1>
   </div>
 
   <ion-item class="roles">
-    <a class="item item-role bg-teacher" (click)="pushPage('teacher')"> {{ "teacher" | translate }}</a>
+    <a class="item item-role bg-teacher" (click)="pushPage('teacher')"> Teacher</a>
   </ion-item>
   <ion-item class="roles">
-    <a class="item item-role bg-student" (click)="pushPage('student')"> {{ "student" | translate }}</a>
+    <a class="item item-role bg-student" (click)="pushPage('student')"> Student</a>
   </ion-item>
   <ion-item class="roles">
-    <a class="item item-role bg-parent" (click)="pushPage('parent')"> {{ "parent" | translate }}</a>
+    <a class="item item-role bg-parent" (click)="pushPage('parent')"> Parent</a>
   </ion-item>
   <ion-item class="roles">
-    <a class="item item-role bg-school" (click)="pushPage('school')"> {{ "school" | translate }}</a>
+    <a class="item item-role bg-school" (click)="pushPage('school')"> School</a>
   </ion-item>
   <!--<button ion-button secondary menuToggle>Toggle Menu</button>-->
 </ion-content>

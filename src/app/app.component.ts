@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Nav, Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -18,7 +17,7 @@ export class SmartieApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public parseProvider: ParseProvider, private translate: TranslateService) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public parseProvider: ParseProvider) {
     this.platform = platform;
     this.initializeApp();
 
@@ -31,11 +30,6 @@ export class SmartieApp {
      // TODO @john: any time u need to fix a specific page UI
      // just uncomment the following line and recomment the above logic
      //this.rootPage = EditUserComponent;
-
-     this.translate.setDefaultLang('en');
-     // the lang to use, if the lang isn't available, it will use the current loader to get them
-     this.translate.use('en');
-
    });
   }
 
