@@ -17,29 +17,26 @@ export class SmartieApp {
 
   pages: Array<{title: string, component: any}>;
 
+  UserRole: string;
+
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public parseProvider: ParseProvider, public menuCtrl: MenuController) {
     this.storage.get('role').then(role => {
-      if (role == 'teacher') {
-        this.enableTeacherMenu();
-      } else {
-        this.enableOthersMenu();
-      }
+      this.UserRole = role;
+
+      this.platform = platform;
+      this.initializeApp();
+
+      this.storage.get('sessionToken').then((val) => {
+        if(val !== 'undefined'){
+          this.rootPage = "LoginPage";
+        }else{
+          this.rootPage = "LoginPage";
+        }
+        // TODO @john: any time u need to fix a specific page UI
+        // just uncomment the following line and recomment the above logic
+        //this.rootPage = EditUserComponent;
+      });
     });
-
-    this.platform = platform;
-    this.initializeApp();
-
-    this.storage.get('sessionToken').then((val) => {
-     if(val !== 'undefined'){
-       this.rootPage = "LoginPage";
-     }else{
-       this.rootPage = "LoginPage";
-     }
-     // TODO @john: any time u need to fix a specific page UI
-     // just uncomment the following line and recomment the above logic
-     //this.rootPage = EditUserComponent;
-
-   });
   }
 
   initializeApp() {
@@ -132,6 +129,8 @@ export class SmartieApp {
       this.nav.push("FeedbackPage");
     else if (item == 'edit-profile')
       this.nav.push("EditProfilePage");
+    else if (item == 'create-job')
+      this.nav.push("CreateJobPage");
     else if (item == 'login') { // logout -->
       localStorage.clear(); // dump ephemeral session
       this.storage.clear(); // dump session
@@ -140,11 +139,13 @@ export class SmartieApp {
   }
 
   enableOthersMenu() {
+    console.log('enableOthersMenu');
     this.menuCtrl.enable(true, 'others');
     this.menuCtrl.enable(false, 'teacher');
   }
 
   enableTeacherMenu() {
+    console.log('enableTeacherMenu');
     this.menuCtrl.enable(false, 'others');
     this.menuCtrl.enable(true, 'teacher');
   }
