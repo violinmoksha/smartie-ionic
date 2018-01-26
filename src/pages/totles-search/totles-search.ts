@@ -1,4 +1,4 @@
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
@@ -41,9 +41,7 @@ export class TotlesSearch {
 
   public searchLogo = '/assets/img/smartie-horzontal-logo.png';
 
-  public userRole: string;
-
-  constructor(private storage: Storage, public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController) {
+  constructor(private storage: Storage, public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public events: Events) {
     this.role = navParams.data.role;
     this.fromWhere = navParams.data.fromwhere;
     this.alert = this.alertCtrl;
@@ -54,9 +52,7 @@ export class TotlesSearch {
   }
 
   ionViewDidEnter() {
-    this.storage.get('role').then(role => {
-      this.userRole = role;
-    });
+    this.events.publish("buttonsLoad", this.role);
   }
 
   ionViewDidLoad(){

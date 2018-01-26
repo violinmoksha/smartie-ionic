@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, MenuController } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -16,26 +16,44 @@ export class SmartieApp {
   rootPage: any;
 
   pages: Array<{title: string, component: any}>;
+  buttons: Array<{iconName: string, text: string}>;
 
-  UserRole: string;
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public parseProvider: ParseProvider) {
+    this.platform = platform;
+    this.initializeApp();
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public parseProvider: ParseProvider, public menuCtrl: MenuController) {
-    this.storage.get('role').then(role => {
-      this.UserRole = role;
+    this.storage.get('sessionToken').then((val) => {
+      if(val !== 'undefined'){
+        this.rootPage = "LoginPage";
+      }else{
+        this.rootPage = "LoginPage";
+      }
+      // TODO @john: any time u need to fix a specific page UI
+      // just uncomment the following line and recomment the above logic
+      //this.rootPage = EditUserComponent;
+    });
 
-      this.platform = platform;
-      this.initializeApp();
-
-      this.storage.get('sessionToken').then((val) => {
-        if(val !== 'undefined'){
-          this.rootPage = "LoginPage";
-        }else{
-          this.rootPage = "LoginPage";
-        }
-        // TODO @john: any time u need to fix a specific page UI
-        // just uncomment the following line and recomment the above logic
-        //this.rootPage = EditUserComponent;
-      });
+    this.events.subscribe("buttonsLoad", eventData => {
+      if (eventData !== 'teacher') {
+        this.buttons = [
+          { iconName: 'card', text: 'Payment Details' },
+          { iconName: 'book', text: 'Manage Orders' },
+          { iconName: 'qr-scanner', text: 'Scan QR Promo' },
+          { iconName: 'settings', text: 'Profile Settings' },
+          { iconName: 'paper', text: 'Give Feedback' },
+          { iconName: 'add-circle', text: 'Create a Job' },
+          { iconName: 'log-out', text: 'Logout' }
+        ];
+      } else {
+        this.buttons = [
+          { iconName: 'card', text: 'Payment Details' },
+          { iconName: 'book', text: 'Manage Orders' },
+          { iconName: 'qr-scanner', text: 'Scan QR Promo' },
+          { iconName: 'settings', text: 'Profile Settings' },
+          { iconName: 'paper', text: 'Give Feedback' },
+          { iconName: 'log-out', text: 'Logout' }
+        ];
+      }
     });
   }
 
@@ -124,29 +142,16 @@ export class SmartieApp {
     this.nav.setRoot(page.component);
   }
 
-  pushPage(item) {
-    if (item == 'feedback')
+  pushPage(event, button) {
+    if (button.iconName == 'paper')
       this.nav.push("FeedbackPage");
-    else if (item == 'edit-profile')
+    else if (button.iconName == 'settings')
       this.nav.push("EditProfilePage");
-    else if (item == 'create-job')
+    else if (button.iconName == 'add-circle')
       this.nav.push("CreateJobPage");
-    else if (item == 'login') { // logout -->
+    else if (button.iconName == 'log-out') { // logout -->
       localStorage.clear(); // dump ephemeral session
-      this.storage.clear(); // dump session
-      this.nav.push("LoginPage"); // send to Login
+      this.nav.setRoot("LoginPage"); // send to Login
     }
-  }
-
-  enableOthersMenu() {
-    console.log('enableOthersMenu');
-    this.menuCtrl.enable(true, 'others');
-    this.menuCtrl.enable(false, 'teacher');
-  }
-
-  enableTeacherMenu() {
-    console.log('enableTeacherMenu');
-    this.menuCtrl.enable(false, 'others');
-    this.menuCtrl.enable(true, 'teacher');
   }
 }
