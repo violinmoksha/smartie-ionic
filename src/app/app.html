@@ -1,4 +1,4 @@
-<ion-menu [content]="content">
+<ion-menu id="others" [content]="content">
   <ion-header>
     <ion-toolbar class="sidebar-title">
       <ion-title>Menu</ion-title>
@@ -14,13 +14,27 @@
       <button (click)="pushPage('feedback')" ion-item nav-clear menuClose icon-start><ion-icon name="paper"></ion-icon>Give Feedback</button>
       <button (click)="pushPage('create-job')" ion-item nav-clear menuClose icon-start><ion-icon name="add-circle"></ion-icon>Create a Job</button>
       <button (click)="pushPage('login')" ion-item nav-clear menuClose icon-start><ion-icon name="log-out"></ion-icon>Logout</button>
-
-      <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button>-->
     </ion-list>
   </ion-content>
+</ion-menu>
 
+<ion-menu id="teacher" [content]="content">
+  <ion-header>
+    <ion-toolbar class="sidebar-title">
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="side-bar-menu" padding>
+    <ion-list>
+      <button ion-item nav-clear menuClose icon-start><ion-icon name="card"></ion-icon>Payment Details</button>
+      <button ion-item nav-clear menuClose icon-start><ion-icon name="book"></ion-icon>Manage Orders</button>
+      <button ion-item nav-clear menuClose icon-start><ion-icon name="qr-scanner"></ion-icon>Scan QR Promo</button>
+      <button (click)="pushPage('edit-profile')" ion-item nav-clear menuClose icon-start><ion-icon name="settings"></ion-icon>Profile Settings</button>
+      <button (click)="pushPage('feedback')" ion-item nav-clear menuClose icon-start><ion-icon name="paper"></ion-icon>Give Feedback</button>
+      <button (click)="pushPage('login')" ion-item nav-clear menuClose icon-start><ion-icon name="log-out"></ion-icon>Logout</button>
+    </ion-list>
+  </ion-content>
 </ion-menu>
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->

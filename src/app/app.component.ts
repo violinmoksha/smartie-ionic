@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, MenuController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -17,7 +17,15 @@ export class SmartieApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public parseProvider: ParseProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public parseProvider: ParseProvider, public menuCtrl: MenuController) {
+    this.storage.get('role').then(role => {
+      if (role == 'teacher') {
+        this.enableTeacherMenu();
+      } else {
+        this.enableOthersMenu();
+      }
+    });
+
     this.platform = platform;
     this.initializeApp();
 
@@ -30,12 +38,12 @@ export class SmartieApp {
      // TODO @john: any time u need to fix a specific page UI
      // just uncomment the following line and recomment the above logic
      //this.rootPage = EditUserComponent;
+
    });
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
 
@@ -110,7 +118,7 @@ export class SmartieApp {
           }
         }, false); */
       }
-    });
+    })
   }
 
   openPage(page) {
@@ -125,8 +133,19 @@ export class SmartieApp {
     else if (item == 'edit-profile')
       this.nav.push("EditProfilePage");
     else if (item == 'login') { // logout -->
-      localStorage.clear(); // dump session
+      localStorage.clear(); // dump ephemeral session
+      this.storage.clear(); // dump session
       this.nav.push("LoginPage"); // send to Login
     }
+  }
+
+  enableOthersMenu() {
+    this.menuCtrl.enable(true, 'others');
+    this.menuCtrl.enable(false, 'teacher');
+  }
+
+  enableTeacherMenu() {
+    this.menuCtrl.enable(false, 'others');
+    this.menuCtrl.enable(true, 'teacher');
   }
 }

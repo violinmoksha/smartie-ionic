@@ -1,4 +1,5 @@
 import { IonicPage } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
@@ -40,21 +41,32 @@ export class TotlesSearch {
 
   public searchLogo = '/assets/img/smartie-horzontal-logo.png';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController) {
+  public userRole: string;
+
+  constructor(private storage: Storage, public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController) {
     this.role = navParams.data.role;
     this.fromWhere = navParams.data.fromwhere;
     this.alert = this.alertCtrl;
     if(localStorage.getItem(navParams.data.loggedProfileId+'notificationCount')){
-      this.notifyCount = JSON.parse(localStorage.getItem(navParams.data.loggedProfileId+'notificationCount')).result;
+      if (localStorage.getItem(navParams.data.loggedProfileId+'notificationCount') !== undefined)
+        this.notifyCount = JSON.parse(localStorage.getItem(navParams.data.loggedProfileId+'notificationCount')).result;
     }
+  }
+
+  ionViewDidEnter() {
+    this.storage.get('role').then(role => {
+      this.userRole = role;
+    });
   }
 
   ionViewDidLoad(){
     console.log(this.fromWhere);
     if(this.fromWhere == 'signUp'){
-      this.latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profile.latlng;
+      if (localStorage.getItem(this.role+'UserProfile') !== undefined)
+        this.latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profile.latlng;
     }else{
-      this.latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
+      if (localStorage.getItem(this.role+'UserProfile'))
+        this.latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
     }
     this.totlesSearchResult(this.latLngUser, this.navParams.data.role, null);
     // this.initMap();
