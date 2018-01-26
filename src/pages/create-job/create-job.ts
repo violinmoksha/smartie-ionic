@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Slides, ModalController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Slides, AlertController, ModalController, LoadingController } from 'ionic-angular';
 import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { SmartieAPI } from '../../providers/api/smartie';
@@ -50,7 +50,7 @@ export class CreateJobPage {
   private submitInProgress: boolean = false;
   private userRole: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private smartieApi: SmartieAPI, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController) {
     this.loading = this.loadingCtrl.create({
       content: 'Creating Job...'
     });
@@ -91,9 +91,13 @@ export class CreateJobPage {
           this.navCtrl.push("TotlesSearch");
         },
         err => {
-          // TODO alert
-          this.submitInProgress = false;
           this.loading.dismiss();
+          let alert = this.alertCtrl.create({
+            title: 'Job Request Submit Failed!',
+            subTitle: err.message,
+            buttons: ['OK']
+          });
+          this.submitInProgress = false;
         }
       );
     });
