@@ -25,8 +25,6 @@ export class EditProfilePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
     this.EditProfileForm = new FormGroup({
-      email: new FormControl('', Validators.required),
-      username: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)])
     });
 

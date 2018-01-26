@@ -14,30 +14,12 @@
   <form [formGroup]="EditProfileForm" name="EditProfileForm" (ngSubmit)="next(EditProfileForm.value)" novalidate>
     <ion-list class="list-inset registration">
       <div class="tagline">
-        <p>Edit Basic User Details</p>
-      </div>
-
-      <ion-item>
-        <ion-label fixed>Email</ion-label>
-        <ion-input [value]="email" type="email" formControlName="email"></ion-input>
-      </ion-item>
-
-      <div *ngIf="!EditProfileForm.controls['email'].valid && !EditProfileForm.controls['email'].pristine" class="item item-message">
-        Email is required
-      </div>
-
-      <ion-item>
-        <ion-label fixed>Username</ion-label>
-        <ion-input [value]="username" type="text" formControlName="username"></ion-input>
-      </ion-item>
-
-      <div *ngIf="!EditProfileForm.controls['username'].valid && !EditProfileForm.controls['username'].pristine" class="item item-message">
-        User name is required
+        <p>Please provide your password</p>
       </div>
 
       <div>
         <ion-item>
-          <ion-label fixed>Current Password</ion-label>
+          <ion-label fixed>Password</ion-label>
           <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
         </ion-item>
 

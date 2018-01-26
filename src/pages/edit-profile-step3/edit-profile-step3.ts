@@ -42,11 +42,6 @@ export class EditProfileStep3Page {
 
   public partOfSchool: boolean;
   public prefLocation: string;
-  public levels = [
-    { "name": "High School", "value": "highSchool" },
-    { "name": "University", "value": "university" }
-  ];
-
   public hourRates = [
     { "value": '5', "text": '5' },
     { "value": '10', "text": '10' },
