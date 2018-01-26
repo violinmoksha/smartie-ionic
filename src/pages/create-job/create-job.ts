@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, Slides, ModalController, LoadingCo
 import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { SmartieAPI } from '../../providers/api/smartie';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the CreateJobPage page.
@@ -43,11 +44,13 @@ export class CreateJobPage {
   ];
   private startDate: any;
   private endDate: any;
-  private submitInProgress: boolean;
   private loading: any;
   private CreateJobForm: FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController, public loadingCtrl: LoadingController) {
+  private submitInProgress: boolean = false;
+  private userRole: string;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private smartieApi: SmartieAPI, private storage: Storage) {
     this.loading = this.loadingCtrl.create({
       content: 'Creating Job...'
     });
@@ -57,6 +60,42 @@ export class CreateJobPage {
       prefLocation: new FormControl(''),
       startTime: new FormControl('', Validators.required),
       endTime: new FormControl('', [Validators.required, this.gretarThan('startTime')])
+    });
+
+    this.storage.get('role').then(role => {
+      this.userRole = role;
+    });
+  }
+
+  createJob(createJobFormValues) {
+    this.submitInProgress = true;
+    this.loading.present();
+
+    let API = this.smartieApi.getApi(
+      'setJobRequest',
+      {
+        requestingProfileId: JSON.parse(localStorage.getItem(`${this.userRole}UserProfile`)).profileData.objectId,
+        description:createJobFormValues.jobDescription,
+        prefLocation:createJobFormValues.prefLocation
+      }
+    );
+
+    return new Promise(resolve => {
+      interface Response {
+        result: any
+      }
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
+        res => {
+          this.submitInProgress = false;
+          this.loading.dismiss();
+          this.navCtrl.push("TotlesSearch");
+        },
+        err => {
+          // TODO alert
+          this.submitInProgress = false;
+          this.loading.dismiss();
+        }
+      );
     });
   }
 

@@ -12,29 +12,27 @@
 
 <ion-content padding>
   <div class="tagline">
-    <p>Please tell us about your job that you need a Teacher for...</p>
+    <p>Create a job you need a Teacher for!</p>
   </div>
 
   <form [formGroup]="CreateJobForm" name="CreateJobForm" (ngSubmit)="createJob(CreateJobForm.value)" novalidate>
     <ion-list>
       <ion-item>
-        <ion-label fixed>Job Description</ion-label>
         <ion-textarea class="form-element text-input-md" placeholder="I need a mycology professor to come mushroom-hunting with me." formControlName="jobDescription"></ion-textarea>
       </ion-item>
 
       <ion-item>
-        <ion-label fixed>Prefered Location</ion-label>
-        <ion-input type="text" formControlName="prefLocation"></ion-input>
+        <ion-input type="text" formControlName="prefLocation" placeholder="Preferred Location: City, State"></ion-input>
       </ion-item>
 
-      <h3>Preferred Hourly Pay Rate</h3>
+      <h3>Rate You Wish to Pay</h3>
       <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="7">
         <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
           <p>{{ rate.text }}</p>
         </ion-slide>
       </ion-slides>
 
-      <h3>Available Timings</h3>
+      <h3>Desired Timings</h3>
 
       <div class="available-date">
         <div class="left">
@@ -69,7 +67,7 @@
           <ion-item>
             <ion-datetime displayFormat="HH:mm" formControlName="endTime"></ion-datetime>
           </ion-item>
-          <div *ngIf="CreateJobForm.get('endTime').invalid && EditProfilestep3Form.get('endTime').touched" class="item item-message">
+          <div *ngIf="CreateJobForm.get('endTime').invalid && CreateJobForm.get('endTime').touched" class="item item-message">
             End time is required.
           </div>
         </div>
