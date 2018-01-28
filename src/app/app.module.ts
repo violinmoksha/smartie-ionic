@@ -1,5 +1,10 @@
 // SmartieErrorHandler, must load first for Monitoring
-import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from '../providers/err';
+// TODO: uncomment in prod
+//import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from '../providers/err';
+
+// TODO comment in prod to use SmartieErrorHandler instead
+import { ErrorHandler } from '@angular/core';
+import { IonicErrorHandler } from 'ionic-angular';
 
 // core app dependencies
 import { BrowserModule } from '@angular/platform-browser';
@@ -55,7 +60,7 @@ import { StarRatingModule } from 'angular-star-rating';
     //PushObject,
     // Errors
     IonicErrorHandler,
-    [{ provide: ErrorHandler, useClass: SmartieErrorHandler }]
+    [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
   ]
 })
 export class AppModule {}

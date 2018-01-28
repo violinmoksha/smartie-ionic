@@ -97,6 +97,7 @@ export class CreateJobPage {
             subTitle: err.message,
             buttons: ['OK']
           });
+          alert.present();
           this.submitInProgress = false;
         }
       );

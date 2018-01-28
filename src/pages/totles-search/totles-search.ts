@@ -1,5 +1,4 @@
 import { IonicPage, Events } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
@@ -41,7 +40,7 @@ export class TotlesSearch {
 
   public searchLogo = '/assets/img/smartie-horzontal-logo.png';
 
-  constructor(private storage: Storage, public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public events: Events) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public events: Events) {
     this.role = navParams.data.role;
     this.fromWhere = navParams.data.fromwhere;
     this.alert = this.alertCtrl;
@@ -52,11 +51,13 @@ export class TotlesSearch {
   }
 
   ionViewDidEnter() {
+    // send proper buttons into side-menu from here
+    // since this is the first side-menu -loaded Page,
+    // via SmartieApp's buttonsLoad custom Event
     this.events.publish("buttonsLoad", this.role);
   }
 
   ionViewDidLoad(){
-    console.log(this.fromWhere);
     if(this.fromWhere == 'signUp'){
       if (localStorage.getItem(this.role+'UserProfile') !== undefined)
         this.latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profile.latlng;
@@ -212,7 +213,6 @@ export class TotlesSearch {
         }
         let mapOptions = {
           zoom: 5,
-          center: mapCenter,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);

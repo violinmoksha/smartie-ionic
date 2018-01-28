@@ -191,9 +191,11 @@ page-totles-search {
   }
 
   .bottom-search-box{
-    width: 90% !important;
+    width: 100% !important;
     position: fixed;
     bottom: 0;
+    padding: 15px 5px 0 5px;
+    height: 128px;
     .item-input{
       width: 100%;
       margin: 0;
@@ -212,10 +214,10 @@ page-totles-search {
         background-color: #00BC5B!important;
         color: #fff;
         width: 100%;
-        padding: 15px 10px;
+        padding: 15px;
         height: auto;
         line-height: 15px;
-        margin:10px 0;
+        margin:5px 0 0 0;
     }
   }
 
