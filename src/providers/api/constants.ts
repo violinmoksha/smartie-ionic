@@ -25,12 +25,10 @@ export class Constants {
     headers: {
       localAndTest: {
         applicationId: '948b9456-8c0a-4755-9e84-71be3723d338',
-        masterKey: '49bc1a33-dfe7-4a32-bdcc-ee30b7ed8447',
         contentType: 'application/json'
       },
       prod: {
         applicationId: '80f6c155-d26e-4c23-a96b-007cb4cba8e1',
-        masterKey: 'b36fdfbb-aad4-4967-8b4c-418108a449b3',
         contentType: 'application/json'
       }
     },
