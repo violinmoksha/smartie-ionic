@@ -23,17 +23,14 @@ export class SmartieAPI {
     if(Constants.API_ENDPOINTS.env === 'local'){
       this.baseUrl = Constants.API_ENDPOINTS.baseUrls.local;
       this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
       this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
     }else if(Constants.API_ENDPOINTS.env === 'test'){
       this.baseUrl = Constants.API_ENDPOINTS.baseUrls.test;
       this.applicationId = Constants.API_ENDPOINTS.headers.localAndTest.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.localAndTest.masterKey;
       this.contentType = Constants.API_ENDPOINTS.headers.localAndTest.contentType;
     }else if(Constants.API_ENDPOINTS.env === 'prod'){
       this.baseUrl = Constants.API_ENDPOINTS.baseUrls.prod;
       this.applicationId = Constants.API_ENDPOINTS.headers.prod.applicationId;
-      this.masterKey = Constants.API_ENDPOINTS.headers.prod.masterKey;
       this.contentType = Constants.API_ENDPOINTS.headers.prod.contentType;
     }
 
