@@ -1,7 +1,8 @@
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Parse } from 'parse';
 import { Storage } from '@ionic/storage';
 
 /**
@@ -23,9 +24,9 @@ export class EditProfilePage {
 
   private EditProfileForm : FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController) {
     this.EditProfileForm = new FormGroup({
-      password: new FormControl('', [Validators.required, Validators.minLength(6)])
+      password: new FormControl('', [Validators.required])
     });
 
     this.storage.get("role").then(role => {
@@ -40,7 +41,17 @@ export class EditProfilePage {
   }
 
   next(form1Value){
-    this.navCtrl.push("EditProfileStep2Page", { form1Value : form1Value });
+    Parse.User.logIn(this.username, form1Value.password).then(user => {
+      this.navCtrl.push("EditProfileStep2Page", { form1Value : form1Value });
+    }).catch(err => {
+      let alert = this.alertCtrl.create({
+        title: 'Login Failed !',
+        subTitle: 'Invalid Password',
+        buttons: ['OK']
+      });
+      alert.present();
+      return false;
+    });
   }
 
 }
