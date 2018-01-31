@@ -36,7 +36,7 @@ export class EditProfileStep2Page {
   contactPosition: string;
   phone: string;
   profileTitle: string;
-  profileMessage: string;
+  profileAbout: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage) {
     this.storage.get("role").then(role => {
@@ -52,8 +52,10 @@ export class EditProfileStep2Page {
         this.pageProfileSrc = './assets/img/user-img-school.png';
       }
 
+      this.fullName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.fullname;
       this.phone = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.phone;
-      this.profileMessage = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.profileabout;
+      this.profileTitle = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.profileTitle;
+      this.profileAbout = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.profileAbout;
 
       if (role == 'school') {
         this.schoolName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.schoolname;
@@ -64,17 +66,14 @@ export class EditProfileStep2Page {
           contactName: new FormControl('', Validators.required),
           contactPosition: new FormControl('', Validators.required),
           phone: new FormControl('', Validators.required),
-          profileMessage: new FormControl('', Validators.required)
+          profileAbout: new FormControl('', Validators.required)
         });
       } else if (role == 'teacher') {
-        this.profileTitle = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.profiletitle;
-        this.fullName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.fullname;
-
         this.EditProfilestep2Form = new FormGroup({
           name: new FormControl('', Validators.required),
           phone: new FormControl('', Validators.required),
           profileTitle: new FormControl('', Validators.required),
-          profileMessage: new FormControl('', Validators.required),
+          profileAbout: new FormControl('', Validators.required),
           othersSchoolName: new FormControl('')
         });
       } else {
@@ -84,13 +83,13 @@ export class EditProfileStep2Page {
         this.EditProfilestep2Form = new FormGroup({
           name: new FormControl('', Validators.required),
           phone: new FormControl('', Validators.required),
-          profileMessage: new FormControl('', Validators.required),
+          profileAbout: new FormControl('', Validators.required),
           othersSchoolName: new FormControl('')
         });
       }
 
       // and get the pageProfileSrc from localStorage???
-      this.pageProfileSrc = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.profilePhoto.url;
+      //this.pageProfileSrc = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.profilePhoto.url;
     });
 
     this.form1Values = navParams.data.form1Value;

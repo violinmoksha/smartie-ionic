@@ -89,12 +89,12 @@
       </div>
 
       <ion-item>
-        <ion-label fixed>Profile Message</ion-label>
-        <ion-textarea [value]="profileMessage" formControlName="profileMessage"></ion-textarea>
+        <ion-label fixed>Profile About Message</ion-label>
+        <ion-textarea [value]="profileAbout" formControlName="profileAbout"></ion-textarea>
       </ion-item>
 
-      <div *ngIf="!EditProfilestep2Form.controls['profileMessage'].valid && !EditProfilestep2Form.controls['profileMessage'].pristine" class="item-message">
-        Profile Message is required
+      <div *ngIf="!EditProfilestep2Form.controls['profileAbout'].valid && !EditProfilestep2Form.controls['profileAbout'].pristine" class="item-message">
+        Profile About Message is required
       </div>
 
       <div *ngIf="userRole == 'parent' || userRole == 'student'">
