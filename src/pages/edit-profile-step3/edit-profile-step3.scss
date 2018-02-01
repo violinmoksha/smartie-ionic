@@ -2,12 +2,39 @@ page-edit-profile-step3 {
   .clear{
     clear: both;
   }
-  .cl-parent .toolbar-title{
-    color: #F97533 !important
+  .cl-teacher{
+    .toolbar-title{
+      color: #00BC5B !important
+    }
+    .back-button{
+      color: #00BC5B !important
+    }
   }
-  .back-button{
-    color: #F97533 !important
+  .cl-parent {
+    .toolbar-title{
+      color: #F97533 !important
+    }
+    .back-button{
+      color: #F97533 !important
+    }
   }
+  .cl-school {
+    .toolbar-title{
+      color: #F31C62 !important
+    }
+    .back-button{
+      color: #F31C62 !important
+    }
+  }
+  .cl-student {
+    .toolbar-title{
+      color: #0096D7 !important
+    }
+    .back-button{
+      color: #0096D7 !important
+    }
+  }
+
   .registration{
       .item-md{
           .checkbox-md{
@@ -18,11 +45,11 @@ page-edit-profile-step3 {
           }
       }
   }
-  .swiper-wrapper{
+  /*.swiper-wrapper{
     .swiper-slide.active{
       border-color: #F97533 !important;
     }
-  }
+  }*/
 
   ion-list{
     .teacher-certs{
@@ -42,6 +69,34 @@ page-edit-profile-step3 {
         display: block;
         width: 35px;
         height: 35px;
+      }
+    }
+    .teacher{
+      .swiper-wrapper{
+        .swiper-slide.active{
+          border-color: #00BC5B !important;
+        }
+      }
+    }
+    .student{
+      .swiper-wrapper{
+        .swiper-slide.active{
+          border-color: #F97533 !important;
+        }
+      }
+    }
+    .parent{
+      .swiper-wrapper{
+        .swiper-slide.active{
+          border-color: #F97533 !important;
+        }
+      }
+    }
+    .school{
+      .swiper-wrapper{
+        .swiper-slide.active{
+          border-color: #F97533 !important;
+        }
       }
     }
   }

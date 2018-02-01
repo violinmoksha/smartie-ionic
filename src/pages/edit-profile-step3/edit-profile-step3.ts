@@ -38,6 +38,9 @@ export class EditProfileStep3Page {
   // private userCurrency: any;
   private startDate: any;
   private endDate: any;
+  private startTime: any;
+  private endTime: any;
+
   // private teacherLevel: any;
 
   public partOfSchool: boolean;
@@ -101,20 +104,36 @@ export class EditProfileStep3Page {
     this.form2Values = navParams.data.form2Value;
     this.partOfSchool = navParams.data.partOfSchool;
 
+    this.EditProfilestep3Form = new FormGroup({
+      teacherCvCerts: new FormControl(''),
+      prefLocation: new FormControl(''),
+      startTime: new FormControl(''),
+      endTime: new FormControl('')
+    })
+
     this.storage.get("role").then(role => {
       this.userRole = role;
 
       if (role == 'teacher') {
-        this.EditProfilestep3Form = new FormGroup({
-          teacherCvCerts: new FormControl(''),
-          prefLocation: new FormControl('', Validators.required),
-          startTime: new FormControl('', Validators.required),
-          endTime: new FormControl('', [Validators.required, this.gretarThan('startTime')])
-        })
+        this.prefLocation = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.prefLocation;
+        this.startTime = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.defaultStartTime;
+        this.endTime = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.defaultEndTime;
+        this.startDate = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.defaultStartDate;
+        this.endDate = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.defaultEndDate;
+        this.hourlyRate = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.prefPayRate;
+        this.yearExperience = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.yrsExperience;
+
+        //Custom validation for specific role
+        this.EditProfilestep3Form.get('teacherCvCerts').setValidators([Validators.required]);
+        this.EditProfilestep3Form.get('prefLocation').setValidators([Validators.required]);
+        this.EditProfilestep3Form.get('startTime').setValidators([Validators.required]);
+        this.EditProfilestep3Form.get('endTime').setValidators([Validators.required, , this.gretarThan('startTime')]);
+
       } else {
-        this.EditProfilestep3Form = new FormGroup({
-          prefLocation: new FormControl('', Validators.required)
-        })
+        this.prefLocation = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.prefLocation;
+
+        //Custom validation for specific role
+        this.EditProfilestep3Form.get('prefLocation').setValidators([Validators.required]);
       }
     });
   }

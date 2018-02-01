@@ -39,6 +39,18 @@ export class EditProfileStep2Page {
   profileAbout: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage) {
+
+    this.EditProfilestep2Form = new FormGroup({
+      name: new FormControl(''),
+      phone: new FormControl(''),
+      profileTitle: new FormControl(''),
+      profileAbout: new FormControl(''),
+      othersSchoolName: new FormControl(''),
+      schoolName: new FormControl(''),
+      contactName: new FormControl(''),
+      contactPosition: new FormControl(''),
+    });
+
     this.storage.get("role").then(role => {
       this.userRole = role;
 
@@ -61,32 +73,34 @@ export class EditProfileStep2Page {
         this.schoolName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.schoolname;
         this.contactName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.contactname;
         this.contactPosition = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.contactposition;
-        this.EditProfilestep2Form = new FormGroup({
-          schoolName: new FormControl('', Validators.required),
-          contactName: new FormControl('', Validators.required),
-          contactPosition: new FormControl('', Validators.required),
-          phone: new FormControl('', Validators.required),
-          profileAbout: new FormControl('', Validators.required)
-        });
+
+        //Custom validation for specific role
+        this.EditProfilestep2Form.get('schoolName').setValidators([Validators.required]);
+        this.EditProfilestep2Form.get('contactName').setValidators([Validators.required]);
+        this.EditProfilestep2Form.get('contactPosition').setValidators([Validators.required]);
+        this.EditProfilestep2Form.get('phone').setValidators([Validators.required]);
+        this.EditProfilestep2Form.get('profileAbout').setValidators([Validators.required]);
+
       } else if (role == 'teacher') {
-        this.EditProfilestep2Form = new FormGroup({
-          name: new FormControl('', Validators.required),
-          phone: new FormControl('', Validators.required),
-          profileTitle: new FormControl('', Validators.required),
-          profileAbout: new FormControl('', Validators.required),
-          othersSchoolName: new FormControl('')
-        });
+        //Custom validation for specific role
+        this.EditProfilestep2Form.get('name').setValidators([Validators.required]);
+        this.EditProfilestep2Form.get('phone').setValidators([Validators.required]);
+        this.EditProfilestep2Form.get('profileTitle').setValidators([Validators.required]);
+        this.EditProfilestep2Form.get('profileAbout').setValidators([Validators.required]);
+        this.EditProfilestep2Form.get('othersSchoolName').setValidators([Validators.required]);
+
       } else {
         this.partOfSchool = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.partOfSchool;
         this.fullName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.fullname;
 
-        this.EditProfilestep2Form = new FormGroup({
-          name: new FormControl('', Validators.required),
-          phone: new FormControl('', Validators.required),
-          profileAbout: new FormControl('', Validators.required),
-          othersSchoolName: new FormControl('')
-        });
+        //Custom validation for specific role
+        this.EditProfilestep2Form.get('name').setValidators([Validators.required]);
+        this.EditProfilestep2Form.get('phone').setValidators([Validators.required]);
+        this.EditProfilestep2Form.get('profileAbout').setValidators([Validators.required]);
+        this.EditProfilestep2Form.get('othersSchoolName').setValidators([Validators.required]);
       }
+
+
 
       // and get the pageProfileSrc from localStorage???
       //this.pageProfileSrc = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.profilePhoto.url;
