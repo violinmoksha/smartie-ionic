@@ -40,14 +40,14 @@ export class TotlesSearch {
 
   public searchLogo = '/assets/img/smartie-horzontal-logo.png';
 
+  public jobRequests: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public events: Events, private storage: Storage) {
     this.role = navParams.data.role;
     this.fromWhere = navParams.data.fromwhere;
+    this.jobRequests = navParams.data.jobRequests;
+    this.notifyCount = this.jobRequests.length;
     this.alert = this.alertCtrl;
-    if(localStorage.getItem(navParams.data.loggedProfileId+'notificationCount')){
-      if (localStorage.getItem(navParams.data.loggedProfileId+'notificationCount') !== undefined)
-        this.notifyCount = JSON.parse(localStorage.getItem(navParams.data.loggedProfileId+'notificationCount')).result;
-    }
   }
 
   ionViewDidEnter() {
@@ -55,14 +55,17 @@ export class TotlesSearch {
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
     this.events.publish("buttonsLoad", this.role);
+
+
   }
 
   ionViewDidLoad(){
     this.storage.get('role').then(role => {
-      if (localStorage.getItem(role+'UserProfile'))
-        this.latLngUser = JSON.parse(localStorage.getItem(role+'UserProfile')).profileData.latlng;
-      this.totlesSearchResult(this.latLngUser, role, null);
-      // this.initMap();
+      this.storage.get(role+'UserProfile').then(profile => {
+        this.latLngUser = JSON.parse(profile).profileData.latlng;
+        this.totlesSearchResult(this.latLngUser, role, null);
+        // this.initMap();
+      });
     });
   }
 
@@ -211,7 +214,7 @@ export class TotlesSearch {
 
         // map always should cover 200km radius from Profile user
         // thus the actual applied trigonometry yaaaaaaay!!!!^$%^
-        let radiusInKm = 100;
+        let radiusInKm = 50;
         let pointSouthwest = this.destinationPoint(220, radiusInKm / 2, mapCenter);
         let pointNortheast = this.destinationPoint(45, radiusInKm / 2, mapCenter);
         this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
@@ -233,6 +236,6 @@ export class TotlesSearch {
   }
 
   pushAccepteds(){
-    this.navCtrl.push("AllAccepteds", { activeRole: this.role });
+    this.navCtrl.push("AllAcceptedsPage", { activeRole: this.role });
   }
 }

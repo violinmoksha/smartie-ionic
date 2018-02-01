@@ -34,29 +34,29 @@ export class JobRequestsPage {
 
   ionViewDidLoad() {
     this.storage.get('role').then(role => {
-      let roleProfile = JSON.parse(localStorage.getItem(role + 'UserProfile'));
+      this.storage.get(role+"UserProfile").then(roleProfile => {
+        if(role === 'teacher'){
+          this.body = { requestingProfileId: JSON.parse(roleProfile).profileData.objectId, requestedProfileId: this.params.requestedId };
+        }else{
+          this.body = { requestingProfileId: this.params.requestedId, requestedProfileId: JSON.parse(roleProfile).profileData.objectId };
+        }
 
-      if(role === 'teacher'){
-        this.body = { requestingProfileId: roleProfile.profileData.objectId, requestedProfileId: this.params.requestedId };
-      }else{
-        this.body = { requestingProfileId: this.params.requestedId, requestedProfileId: roleProfile.profileData.objectId };
-      }
+        return new Promise(resolve => {
+          let API = this.smartieApi.getApi(
+            'getRequestedJobRequest',
+            this.body
+          );
+          interface Response {};
+          this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
 
-      return new Promise(resolve => {
-        let API = this.smartieApi.getApi(
-          'getRequestedJobRequest',
-          this.body
-        );
-        interface Response {};
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-
-          if(Object.keys(response).length > 0){
-            this.requestSent = true;
-          }else{
-            this.requestSent = false;
-          }
-        }, err => {
-          console.log(err);
+            if(Object.keys(response).length > 0){
+              this.requestSent = true;
+            }else{
+              this.requestSent = false;
+            }
+          }, err => {
+            console.log(err);
+          })
         })
       })
     })

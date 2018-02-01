@@ -30,7 +30,6 @@ export class LoginPage {
 
   login(data){
     if(data.username !== '' && data.password !==''){
-
       let API = this.smartieApi.getApi(
         'loginUser',
         {username: data.username.toLowerCase(), password: data.password}
@@ -41,48 +40,32 @@ export class LoginPage {
           result: any
         }
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data => {
-          localStorage.setItem(data.result.profileData.role+'UserProfile', JSON.stringify(data.result));
-          localStorage.setItem('UserLoggedProfile', data.result.profileData.role);
+          this.storage.set(data.result.profileData.role+'UserProfile', JSON.stringify(data.result)).then(profile => {
+            this.storage.set('role', data.result.profileData.role);
+            this.storage.set('sessionToken', data.result.userData.sessionToken);
 
-          this.storage.set('role', data.result.profileData.role);
-          this.storage.set('sessionToken', data.result.userData.sessionToken);
-
-          if(data.result.profileData.role !== 'teacher'){
-            // this.isAnyJobAccepted();
-            // let postUrl = this.baseUrl + Constants.API_ENDPOINTS.paths.fn + Constants.API_ENDPOINTS.getNotifyCount;
             let API = this.smartieApi.getApi(
-              'getNotifyCount',
-              { requestedProfileId: data.result.profileData.objectId, role: data.result.profileData.role }
+              'getJobRequests',
+              { profileId: data.result.profileData.objectId, role: data.result.profileData.role }
             );
 
             return new Promise(resolve => {
-              this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(notifyRes => {
-                localStorage.setItem(data.result.profileData.objectId + 'notificationCount', JSON.stringify(notifyRes));
-                this.navCtrl.push("TotlesSearch", { role: data.result.profileData.role, fromWhere: 'login', loggedProfileId: data.result.profileData.objectId });
+              interface Response {
+                result: any
+              };
+              this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(jobRequests => {
+                localStorage.setItem(data.result.profileData.objectId + 'notificationCount', jobRequests.result.length);
+                this.navCtrl.push("TotlesSearch", { role: data.result.profileData.role, fromWhere: 'login', loggedProfileId: data.result.profileData.objectId, jobRequests: jobRequests.result  });
               }, err => {
                 console.log(err);
-              })
-            })
-          }else{
-            let API = this.smartieApi.getApi(
-              'getNotifyCount',
-              { requestingProfileId: data.result.profileData.objectId, role: data.result.profileData.role }
-            );
-
-            return new Promise(resolve => {
-              this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(notifyRes => {
-                localStorage.setItem(data.result.profileData.objectId + 'notificationCount', JSON.stringify(notifyRes));
-                this.navCtrl.push("TotlesSearch", { role: data.result.profileData.role, fromWhere: 'login', loggedProfileId: data.result.profileData.objectId  });
-              }, err => {
-                console.log(err);
-              })
-            })
-          }
+              });
+            });
+          });
         },
         err => {
           let alert = this.alertCtrl.create({
             title: 'Login Failed !',
-            subTitle: "Please check your connection.",
+            subTitle: "Please check your credentials !",
             buttons: ['OK']
           });
           alert.present();
@@ -96,28 +79,6 @@ export class LoginPage {
       });
       alert.present();
     }
-  }
-
-  isAnyJobAccepted(){
-    let API = this.smartieApi.getApi(
-      'getAcceptedJobRequest',
-      {requestingProfileId : '5ibpC33sTC', requestedProfileId: 'yKkVUDcRIO'}
-    );
-
-    return new Promise(resolve => {
-      interface Response {
-        status: number,
-        result: any
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
-        if(res.status == 200){
-          localStorage.setItem('TeacherJobAcceptedResult', JSON.stringify(res.result));
-          this.navCtrl.push("TeacherJobAccepted");
-        }
-      }, err => {
-        console.log(err);
-      })
-    })
   }
 
   pushRegister(){
