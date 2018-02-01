@@ -56,7 +56,6 @@ export class TotlesSearch {
     // via SmartieApp's buttonsLoad custom Event
     this.events.publish("buttonsLoad", this.role);
 
-
   }
 
   ionViewDidLoad(){
@@ -140,7 +139,6 @@ export class TotlesSearch {
         }
       );
       profileModal.present();
-
     });
 
     // this.marker.setMap(this.map);

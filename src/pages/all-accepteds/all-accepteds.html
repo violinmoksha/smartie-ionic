@@ -6,18 +6,15 @@
 -->
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu">Menu</ion-icon>
-    </button>
-    <ion-title>All Accepteds</ion-title>
+    <ion-title>Job Notifications</ion-title>
   </ion-navbar>
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <ul>
     <li [ngClass]="{'accepted': accepted.acceptedState, 'requested' : !accepted.acceptedState}" *ngFor="let accepted of allAccepteds">
-      <a href="javascript:" (click)="showJobAccept(accepted)">Your invitation has been accepted</a>
+      <a href="javascript:" (click)="showJobAccept(accepted)">Someone Has Requested You!</a>
     </li>
   </ul>
 </ion-content>

@@ -2,6 +2,7 @@ import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the AllAcceptedsPage page.
@@ -17,24 +18,25 @@ export class AllAcceptedsPage {
   private allAccepteds: any;
   private body: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private storage: Storage) {
   }
 
   ionViewDidLoad() {
-    if(this.navParams.data.activeRole == 'teacher'){
-      this.body = { requestingProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'UserProfile')).profileData.objectId, role: this.navParams.data.activeRole };
-    }else{
-      this.body = { requestedProfileId: JSON.parse(localStorage.getItem(this.navParams.data.activeRole+'UserProfile')).profileData.objectId };
-    }
-    let API = this.smartieApi.getApi('getAllAccepteds', this.body);
+    this.storage.get('role').then(role => {
+      this.storage.get(role+'UserProfile').then(profile => {
+        this.body = { profileId: JSON.parse(profile).profileData.objectId, role: role };
 
-    return new Promise(resolve => {
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
-        this.allAccepteds = res.result;
-        console.log(this.allAccepteds);
+        let API = this.smartieApi.getApi('getAllRequesteds', this.body);
+
+        return new Promise(resolve => {
+          interface Response {
+            result: any;
+          };
+          this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
+            this.allAccepteds = res.result;
+            console.log(this.allAccepteds);
+          })
+        })
       })
     })
   }

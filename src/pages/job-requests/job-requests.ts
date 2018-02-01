@@ -48,7 +48,7 @@ export class JobRequestsPage {
           );
           interface Response {};
           this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-
+            this.loading.dismiss();
             if(Object.keys(response).length > 0){
               this.requestSent = true;
             }else{
