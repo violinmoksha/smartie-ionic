@@ -57,7 +57,7 @@
     <div class="alert-button-group">
       <button ion-button="alert-button" class="alert-button alert-button-md alert-button-default alert-button-default-md" (click)="dismiss()"><span class="button-inner">Close</span><div class="button-effect"></div></button>
 
-      <button ion-button="alert-button" [disabled]="requestSent" (click)="sendRequest()" class="alert-button alert-button-md alert-button-default alert-button-default-md">
+      <button ion-button="alert-button" [disabled]="requestSent || submitInProgress" (click)="sendRequest()" class="alert-button alert-button-md alert-button-default alert-button-default-md">
         <span class="button-inner" *ngIf="!requestSent">Send Request</span>
         <span class="button-inner" *ngIf="requestSent">Invite Sent</span>
       <div class="button-effect"></div></button>

@@ -28,7 +28,6 @@ export class TotlesSearch {
   private profilePhoto: string;
   private _contentTitle: string;
   private _contentMessage: string;
-  private expertlang: string;
   private alert: any;
   private notifyCount: any;
   private latLngUser: any;
@@ -212,7 +211,7 @@ export class TotlesSearch {
 
         // map always should cover 200km radius from Profile user
         // thus the actual applied trigonometry yaaaaaaay!!!!^$%^
-        let radiusInKm = 200;
+        let radiusInKm = 100;
         let pointSouthwest = this.destinationPoint(220, radiusInKm / 2, mapCenter);
         let pointNortheast = this.destinationPoint(45, radiusInKm / 2, mapCenter);
         this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);

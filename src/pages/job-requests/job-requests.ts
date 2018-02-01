@@ -1,6 +1,6 @@
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
 
@@ -19,10 +19,17 @@ export class JobRequestsPage {
   private params: any;
   private requestSent: boolean;
   private body: any;
+  private submitInProgress: boolean;
+  private loading: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, private loadingCtrl: LoadingController) {
     this.params = navParams.data;
     //console.log(this.params);
+
+    this.submitInProgress = false;
+    this.loading = this.loadingCtrl.create({
+      content: 'Sending...'
+    });
   }
 
   ionViewDidLoad() {
@@ -60,23 +67,18 @@ export class JobRequestsPage {
   }
 
   sendRequest(){
+    this.submitInProgress = true;
+    this.loading.present();
+
     this.storage.get('role').then(role => {
-      if(role === 'teacher'){
-        this.body = {
-          requestingProfileId: JSON.parse(localStorage.getItem(role+'UserProfile')).profileData.objectId,
-          requestedProfileId: this.params.requestedId,
-          jobDescription: this.params.profileAbout,
-          prefLocation: this.params.prefLocation,
-          requestSent: true,
-          acceptedState: false
-        };
-      }else{
-        this.body = {
-          requestingProfileId: this.params.requestedId,
-          requestedProfileId: JSON.parse(localStorage.getItem(role+'UserProfile')).profileData.objectId
-        };
-      }
-      console.log(this.body);
+      this.body = {
+        requestingProfileId: JSON.parse(localStorage.getItem(role+'UserProfile')).profileData.objectId,
+        requestedProfileId: this.params.requestedId,
+        jobDescription: this.params.profileAbout,
+        prefLocation: this.params.prefLocation,
+        requestSent: true,
+        acceptedState: false
+      };
       let API = this.smartieApi.getApi(
         'setJobRequest',
         this.body
@@ -86,12 +88,10 @@ export class JobRequestsPage {
           result: any
         };
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-          //if(response.status == 200){
-            this.requestSent = true;
-          //}
-          setTimeout(() => {
-            this.viewCtrl.dismiss();
-          }, 5000);
+          this.requestSent = true;
+          this.viewCtrl.dismiss();
+          this.loading.dismiss();
+          this.submitInProgress = false;
         });
       })
     });
