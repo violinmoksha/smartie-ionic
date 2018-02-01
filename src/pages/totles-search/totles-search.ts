@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Storage } from '@ionic/storage';
 
 declare var google;
 
@@ -40,7 +41,7 @@ export class TotlesSearch {
 
   public searchLogo = '/assets/img/smartie-horzontal-logo.png';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public events: Events) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public events: Events, private storage: Storage) {
     this.role = navParams.data.role;
     this.fromWhere = navParams.data.fromwhere;
     this.alert = this.alertCtrl;
@@ -58,15 +59,12 @@ export class TotlesSearch {
   }
 
   ionViewDidLoad(){
-    if(this.fromWhere == 'signUp'){
-      if (localStorage.getItem(this.role+'UserProfile') !== undefined)
-        this.latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profile.latlng;
-    }else{
-      if (localStorage.getItem(this.role+'UserProfile'))
-        this.latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
-    }
-    this.totlesSearchResult(this.latLngUser, this.navParams.data.role, null);
-    // this.initMap();
+    this.storage.get('role').then(role => {
+      if (localStorage.getItem(role+'UserProfile'))
+        this.latLngUser = JSON.parse(localStorage.getItem(role+'UserProfile')).profileData.latlng;
+      this.totlesSearchResult(this.latLngUser, role, null);
+      // this.initMap();
+    });
   }
 
   findJobsSearch(searchLoc){
@@ -116,8 +114,6 @@ export class TotlesSearch {
       this.profilePhoto = './assets/img/user-round-icon.png';
     }
 
-    this.expertlang = locationData.expertlangs;
-
     this.marker.addListener('click', ()=> {
 
       let profileModal = this.modalCtrl.create("JobRequestsPage",
@@ -125,19 +121,17 @@ export class TotlesSearch {
           profilePhoto: this.profilePhoto,
           fullname: locationData.fullname,
           role: locationData.role,
-          prefPayRate: locationData.prefpayrate,
-          prefCurrency: locationData.prefcurrency,
-          experience: locationData.yrsexperience,
-          expertLangs: locationData.expertlangs,
-          profileAbout: locationData.profileabout,
-          prefLocation: locationData.preflocation,
+          prefPayRate: locationData.prefPayRate,
+          yrsExperience: locationData.yrsExperience,
+          profileAbout: locationData.profileAbout,
+          prefLocation: locationData.prefLocation,
           phone: locationData.phone,
           requestedId: locationData.profileId,
           loggedRole: this.role,
-          defStartDate: locationData.defstartdate,
-          defEndDate: locationData.defenddate,
-          defStartTime: locationData.defstarttime,
-          defEndTime: locationData.defendtime,
+          defaultStartDate: locationData.defaultStartDate,
+          defaultEndDate: locationData.defaultEndDate,
+          defaultStartTime: locationData.defaultStartTime,
+          defaultEndTime: locationData.defaultEndTime,
         },
         {
           cssClass: 'totles-search-alert ' + this.role
@@ -212,7 +206,6 @@ export class TotlesSearch {
           mapCenter = searchResults.result.latLng;
         }
         let mapOptions = {
-          zoom: 5,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
@@ -232,7 +225,7 @@ export class TotlesSearch {
         //this.bounds.extend(myPlace);
 
         //this.marker.setMap(this.map);
-        //this.map.setZoom(1);
+        this.map.setZoom(5);
         // map.setCenter(marker.getPosition());
         // map.panTo(marker.getPosition())
         this.map.fitBounds(this.bounds);

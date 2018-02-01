@@ -33,29 +33,24 @@
   </div>
 
   <div class="jobprofile-content">
-  <h2>Hi I am a {{ params.experience }} Years Experience {{ params.expertLangs }} Teacher</h2>
+  <h2 *ngIf="params.profileTitle">Title: {{ params.profileTitle }}</h2>
     <div class="jobprofile-details">
-      <h3>Details:</h3>
+      <h3>About:</h3>
       <p>{{ params.profileAbout }}</p>
     </div>
     <div class="clear"></div>
     <div class="jobprofile-details">
-      <h3>Location</h3>
-      <p>
-        {{ params.prefLocation }}
-      </p>
+      <h3>Preferred Location</h3>
+      <p>{{ params.prefLocation }}</p>
       <div class="clear"></div>
       </div>
-      <div class="job-availablity-details">
+      <div *ngIf="params.defaultStartTime" class="job-availablity-details">
         <h3>Available Timings</h3>
-        <p>{{ params.defStartTime }} to {{ params.defEndTime}} on {{ params.defStartDate}} to {{ params.defEndDate}}</p>
-      </div>
-      <div class="job-lang-details">
-        <h3>Languages of Expertise</h3>
-        <p>{{ params.expertLangs }}</p>
+        <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
       </div>
       <div class="jobprofile-buttons">
-        <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/img/job-profile-icon.png" /> View Job Proife</button>
+        <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/img/job-profile-icon.png" /> View Job Profile</button>
+        <!-- TODO: this button should "send a mail" from within the app -->
         <button class="button button-positive" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/img/view-mail-icon.png" /> Send Mail</button>
       </div>
     </div>
