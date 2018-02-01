@@ -80,11 +80,9 @@ export class LoginPage {
           }
         },
         err => {
-          let loginError = err.error;
-          // console.log(signupError);
           let alert = this.alertCtrl.create({
             title: 'Login Failed !',
-            subTitle: loginError.error.split(':')[2].split(/[0-9]{3}\s/g)[1],
+            subTitle: "Please check your connection.",
             buttons: ['OK']
           });
           alert.present();

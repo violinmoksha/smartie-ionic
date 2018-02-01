@@ -87,7 +87,6 @@ export class EditProfileStep2Page {
         this.EditProfilestep2Form.get('phone').setValidators([Validators.required]);
         this.EditProfilestep2Form.get('profileTitle').setValidators([Validators.required]);
         this.EditProfilestep2Form.get('profileAbout').setValidators([Validators.required]);
-        this.EditProfilestep2Form.get('othersSchoolName').setValidators([Validators.required]);
 
       } else {
         this.partOfSchool = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.partOfSchool;
