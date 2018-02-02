@@ -117,7 +117,7 @@ export class TotlesSearch {
 
     this.marker.addListener('click', ()=> {
 
-      let profileModal = this.modalCtrl.create("JobRequestsPage",
+      let profileModal = this.modalCtrl.create("JobRequestPage",
         {
           profilePhoto: this.profilePhoto,
           fullname: locationData.fullname,

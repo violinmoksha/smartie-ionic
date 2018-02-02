@@ -11,10 +11,10 @@ import { Storage } from '@ionic/storage';
  * on Ionic pages and navigation.
  */
 @IonicPage()@Component({
-  selector: 'page-job-requests',
-  templateUrl: 'job-requests.html',
+  selector: 'page-job-request',
+  templateUrl: 'job-request.html',
 })
-export class JobRequestsPage {
+export class JobRequestPage {
 
   private params: any;
   private requestSent: boolean;
