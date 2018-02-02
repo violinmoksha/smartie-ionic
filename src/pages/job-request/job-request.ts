@@ -24,7 +24,7 @@ export class JobRequestPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, private loadingCtrl: LoadingController) {
     this.params = navParams.data;
-    //console.log(this.params);
+    // console.log(this.params);
 
     this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
@@ -41,7 +41,7 @@ export class JobRequestPage {
           this.body = { requestingProfileId: this.params.requestedId, requestedProfileId: JSON.parse(roleProfile).profileData.objectId };
         }
 
-        return new Promise(resolve => {
+        /*return new Promise(resolve => {
           let API = this.smartieApi.getApi(
             'getRequestedJobRequest',
             this.body
@@ -57,7 +57,7 @@ export class JobRequestPage {
           }, err => {
             console.log(err);
           })
-        })
+        })*/
       })
     })
   }

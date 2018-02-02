@@ -115,31 +115,12 @@ export class TotlesSearch {
       this.profilePhoto = './assets/img/user-round-icon.png';
     }
 
-    this.marker.addListener('click', ()=> {
+    locationData.profilePhoto = this.profilePhoto;
+    locationData.role = this.role;
 
-      let profileModal = this.modalCtrl.create("JobRequestPage",
-        {
-          profilePhoto: this.profilePhoto,
-          fullname: locationData.fullname,
-          role: locationData.role,
-          prefPayRate: locationData.prefPayRate,
-          yrsExperience: locationData.yrsExperience,
-          profileAbout: locationData.profileAbout,
-          prefLocation: locationData.prefLocation,
-          phone: locationData.phone,
-          requestedId: locationData.profileId,
-          loggedRole: this.role,
-          defaultStartDate: locationData.defaultStartDate,
-          defaultEndDate: locationData.defaultEndDate,
-          defaultStartTime: locationData.defaultStartTime,
-          defaultEndTime: locationData.defaultEndTime,
-        },
-        {
-          cssClass: 'totles-search-alert ' + this.role
-        }
-      );
-      profileModal.present();
-    });
+    this.marker.addListener('click', ()=> {
+      this.navCtrl.push('JobRequestPage', locationData)
+    })
 
     // this.marker.setMap(this.map);
     // this.map.setZoom(5);

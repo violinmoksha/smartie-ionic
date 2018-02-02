@@ -34,7 +34,6 @@ export class NotificationFeedPage {
           };
           this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
             this.allAccepteds = res.result;
-            console.log(this.allAccepteds);
           })
         })
       })
@@ -42,8 +41,8 @@ export class NotificationFeedPage {
   }
 
   showJobAccept(accepted){
-    var requestingProfileId = accepted.requestingProfileId;
-    var requestedProfileId = accepted.requestedProfileId;
+    var requestingProfileId = accepted.requestingProfile.objectId;
+    var requestedProfileId = accepted.requestedProfile.objectId;
 
     this.body = { requestingProfileId : requestingProfileId, requestedProfileId: requestedProfileId, role: this.navParams.data.activeRole }
     let API = this.smartieApi.getApi('getAcceptedJobRequest', this.body);
@@ -53,7 +52,8 @@ export class NotificationFeedPage {
         result: any
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
-        this.navCtrl.push("TeacherJobAccepted", { data: res.result });
+        // this.navCtrl.push("TeacherJobAccepted", { data: res.result });
+        console.log(res.result);
       })
     });
 
