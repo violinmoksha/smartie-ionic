@@ -225,7 +225,7 @@ export class TotlesSearch {
         //this.bounds.extend(myPlace);
 
         //this.marker.setMap(this.map);
-        this.map.setZoom(5);
+        //this.map.setZoom(5);
         // map.setCenter(marker.getPosition());
         // map.panTo(marker.getPosition())
         this.map.fitBounds(this.bounds);
