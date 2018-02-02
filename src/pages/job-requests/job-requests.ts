@@ -71,30 +71,44 @@ export class JobRequestsPage {
     this.loading.present();
 
     this.storage.get('role').then(role => {
-      this.body = {
-        requestingProfileId: JSON.parse(localStorage.getItem(role+'UserProfile')).profileData.objectId,
-        requestedProfileId: this.params.requestedId,
-        jobDescription: this.params.profileAbout,
-        prefLocation: this.params.prefLocation,
-        requestSent: true,
-        acceptedState: false
-      };
-      let API = this.smartieApi.getApi(
-        'setJobRequest',
-        this.body
-      );
-      return new Promise(resolve => {
-        interface Response {
-          result: any
-        };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-          this.requestSent = true;
-          this.viewCtrl.dismiss();
-          this.loading.dismiss();
-          this.submitInProgress = false;
-        });
+      this.storage.get(role+"UserProfile").then(profile => {
+        if (role == 'teacher') {
+          this.body = {
+            requestingProfileId: this.params.requestedId,
+            requestedProfileId: JSON.parse(profile).profileData.objectId,
+            jobDescription: this.params.profileAbout,
+            prefLocation: this.params.prefLocation,
+            requestSent: true,
+            acceptedState: false
+          };
+        } else {
+          this.body = {
+            requestingProfileId: JSON.parse(profile).profileData.objectId,
+            requestedProfileId: this.params.requestedId,
+            jobDescription: this.params.profileAbout,
+            prefLocation: this.params.prefLocation,
+            requestSent: true,
+            acceptedState: false
+          };
+        }
+
+        let API = this.smartieApi.getApi(
+          'setJobRequest',
+          this.body
+        );
+        return new Promise(resolve => {
+          interface Response {
+            result: any
+          };
+          this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+            this.requestSent = true;
+            this.viewCtrl.dismiss();
+            this.loading.dismiss();
+            this.submitInProgress = false;
+          });
+        })
       })
-    });
+    })
   }
 
   viewProfile(){
