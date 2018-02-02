@@ -234,6 +234,6 @@ export class TotlesSearch {
   }
 
   pushAccepteds(){
-    this.navCtrl.push("AllAcceptedsPage", { activeRole: this.role });
+    this.navCtrl.push("NotificationFeedPage", { activeRole: this.role });
   }
 }

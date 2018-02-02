@@ -11,10 +11,10 @@ import { Storage } from '@ionic/storage';
  * on Ionic pages and navigation.
  */
 @IonicPage()@Component({
-  selector: 'page-all-accepteds',
-  templateUrl: 'all-accepteds.html',
+  selector: 'page-notification-feed',
+  templateUrl: 'notification-feed.html',
 })
-export class AllAcceptedsPage {
+export class NotificationFeedPage {
   private allAccepteds: any;
   private body: any;
 
