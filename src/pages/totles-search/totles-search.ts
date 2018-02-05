@@ -116,10 +116,10 @@ export class TotlesSearch {
     }
 
     locationData.profilePhoto = this.profilePhoto;
-    locationData.role = this.role;
+    // locationData.role = this.role;
 
     this.marker.addListener('click', ()=> {
-      this.navCtrl.push('JobRequestPage', locationData)
+      this.navCtrl.push('JobRequestPage', { result : locationData})
     })
 
     // this.marker.setMap(this.map);
@@ -199,6 +199,7 @@ export class TotlesSearch {
         this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
 
         for(let searchResult of searchResults.result.jobs){
+          // console.log(searchResult);
           this.createMarkerLocation(searchResult);
         }
 

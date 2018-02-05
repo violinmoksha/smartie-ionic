@@ -17,12 +17,14 @@ import { Storage } from '@ionic/storage';
 export class NotificationFeedPage {
   private allAccepteds: any;
   private body: any;
+  private userRole: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private storage: Storage) {
   }
 
   ionViewDidLoad() {
     this.storage.get('role').then(role => {
+      this.userRole = role;
       this.storage.get(role+'UserProfile').then(profile => {
         this.body = { profileId: JSON.parse(profile).profileData.objectId, role: role };
 
@@ -52,8 +54,13 @@ export class NotificationFeedPage {
         result: any
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
-        // this.navCtrl.push("TeacherJobAccepted", { data: res.result });
-        console.log(res.result);
+        if(res.result.prof.profilephoto){
+          res.result.prof.profilePhoto = res.result.prof.profilephoto.url;
+        }else{
+          res.result.prof.profilePhoto = './assets/img/user-round-icon.png';
+        }
+        this.navCtrl.push("JobRequestPage", { result : res.result.prof, fromWhere: 'notification' });
+        // console.log(res.result);
       })
     });
 

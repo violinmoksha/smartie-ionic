@@ -21,10 +21,12 @@ export class JobRequestPage {
   private body: any;
   private submitInProgress: boolean;
   private loading: any;
+  private fromWhere: any;
+  private userRole: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, private loadingCtrl: LoadingController) {
-    this.params = navParams.data;
-    // console.log(this.params);
+    this.params = navParams.data.result;
+    this.fromWhere = navParams.data.fromWhere;
 
     this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
@@ -34,6 +36,7 @@ export class JobRequestPage {
 
   ionViewDidLoad() {
     this.storage.get('role').then(role => {
+      this.userRole = role;
       this.storage.get(role+"UserProfile").then(roleProfile => {
         if(role === 'teacher'){
           this.body = { requestingProfileId: JSON.parse(roleProfile).profileData.objectId, requestedProfileId: this.params.requestedId };

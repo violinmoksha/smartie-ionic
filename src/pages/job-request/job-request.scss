@@ -77,6 +77,11 @@ page-job-request {
         font-weight: 400;
         color: #000;
       }
+      h3{
+        font-size: 20px;
+        color: #009345;
+        line-height: 17px;
+      }
       .jobprofile-details{
         h3 {
           color: #333333;
@@ -166,6 +171,39 @@ page-job-request {
         margin: 0;
         margin-bottom: 20px;
         color: #333333;
+      }
+    }
+
+    .cl-teacher{
+      .toolbar-title{
+        color: #00BC5B !important
+      }
+      .back-button{
+        color: #00BC5B !important
+      }
+    }
+    .cl-parent {
+      .toolbar-title{
+        color: #F97533 !important
+      }
+      .back-button{
+        color: #F97533 !important
+      }
+    }
+    .cl-school {
+      .toolbar-title{
+        color: #F31C62 !important
+      }
+      .back-button{
+        color: #F31C62 !important
+      }
+    }
+    .cl-student {
+      .toolbar-title{
+        color: #0096D7 !important
+      }
+      .back-button{
+        color: #0096D7 !important
       }
     }
 
