@@ -141,7 +141,7 @@ export class SmartieSearch {
           jobDescrioption: locationData.jobDescription,
           prefLocation: locationData.prefLocation,
           phone: locationData.teacherProfile.phone,
-          requestedId: locationData.teacherProfile.objectId,
+          teacherProfileId: locationData.teacherProfile.objectId,
           loggedRole: this.role,
           defaultStartDate: locationData.teacherProfile.defaultStartDate,
           defaultEndDate: locationData.teacherProfile.defaultEndDate,
@@ -159,7 +159,7 @@ export class SmartieSearch {
           prefPayRate: locationData.otherProfile.prefPayRate,
           prefLocation: locationData.prefLocation,
           phone: locationData.otherProfile.phone,
-          requestedId: locationData.otherProfile.objectId,
+          otherProfileId: locationData.otherProfile.objectId,
           loggedRole: this.role
         }
       }

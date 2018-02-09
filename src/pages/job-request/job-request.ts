@@ -25,8 +25,8 @@ export class JobRequestPage {
   private userRole: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, private loadingCtrl: LoadingController) {
-    this.params = navParams.data.result;
-    this.fromWhere = navParams.data.fromWhere;
+    this.params = navParams.data.params;
+    //this.fromWhere = navParams.data.fromWhere;
 
     this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
@@ -35,32 +35,30 @@ export class JobRequestPage {
   }
 
   ionViewDidLoad() {
-    this.storage.get('role').then(role => {
-      this.userRole = role;
-      this.storage.get(role+"UserProfile").then(roleProfile => {
-        if(role === 'teacher'){
-          this.body = { requestingProfileId: JSON.parse(roleProfile).profileData.objectId, requestedProfileId: this.params.requestedId };
-        }else{
-          this.body = { requestingProfileId: this.params.requestedId, requestedProfileId: JSON.parse(roleProfile).profileData.objectId };
-        }
+    this.storage.get("UserProfile").then(roleProfile => {
+      this.userRole = roleProfile.profileData.role;
+      if(this.userRole === 'teacher'){
+        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.params.otherProfileId };
+      }else{
+        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId };
+      }
 
-        /*return new Promise(resolve => {
-          let API = this.smartieApi.getApi(
-            'getRequestedJobRequest',
-            this.body
-          );
-          interface Response {};
-          this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-            this.loading.dismiss();
-            if(Object.keys(response).length > 0){
-              this.requestSent = true;
-            }else{
-              this.requestSent = false;
-            }
-          }, err => {
-            console.log(err);
-          })
-        })*/
+      return new Promise(resolve => {
+        let API = this.smartieApi.getApi(
+          'getRequestedJobRequest',
+          this.body
+        );
+        interface Response {};
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+          this.loading.dismiss();
+          if(Object.keys(response).length > 0){
+            this.requestSent = true;
+          }else{
+            this.requestSent = false;
+          }
+        }, err => {
+          console.log(err);
+        })
       })
     })
   }
