@@ -99,13 +99,13 @@ export class SmartieSearch {
     let latLng = new google.maps.LatLng(locationData.latlng.latitude, locationData.latlng.longitude);
 
     if (this.role == 'teacher') {
-      if(locationData.requestedProfile.role == 'teacher'){
+      if(locationData.otherProfile.role == 'teacher'){
         this.userIcon = './assets/imgs/teacher-map-icon30px.png'
-      }else if(locationData.requestedProfile.role == 'parent'){
+      }else if(locationData.otherProfile.role == 'parent'){
         this.userIcon = './assets/imgs/parent-map-icon30px.png'
-      }else if(locationData.requestedProfile.role == 'school'){
+      }else if(locationData.otherProfile.role == 'school'){
         this.userIcon = './assets/imgs/school-map-icon30px.png'
-      }else if(locationData.requestedProfile.role == 'student'){
+      }else if(locationData.otherProfile.role == 'student'){
         this.userIcon = './assets/imgs/student-map-icon30px.png'
       }
     } else {
@@ -131,35 +131,35 @@ export class SmartieSearch {
       let params;
       if (this.role !== 'teacher') {
         params = {
-          profilePhoto: locationData.requestingProfile.profilePhoto,
-          fullname: locationData.requestingProfile.fullname,
-          role: locationData.requestingProfile.role,
-          prefPayRate: locationData.requestingProfile.prefPayRate,
-          yrsExperience: locationData.requestingProfile.yrsExperience,
-          profileAbout: locationData.requestingProfile.profileAbout,
-          profileTitle: locationData.requestingProfile.profileTitle,
+          profilePhoto: locationData.teacherProfile.profilePhoto,
+          fullname: locationData.teacherProfile.fullname,
+          role: locationData.teacherProfile.role,
+          prefPayRate: locationData.teacherProfile.prefPayRate,
+          yrsExperience: locationData.teacherProfile.yrsExperience,
+          profileAbout: locationData.teacherProfile.profileAbout,
+          profileTitle: locationData.teacherProfile.profileTitle,
           jobDescrioption: locationData.jobDescription,
           prefLocation: locationData.prefLocation,
-          phone: locationData.requestingProfile.phone,
-          requestedId: locationData.requestingProfile.objectId,
+          phone: locationData.teacherProfile.phone,
+          requestedId: locationData.teacherProfile.objectId,
           loggedRole: this.role,
-          defaultStartDate: locationData.requestingProfile.defaultStartDate,
-          defaultEndDate: locationData.requestingProfile.defaultEndDate,
-          defaultStartTime: locationData.requestingProfile.defaultStartTime,
-          defaultEndTime: locationData.requestingProfile.defaultEndTime,
+          defaultStartDate: locationData.teacherProfile.defaultStartDate,
+          defaultEndDate: locationData.teacherProfile.defaultEndDate,
+          defaultStartTime: locationData.teacherProfile.defaultStartTime,
+          defaultEndTime: locationData.teacherProfile.defaultEndTime,
         };
       } else {
         params = {
-          profilePhoto: locationData.requestedProfile.profilePhoto,
-          fullname: locationData.requestedProfile.fullname,
-          role: locationData.requestedProfile.role,
-          profileAbout: locationData.requestedProfile.profileAbout,
-          profileTitle: locationData.requestedProfile.profileTitle,
+          profilePhoto: locationData.otherProfile.profilePhoto,
+          fullname: locationData.otherProfile.fullname,
+          role: locationData.otherProfile.role,
+          profileAbout: locationData.otherProfile.profileAbout,
+          profileTitle: locationData.otherProfile.profileTitle,
           jobDescription: locationData.jobDescription,
-          prefPayRate: locationData.requestedProfile.prefPayRate,
+          prefPayRate: locationData.otherProfile.prefPayRate,
           prefLocation: locationData.prefLocation,
-          phone: locationData.requestedProfile.phone,
-          requestedId: locationData.requestedProfile.objectId,
+          phone: locationData.otherProfile.phone,
+          requestedId: locationData.otherProfile.objectId,
           loggedRole: this.role
         }
       }
