@@ -1,0 +1,224 @@
+page-smartie-search {
+
+  .scroll-content {
+    overflow: hidden;
+  }
+
+  #map {
+    width: 100%;
+    height: 80%;
+  }
+
+  .notification{
+    background: none!important;
+    border: 0!important;
+    width: 23px;
+    height: 28px;
+    z-index: 10;
+    position: relative;
+    padding: 0;
+    background-image: url(./../assets/imgs/Logo-icon-small.png)!important;
+    background-repeat: no-repeat!important;
+    background-position: center;
+    background-size: 100%!important;
+    margin-top: 0px;
+    margin-right: 22px;
+    span{
+      position: absolute;
+      background: #00BC5B;
+      color: #fff;
+      padding: 2px 7px;
+      left: 10px;
+      top: -7px;
+      border-radius: 18px;
+      z-index: 11;
+    }
+  }
+  .smartie-search-alert{
+    .alert-head{
+      padding: 0;
+
+      .smartie-pop-search{
+        text-align: center;
+        padding:0 10px ;
+          border-bottom: 1px solid #cfcfcf;
+        .notification {
+
+          padding-top: 8px;
+          padding-bottom: 8px;
+          min-height: 60px;
+          .left {
+              width: 70%;
+              float: left;
+              text-align: left;
+              .avatar {
+                float: left;
+                width: 40px;
+                height: 40px;
+                overflow: hidden;
+                border-radius: 200px;
+                margin-right: 10px;
+                img {
+                       width: 100%;
+                    }
+              }
+              .u-detail {
+                float: left;
+                width: auto;
+                .name {
+                    font-weight: 500;
+                    color: #000;
+                    font-size: 14px;
+                    line-height: 15px;
+                    margin-top: 7px;
+                  }
+                  .profile-type {
+                      font-size: 12px;
+                      color: #969696;
+                      font-weight: normal;
+                      line-height: 15px;
+                  }
+              }
+
+          }
+          .right {
+              width: 30%;
+              float: right;
+              text-align: right;
+              .price {
+                    color: #00BC5B;
+                    font-weight: bold;
+                    font-size: 18px;
+                    line-height: 18px;
+                    margin-top: 4px;
+                }
+             .hour-rate {
+                  font-size: 12px;
+                  color: #969696;
+                  font-weight: normal;
+                  line-height: 15px;
+              }
+          }
+        }
+      }
+
+    }
+  .alert-message{
+      padding:0 15px;
+      overflow-y: auto;
+      .jobprofile-content{
+        padding:0;
+        h2{
+          font-size: 18px;
+          font-weight: 400;
+          color: #000;
+        }
+        .jobprofile-details{
+                    h3 {
+               color: #333333;
+               font-size: 15px;
+               margin-bottom: 0;
+            }
+            p{
+              color: #333333;
+              font-weight: 300;
+              font-size: 12px;
+              margin-top: 0;
+              margin-bottom: 10px;
+              line-height: 17px;
+
+            }
+        }
+        .job-phone-details{
+                  h3 {
+             color: #333333;
+             font-size: 15px;
+             margin-bottom: 0;
+          }
+          p{
+            color: #333333;
+            font-weight: 300;
+            font-size: 12px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            line-height: 17px;
+
+          }
+        }
+      }
+      .jobprofile-buttons{
+        .button{
+          border: 1px solid #cfcfcf;
+          border-radius: 5px;
+          padding: 0px 5px;
+          width: 48%;
+          margin-right: 2%;
+          display: inline-block;
+          float: none;
+          font-size: 11.5px;
+          line-height: 33px;
+          height: 35px;
+          min-height: 35px;
+          color: #000;
+          background-color: #eee;
+        }
+      }
+
+  }
+    .alert-button-group{
+      padding: 8px;
+      .alert-button-default-md{
+        width: 48%;
+        padding: 10px 5px;
+        font-size: 13px;
+        background-color: #00BC5B;
+        color: #fff;
+        text-align: center;
+        border-radius: 5px;
+        .button-inner{
+          text-align: center;
+          display: block;
+        }
+      }
+    }
+  }
+  .toolbar-title{
+    max-width:160px;
+    margin: auto;
+    img{
+      width: 100%;
+    }
+  }
+
+  .bottom-search-box{
+    width: 100% !important;
+    position: fixed;
+    bottom: 0;
+    padding: 15px 5px 0 5px;
+    height: 128px;
+    .item-input{
+      width: 100%;
+      margin: 0;
+      border:1px solid #cfcfcf;
+      border-radius: 5px;
+      text-indent: 10px;
+      margin-top:15px;
+      padding-left:25px;
+      height: 40px;
+      background-image: url(../../assets/imgs/teacher-map-icon30px.png);
+      background-size:20px;
+      background-position: 8px center;
+      background-repeat: no-repeat;
+    }
+    .button{
+        background-color: #00BC5B!important;
+        color: #fff;
+        width: 100%;
+        padding: 15px;
+        height: auto;
+        line-height: 15px;
+        margin:5px 0 0 0;
+    }
+  }
+
+}

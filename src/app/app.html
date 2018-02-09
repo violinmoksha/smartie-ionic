@@ -5,10 +5,11 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content>
+  <ion-content padding>
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
+      <button *ngFor="let button of buttons" (click)="pushPage($event, button)" id="{{button.iconName}}" ion-item nav-clear menuClose icon-start>
+        <ion-icon name="{{button.iconName}}"></ion-icon>
+        {{button.text}}
       </button>
     </ion-list>
   </ion-content>
