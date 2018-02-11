@@ -25,8 +25,6 @@ export class JobRequestPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, private loadingCtrl: LoadingController) {
     this.params = navParams.data.params;
-    console.log(this.params);
-
     this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
       content: 'Sending...'
@@ -78,7 +76,8 @@ export class JobRequestPage {
           jobDescription: this.params.profileAbout,
           prefLocation: this.params.prefLocation,
           requestSent: true,
-          acceptedState: false
+          acceptState: false,
+          role: 'teacher'
         };
       } else {
         this.body = {
@@ -87,7 +86,8 @@ export class JobRequestPage {
           jobDescription: this.params.profileAbout,
           prefLocation: this.params.prefLocation,
           requestSent: true,
-          acceptedState: false
+          acceptState: false,
+          role: profile.profileData.role
         };
       }
 
