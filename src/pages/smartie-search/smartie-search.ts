@@ -78,19 +78,6 @@ export class SmartieSearch {
     this.smartieSearchResult(null, this.navParams.data.role, searchLoc);
   }
 
-  /*initMap(){
-    let latLngUser = JSON.parse(localStorage.getItem(this.role+'UserProfile')).profileData.latlng;
-    this.smartieSearchResult(latLngUser, this.navParams.data.role, null);
-  }*/
-
-
-  /*sendRequestProgress(alertCtrl) {
-    this.navCtrl.removeView(alertCtrl, {
-    }, () => {
-      return new Promise((resolve, reject) => resolve('success'));
-    });
-  }*/
-
   createMarkerLocation(locationData){
     // TODO: there shud be a way to wrap this
     // so we don't need to include the frontend
