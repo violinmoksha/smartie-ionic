@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
+import { SmartieAPI } from '../../providers/api/smartie';
 
 declare var google;
 
@@ -31,6 +32,7 @@ export class SmartieSearch {
   private notifyCount: any;
   private latLngUser: any;
   private marker: any;
+  private body: any;
   //private searchData: any;
   //private alertOpts: any;
   // private infoWindow: any;
@@ -41,7 +43,7 @@ export class SmartieSearch {
 
   public notifications: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public events: Events, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI) {
     this.role = navParams.data.role;
     this.fromWhere = navParams.data.fromWhere;
     this.alert = this.alertCtrl;
@@ -67,8 +69,53 @@ export class SmartieSearch {
       if (profile == null) {
         this.navCtrl.setRoot("LoginPage");
       } else {
-        this.latLngUser = profile.profileData.latlng;
-        this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
+        //get all requested's
+        this.body = {
+          profileId: profile.profileData.objectId,
+          role: profile.profileData.role
+        };
+
+        return new Promise(resolve => {
+          let API = this.smartieApi.getApi(
+            'getAllUserRequesteds',
+            this.body
+          );
+          interface Response {};
+          this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+            if(Object.keys(response).length > 0){
+              console.log(response)
+              /*let profileModal = this.modalCtrl.create(JobRequests,
+                {
+                  profilePhoto: this.profilePhoto,
+                  fullname: locationData.fullname,
+                  role: locationData.role,
+                  prefPayRate: locationData.prefpayrate,
+                  prefCurrency: locationData.prefcurrency,
+                  experience: locationData.yrsexperience,
+                  expertLangs: locationData.expertlangs,
+                  profileAbout: locationData.profileabout,
+                  prefLocation: locationData.preflocation,
+                  phone: locationData.phone,
+                  requestedId: locationData.profileId,
+                  loggedRole: this.role,
+                  defStartDate: locationData.defstartdate,
+                  defEndDate: locationData.defenddate,
+                  defStartTime: locationData.defstarttime,
+                  defEndTime: locationData.defendtime,
+                },
+                {
+                  cssClass: 'totles-search-alert ' + this.role
+                }
+              );
+              profileModal.present();*/
+            }else{
+              this.latLngUser = profile.profileData.latlng;
+              this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
+            }
+          }, err => {
+            console.log(err);
+          })
+        })
         // this.initMap();
       }
     });

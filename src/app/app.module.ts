@@ -17,6 +17,7 @@ import { CalendarModule } from "ion2-calendar";
 import { Stripe } from '@ionic-native/stripe';
 import { ParseProvider } from '../providers/parse';
 import { SmartieAPI } from '../providers/api/smartie';
+import { Globalization } from '@ionic-native/globalization';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { SmartieAPI } from '../providers/api/smartie';
     Camera,
     ParseProvider,
     SmartieAPI,
+    Globalization,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
