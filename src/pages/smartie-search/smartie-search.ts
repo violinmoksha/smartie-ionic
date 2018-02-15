@@ -87,7 +87,7 @@ export class SmartieSearch {
               //console.log(response);
               let alert = this.alertCtrl.create({
                 title: 'Wow, check it out!',
-                subTitle: `${response.result.length} of your notifications are new job request(s)! We'll show them to you one after another so you can decide whether to accept or reject them!`,
+                subTitle: `${response.result.length} of your notifications are new job request(s)! We'll show them to you one after another so you can decide whether to accept or reject!`,
                 buttons: [
                   {
                     text: 'OK',
@@ -96,29 +96,32 @@ export class SmartieSearch {
                       if (this.role == 'teacher') {
                         for (let requestSentJob of response.result) {
                           requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
-                            profilePhoto: this.profilePhoto,
-                            fullname: requestSentJob.fullname,
-                            role: requestSentJob.role,
+                            profilePhoto: requestSentJob.otherProfile.profilePhoto,
+                            fullname: requestSentJob.otherProfile.fullname,
+                            role: requestSentJob.otherProfile.role,
                             jobDescription: requestSentJob.jobDescription,
-                            prefLocation: requestSentJob.preflocation,
+                            prefLocation: requestSentJob.prefLocation,
                             teacherProfileId: requestSentJob.teacherProfile.objectId,
+                            otherProfileId: requestSentJob.otherProfile.objectId,
                             fromWhere: "requestSentJobs"
                           }}));
                         }
                       } else {
                         for (let requestSentJob of response.result) {
+                          console.log(requestSentJob);
                           requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
-                            profilePhoto: this.profilePhoto,
-                            fullname: requestSentJob.fullname,
-                            role: requestSentJob.role,
-                            prefPayRate: requestSentJob.prefPayRate,
-                            yrsExperience: requestSentJob.yrsExperience,
+                            profilePhoto: requestSentJob.teacherProfile.profilePhoto,
+                            fullname: requestSentJob.teacherProfile.fullname,
+                            role: requestSentJob.teacherProfile.role,
+                            prefPayRate: requestSentJob.teacherProfile.prefPayRate,
+                            yrsExperience: requestSentJob.teacher.yrsExperience,
                             jobDescription: requestSentJob.jobDescription,
-                            prefLocation: requestSentJob.preflocation,
-                            defaultStartDate: requestSentJob.defaultStartDate,
-                            defaultEndDate: requestSentJob.defaultEndDate,
-                            defaultStartTime: requestSentJob.defaultStartTime,
-                            defaultEndTime: requestSentJob.defaultEndTime,
+                            prefLocation: requestSentJob.prefLocation,
+                            defaultStartDate: requestSentJob.teacher.defaultStartDate,
+                            defaultEndDate: requestSentJob.teacher.defaultEndDate,
+                            defaultStartTime: requestSentJob.teacher.defaultStartTime,
+                            defaultEndTime: requestSentJob.teacher.defaultEndTime,
+                            teacherProfileId: requestSentJob.teacherProfile.objectId,
                             otherProfileId: requestSentJob.otherProfile.objectId,
                             fromWhere: "requestSentJobs"
                           }}));
