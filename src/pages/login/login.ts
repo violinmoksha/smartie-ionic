@@ -4,8 +4,6 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { Observable } from 'rxjs';
-import 'rxjs/add/observable/forkJoin';
 
 /**
  * Generated class for the LoginPage page.

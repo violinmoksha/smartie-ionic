@@ -28,7 +28,6 @@ export class SmartieSearch {
   private profilePhoto: string;
   private _contentTitle: string;
   private _contentMessage: string;
-  private alert: any;
   private notifyCount: any;
   private latLngUser: any;
   private marker: any;
@@ -37,16 +36,13 @@ export class SmartieSearch {
   //private alertOpts: any;
   // private infoWindow: any;
 
-  private alertCtrl: AlertController;
-
   public searchLogo = '/assets/imgs/smartie-horzontal-logo.png';
 
   public notifications: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI) {
     this.role = navParams.data.role;
     this.fromWhere = navParams.data.fromWhere;
-    this.alert = this.alertCtrl;
     if (navParams.data.notifications !== undefined) {
       this.notifications = navParams.data.notifications;
       this.notifyCount = this.notifications.length;
@@ -69,6 +65,9 @@ export class SmartieSearch {
       if (profile == null) {
         this.navCtrl.setRoot("LoginPage");
       } else {
+        this.latLngUser = profile.profileData.latlng;
+        this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
+
         //get all requested's
         this.body = {
           profileId: profile.profileData.objectId,
@@ -80,37 +79,63 @@ export class SmartieSearch {
             'getAllRequesteds',
             this.body
           );
-          interface Response {};
+          interface Response {
+            result: any;
+          };
           this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-            if(Object.keys(response).length > 0){
-              console.log(response)
-              /*let profileModal = this.modalCtrl.create(JobRequests,
-                {
-                  profilePhoto: this.profilePhoto,
-                  fullname: locationData.fullname,
-                  role: locationData.role,
-                  prefPayRate: locationData.prefpayrate,
-                  prefCurrency: locationData.prefcurrency,
-                  experience: locationData.yrsexperience,
-                  expertLangs: locationData.expertlangs,
-                  profileAbout: locationData.profileabout,
-                  prefLocation: locationData.preflocation,
-                  phone: locationData.phone,
-                  requestedId: locationData.profileId,
-                  loggedRole: this.role,
-                  defStartDate: locationData.defstartdate,
-                  defEndDate: locationData.defenddate,
-                  defStartTime: locationData.defstarttime,
-                  defEndTime: locationData.defendtime,
-                },
-                {
-                  cssClass: 'totles-search-alert ' + this.role
-                }
-              );
-              profileModal.present();*/
-            }else{
-              this.latLngUser = profile.profileData.latlng;
-              this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
+            if(response.result.length > 0){
+              //console.log(response);
+              let alert = this.alertCtrl.create({
+                title: 'Wow, check it out!',
+                subTitle: `${response.result.length} of your notifications are new job request(s)! We'll show them to you one after another so you can decide whether to accept or reject them!`,
+                buttons: [
+                  {
+                    text: 'OK',
+                    handler: data => {
+                      let requestSentJobModals = [];
+                      if (this.role == 'teacher') {
+                        for (let requestSentJob of response.result) {
+                          requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
+                            profilePhoto: this.profilePhoto,
+                            fullname: requestSentJob.fullname,
+                            role: requestSentJob.role,
+                            jobDescription: requestSentJob.jobDescription,
+                            prefLocation: requestSentJob.preflocation,
+                            teacherProfileId: requestSentJob.teacherProfile.objectId,
+                            fromWhere: "requestSentJobs"
+                          }}));
+                        }
+                      } else {
+                        for (let requestSentJob of response.result) {
+                          requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
+                            profilePhoto: this.profilePhoto,
+                            fullname: requestSentJob.fullname,
+                            role: requestSentJob.role,
+                            prefPayRate: requestSentJob.prefPayRate,
+                            yrsExperience: requestSentJob.yrsExperience,
+                            jobDescription: requestSentJob.jobDescription,
+                            prefLocation: requestSentJob.preflocation,
+                            defaultStartDate: requestSentJob.defaultStartDate,
+                            defaultEndDate: requestSentJob.defaultEndDate,
+                            defaultStartTime: requestSentJob.defaultStartTime,
+                            defaultEndTime: requestSentJob.defaultEndTime,
+                            otherProfileId: requestSentJob.otherProfile.objectId,
+                            fromWhere: "requestSentJobs"
+                          }}));
+                        }
+                      }
+                      requestSentJobModals.forEach((requestSentJobModal, ix) => {
+                        if (ix == 0) requestSentJobModal.present();
+                        requestSentJobModal.onDidDismiss(data => {
+                          if (requestSentJobModals[ix+1] !== undefined)
+                            requestSentJobModals[ix+1].present();
+                        });
+                      });
+                    }
+                  }
+                ]
+              });
+              alert.present();
             }
           }, err => {
             console.log(err);

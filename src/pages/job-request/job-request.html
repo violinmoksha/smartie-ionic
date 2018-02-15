@@ -10,8 +10,9 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content padding>
+  <h4 *ngIf="params.fromWhere == 'requestSentJobs'" style="color:red">Congratulations You Have Received a Job Request</h4>
+  <h4 *ngIf="params.fromWhere == 'acceptedJobs'" style="color:red">Congratulations Your Job Request Has Been ACCEPTED!</h4>
   <div class="notification-wrapper totles-pop-search" id="profile-info">
     <div class="notification">
       <div class="left">
@@ -21,8 +22,8 @@
           <div class="profile-type">{{ params.role }}</div>
         </div>
       </div>
-      <div class="right">
-        <div *ngIf="params.prefPayRate" class="price">{{ params.prefPayRate }}</div>
+      <div class="right" *ngIf="params.prefPayRate">
+        <div class="price">{{ params.prefPayRate }}</div>
         <div class="hour-rate">Per Hour</div>
       </div>
       <div class="clear"></div>
@@ -30,9 +31,9 @@
   </div>
 
   <div class="jobprofile-content">
-  <h3 *ngIf="fromWhere">Congratulations You Have Received a Job Request</h3>
-  <h2 *ngIf="params.profileTitle">Title: {{ params.profileTitle }}</h2>
-    <div class="jobprofile-details">
+    <h2 *ngIf="params.profileTitle">Title: {{ params.profileTitle }}</h2>
+    <h2 *ngIf="params.yrsExperience">I have {{ params.yrsExperience }} of experience teaching.</h2>
+    <div *ngIf="params.jobDescription" class="jobprofile-details">
       <h3>Job Description:</h3>
       <p>{{ params.jobDescription }}</p>
     </div>
