@@ -4,11 +4,11 @@ import { NavController, ActionSheetController } from 'ionic-angular';
 import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
 
 @IonicPage()@Component({
-  selector: 'page-register-teacher',
-  templateUrl: 'register-teacher.html'
+  selector: 'page-register-teacher-step1',
+  templateUrl: 'register-teacher-step1.html'
 })
 
-export class RegisterTeacherPage {
+export class RegisterTeacherStep1Page {
   private Teacherstep1Form: FormGroup;
 
   constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController) {

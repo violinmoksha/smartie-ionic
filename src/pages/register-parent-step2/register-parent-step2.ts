@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, Slides } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the RegisterParentStep2Page page.
@@ -27,7 +28,7 @@ export class RegisterParentStep2Page {
   partOfSchool: string;
   @ViewChild(Slides) parentSchool: Slides;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, private storage: Storage) {
 
     this.form1Values = navParams.data.form1Value;
 
@@ -55,7 +56,8 @@ export class RegisterParentStep2Page {
             };
             this.camera.getPicture(options).then((imageData) => {
               this.cameraData = 'data:image/jpeg;base64,' + imageData;
-              localStorage.setItem('profilePhotoDataUrl', this.cameraData);
+              // localStorage.setItem('profilePhotoDataUrl', this.cameraData);
+              this.storage.set('profilePhotoDataUrl', this.cameraData);
               this.photoTaken = true;
               this.photoSelected = false;
             }, (err) => {
@@ -79,7 +81,8 @@ export class RegisterParentStep2Page {
              // imageData is either a base64 encoded string or a file URI
              // If it's base64:
               this.cameraUrl = "data:image/jpeg;base64," + imageData;
-              localStorage.setItem('profilePhotoDataUrl', this.cameraUrl);
+              // localStorage.setItem('profilePhotoDataUrl', this.cameraUrl);
+              this.storage.set('profilePhotoDataUrl', this.cameraData);
               // console.log(this.cameraUrl);
               this.photoSelected = true;
               this.photoTaken = false;
@@ -104,7 +107,7 @@ export class RegisterParentStep2Page {
   public filterpartOfSchool(result: string): void {
     // Handle what to do when a category is selected
     console.log(result);
-    if(result == 'yes'){
+    if(result){
       this.Parentstep2Form.get('parentSchoolName').setValidators([Validators.required]);
     }else{
       this.Parentstep2Form.get('parentSchoolName').setValidators([]);

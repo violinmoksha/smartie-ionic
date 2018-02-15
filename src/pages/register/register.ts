@@ -16,13 +16,13 @@ export class RegisterPage {
   pushPage(item){
     if(item == 'teacher')
       //Pro.getApp().monitoring.log('Trying to push RegisterTeacher.', { level: 'error' });
-      this.navCtrl.push("RegisterTeacherPage");
+      this.navCtrl.push("RegisterTeacherStep1Page");
     if(item == 'student')
-      this.navCtrl.push("RegisterStudentPage");
+      this.navCtrl.push("RegisterStudentStep1Page");
     if(item == 'parent')
-      this.navCtrl.push("RegisterParentPage");
+      this.navCtrl.push("RegisterParentStep1Page");
     if(item == 'school')
-      this.navCtrl.push("RegisterSchoolPage");
+      this.navCtrl.push("RegisterSchoolStep1Page");
   }
 
 }

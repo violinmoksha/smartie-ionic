@@ -4,6 +4,7 @@ import { NavController, NavParams, AlertController, Slides, LoadingController } 
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Parse } from 'parse';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the RegisterParentStep3Page page.
@@ -75,7 +76,7 @@ export class RegisterParentStep3Page {
     { "value": 'THB', "text": 'Thai Baht' },
   ]*/
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private storage: Storage) {
     this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
       content: 'Creating Account...'
@@ -105,40 +106,6 @@ export class RegisterParentStep3Page {
     console.log(currentIndex);
   }
 
-  public filterCurrency(curr: number): void {
-    // Handle what to do when a category is selected
-    console.log(curr);
-    this.userCurrency = curr;
-  }
-
-  // Method executed when the slides are changed
-  public currencyChanged(): void {
-    let currentIndex = this.curr.getActiveIndex();
-    console.log(currentIndex);
-  }
-
-  onChangeParentLanguage(name: string, isChecked: boolean) {
-    const knownLanguage = <FormArray>this.Parentstep3Form.controls.requiredLang;
-
-    if(isChecked) {
-      knownLanguage.push(new FormControl(name));
-    } else {
-      let index = knownLanguage.controls.findIndex(x => x.value == name)
-      knownLanguage.removeAt(index);
-    }
-  }
-
-  onChangeParentLevel(name: string, isChecked: boolean) {
-    const knownLevel = <FormArray>this.Parentstep3Form.controls.requiredLevel;
-    console.log(knownLevel);
-
-    if(isChecked) {
-      knownLevel.push(new FormControl(name));
-    } else {
-      let index = knownLevel.controls.findIndex(x => x.value == name)
-      knownLevel.removeAt(index);
-    }
-  }
 
   ParentSubmit(parentData){
     // console.log(parentData);
@@ -150,7 +117,7 @@ export class RegisterParentStep3Page {
 
     let API = this.smartieApi.getApi(
       'signupParentOrStudent',
-      {role: 'parent', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, profileabout: this.form2Values.profileMessage, langreq: parentData.requiredLang.toString(), levelreq: parentData.requiredLevel.toString(), preflocation: parentData.prefLocation, prefpayrate: this.hourlyRate, prefcurrency: this.userCurrency, partofschool: this.partOfSchool, schoolname: this.form2Values.parentSchoolName, langpref: 'en'}
+      {role: 'parent', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, fullname: this.form2Values.name, phone: this.form2Values.phone, profileAbout: this.form2Values.profileMessage, prefLocation: parentData.prefLocation, prefPayRate: this.hourlyRate, partOfSchool: this.partOfSchool, schoolName: this.form2Values.parentSchoolName}
     );
 
     return new Promise(resolve => {
@@ -159,9 +126,22 @@ export class RegisterParentStep3Page {
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         signupResult => {
-          localStorage.setItem("parentUserProfile", JSON.stringify(signupResult.result));
+          // localStorage.setItem("parentUserProfile", JSON.stringify(signupResult.result));
+          this.storage.set("UserProfile", signupResult.result);
 
-          if(localStorage.getItem('profilePhotoDataUrl') == null){
+          this.storage.get('profilePhotoDataUrl').then(profilePhoto => {
+            if(profilePhoto == null){
+              this.navCtrl.push("SmartieSearch", {role: 'student', fromwhere: 'signUp'});
+            }else{
+              this.setProfilePic().then((pictureResolve) => {
+                this.navCtrl.push("SmartieSearch", {role: 'student', fromWhere: 'signUp'});
+              }).catch((pictureReject) => {
+                console.log(pictureReject);
+              });
+            }
+          })
+
+          /*if(localStorage.getItem('profilePhotoDataUrl') == null){
             this.navCtrl.push("TotlesSearch", {role: 'student', fromwhere: 'signUp'});
           }else{
             this.setProfilePic().then((pictureResolve) => {
@@ -169,7 +149,7 @@ export class RegisterParentStep3Page {
             }).catch((pictureReject) => {
               console.log(pictureReject);
             });
-          }
+          }*/
 
         },
         err => {
@@ -190,21 +170,36 @@ export class RegisterParentStep3Page {
   setProfilePic(){
     return new Promise(function(resolve, reject){
 
-      let parseFile = new Parse.File('photo.jpg', {base64: localStorage.getItem('profilePhotoDataUrl')});
-      parseFile.save().then((file) => {
-        let parentUserProfile = JSON.parse(localStorage.getItem("parentUserProfile"));
-        let profileId = parentUserProfile.profile.objectId;
-        let profQuery = new Parse.Query(new Parse.Object.extend('Profile'));
+      let parseFile = new Parse.File('photo.jpg', {base64: this.storage.get('profilePhotoDataUrl')});
+      parseFile.save({useMasterKey: true}).then((file) => {
+        let UserProfile = this.storage.get('UserProfile').then(UserProfile => {
+          let profileId = UserProfile.profile.objectId;
+          let profQuery = new Parse.Query(new Parse.Object.extend('Profile'));
 
-        profQuery.get(profileId, {
-          success: function(profile) {
-            profile.set('profilePhoto', file);
-            profile.save();
-            resolve('success');
-          }, error: function(profile, error) {
-            // TODO: internet connection problem err
-            reject('failed');
-          }
+          profQuery.get({useMasterKey: true}).then(profileId => {
+            let Profile = new Parse.Object.extend('Profile');
+            let profile = new Profile()
+            // success: function(profile) {
+              profile.set('profilePhoto', file);
+              profile.save();
+              resolve('success');
+            // }, error: function(profile, error) {
+            //   // TODO: internet connection problem err
+            //   reject('failed');
+            // }
+          },error => {
+           reject('failed');
+        })
+          /*profQuery.get(profileId, {
+            success: function(profile) {
+              profile.set('profilePhoto', file);
+              profile.save();
+              resolve('success');
+            }, error: function(profile, error) {
+              // TODO: internet connection problem err
+              reject('failed');
+            }
+          });*/
         });
       });
     });

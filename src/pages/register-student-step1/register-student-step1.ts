@@ -10,10 +10,10 @@ import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from
  * on Ionic pages and navigation.
  */
 @IonicPage()@Component({
-  selector: 'register-page-student',
-  templateUrl: 'register-student.html',
+  selector: 'register-page-student-step1',
+  templateUrl: 'register-student-step1.html',
 })
-export class RegisterStudentPage {
+export class RegisterStudentStep1Page {
 
   pageProfileSrc:string = './assets/img/dummy_prof_pic.png';
   private StudentStep1Form : FormGroup;

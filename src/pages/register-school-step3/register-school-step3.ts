@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, Slides, LoadingController } from 'ionic-angular';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the RegisterSchoolStep3Page page.
@@ -73,7 +74,7 @@ export class RegisterSchoolStep3Page {
     { "value": 'THB', "text": 'Thai Baht' },
   ];*/
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private storage: Storage) {
     this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
       content: 'Creating Account...'
@@ -101,48 +102,13 @@ export class RegisterSchoolStep3Page {
     console.log(currentIndex);
   }
 
-  public filterCurrency(curr: number): void {
-    // Handle what to do when a category is selected
-    console.log(curr);
-    this.userCurrency = curr;
-  }
-
-  // Method executed when the slides are changed
-  public currencyChanged(): void {
-    let currentIndex = this.curr.getActiveIndex();
-    console.log(currentIndex);
-  }
-
-  onChangeSchoolLanguage(name: string, isChecked: boolean) {
-    const knownLanguage = <FormArray>this.Schoolstep3Form.controls.requiredLang;
-
-    if(isChecked) {
-      knownLanguage.push(new FormControl(name));
-    } else {
-      let index = knownLanguage.controls.findIndex(x => x.value == name)
-      knownLanguage.removeAt(index);
-    }
-  }
-
-  onChangeSchoolLevel(name: string, isChecked: boolean) {
-    const knownLevel = <FormArray>this.Schoolstep3Form.controls.requiredLevel;
-    console.log(knownLevel);
-
-    if(isChecked) {
-      knownLevel.push(new FormControl(name));
-    } else {
-      let index = knownLevel.controls.findIndex(x => x.value == name)
-      knownLevel.removeAt(index);
-    }
-  }
-
   SchoolSubmit(schoolData){
     this.submitInProgress = true;
     this.loading.present();
 
     let API = this.smartieApi.getApi(
       'signupSchool',
-      {role: 'school', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, schoolname: this.form2Values.schoolName, contactname: this.form2Values.contactName, contactposition: this.form2Values.contactPosition, phone: this.form2Values.phone, levelreq: schoolData.requiredLevel.toString(), langreq: schoolData.requiredLang.toString(), profileabout: this.form2Values.profileMessage, preflocation: schoolData.prefLocation, prefpayrate: this.hourlyRate, prefcurrency: this.userCurrency, langpref: 'en'}
+      {role: 'school', username: this.form1Values.username, password: this.form1Values.password, email: this.form1Values.email, schoolName: this.form2Values.schoolName, contactName: this.form2Values.contactName, contactPosition: this.form2Values.contactPosition, phone: this.form2Values.phone, profileAbout: this.form2Values.profileMessage, prefLocation: schoolData.prefLocation, prefPayRate: this.hourlyRate}
     );
 
     return new Promise(resolve => {
@@ -151,10 +117,11 @@ export class RegisterSchoolStep3Page {
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         signupResult => {
-          localStorage.setItem("schoolUserProfile", JSON.stringify(signupResult.result));
+          // localStorage.setItem("UserProfile", JSON.stringify(signupResult.result));
+          this.storage.set("UserProfile", signupResult.result);
 
           // if(localStorage.getItem('profilePhotoDataUrl') == null && localStorage.getItem('schoolPhotoDataUrl') == null ){
-            this.navCtrl.push("TotlesSearch", {role: 'parent', fromwhere: 'signUp'});
+            this.navCtrl.push("SmartieSearch", {role: 'parent', fromwhere: 'signUp'});
           // }else{
           //   this.setProfilePic().then((pictureResolve) => {
           //     this.navCtrl.push(TotlesSearch, {role: 'parent', fromwhere: 'signUp'});

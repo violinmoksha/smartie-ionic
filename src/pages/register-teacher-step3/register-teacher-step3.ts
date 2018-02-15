@@ -6,6 +6,7 @@ import { SmartieAPI } from '../../providers/api/smartie';
 import { Parse } from 'parse';
 //import { ParseProvider } from '../../../providers/parse';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the RegisterTeacherStep3Page page.
@@ -43,49 +44,49 @@ export class RegisterTeacherStep3Page {
   ];*/
 
   public years = [
-    { "value": '1', "text": '1' },
-    { "value": '2', "text": '2' },
-    { "value": '3', "text": '3' },
-    { "value": '4', "text": '4' },
-    { "value": '5', "text": '5' },
-    { "value": '6', "text": '6' },
-    { "value": '7', "text": '7' },
-    { "value": '8', "text": '8' },
-    { "value": '9', "text": '9' },
-    { "value": '10', "text": '10' },
-    { "value": '11', "text": '11' },
-    { "value": '12', "text": '12' },
-    { "value": '13', "text": '13' },
-    { "value": '14', "text": '14' },
-    { "value": '15', "text": '15' },
-    { "value": '16', "text": '16' },
-    { "value": '17', "text": '17' },
-    { "value": '18', "text": '18' },
-    { "value": '19', "text": '19' },
-    { "value": '20', "text": 'More than 20' }
+    { "value": 1, "text": '1' },
+    { "value": 2, "text": '2' },
+    { "value": 3, "text": '3' },
+    { "value": 4, "text": '4' },
+    { "value": 5, "text": '5' },
+    { "value": 6, "text": '6' },
+    { "value": 7, "text": '7' },
+    { "value": 8, "text": '8' },
+    { "value": 9, "text": '9' },
+    { "value": 10, "text": '10' },
+    { "value": 11, "text": '11' },
+    { "value": 12, "text": '12' },
+    { "value": 13, "text": '13' },
+    { "value": 14, "text": '14' },
+    { "value": 15, "text": '15' },
+    { "value": 16, "text": '16' },
+    { "value": 17, "text": '17' },
+    { "value": 18, "text": '18' },
+    { "value": 19, "text": '19' },
+    { "value": 20, "text": 'More than 20' }
   ];
 
   public hourRates = [
-    { "value": '5', "text": '5' },
-    { "value": '10', "text": '10' },
-    { "value": '15', "text": '15' },
-    { "value": '20', "text": '20' },
-    { "value": '25', "text": '25' },
-    { "value": '30', "text": '30' },
-    { "value": '35', "text": '35' },
-    { "value": '40', "text": '40' },
-    { "value": '45', "text": '45' },
-    { "value": '50', "text": '50' },
-    { "value": '55', "text": '55' },
-    { "value": '60', "text": '60' },
-    { "value": '65', "text": '65' },
-    { "value": '70', "text": '70' },
-    { "value": '75', "text": '75' },
-    { "value": '80', "text": '80' },
-    { "value": '85', "text": '85' },
-    { "value": '90', "text": '90' },
-    { "value": '95', "text": '95' },
-    { "value": '100', "text": '100' }
+    { "text": '5', "value": 5 },
+    { "text": '10', "value": 10 },
+    { "text": '15', "value": 15 },
+    { "text": '20', "value": 20 },
+    { "text": '25', "value": 25 },
+    { "text": '30', "value": 30 },
+    { "text": '35', "value": 35 },
+    { "text": '40', "value": 40 },
+    { "text": '45', "value": 45 },
+    { "text": '50', "value": 50 },
+    { "text": '55', "value": 55 },
+    { "text": '60', "value": 60 },
+    { "text": '65', "value": 65 },
+    { "text": '70', "value": 70 },
+    { "text": '75', "value": 75 },
+    { "text": '80', "value": 80 },
+    { "text": '85', "value": 85 },
+    { "text": '90', "value": 90 },
+    { "text": '95', "value": 95 },
+    { "text": '100', "value": 100 }
   ];
 
   /*public currencies = [
@@ -96,7 +97,7 @@ export class RegisterTeacherStep3Page {
     { "value": 'THB', "text": 'Thai Baht' },
   ]*/
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage) {
     this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
       content: 'Creating Account...'
@@ -179,7 +180,7 @@ export class RegisterTeacherStep3Page {
 
   public filterRate(rate: number): void {
     // Handle what to do when a category is selected
-    console.log(rate);
+    console.log(typeof rate);
     this.hourlyRate = rate;
   }
 
@@ -187,41 +188,6 @@ export class RegisterTeacherStep3Page {
   public rateChanged(): void {
     let currentIndex = this.hourRate.getActiveIndex();
     console.log(currentIndex);
-  }
-
-  public filterCurrency(curr: number): void {
-    // Handle what to do when a category is selected
-    console.log(curr);
-    this.userCurrency = curr;
-  }
-
-  // Method executed when the slides are changed
-  public currencyChanged(): void {
-    let currentIndex = this.curr.getActiveIndex();
-    console.log(currentIndex);
-  }
-
-  onChangeTeacherLanguage(name: string, isChecked: boolean) {
-    const knownLanguage = <FormArray>this.Teacherstep3Form.controls.teacherLanguage;
-
-    if(isChecked) {
-      knownLanguage.push(new FormControl(name));
-    } else {
-      let index = knownLanguage.controls.findIndex(x => x.value == name)
-      knownLanguage.removeAt(index);
-    }
-  }
-
-  onChangeLevelLanguage(name: string, isChecked: boolean) {
-    const knownLevel = <FormArray>this.Teacherstep3Form.controls.teacherLevel;
-    console.log(knownLevel);
-
-    if(isChecked) {
-      knownLevel.push(new FormControl(name));
-    } else {
-      let index = knownLevel.controls.findIndex(x => x.value == name)
-      knownLevel.removeAt(index);
-    }
   }
 
   addTeacherCvCert(files){
@@ -274,7 +240,7 @@ export class RegisterTeacherStep3Page {
 
     let API = this.smartieApi.getApi(
       'signupTeacher',
-      {role: 'teacher', username: this.form1Values.username.toLowerCase(), password: this.form1Values.password, email: this.form1Values.email.toLowerCase(), fullname: this.form2Values.name, phone: this.form2Values.phone, age: this.form2Values.age, nativelang: this.form2Values.native, nationality: this.form2Values.nationality, profiletitle: this.form2Values.profileTitle, profileabout: this.form2Values.profileMessage, expertlangs: form3Values.teacherLanguage, levelscapable: form3Values.teacherLevel, yrsexperience: this.yearExperience, preflocation: form3Values.prefLocation, prefpayrate: this.hourlyRate, prefcurrency: this.userCurrency, defstartdate: this.startDate, defenddate: this.endDate, defstarttime: form3Values.startTime, defendtime: form3Values.endTime, langpref: 'en'}
+      {role: 'teacher', username: this.form1Values.username.toLowerCase(), password: this.form1Values.password, email: this.form1Values.email.toLowerCase(), fullname: this.form2Values.name, phone: this.form2Values.phone, profileTitle: this.form2Values.profileTitle, profileAbout: this.form2Values.profileMessage, yrseExperience: this.yearExperience, prefLocation: form3Values.prefLocation, prefPayRate: this.hourlyRate, defaultStartDate: this.startDate, defaultEndDate: this.endDate, defaultStartTime: form3Values.startTime, defaultEndTime: form3Values.endTime}
     );
 
     return new Promise(resolve => {
@@ -283,7 +249,8 @@ export class RegisterTeacherStep3Page {
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         signupResult => {
-          localStorage.setItem("teacherUserProfile", JSON.stringify(signupResult.result));
+          // localStorage.setItem("teacherUserProfile", JSON.stringify(signupResult.result));
+          this.storage.set("UserProfile", signupResult.result);
 
           let cvPromises = [];
           // console.log(this.TeacherFiles);
@@ -300,7 +267,7 @@ export class RegisterTeacherStep3Page {
             // then setProfilePic()
             Promise.all(cvPromises).then(()=>{
               this.setProfilePic().then((pictureResolve) => {
-                this.navCtrl.push("TotlesSearch", {role: 'teacher', fromwhere: 'signUp'});
+                this.navCtrl.push("SmartieSearch", {role: 'teacher', fromwhere: 'signUp'});
                 this.loading.dismiss();
               }).catch((pictureReject) => {
                 // TODO: do something in a modal?
@@ -309,7 +276,7 @@ export class RegisterTeacherStep3Page {
             })
           }else{
             this.setProfilePic().then((pictureResolve) => {
-              this.navCtrl.push("TotlesSearch", {role: 'teacher', fromwhere: 'signUp'});
+              this.navCtrl.push("SmartieSearch", {role: 'teacher', fromwhere: 'signUp'});
               this.loading.dismiss();
             }).catch((pictureReject) => {
               // TODO: do something in the UX here!!

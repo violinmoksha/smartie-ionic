@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the RegisterSchoolStep2Page page.
@@ -30,7 +31,7 @@ export class RegisterSchoolStep2Page {
   profilePhotoSelected: boolean;
   schoolPhotoSelected: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, private storage: Storage) {
 
     this.form1Values = navParams.data.form1Value;
 
@@ -59,12 +60,14 @@ export class RegisterSchoolStep2Page {
             this.camera.getPicture(options).then((imageData) => {
               if(photoFor == 'prof'){
                 this.profileCameraData = 'data:image/jpeg;base64,' + imageData;
-                localStorage.setItem('profilePhotoDataUrl', this.profileCameraData);
+                // localStorage.setItem('profilePhotoDataUrl', this.profileCameraData);
+                this.storage.set('profilePhotoDataUrl', this.profileCameraData);
                 this.profilePhotoTaken = true;
                 this.profilePhotoSelected = false;
               }else if(photoFor == 'school'){
                 this.schoolCameraData = 'data:image/jpeg;base64,' + imageData;
-                localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraData);
+                // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraData);
+                this.storage.set('schoolPhotoDataUrl', this.profileCameraData);
                 this.schoolPhotoTaken = true;
                 this.schoolPhotoSelected = false;
               }
@@ -90,12 +93,14 @@ export class RegisterSchoolStep2Page {
              // If it's base64:
               if(photoFor == 'prof'){
                 this.profileCameraUrl = "data:image/jpeg;base64," + imageData;
-                localStorage.setItem('profilePhotoDataUrl', this.profileCameraUrl);
+                // localStorage.setItem('profilePhotoDataUrl', this.profileCameraUrl);
+                this.storage.set('profilePhotoDataUrl', this.profileCameraUrl);
                 this.profilePhotoSelected = true;
                 this.profilePhotoTaken = false;
               }else if(photoFor == 'school'){
                 this.schoolCameraUrl = "data:image/jpeg;base64," + imageData;
-                localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraUrl);
+                // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraUrl);
+                this.storage.set('schoolPhotoDataUrl', this.schoolCameraUrl);
                 this.schoolPhotoSelected = true;
                 this.schoolPhotoTaken = false;
               }

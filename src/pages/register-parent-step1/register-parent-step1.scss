@@ -1,9 +1,13 @@
-page-register-parent {
-  .cl-parent .toolbar-title{
+page-register-parent-step1 {
+  .parent .toolbar-title{
     color: #F97533 !important
   }
   .back-button{
     color: #F97533 !important
+  }
+
+  .bg-parent{
+    background-color: #F97533!important;
   }
 
   .swiper-wrapper{

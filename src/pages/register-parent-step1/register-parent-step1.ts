@@ -4,16 +4,16 @@ import { NavController, NavParams } from 'ionic-angular';
 import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 
 /**
- * Generated class for the RegisterParentPage page.
+ * Generated class for the RegisterParentStep1Page page.
  *
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
 @IonicPage()@Component({
-  selector: 'page-register-parent',
-  templateUrl: 'register-parent.html',
+  selector: 'page-register-parent-step1',
+  templateUrl: 'register-parent-step1.html',
 })
-export class RegisterParentPage {
+export class RegisterParentStep1Page {
 
   pageProfileSrc:string = './assets/img/dummy_prof_pic.png';
   private ParentStep1Form : FormGroup;
