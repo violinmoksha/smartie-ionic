@@ -77,7 +77,7 @@ export class SmartieSearch {
 
         return new Promise(resolve => {
           let API = this.smartieApi.getApi(
-            'getAllUserRequesteds',
+            'getAllRequesteds',
             this.body
           );
           interface Response {};
