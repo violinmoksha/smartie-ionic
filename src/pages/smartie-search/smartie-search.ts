@@ -160,10 +160,11 @@ export class SmartieSearch {
     // so we don't need to include the frontend
     // SDK directly in our index.html
     console.log(locationData);
+    let latLng;
     if (this.role == 'teacher') {
-      let latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
+      latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
     } else {
-      let latLng = new google.maps.LatLng(locationData.teacherProfile.latlng.latitude, locationData.teacherProfile.latlng.longitude);
+      latLng = new google.maps.LatLng(locationData.teacherProfile.latlng.latitude, locationData.teacherProfile.latlng.longitude);
     }
 
     if (this.role == 'teacher') {
