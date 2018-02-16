@@ -1,31 +1,29 @@
 <!--
-  Generated template for the RegisterTeacherPage page.
+  Generated template for the RegisterStep1Page page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-header class="{{ role }}">
   <ion-navbar>
     <button ion-button menuToggle>
-      <ion-icon name="menu">Menu</ion-icon>
+      <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title class="cl-teacher">Account Information</ion-title>
+    <ion-title class="{{ role }}">Account Information</ion-title>
   </ion-navbar>
 </ion-header>
 
-
-
-<ion-content padding>
-  <form [formGroup]="Teacherstep1Form" name="Teacherstep1Form" (ngSubmit)="next(Teacherstep1Form.value)" novalidate>
+<ion-content padding class="{{ role }}">
+  <form [formGroup]="Step1Form" name="Step1Form" (ngSubmit)="next(Step1Form.value)" novalidate>
 
     <!--<div>
       <h4>Debug</h4>
-      <pre>Form : {{Teacherstep1Form.value | json }}</pre>
-      <pre>Form Status : {{Teacherstep1Form.status }}</pre>
-      <pre>Form Password Status : {{Teacherstep1Form.get('password').status }}</pre>
-      <pre>Form confPassword Status : {{Teacherstep1Form.get('confPassword').status }}</pre>
+      <pre>Form : {{Step1Form.value | json }}</pre>
+      <pre>Form Status : {{Step1Form.status }}</pre>
+      <pre>Form Password Status : {{Step1Form.get('password').status }}</pre>
+      <pre>Form confPassword Status : {{Step1Form.get('confPassword').status }}</pre>
     </div>-->
-    <div class="list list-inset registration teacher">
+    <div class="list list-inset registration">
 
       <div class="tagline">
         <p>Let's create your account information </p>
@@ -36,7 +34,7 @@
         <ion-input placeholder="yourmail@mail.com" type="text" formControlName="email"></ion-input>
       </ion-item>
 
-      <div *ngIf="Teacherstep1Form.controls['email'].invalid && Teacherstep1Form.controls['email'].touched" class="item item-message">
+      <div *ngIf="Step1Form.controls['email'].invalid && Step1Form.controls['email'].touched" class="item item-message">
         Email is required
       </div>
 
@@ -45,7 +43,7 @@
         <ion-input placeholder="johndoe" type="text" formControlName="username"></ion-input>
       </ion-item>
 
-      <div *ngIf="Teacherstep1Form.controls['username'].invalid && Teacherstep1Form.controls['username'].touched" class="item item-message">
+      <div *ngIf="Step1Form.controls['username'].invalid && Step1Form.controls['username'].touched" class="item item-message">
         User name is required
       </div>
 
@@ -54,7 +52,7 @@
         <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
       </ion-item>
 
-      <div class="item item-message" *ngIf="Teacherstep1Form.get('password').invalid && Teacherstep1Form.get('password').touched">
+      <div class="item item-message" *ngIf="Step1Form.get('password').invalid && Step1Form.get('password').touched">
         Password is required, Password must be longer than 6 characters
       </div>
 
@@ -63,13 +61,13 @@
         <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
       </ion-item>
 
-      <div class="item item-message" *ngIf="Teacherstep1Form.get('confPassword').invalid && Teacherstep1Form.get('confPassword').touched">
+      <div class="item item-message" *ngIf="Step1Form.get('confPassword').invalid && Step1Form.get('confPassword').touched">
         Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
       </div>
 
 
     </div>
-    <button class="button button-positive" [disabled]="Teacherstep1Form.invalid" ion-button full> Next</button>
+    <button class="button button-positive" [disabled]="Step1Form.invalid" ion-button full> Next</button>
 
   </form>
 </ion-content>

@@ -15,14 +15,13 @@ export class RegisterPage {
 
   pushPage(item){
     if(item == 'teacher')
-      //Pro.getApp().monitoring.log('Trying to push RegisterTeacher.', { level: 'error' });
-      this.navCtrl.push("RegisterTeacherStep1Page");
+      this.navCtrl.push("RegisterStep1Page", { role : "teacher" });
     if(item == 'student')
-      this.navCtrl.push("RegisterStudentStep1Page");
+      this.navCtrl.push("RegisterStep1Page", { role : "student" });
     if(item == 'parent')
-      this.navCtrl.push("RegisterParentStep1Page");
+      this.navCtrl.push("RegisterStep1Page", { role : "parent" });
     if(item == 'school')
-      this.navCtrl.push("RegisterSchoolStep1Page");
+      this.navCtrl.push("RegisterStep1Page", { role : "school" });
   }
 
 }

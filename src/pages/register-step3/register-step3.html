@@ -1,0 +1,126 @@
+<!--
+  Generated template for the RegisterStep3Page page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu">Menu</ion-icon>
+    </button>
+    <ion-title>Expertise and Fees</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+   <!-- <div>
+    <h4>Debug</h4>
+    <pre>Form : {{Step3Form.value | json }}</pre>
+    <pre>Form Status : {{Step3Form.status }}</pre>
+    <pre>Form End Time Status : {{Step3Form.get('endTime').value }}</pre>
+    <pre>Form End Time Status : {{Step3Form.get('endTime').status }}</pre>
+    <pre>Form StartDate Status : {{Step3Form.get('dates.endDate').value }}</pre>
+  </div> -->
+
+  <form [formGroup]="Step3Form" name="Step3Form" (ngSubmit)="finalRegisterSubmit(Step3Form.value)" novalidate>
+
+    <div class="list list-inset registration teacher step3">
+
+      <h3>Years of Experience</h3>
+
+      <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
+        <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">
+          <p>{{ year.text }}</p>
+        </ion-slide>
+      </ion-slides>
+
+      <ion-list>
+        <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
+          {{cert.name}}
+          <a href="javascript:" (click)="deleteTeacherCert(cert)"><img src="./assets/img/delete-icon.png"></a>
+        </ion-item>
+      </ion-list>
+
+      <div class="teacher-cv">
+        <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="" />
+        <div class="button button-cv">Upload Your CV and Credentials</div>
+        <span class="input-label">Credentials verifiable via phone camera</span>
+      </div>
+
+      <div class="tagline">
+        <p>What's Your Fee?</p>
+      </div>
+      <h3>Preferred Hourly Rates</h3>
+      <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="6">
+        <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
+          <p>{{ rate.text }}</p>
+        </ion-slide>
+      </ion-slides>
+
+      <div class="tagline">
+        <p>Your Availability</p>
+      </div>
+
+      <!-- <label class="item item-input">
+        <span class="input-label">Preferred Teaching Location</span>
+        <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
+      </label> -->
+      <ion-item>
+        <ion-label fixed>Preferred Teaching Location</ion-label>
+        <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
+      </ion-item>
+
+      <div *ngIf="!Step3Form.controls['prefLocation'].valid && Step3Form.controls['prefLocation'].touched" class="item item-message">
+        Preferred Location
+      </div>
+
+      <h3>Available Timings</h3>
+
+      <div class="available-date">
+        <div class="left">
+          <ion-item (click)="startDateCalendar()">
+            <ion-input value="{{ startDate }}" type="text"></ion-input>
+          </ion-item>
+        </div>
+        <div class="to-text">
+          To
+        </div>
+        <div class="right">
+          <ion-item (click)="endDateCalendar()" >
+            <ion-input value="{{ endDate }}" type="text"></ion-input>
+          </ion-item>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+      <div class="available-time">
+        <div class="left">
+          <ion-item>
+            <ion-datetime displayFormat="HH:mm" formControlName="startTime"></ion-datetime>
+          </ion-item>
+          <div *ngIf="Step3Form.get('startTime').invalid && Step3Form.get('startTime').touched" class="item item-message">
+            Start time is required.
+          </div>
+        </div>
+        <div class="to-text">
+          To
+        </div>
+        <div class="right">
+          <ion-item>
+            <ion-datetime displayFormat="HH:mm" formControlName="endTime"></ion-datetime>
+          </ion-item>
+          <div *ngIf="Step3Form.get('endTime').invalid && Step3Form.get('endTime').touched" class="item item-message">
+            End time is required.
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+
+    <button class="button button-positive" [disabled]="!Step3Form.valid || submitInProgress" ion-button full>Submit</button>
+
+  </form>
+
+</ion-content>

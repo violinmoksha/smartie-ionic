@@ -1,0 +1,311 @@
+page-register-step1 {
+  .teacher{
+    .toolbar-title{
+      color: #00BC5B !important
+    }
+    .back-button{
+      color: #00BC5B;
+    }
+    .tagline{
+      background-color: #00BC5B;
+    }
+    .button.button-positive {
+      background-color: #00BC5B;
+      &:hover {
+        background-color: #006838;
+      }
+    }
+    .button.button-positive.activated {
+      border-color: #006838;
+      background-color: #006838;
+    }
+  }
+
+  .parent{
+    .toolbar-title{
+      color: #F97533 !important
+    }
+    .back-button{
+      color: #F97533 !important
+    }
+    .tagline{
+      background-color: #F97533;
+    }
+    .button.button-positive {
+      background-color: #F97533;
+      &:hover {
+        background-color: #F97533;
+      }
+    }
+  }
+
+  .student{
+    .toolbar-title{
+      color: #0096D7 !important
+    }
+    .back-button{
+      color: #0096D7 !important
+    }
+    .tagline{
+      background-color: #0096D7;
+    }
+    .button.button-positive {
+      background-color: #0096D7;
+      &:hover {
+        background-color: #0096D7;
+      }
+    }
+  }
+
+  .school{
+    .toolbar-title{
+      color: #F31C62 !important
+    }
+    .back-button{
+      color: #F31C62 !important
+    }
+    .tagline{
+      background-color: #F31C62;
+    }
+    .button.button-positive {
+      background-color: #F31C62;
+      &:hover {
+        background-color: #F31C62;
+      }
+    }
+  }
+
+  .tagline{
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    padding:5px 10px;
+    margin:10px -15px;
+    margin-bottom: 10px
+  }
+
+  .button.button-positive {
+    padding: 0px;
+    font-size: 18px;
+    border-radius:5px;
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    box-shadow:none;
+    border:0;
+    margin: 20px 0;
+  }
+
+
+
+  .bg-parent{
+    background-color: #F97533!important;
+  }
+
+  .swiper-wrapper{
+    width: 120px;
+    margin: auto;
+    .swiper-slide.active{
+      border-color: #F97533 !important;
+    }
+  }
+  .school-information{
+    text-align: center;
+    padding-top: 20px;
+    h2{
+      font-size: 23px;
+      color: #F97533;
+    }
+  }
+}
+
+/*Genereal Css */
+.registration .item-input {
+  border: 0 !important;
+  display: block;
+  padding: 6px 0 5px 0;
+  .input-wrapper{
+    display: block;
+    .label {
+      width: 100%;
+      display: block;
+      text-align: left;
+      color: #000;
+      float: none;
+      max-width: 100%;
+    }
+    .input {
+      width: 100%;
+      border-bottom: 1px solid #cfcfcf;
+      display: block;
+      float: none;
+      padding-right: 0;
+      margin: 0;
+      .text-input{
+        padding: 0;
+        margin: 0;
+      }
+      textarea{
+        min-height: 100px;
+        width: 100%;
+        padding-top: 10px!important;
+      }
+    }
+  }
+}
+.item-message{
+  margin-left: 0!important;
+  margin-bottom:5px!important;
+}
+
+textarea {
+  border: 0;
+  display: block;
+  padding-top: 2px;
+  padding-left: 0;
+  height: 34px;
+  color: #111;
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+input {
+  &[type="text"], &[type="password"], &[type="datetime"], &[type="datetime-local"], &[type="date"], &[type="month"], &[type="time"], &[type="week"], &[type="number"], &[type="email"], &[type="url"], &[type="search"], &[type="tel"], &[type="color"] {
+    border: 0;
+    display: block;
+    padding-top: 2px;
+    padding-left: 0;
+    height: 34px;
+    color: #111;
+    vertical-align: middle;
+    font-size: 14px;
+    line-height: 16px;
+  }
+}
+
+.checkbox input:checked {
+  &:before, + .checkbox-icon:before {
+    background: #00BC5B;
+    border-color: #00BC5B;
+  }
+}
+
+.registration {
+  .item-checkbox {
+    display: block;
+    width: 50%!important;
+    float: left;
+    border-left: 0;
+    border-right: 0;
+    display: block !important;
+  }
+  .reg-sub-title {
+    display: block;
+    text-align: center;
+  }
+  .reg-section {
+    width: 100%;
+    float: left;
+    padding: 16px 0;
+  }
+  .teacher-cv {
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin: 10px 0px;
+    /* border-color: #a2a2a2; */
+    /* background-color: #e5e5e5; */
+    span {
+      margin-top: 10px;
+      max-width: 100%;
+      padding-left: 10px;
+    }
+    .button.button-cv {
+      background: #e5e5e5;
+      border-color: #a2a2a2;
+      padding: 5px 10px;
+      color: #000;
+    }
+  }
+}
+
+/*
+.parent {
+  .parent-toggle {
+    border: 0 !important;
+    text-align: left;
+    .item-toggle {
+      padding-left: 0;
+      padding-right: 0;
+      text-align: left !important;
+      border: 0;
+      div {
+        text-align: center;
+        float: left;
+        color: #000;
+        span {
+          color: #000;
+        }
+      }
+    }
+  }
+  .card .item:last-child, .list-inset .item:last-child {
+    border: 0 !important;
+  }
+  .parent-toggle .item-toggle input {
+    border: 0;
+  }
+  .item-select select {
+    padding: 10px;
+  }
+}*/
+
+
+.profile-pic{
+  width: 100%;
+  display: block;
+  text-align: center;
+  img {
+    margin: 0 auto;
+  }
+  span {
+    color: #000;
+    margin: 0 auto;
+    padding: 10px;
+    width: 100%;
+    display: block;
+  }
+}
+
+.input-label {
+  display: table;
+  padding: 7px 10px 7px 0px;
+  max-width: 200px;
+  width: 35%;
+  color: #444;
+  font-size: 16px;
+}
+
+.bar-positive .button {
+  &.active, &.activated {
+    border-color: #006838;
+    background-color: #006838;
+  }
+}
+
+.item.item-message {
+  border: 0;
+  padding: 5px 15px;
+  color: red;
+  background-color: #fceded;
+  margin-left: 15px;
+  font-size: 13px;
+}
+
+.profile-pic{
+  width:100%;
+  margin: auto;
+  img{width:130px;}
+
+}

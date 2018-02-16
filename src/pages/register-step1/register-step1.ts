@@ -1,25 +1,33 @@
-import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
 
-@IonicPage()@Component({
-  selector: 'page-register-teacher-step1',
-  templateUrl: 'register-teacher-step1.html'
+/**
+ * Generated class for the RegisterStep1Page page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
+@IonicPage()
+@Component({
+  selector: 'page-register-step1',
+  templateUrl: 'register-step1.html',
 })
+export class RegisterStep1Page {
 
-export class RegisterTeacherStep1Page {
-  private Teacherstep1Form: FormGroup;
+  private role: any;
+  private Step1Form: FormGroup;
 
-  constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.role = navParams.data.role;
 
-    this.Teacherstep1Form = new FormGroup({
+    this.Step1Form = new FormGroup({
       email: new FormControl('', Validators.required),
       username: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
     });
-
   }
 
   equalTo(equalControlName): ValidatorFn {
@@ -37,12 +45,11 @@ export class RegisterTeacherStep1Page {
   }
 
   next(form1Value){
-    this.navCtrl.push("RegisterTeacherStep2Page", { form1Value : form1Value });
+    this.navCtrl.push("RegisterStep2Page", { form1Value : form1Value, role: this.role });
   }
 
-  //Form submit to get values
-  Teacherstep1FormSubmit(){
-    console.log(this.Teacherstep1Form.value)
+  ionViewDidLoad() {
+    // console.log('ionViewDidLoad RegisterStep1Page');
   }
 
 }
