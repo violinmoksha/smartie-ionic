@@ -31,11 +31,11 @@
   </div>
 
   <div class="jobprofile-content">
-    <h2 *ngIf="params.profileTitle">Title: {{ params.profileTitle }}</h2>
+    <h2 *ngIf="params.profileTitle">{{ params.profileTitle }}</h2>
     <h2 *ngIf="params.yrsExperience">I have {{ params.yrsExperience }} years of teaching experience.</h2>
-    <div *ngIf="params.jobDescription" class="jobprofile-details">
-      <h3>Job Description:</h3>
-      <p>{{ params.jobDescription }}</p>
+    <div *ngIf="params.profileAbout" class="jobprofile-details">
+      <h3>About:</h3>
+      <p>{{ params.profileAbout }}</p>
     </div>
     <div class="clear"></div>
     <div class="jobprofile-details">
@@ -53,13 +53,15 @@
         <button class="button button-positive" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/img/view-mail-icon.png" /> Send Mail</button>
       </div>
     </div>
-    <div class="alert-button-group">
+    <div class="alert-button-group" *ngIf="!congrats">
       <button ion-button="alert-button" class="alert-button alert-button-md alert-button-default alert-button-default-md" (click)="dismiss()"><span class="button-inner">Close</span><div class="button-effect"></div></button>
-
       <button ion-button="alert-button" [disabled]="requestSent || submitInProgress" (click)="sendRequest()" class="alert-button alert-button-md alert-button-default alert-button-default-md">
         <span class="button-inner" *ngIf="!requestSent">Send Request</span>
         <span class="button-inner" *ngIf="requestSent">Invite Sent</span>
       <div class="button-effect"></div></button>
-
+    </div>
+    <div *ngIf="congrats">
+      <button [disabled]="acceptState" ion-button full (click)="accept()"><span class="button-inner" *ngIf="acceptState">Accepted</span><span class="button-inner" *ngIf="!acceptState">Accept</span></button>
+      <button [disabled]="acceptState" ion-button full (click)="reject()" style="background-color:red"><span class="button-inner">Reject</span></button>
     </div>
 </ion-content>

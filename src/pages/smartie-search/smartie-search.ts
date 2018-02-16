@@ -99,8 +99,9 @@ export class SmartieSearch {
                             profilePhoto: requestSentJob.otherProfile.profilePhoto,
                             fullname: requestSentJob.otherProfile.fullname,
                             role: requestSentJob.otherProfile.role,
-                            jobDescription: requestSentJob.jobDescription,
-                            prefLocation: requestSentJob.prefLocation,
+                            profileTitle: requestSentJob.otherProfile.profileTitle,
+                            profileAbout: requestSentJob.otherProfile.profileAbout,
+                            prefLocation: requestSentJob.otherProfile.prefLocation,
                             teacherProfileId: requestSentJob.teacherProfile.objectId,
                             otherProfileId: requestSentJob.otherProfile.objectId,
                             fromWhere: "requestSentJobs"
@@ -115,8 +116,9 @@ export class SmartieSearch {
                             role: requestSentJob.teacherProfile.role,
                             prefPayRate: requestSentJob.teacherProfile.prefPayRate,
                             yrsExperience: requestSentJob.teacher.yrsExperience,
-                            jobDescription: requestSentJob.jobDescription,
-                            prefLocation: requestSentJob.prefLocation,
+                            profileTitle: requestSentJob.teacherProfile.profileTitle,
+                            profileAbout: requestSentJob.teacherProfile.profileAbout,
+                            prefLocation: requestSentJob.teacherProfile.prefLocation,
                             defaultStartDate: requestSentJob.teacher.defaultStartDate,
                             defaultEndDate: requestSentJob.teacher.defaultEndDate,
                             defaultStartTime: requestSentJob.teacher.defaultStartTime,
@@ -158,7 +160,11 @@ export class SmartieSearch {
     // so we don't need to include the frontend
     // SDK directly in our index.html
     console.log(locationData);
-    let latLng = new google.maps.LatLng(locationData.latlng.latitude, locationData.latlng.longitude);
+    if (this.role == 'teacher') {
+      let latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
+    } else {
+      let latLng = new google.maps.LatLng(locationData.teacherProfile.latlng.latitude, locationData.teacherProfile.latlng.longitude);
+    }
 
     if (this.role == 'teacher') {
       if(locationData.otherProfile.role == 'teacher'){

@@ -18,16 +18,23 @@ export class JobRequestPage {
 
   private params: any;
   private requestSent: boolean;
+  private acceptState: boolean;
   private body: any;
   private submitInProgress: boolean;
   private loading: any;
   private userRole: any;
+  private congrats: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, private loadingCtrl: LoadingController) {
     this.params = navParams.data.params;
+    if (this.params.fromWhere && this.params.fromWhere == 'requestSentJobs') {
+      this.congrats = true;
+    } else {
+      this.congrats = false;
+    }
     this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
-      content: 'Sending...'
+      content: 'Loading...'
     });
   }
 
@@ -113,4 +120,35 @@ export class JobRequestPage {
     this.navCtrl.push("ViewProfile", this.params);
   }
 
+  accept(){
+    this.loading.present();
+    this.storage.get("UserProfile").then(roleProfile => {
+      if(this.userRole === 'teacher'){
+        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.params.otherProfileId, requestSent: true, acceptState: true };
+      }else{
+        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId, requestSent: true, acceptState: true };
+      }
+
+      let API = this.smartieApi.getApi(
+        'setJobRequest',
+        this.body
+      );
+      return new Promise(resolve => {
+        interface Response {
+          result: any
+        };
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+          this.acceptState = true;
+          this.viewCtrl.dismiss();
+          this.loading.dismiss();
+          this.submitInProgress = false;
+        });
+      })
+
+    });
+  }
+
+  reject(){
+
+  }
 }
