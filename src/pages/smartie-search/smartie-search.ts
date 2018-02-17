@@ -39,13 +39,47 @@ export class SmartieSearch {
   public searchLogo = '/assets/imgs/smartie-horzontal-logo.png';
 
   public notifications: any;
+  public accepteds: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI) {
     this.role = navParams.data.role;
     this.fromWhere = navParams.data.fromWhere;
     if (navParams.data.notifications !== undefined) {
       this.notifications = navParams.data.notifications;
+      this.notifications.map((notification, ix) => {
+        if (notification.acceptState == true) {
+          this.accepteds.push(notification);
+          this.notifications.splice(ix, 1);
+        }
+      });
       this.notifyCount = this.notifications.length;
+      if (this.role !== 'teacher') {
+        // accepted for Others --> Scheduling flow
+        let acceptedScheduleModals = [];
+        for (let acceptedJob of this.accepteds) {
+          acceptedScheduleModals.push(this.modalCtrl.create("SchedulePage", acceptedJob));
+        }
+        acceptedScheduleModals.forEach((acceptedScheduleModal, ix) => {
+          if (ix == 0) acceptedScheduleModal.present();
+          acceptedScheduleModal.onDidDismiss(data => {
+            if (acceptedScheduleModals[ix+1] !== undefined)
+              acceptedScheduleModals[ix+1].present();
+          });
+        });
+      } else {
+        // accepted for Teacher --> Upcoming Appt Reminder
+        let upcomingApptModals = [];
+        for (let acceptedJob of this.accepteds) {
+          upcomingApptModals.push(this.modalCtrl.create("SchedulePage", acceptedJob));
+        }
+        upcomingApptModals.forEach((upcomingApptModal, ix) => {
+          if (ix == 0) upcomingApptModal.present();
+          upcomingApptModal.onDidDismiss(data => {
+            if (upcomingApptModals[ix+1] !== undefined)
+              upcomingApptModals[ix+1].present();
+          });
+        });
+      }
     } else {
       localStorage.clear(); // dump ephemeral session
       this.navCtrl.setRoot("LoginPage"); // send to Login
