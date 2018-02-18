@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 
 /**
@@ -17,10 +18,13 @@ import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calend
 export class SchedulePage {
 
   private params: any;
+  private userRole: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
     this.params = this.navParams.data.params;
-
+    this.storage.get('UserProfile').then(UserProfile => {
+      this.userRole = UserProfile.profileData.role;
+    })
   }
 
   ionViewDidLoad() {
@@ -28,6 +32,6 @@ export class SchedulePage {
   }
 
   selectSchedule() {
-
+    // TODO: launch datepicker, blocked according to deafaultStartEndDateTimes
   }
 }

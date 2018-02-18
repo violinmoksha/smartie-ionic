@@ -11,6 +11,8 @@
 </ion-header>
 
 <ion-content padding>
+  <h4 style="color:red" *ngIf="userRole !== 'teacher'">{{ params.fullname }} Has ACCEPTED! Now book your session according to your teacher's availability!</h4>
+  <h4 style="color:red" *ngIf="userRole == 'teacher'">{{ params.fullname }} Has ACCEPTED! Now book your session according to your {{ params.role }}'s availability!</h4>
   <div class="left">
     <div class="avatar"><img src="{{ params.profilePhoto }}"></div>
     <div class="u-detail">
@@ -29,13 +31,12 @@
       <h3>Preferred Location</h3>
       <p>{{ params.prefLocation }}</p>
       <div class="clear"></div>
-      </div>
-      <div *ngIf="params.defaultStartTime" class="job-availablity-details">
-        <h3>Available Timings</h3>
-        <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
-      </div>
     </div>
-    <h4>Select your tuition schedule based on availability</h4>
+    <div *ngIf="params.defaultStartTime" class="job-availablity-details">
+      <h3>Available Timings</h3>
+      <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
+    </div>
+    <p>Select your schedule based on availability</p>
     <button ion-button full (click)="selectSchedule()">Select Schedule</button>
   </div>
 </ion-content>

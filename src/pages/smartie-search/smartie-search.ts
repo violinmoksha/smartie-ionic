@@ -43,6 +43,7 @@ export class SmartieSearch {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI) {
     this.role = navParams.data.role;
+    this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
     if (navParams.data.notifications !== undefined) {
       this.notifications = navParams.data.notifications;
