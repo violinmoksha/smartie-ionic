@@ -1,0 +1,41 @@
+<!--
+  Generated template for the SchedulePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Schedule</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="left">
+    <div class="avatar"><img src="{{ params.profilePhoto }}"></div>
+    <div class="u-detail">
+      <div class="name">{{ params.fullname }}</div>
+      <div class="profile-type">{{ params.role }}</div>
+    </div>
+  </div>
+  <div class="right" *ngIf="params.prefPayRate">
+    <div class="price">{{ params.prefPayRate }}</div>
+    <div class="hour-rate">Per Hour</div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="jobprofile-content">
+    <div class="jobprofile-details">
+      <h3>Preferred Location</h3>
+      <p>{{ params.prefLocation }}</p>
+      <div class="clear"></div>
+      </div>
+      <div *ngIf="params.defaultStartTime" class="job-availablity-details">
+        <h3>Available Timings</h3>
+        <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
+      </div>
+    </div>
+    <h4>Select your tuition schedule based on availability</h4>
+    <button ion-button full (click)="selectSchedule()">Select Schedule</button>
+  </div>
+</ion-content>

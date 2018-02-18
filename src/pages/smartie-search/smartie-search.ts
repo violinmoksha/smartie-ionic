@@ -57,7 +57,17 @@ export class SmartieSearch {
         // accepted for Others --> Scheduling flow
         let acceptedScheduleModals = [];
         for (let acceptedJob of this.accepteds) {
-          acceptedScheduleModals.push(this.modalCtrl.create("SchedulePage", acceptedJob));
+          acceptedScheduleModals.push(this.modalCtrl.create("SchedulePage", { params: {
+            profilePhoto: acceptedJob.teacherProfile.profilePhoto,
+            fullname: acceptedJob.teacherProfile.fullname,
+            role: acceptedJob.teacherProfile.role,
+            prefPayRate: acceptedJob.teacherProfile.prefPayRate,
+            prefLocation: acceptedJob.teacherProfile.prefLocation,
+            defaultStartDate: acceptedJob.teacher.defaultStartDate,
+            defaultEndDate: acceptedJob.teacher.defaultEndDate,
+            defaultStartTime: acceptedJob.teacher.defaultStartTime,
+            defaultEndTime: acceptedJob.teacher.defaultEndTime
+          }}));
         }
         acceptedScheduleModals.forEach((acceptedScheduleModal, ix) => {
           if (ix == 0) acceptedScheduleModal.present();
