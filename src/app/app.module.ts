@@ -1,9 +1,9 @@
 // TODO: uncomment in prod with appropriate modification
-//import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from '../providers/err';
+import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from '../providers/err';
 
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { NgModule } from '@angular/core';
+import { IonicApp, IonicModule } from 'ionic-angular';
 
 import { SmartieApp } from './app.component';
 
@@ -42,7 +42,8 @@ import { Globalization } from '@ionic-native/globalization';
     ParseProvider,
     SmartieAPI,
     Globalization,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    IonicErrorHandler,
+    {provide: ErrorHandler, useClass: SmartieErrorHandler}
   ]
 })
 export class AppModule {}
