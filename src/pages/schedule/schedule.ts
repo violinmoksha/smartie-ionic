@@ -21,15 +21,6 @@ export class SchedulePage {
   private userRole: string;
   private startDate: string;
   private endDate: string;
-  private selectedDate: string;
-  private startTime: string;
-  private endTime: string;
-
-  public event = {
-    month: '1990-02-19',
-    timeStarts: '00:00',
-    timeEnds: '23:59'
-  }
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public modalCtrl: ModalController) {
     this.params = this.navParams.data.params;
@@ -61,13 +52,9 @@ export class SchedulePage {
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if(date){
-        this.selectedDate = date.months + '-' + date.date + '-' + date.years;
-        console.log(this.selectedDate);
+        let modal = this.modalCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years });
+        modal.present();
       }
     })
-  }
-
-  selectSchedule() {
-    // TODO: launch datepicker, blocked according to deafaultStartEndDateTimes
   }
 }

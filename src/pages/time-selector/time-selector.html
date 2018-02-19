@@ -1,0 +1,24 @@
+<!--
+  Generated template for the TimeSelectorPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>time-selector</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item *ngIf="selectedDate">
+    <ion-label>{{ selectedDate }} from:</ion-label>
+    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
+  </ion-item>
+  <ion-item *ngIf="selectedDate">
+    <ion-label>{{ selectedDate }} to:</ion-label>
+    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeEnds"></ion-datetime>
+  </ion-item>
+  <!-- TODO: add S45 buttons here -->
+  <button ion-button full (click)="goPay()">OK, Pay</button>
+</ion-content>
