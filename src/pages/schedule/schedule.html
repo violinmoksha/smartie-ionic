@@ -37,6 +37,14 @@
       <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
     </div>
     <p>Select your schedule based on availability</p>
-    <button ion-button full (click)="selectSchedule()">Select Schedule</button>
+    <button ion-button full (click)="pickDateCalendar()">Select Schedule</button>
+    <ion-item *ngIf="selectedDate">
+      <ion-label>{{ selectedDate }} from:</ion-label>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
+    </ion-item>
+    <ion-item *ngIf="selectedDate">
+      <ion-label>{{ selectedDate }} to:</ion-label>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeEnds"></ion-datetime>
+    </ion-item>
   </div>
 </ion-content>

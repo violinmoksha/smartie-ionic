@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 
@@ -19,8 +19,19 @@ export class SchedulePage {
 
   private params: any;
   private userRole: string;
+  private startDate: string;
+  private endDate: string;
+  private selectedDate: string;
+  private startTime: string;
+  private endTime: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
+  public event = {
+    month: '1990-02-19',
+    timeStarts: '00:00',
+    timeEnds: '23:59'
+  }
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public modalCtrl: ModalController) {
     this.params = this.navParams.data.params;
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
@@ -29,6 +40,31 @@ export class SchedulePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SchedulePage');
+  }
+
+  pickDateCalendar() {
+    let endDateComponents = this.params.defaultEndDate.split('-');
+    let defaultEndMonth = endDateComponents[0];
+    let defaultEndDate = endDateComponents[1];
+    let defaultEndYear = endDateComponents[2];
+
+    const options: CalendarModalOptions = {
+      pickMode: 'single',
+      from: new Date(),
+      to: new Date(defaultEndYear, defaultEndMonth-1, defaultEndDate)
+    };
+    let myCalendar =  this.modalCtrl.create(CalendarModal, {
+      options: options
+    });
+
+    myCalendar.present();
+
+    myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
+      if(date){
+        this.selectedDate = date.months + '-' + date.date + '-' + date.years;
+        console.log(this.selectedDate);
+      }
+    })
   }
 
   selectSchedule() {
