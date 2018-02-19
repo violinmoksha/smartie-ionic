@@ -62,21 +62,30 @@ export class LoginPage {
             });
           });
         },
-        err => {
-          this.loginFailed();
+        (err) => {
+          this.loginFailed(err);
         });
       });
     }else{
-      this.loginFailed();
+      this.loginFailed(null);
     }
   }
 
-  loginFailed(){
-    let alert = this.alertCtrl.create({
-      title: 'Login Failed !',
-      subTitle: 'Please use your credentials !',
-      buttons: ['OK']
-    });
+  loginFailed(err){
+    let alert;
+    if (err) {
+      alert = this.alertCtrl.create({
+        title: 'Login Failed !',
+        subTitle: JSON.stringify(err),
+        buttons: ['OK']
+      });
+    } else {
+      alert = this.alertCtrl.create({
+        title: 'Login Failed !',
+        subTitle: 'Please use your credentials !',
+        buttons: ['OK']
+      });
+    }
     alert.present();
   }
 
