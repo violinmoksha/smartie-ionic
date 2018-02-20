@@ -1,6 +1,6 @@
 {
   "name": "smartie-ionic",
-  "app_id": "",
+  "app_id": "51a6d7d8",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
