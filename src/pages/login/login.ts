@@ -4,6 +4,7 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
+import { Pro } from '@ionic/pro';
 
 /**
  * Generated class for the LoginPage page.
@@ -63,7 +64,7 @@ export class LoginPage {
           });
         },
         (err) => {
-          console.error(err);
+          Pro.monitoring.exception(err);
           this.loginFailed(err);
         });
       });
