@@ -43,7 +43,7 @@ import { Globalization } from '@ionic-native/globalization';
     SmartieAPI,
     Globalization,
     IonicErrorHandler,
-    {provide: ErrorHandler, useClass: SmartieErrorHandler}
+    [{provide: ErrorHandler, useClass: SmartieErrorHandler}]
   ]
 })
 export class AppModule {}
