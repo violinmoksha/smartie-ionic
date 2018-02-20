@@ -1,4 +1,4 @@
-import { IonicPage, Platform } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -21,19 +21,7 @@ export class LoginPage {
 
   private LoginForm: FormGroup;
 
-  constructor(public plt: Platform, public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI) {
-
-    this.plt.ready().then((readySource) => {
-      let alert;
-      // console.log('Platform ready from', readySource);
-      alert = this.alertCtrl.create({
-        title: 'Platform ready from !',
-        subTitle: readySource,
-        buttons: ['OK']
-      });
-      alert.present();
-      // Platform now ready, execute any required native code
-    });
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI) {
 
     this.LoginForm = new FormGroup({
       username: new FormControl(''),
