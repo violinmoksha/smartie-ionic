@@ -1,6 +1,6 @@
 export class Constants {
   public static API_ENDPOINTS = {
-    env: 'prod',
+    env: 'test',
     baseUrls: {
       prod: 'https://smartieapp.com',
       test: 'https://test.t0tl3s.com',
