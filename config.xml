@@ -90,4 +90,10 @@
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <plugin name="cordova-plugin-globalization" spec="^1.0.9" />
     <plugin name="cordova-custom-config" spec="^5.0.2" />
+    <plugin name="cordova-plugin-ionic" spec="^3.1.3">
+        <variable name="APP_ID" value="51a6d7d8" />
+        <variable name="CHANNEL_NAME" value="Master" />
+        <variable name="UPDATE_METHOD" value="auto" />
+        <variable name="MAX_STORE" value="2" />
+    </plugin>
 </widget>
