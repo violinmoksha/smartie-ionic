@@ -63,6 +63,7 @@ export class LoginPage {
           });
         },
         (err) => {
+          console.error(err);
           this.loginFailed(err);
         });
       });
