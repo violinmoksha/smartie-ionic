@@ -88,4 +88,6 @@
         <variable name="CHANNEL_NAME" value="Production" />
         <variable name="UPDATE_METHOD" value="auto" />
     </plugin>
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
+    <engine name="android" spec="~7.0.0" />
 </widget>
