@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ActionSheetController, Slides } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { Globalization } from '@ionic-native/globalization';
@@ -33,28 +33,39 @@ export class RegisterStep2Page {
   private schoolCameraUrl: string;
   private photoSelected: boolean;
   private schoolPhotoSelected: boolean;
+  private partOfSchool: any;
+  @ViewChild(Slides) studentSchool: Slides;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private globalization: Globalization, private smartieApi: SmartieAPI, private storage: Storage) {
     this.form1Values = navParams.data.form1Value;
     this.role = navParams.data.role;
     this.profilePicSrc = './assets/img/user-img-'+this.role+'.png';
+    this.partOfSchool = false;
 
     if(this.role == 'school'){
       this.Step2Form = new FormGroup({
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
-        profileMessage: new FormControl('', Validators.required),
+        profileAbout: new FormControl('', Validators.required),
         schoolName: new FormControl('', Validators.required),
         contactName: new FormControl('', Validators.required),
         contactPosition: new FormControl('', Validators.required)
+      })
+    }else if(this.role == 'student' || this.role == 'parent'){
+      this.Step2Form = new FormGroup({
+        name: new FormControl('', Validators.required),
+        phone: new FormControl('', Validators.required),
+        profileTitle: new FormControl('', Validators.required),
+        profileAbout: new FormControl('', Validators.required),
+        associateSchoolName: new FormControl('')
       })
     }else{
       this.Step2Form = new FormGroup({
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
-        profileMessage: new FormControl('', Validators.required)
+        profileAbout: new FormControl('', Validators.required)
       })
     }
 
@@ -78,6 +89,16 @@ export class RegisterStep2Page {
       });
     } else {
     }
+  }
+
+  public filterpartOfSchool(result: string): void {
+    // Handle what to do when a category is selected
+    if(result){
+      this.Step2Form.get('associateSchoolName').setValidators([Validators.required]);
+    }else{
+      this.Step2Form.get('associateSchoolName').setValidators([]);
+    }
+    this.partOfSchool = result;
   }
 
   chooseUploadType(inputEvent, photoFor){
@@ -161,6 +182,10 @@ export class RegisterStep2Page {
   }
 
   next(form2Values){
+    if(this.role == 'student' || this.role == 'parent'){
+      form2Values.partOfSchool = this.partOfSchool;
+    }
+    console.log(form2Values);
     this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
   }
 

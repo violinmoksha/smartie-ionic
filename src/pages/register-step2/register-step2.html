@@ -116,15 +116,39 @@
       <!-- Profile Message -->
       <!-- <label class="item item-input">
         <span class="input-label">Profile Message</span>
-        <ion-textarea formControlName="profileMessage" placeholder="Although I am certified in TOEFL I also have a passion for teaching Korean. Please book a session with me, you'll be amazed at the quick learning results!"></ion-textarea>
+        <ion-textarea formControlName="profileAbout" placeholder="Although I am certified in TOEFL I also have a passion for teaching Korean. Please book a session with me, you'll be amazed at the quick learning results!"></ion-textarea>
       </label> -->
       <ion-item>
         <ion-label fixed>Profile Message</ion-label>
-        <ion-textarea formControlName="profileMessage" placeholder="Although I am certified in TOEFL I also have a passion for teaching Korean. Please book a session with me, you'll be amazed at the quick learning results!"></ion-textarea>
+        <ion-textarea formControlName="profileAbout" placeholder="Although I am certified in TOEFL I also have a passion for teaching Korean. Please book a session with me, you'll be amazed at the quick learning results!"></ion-textarea>
       </ion-item>
 
-      <div *ngIf="!Step2Form.controls['profileMessage'].valid && Step2Form.controls['profileMessage'].touched" class="item item-message">
+      <div *ngIf="!Step2Form.controls['profileAbout'].valid && Step2Form.controls['profileAbout'].touched" class="item item-message">
         Profile Message is required
+      </div>
+
+      <div *ngIf="role == 'student' || role =='parent'">
+        <h3>Are you part of a school</h3>
+        <ion-slides id="student-school" slidesPerView="2">
+          <ion-slide (click)="filterpartOfSchool(true)" [ngClass]="{'active': partOfSchool == true}">
+            <p>Yes</p>
+          </ion-slide>
+          <ion-slide (click)="filterpartOfSchool(false)" [ngClass]="{'active': partOfSchool == false}">
+            <p>No</p>
+          </ion-slide>
+        </ion-slides>
+
+        <div *ngIf="partOfSchool == true" class="school-information">
+          <h2>School Information</h2>
+          <ion-item>
+            <ion-label fixed>School Name</ion-label>
+            <ion-input placeholder="eg: St. John High School" type="text" formControlName="associateSchoolName"></ion-input>
+          </ion-item>
+
+          <div *ngIf="!Step2Form.controls['associateSchoolName'].valid && Step2Form.controls['associateSchoolName'].touched" class="item item-message">
+            School Name is required
+          </div>
+        </div>
       </div>
 
     </div>

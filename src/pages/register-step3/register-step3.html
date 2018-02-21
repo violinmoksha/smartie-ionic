@@ -28,25 +28,28 @@
 
     <div class="list list-inset registration teacher step3">
 
-      <h3>Years of Experience</h3>
+      <div *ngIf="role == 'teacher'">
+        <h3>Years of Experience</h3>
 
-      <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
-        <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">
-          <p>{{ year.text }}</p>
-        </ion-slide>
-      </ion-slides>
+        <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
+          <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">
+            <p>{{ year.text }}</p>
+          </ion-slide>
+        </ion-slides>
 
-      <ion-list>
-        <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
-          {{cert.name}}
-          <a href="javascript:" (click)="deleteTeacherCert(cert)"><img src="./assets/img/delete-icon.png"></a>
-        </ion-item>
-      </ion-list>
+        <ion-list>
+          <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
+            {{cert.name}}
+            <a href="javascript:" (click)="deleteTeacherCert(cert)"><img src="./assets/img/delete-icon.png"></a>
+          </ion-item>
+        </ion-list>
 
-      <div class="teacher-cv">
-        <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="" />
-        <div class="button button-cv">Upload Your CV and Credentials</div>
-        <span class="input-label">Credentials verifiable via phone camera</span>
+        <div class="teacher-cv">
+          <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="" />
+          <div class="button button-cv">Upload Your CV and Credentials</div>
+          <span class="input-label">Credentials verifiable via phone camera</span>
+        </div>
+
       </div>
 
       <div class="tagline">
@@ -78,7 +81,9 @@
 
       <h3>Available Timings</h3>
 
-      <div class="available-date">
+      <h3 *ngIf="role == 'teacher'">Available Timings</h3>
+
+      <div *ngIf="role == 'teacher'" class="available-date">
         <div class="left">
           <ion-item (click)="startDateCalendar()">
             <ion-input value="{{ startDate }}" type="text"></ion-input>
@@ -95,7 +100,7 @@
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
-      <div class="available-time">
+      <div *ngIf="role == 'teacher'" class="available-time">
         <div class="left">
           <ion-item>
             <ion-datetime displayFormat="HH:mm" formControlName="startTime"></ion-datetime>
@@ -119,7 +124,7 @@
       </div>
     </div>
 
-    <button class="button button-positive" [disabled]="!Step3Form.valid || submitInProgress" ion-button full>Submit</button>
+    <button class="button button-positive" [disabled]="!Step3Form.valid" ion-button full>Submit</button>
 
   </form>
 
