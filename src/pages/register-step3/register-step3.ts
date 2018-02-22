@@ -192,12 +192,14 @@ export class RegisterStep3Page {
       TeacherCVsView.push(file);
       this.getBase64(file).then((obj) => {
         // Call Parse Login function with those variables
-        /*Parse.User.logIn('alphateacher9', 'alphateacher1', {
+        Parse.User.logIn('alphateacher9', 'alphateacher1', {
           // If the username and password matches
           success: function(user) {
           var parseCvFile = new Parse.File(obj['name'], {base64: obj['data']});
           console.log(parseCvFile);
-            parseCvFile.save({useMasterKey:true}).then(function(cvFile){
+            parseCvFile.save().then(function(cvFile){
+              console.log('Test');
+              console.log(cvFile);
               TeacherCVs.push(cvFile);
             });
           },
@@ -205,7 +207,7 @@ export class RegisterStep3Page {
           error: function(user, error) {
             console.log(error);
           }
-        });*/
+        });
       });
     }
     this.TeacherFiles = TeacherCVs;
@@ -270,6 +272,17 @@ export class RegisterStep3Page {
           this.storage.set("UserProfile", signupResult.result);
           // this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId});
           this.loading.dismiss();
+
+          Parse.User.logIn(signupResult.result.userData.username, this.form1Values.password, {
+            // If the username and password matches
+            success: function(user) {
+              console.log(user);
+            },
+            // If there is an error
+            error: function(user, error) {
+              console.log(error);
+            }
+          });
 
           let cvPromises = [];
           // console.log(this.TeacherFiles);

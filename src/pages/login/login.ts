@@ -41,12 +41,12 @@ export class LoginPage {
           result: any
         }
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data => {
-          let alert = this.alertCtrl.create({
+          /*let alert = this.alertCtrl.create({
             title: 'Login Completed !',
             subTitle: 'Kickass!',
             buttons: ['OK']
           });
-          alert.present();
+          alert.present();*/
           this.storage.set('UserProfile', data.result).then(UserProfile => {
             // TODO server-side fetchNotifications endpoint
             // to return: all notifications including jobRequests
