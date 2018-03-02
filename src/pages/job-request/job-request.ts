@@ -149,6 +149,32 @@ export class JobRequestPage {
   }
 
   reject(){
+    // TODO: this should actually reject by setting
+    // requestSent = false & acceptState=false
+    this.loading.present();
+    this.storage.get("UserProfile").then(roleProfile => {
+      if(this.userRole === 'teacher'){
+        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.params.otherProfileId, requestSent: false, acceptState: false };
+      }else{
+        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId, requestSent: true, acceptState: true };
+      }
 
+      let API = this.smartieApi.getApi(
+        'setJobRequest',
+        this.body
+      );
+      return new Promise(resolve => {
+        interface Response {
+          result: any
+        };
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+          this.acceptState = true;
+          this.viewCtrl.dismiss();
+          this.loading.dismiss();
+          this.submitInProgress = false;
+        });
+      })
+
+    });
   }
 }

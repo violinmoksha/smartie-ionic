@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "187672812179",
+    "firebase_url": "https://smartie-196804.firebaseio.com",
+    "project_id": "smartie-196804",
+    "storage_bucket": "smartie-196804.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187672812179:android:71ac7e3227068570",
+        "android_client_info": {
+          "package_name": "io.ionic.smartie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "187672812179-ngg54l2rjurcr0sck31o9nai8p2uhn7r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoMKtPmRQ4tSzus6r3L3m-txFogUahK2M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

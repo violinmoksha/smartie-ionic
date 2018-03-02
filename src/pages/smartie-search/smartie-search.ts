@@ -102,7 +102,6 @@ export class SmartieSearch {
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
     this.events.publish("buttonsLoad", this.role);
-
   }
 
   ionViewDidLoad(){
@@ -132,7 +131,7 @@ export class SmartieSearch {
               //console.log(response);
               let alert = this.alertCtrl.create({
                 title: 'Wow, check it out!',
-                subTitle: `${response.result.length} of your notifications are new job request(s)! We'll show them to you one after another so you can decide whether to accept or reject!`,
+                subTitle: `${response.result.length} of your notifications are new job request(s)! We'll show them to you so you can accept or reject!`,
                 buttons: [
                   {
                     text: 'OK',
