@@ -9,6 +9,7 @@ import { SmartieApp } from './app.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Push } from '@ionic-native/push';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
@@ -41,6 +42,7 @@ import { Globalization } from '@ionic-native/globalization';
     Camera,
     ParseProvider,
     SmartieAPI,
+    Push,
     Globalization,
     IonicErrorHandler,
     [{provide: ErrorHandler, useClass: SmartieErrorHandler}]
