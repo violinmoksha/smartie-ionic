@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
+import { SmartieAPI } from '../providers/api/smartie';
 
 @Component({
   templateUrl: 'app.html'
@@ -15,7 +16,7 @@ export class SmartieApp {
 
   buttons: Array<{iconName: string, text: string}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, private push: Push, private alertCtrl: AlertController) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, private push: Push, private alertCtrl: AlertController, public smartieApi: SmartieAPI) {
     this.initializeApp();
 
     this.storage.get('sessionToken').then(val => {
@@ -80,6 +81,18 @@ export class SmartieApp {
     pushObject.on('registration').subscribe((data: any) => {
       console.log('device token -> ' + data.registrationId);
       //TODO - send device token to server
+      return new Promise(resolve => {
+        let API = this.smartieApi.getApi(
+          'sendAndroidPush',
+          { deviceId: data.registrationId }
+        );
+        interface Response {};
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+          console.log(JSON.stringify(response));
+        }, err => {
+          console.log(err);
+        })
+      })
     });
 
     pushObject.on('notification').subscribe((data: any) => {
