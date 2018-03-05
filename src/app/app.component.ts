@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { SmartieAPI } from '../providers/api/smartie';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @Component({
   templateUrl: 'app.html'
@@ -16,7 +17,7 @@ export class SmartieApp {
 
   buttons: Array<{iconName: string, text: string}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, private push: Push, private alertCtrl: AlertController, public smartieApi: SmartieAPI) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, private push: Push, private alertCtrl: AlertController, public smartieApi: SmartieAPI, private geolocation: Geolocation) {
     this.initializeApp();
 
     this.storage.get('sessionToken').then(val => {
@@ -60,7 +61,17 @@ export class SmartieApp {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
         this.initPushNotifications();
+        this.initGeolocation();
       }
+    });
+  }
+
+  initGeolocation() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      let phoneLatLng = { latitude: resp.coords.latitude, longitude: resp.coords.longitude };
+      this.storage.set('phoneLatLng', phoneLatLng);
+    }).catch((error) => {
+      console.log('Error getting phone location', error);
     });
   }
 

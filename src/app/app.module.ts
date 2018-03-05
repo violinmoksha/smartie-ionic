@@ -18,7 +18,7 @@ import { CalendarModule } from "ion2-calendar";
 import { Stripe } from '@ionic-native/stripe';
 import { ParseProvider } from '../providers/parse';
 import { SmartieAPI } from '../providers/api/smartie';
-import { Globalization } from '@ionic-native/globalization';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @NgModule({
   declarations: [
@@ -43,7 +43,7 @@ import { Globalization } from '@ionic-native/globalization';
     ParseProvider,
     SmartieAPI,
     Push,
-    Globalization,
+    Geolocation,
     IonicErrorHandler,
     [{provide: ErrorHandler, useClass: SmartieErrorHandler}]
   ]

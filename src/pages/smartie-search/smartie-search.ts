@@ -109,88 +109,93 @@ export class SmartieSearch {
       if (profile == null) {
         this.navCtrl.setRoot("LoginPage");
       } else {
-        this.latLngUser = profile.profileData.latlng;
-        this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
+        this.storage.get('phoneLatLng').then(phoneLatLng => {
+          if (phoneLatLng !== undefined) {
+            this.smartieSearchResult(phoneLatLng, profile.profileData.role, null);
+          } else {
+            this.latLngUser = profile.profileData.latlng;
+            this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
+          }
 
-        //get all requested's
-        this.body = {
-          profileId: profile.profileData.objectId,
-          role: profile.profileData.role
-        };
-
-        return new Promise(resolve => {
-          let API = this.smartieApi.getApi(
-            'getAllRequesteds',
-            this.body
-          );
-          interface Response {
-            result: any;
+          //get all requested's
+          this.body = {
+            profileId: profile.profileData.objectId,
+            role: profile.profileData.role
           };
-          this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-            if(response.result.length > 0){
-              //console.log(response);
-              let alert = this.alertCtrl.create({
-                title: 'Wow, check it out!',
-                subTitle: `${response.result.length} of your notifications are new job request(s)! We'll show them to you so you can accept or reject!`,
-                buttons: [
-                  {
-                    text: 'OK',
-                    handler: data => {
-                      let requestSentJobModals = [];
-                      if (this.role == 'teacher') {
-                        for (let requestSentJob of response.result) {
-                          requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
-                            profilePhoto: requestSentJob.otherProfile.profilePhoto,
-                            fullname: requestSentJob.otherProfile.fullname,
-                            role: requestSentJob.otherProfile.role,
-                            profileTitle: requestSentJob.otherProfile.profileTitle,
-                            profileAbout: requestSentJob.otherProfile.profileAbout,
-                            prefLocation: requestSentJob.otherProfile.prefLocation,
-                            teacherProfileId: requestSentJob.teacherProfile.objectId,
-                            otherProfileId: requestSentJob.otherProfile.objectId,
-                            fromWhere: "requestSentJobs"
-                          }}));
+
+          return new Promise(resolve => {
+            let API = this.smartieApi.getApi(
+              'getAllRequesteds',
+              this.body
+            );
+            interface Response {
+              result: any;
+            };
+            this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+              if(response.result.length > 0){
+                //console.log(response);
+                let alert = this.alertCtrl.create({
+                  title: 'Wow, check it out!',
+                  subTitle: `${response.result.length} of your notifications are new job request(s)! We'll show them to you so you can accept or reject!`,
+                  buttons: [
+                    {
+                      text: 'OK',
+                      handler: data => {
+                        let requestSentJobModals = [];
+                        if (this.role == 'teacher') {
+                          for (let requestSentJob of response.result) {
+                            requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
+                              profilePhoto: requestSentJob.otherProfile.profilePhoto,
+                              fullname: requestSentJob.otherProfile.fullname,
+                              role: requestSentJob.otherProfile.role,
+                              profileTitle: requestSentJob.otherProfile.profileTitle,
+                              profileAbout: requestSentJob.otherProfile.profileAbout,
+                              prefLocation: requestSentJob.otherProfile.prefLocation,
+                              teacherProfileId: requestSentJob.teacherProfile.objectId,
+                              otherProfileId: requestSentJob.otherProfile.objectId,
+                              fromWhere: "requestSentJobs"
+                            }}));
+                          }
+                        } else {
+                          for (let requestSentJob of response.result) {
+                            console.log(requestSentJob);
+                            requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
+                              profilePhoto: requestSentJob.teacherProfile.profilePhoto,
+                              fullname: requestSentJob.teacherProfile.fullname,
+                              role: requestSentJob.teacherProfile.role,
+                              prefPayRate: requestSentJob.teacherProfile.prefPayRate,
+                              yrsExperience: requestSentJob.teacher.yrsExperience,
+                              profileTitle: requestSentJob.teacherProfile.profileTitle,
+                              profileAbout: requestSentJob.teacherProfile.profileAbout,
+                              prefLocation: requestSentJob.teacherProfile.prefLocation,
+                              defaultStartDate: requestSentJob.teacher.defaultStartDate,
+                              defaultEndDate: requestSentJob.teacher.defaultEndDate,
+                              defaultStartTime: requestSentJob.teacher.defaultStartTime,
+                              defaultEndTime: requestSentJob.teacher.defaultEndTime,
+                              teacherProfileId: requestSentJob.teacherProfile.objectId,
+                              otherProfileId: requestSentJob.otherProfile.objectId,
+                              fromWhere: "requestSentJobs"
+                            }}));
+                          }
                         }
-                      } else {
-                        for (let requestSentJob of response.result) {
-                          console.log(requestSentJob);
-                          requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
-                            profilePhoto: requestSentJob.teacherProfile.profilePhoto,
-                            fullname: requestSentJob.teacherProfile.fullname,
-                            role: requestSentJob.teacherProfile.role,
-                            prefPayRate: requestSentJob.teacherProfile.prefPayRate,
-                            yrsExperience: requestSentJob.teacher.yrsExperience,
-                            profileTitle: requestSentJob.teacherProfile.profileTitle,
-                            profileAbout: requestSentJob.teacherProfile.profileAbout,
-                            prefLocation: requestSentJob.teacherProfile.prefLocation,
-                            defaultStartDate: requestSentJob.teacher.defaultStartDate,
-                            defaultEndDate: requestSentJob.teacher.defaultEndDate,
-                            defaultStartTime: requestSentJob.teacher.defaultStartTime,
-                            defaultEndTime: requestSentJob.teacher.defaultEndTime,
-                            teacherProfileId: requestSentJob.teacherProfile.objectId,
-                            otherProfileId: requestSentJob.otherProfile.objectId,
-                            fromWhere: "requestSentJobs"
-                          }}));
-                        }
-                      }
-                      requestSentJobModals.forEach((requestSentJobModal, ix) => {
-                        if (ix == 0) requestSentJobModal.present();
-                        requestSentJobModal.onDidDismiss(data => {
-                          if (requestSentJobModals[ix+1] !== undefined)
-                            requestSentJobModals[ix+1].present();
+                        requestSentJobModals.forEach((requestSentJobModal, ix) => {
+                          if (ix == 0) requestSentJobModal.present();
+                          requestSentJobModal.onDidDismiss(data => {
+                            if (requestSentJobModals[ix+1] !== undefined)
+                              requestSentJobModals[ix+1].present();
+                          });
                         });
-                      });
+                      }
                     }
-                  }
-                ]
-              });
-              alert.present();
-            }
-          }, err => {
-            console.log(err);
+                  ]
+                });
+                alert.present();
+              }
+            }, err => {
+              console.log(err);
+            })
           })
-        })
-        // this.initMap();
+        });
       }
     });
   }
