@@ -24,6 +24,7 @@ export class JobRequestPage {
   private loading: any;
   private userRole: any;
   private congrats: boolean;
+  private genericAvatar: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, private loadingCtrl: LoadingController) {
     this.params = navParams.data.params;
@@ -39,14 +40,28 @@ export class JobRequestPage {
   }
 
   ionViewDidLoad() {
+
     this.storage.get("UserProfile").then(roleProfile => {
       this.userRole = roleProfile.profileData.role;
+
+      let otherRole;
       if(this.userRole === 'teacher'){
         this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.params.otherProfileId };
+        otherRole = this.params.role;
       }else{
         this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId };
+        otherRole = 'teacher';
       }
 
+      if (otherRole == 'teacher') {
+        this.genericAvatar = '/assets/imgs/user-img-teacher.png';
+      } else if (otherRole == 'student') {
+        this.genericAvatar = '/assets/imgs/user-img-student.png';
+      } else if (otherRole == 'parent') {
+        this.genericAvatar = '/assets/imgs/user-img-parent.png';
+      } else if (otherRole == 'school') {
+        this.genericAvatar = '/assets/imgs/user-img-school.png';
+      }
       return new Promise(resolve => {
         let API = this.smartieApi.getApi(
           'getRequestedJobRequest',
@@ -129,6 +144,7 @@ export class JobRequestPage {
         this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId, requestSent: true, acceptState: true };
       }
 
+      console.log('sending '+JSON.stringify(this.body));
       let API = this.smartieApi.getApi(
         'setJobRequest',
         this.body

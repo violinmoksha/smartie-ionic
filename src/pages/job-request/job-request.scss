@@ -1,18 +1,22 @@
 page-job-request {
 
+  h4 {
+    font-size:1.2em;
+  }
     .totles-pop-search{
       text-align: center;
       padding:0 10px ;
       border-bottom: 1px solid #cfcfcf;
       .notification {
 
-        padding-top: 8px;
+        padding-top: 0px;
         padding-bottom: 8px;
-        min-height: 60px;
+        min-height: 50px;
         .left {
           width: 70%;
           float: left;
           text-align: left;
+          max-height:0;
           .avatar {
             float: left;
             width: 40px;
@@ -25,7 +29,6 @@ page-job-request {
             }
           }
           .u-detail {
-            float: left;
             width: auto;
             .name {
               width:140px;
@@ -70,7 +73,7 @@ page-job-request {
 
 
     .jobprofile-content{
-      padding:30px 15px;
+      padding:30px 8px;
       overflow-y: auto;
 
       h2{
@@ -212,4 +215,17 @@ page-job-request {
       }
     }
 
+}
+
+.popover-ios .popover-content {
+  width:300px;
+  left:20px!important;
+  top:90px!important;
+  max-height:80%!important;
+
+  .scroll-content {
+    margin-top:23px;
+    padding:0!important;
+    overflow:hidden;
+  }
 }

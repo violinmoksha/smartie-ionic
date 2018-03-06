@@ -68,10 +68,6 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
-      "phonegap-plugin-push": {
-        "SENDER_ID": "187672812179",
-        "FCM_VERSION": "11.6.2"
-      },
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "To locate your phone"
       }

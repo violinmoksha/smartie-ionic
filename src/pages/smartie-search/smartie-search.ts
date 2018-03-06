@@ -1,4 +1,4 @@
-import { IonicPage, Events } from 'ionic-angular';
+import { IonicPage, Events, PopoverController } from 'ionic-angular';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -41,7 +41,7 @@ export class SmartieSearch {
   public notifications: any;
   public accepteds: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController) {
     this.role = navParams.data.role;
     this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
@@ -69,8 +69,8 @@ export class SmartieSearch {
             defaultStartTime: acceptedJob.teacher.defaultStartTime,
             defaultEndTime: acceptedJob.teacher.defaultEndTime
           }}));
-          console.log('DEFAULT END TIME: '+acceptedJob.teacher.defaultEndDate);
-          console.log('DEFAULT START TIME: '+acceptedJob.teacher.defaultStartTime);
+          //console.log('DEFAULT END TIME: '+acceptedJob.teacher.defaultEndDate);
+          //console.log('DEFAULT START TIME: '+acceptedJob.teacher.defaultStartTime);
         }
         acceptedScheduleModals.forEach((acceptedScheduleModal, ix) => {
           if (ix == 0) acceptedScheduleModal.present();
@@ -101,6 +101,7 @@ export class SmartieSearch {
         this.navCtrl.setRoot("LoginPage");
       } else {
         this.storage.get('phoneLatLng').then(phoneLatLng => {
+          //console.log(phoneLatLng);
           if (phoneLatLng !== undefined && phoneLatLng !== null) {
             this.smartieSearchResult(phoneLatLng, profile.profileData.role, null);
           } else {
@@ -129,7 +130,7 @@ export class SmartieSearch {
                 if (this.accepteds.length == 0) {
                   let alert = this.alertCtrl.create({
                     title: 'Wow, check it out!',
-                    subTitle: `${response.result.length} of your notifications are new job request(s)! We'll show them to you so you can accept or reject!`,
+                    subTitle: `You have ${response.result.length} new job request(s)! We'll show them to you now so you can accept or reject!`,
                     buttons: [
                       {
                         text: 'OK',
@@ -202,7 +203,7 @@ export class SmartieSearch {
     // TODO: there shud be a way to wrap this
     // so we don't need to include the frontend
     // SDK directly in our index.html
-    console.log(locationData);
+    //console.log(locationData);
     let latLng;
     if (this.role == 'teacher') {
       latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
@@ -275,14 +276,11 @@ export class SmartieSearch {
           loggedRole: this.role
         }
       }
-      this.navCtrl.push("JobRequestPage", { params: params });
+      let popover = this.popoverCtrl.create("JobRequestPage", { params: params });
+      popover.present();
+      //this.navCtrl.push("JobRequestPage", { params: params });
     });
 
-    // this.marker.setMap(this.map);
-    // this.map.setZoom(5);
-    // // map.setCenter(marker.getPosition());
-    // // map.panTo(marker.getPosition())
-    // this.map.fitBounds(this.bounds);
   }
 
   public contentTitle() {

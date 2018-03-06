@@ -91,10 +91,6 @@
         <variable name="CHANNEL_NAME" value="Production" />
         <variable name="UPDATE_METHOD" value="auto" />
     </plugin>
-    <plugin name="phonegap-plugin-push" spec="^2.1.3">
-        <variable name="SENDER_ID" value="187672812179" />
-        <variable name="FCM_VERSION" value="11.6.2" />
-    </plugin>
     <engine name="android" spec="~7.0.0" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate your phone" />

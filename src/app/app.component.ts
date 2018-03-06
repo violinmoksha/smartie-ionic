@@ -60,7 +60,7 @@ export class SmartieApp {
       if (this.platform.is('cordova')) {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
-        this.initPushNotifications();
+        //this.initPushNotifications();
         this.initGeolocation();
       }
     });
@@ -69,6 +69,7 @@ export class SmartieApp {
   initGeolocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
       let phoneLatLng = { latitude: resp.coords.latitude, longitude: resp.coords.longitude };
+      console.log('phoneLatLng: '+JSON.stringify(phoneLatLng));
       this.storage.set('phoneLatLng', phoneLatLng);
     }).catch((error) => {
       console.log('Error getting phone location', error);
