@@ -1,5 +1,109 @@
 page-register-step3 {
-  ion-list{
+  .teacher{
+    .toolbar-title{
+      color: #00BC5B !important;
+      font-size: 14px;
+    }
+    .back-button{
+      color: #00BC5B;
+    }
+    .tagline{
+      background-color: #00BC5B;
+    }
+    .button.button-positive {
+      background-color: #00BC5B;
+      &:hover {
+        background-color: #006838;
+      }
+    }
+    .button.button-positive.activated {
+      border-color: #006838;
+      background-color: #006838;
+    }
+  }
+
+  .parent{
+    .toolbar-title{
+      color: #F97533 !important;
+      font-size: 14px;
+    }
+    .back-button{
+      color: #F97533 !important
+    }
+    .tagline{
+      background-color: #F97533;
+    }
+    .button.button-positive {
+      background-color: #F97533;
+      &:hover {
+        background-color: #F97533;
+      }
+    }
+  }
+
+  .student{
+    .toolbar-title{
+      color: #0096D7 !important;
+      font-size: 14px;
+    }
+    .back-button{
+      color: #0096D7 !important
+    }
+    .tagline{
+      background-color: #0096D7;
+    }
+    .button.button-positive {
+      background-color: #0096D7;
+      &:hover {
+        background-color: #0096D7;
+      }
+    }
+  }
+
+  .school{
+    .toolbar-title{
+      color: #F31C62 !important;
+      font-size: 14px;
+    }
+    .back-button{
+      color: #F31C62 !important
+    }
+    .tagline{
+      background-color: #F31C62;
+    }
+    .button.button-positive {
+      background-color: #F31C62;
+      &:hover {
+        background-color: #F31C62;
+      }
+    }
+  }
+
+      .tagline{
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        padding:5px 10px;
+        margin:0 -15px 10px;
+        margin-bottom: 10px
+      }
+
+      .button.button-positive {
+        padding: 0px;
+        font-size: 18px;
+        border-radius:5px;
+        display: block;
+        height:45px;
+        line-height:45px;
+        box-shadow:none;
+        border:0;
+        margin: 20px 0;
+      }
+      .bg-parent{
+        background-color: #F97533!important;
+      }
+
+ ion-list{
     .teacher-certs{
       border: none;
       background: url(./../assets/img/doc-icon.png) no-repeat;
@@ -22,14 +126,14 @@ page-register-step3 {
   }
   .teacher-cv{
     position: relative;
-    height: 100px;
+    height:auto;
     #teacherCv{
       width:100%!important;
       display: block;
       float: none;
       margin: auto;
       margin-bottom: 50px;
-      height: 54px;
+      height:40px;
       margin: auto;
       opacity: 0;
       position: absolute;
@@ -39,6 +143,7 @@ page-register-step3 {
       z-index: 10;
       max-width:280px;
       margin: auto;
+
     }
     .button-cv{
       border-color: transparent;
@@ -49,7 +154,9 @@ page-register-step3 {
       margin: 0;
       padding: 0 7px;
       min-width: 52px;
-      min-height: 35px;
+      min-height:40px;
+      height: 40px;
+      line-height: 30px!important;
       border-width: 1px;
       border-style: solid;
       border-radius: 4px;
@@ -59,8 +166,8 @@ page-register-step3 {
       font-size: 16px;
       line-height: 42px;
       cursor: pointer;
-      background: #e5e5e5;
-      border-color: #a2a2a2;
+      background: #fff!important;
+      border-color: #00BC5B!important;
       padding: 0px 10px;
       color: #000;
       position: absolute;
@@ -75,6 +182,7 @@ page-register-step3 {
       width: 100%;
       color: #00BC5B;
       padding-top: 60px;
+      font-size: 13px;
     }
 
     .my-class {
@@ -111,6 +219,7 @@ page-register-step3 {
     p{
       margin: 0;
       line-height:15px;
+      font-size: 13px;
     }
   }
   .swiper-slide.active{
@@ -122,14 +231,15 @@ page-register-step3 {
   }
   h3{
     text-align: center;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
     margin-bottom: 10px;
     display: block;
-    margin-top:30px;
+    margin-top:15px;
     font-weight:500;
   }
   #year-teaching {
+    margin-bottom: 0;
       .swiper-slide{
         &:last-child{
           width: 120px!important;
@@ -142,9 +252,16 @@ page-register-step3 {
       }
   }
 
+  .slides-0{
+    margin-bottom: 15px;
+  }
   .available-date{
       width: 100%;
       margin-bottom: 15px;
+      .item-inner{
+        border:0!important;
+        padding-right: 0!important;
+      }
       .left, .right{
           float: left;
           width: 45%;
@@ -162,18 +279,18 @@ page-register-step3 {
             .input{
               border:0!important;
               padding-left:40px;
-              height: 45px;
+              height:35px;
               position: relative;
               border:2px solid #00BC5B!important;
               width: 100%;
               padding-left:45px!important;
               background-image: url(../assets/img/date-icon.png);
               background-size: 22px;
-              background-position: 10px center;
+              background-position: 7px 4px;
               background-repeat: no-repeat;
               .text-input{
-                height: 45px;
-                line-height: 45px;
+                height: 33px;
+                line-height:33px;
                 font-size: 15px;
               }
             }
@@ -189,6 +306,11 @@ page-register-step3 {
 
   .available-time{
       width: 100%;
+      display: inline-block;
+      .item-inner{
+        border:0!important;
+        padding-right: 0!important;
+      }
       .left, .right{
           float: left;
           width: 45%;
@@ -197,7 +319,7 @@ page-register-step3 {
             position: relative;
             .datetime{
               border:0!important;
-              height: 45px;
+              height:35px;
               position: relative;
               border:2px solid #00BC5B!important;
               width: 100%!important;
@@ -205,11 +327,11 @@ page-register-step3 {
               padding-left:45px!important;
               background-image: url(../assets/img/clock-icon.png);
               background-size: 22px;
-              background-position: 10px center;
+              background-position: 10px 4px;
               background-repeat: no-repeat;
               .datetime-text{
-                height: 45px;
-                line-height: 42px;
+                height:33px;
+                line-height:33px;
                 font-size: 15px!important;
               }
               .item-cover-default{
@@ -232,4 +354,48 @@ page-register-step3 {
     top: -15px !important;
     left: 43px;
   }
+}
+
+ion-calendar-modal{
+  .toolbar-background{
+    background-color: #00BC5B!important;
+  }
+  .week-title.primary{
+    background-color: #00BC5B!important;
+  }
+  .on-selected{
+    background-color: #00BC5B!important;
+  }
+  .today p{
+    color: #00BC5B!important;
+  }
+}
+.picker-wrapper{
+   .picker-button{
+       color: #00BC5B!important;
+   }
+}
+#resume-list{
+  border:0;
+  margin-top: 15px;
+  margin-bottom: 0;
+  .teacher-certs{
+    border: 0!important;
+    background-position: left 14px;
+    background-size: 30px;
+    border-top: 1px solid #eee;
+  }
+  .item-inner{
+    padding-right: 0;
+    ion-label{
+      padding-right: 0;
+      margin-right: 0;
+      a{
+        width: 30px;
+        height: 30px;
+        line-height:20px;
+      }
+    }
+  }
+
 }

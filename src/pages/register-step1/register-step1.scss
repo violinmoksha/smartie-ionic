@@ -1,7 +1,9 @@
 page-register-step1 {
+  background-color: #fff;
   .teacher{
     .toolbar-title{
-      color: #00BC5B !important
+      color: #00BC5B !important;
+      font-size: 14px;
     }
     .back-button{
       color: #00BC5B;
@@ -23,7 +25,8 @@ page-register-step1 {
 
   .parent{
     .toolbar-title{
-      color: #F97533 !important
+      color: #F97533 !important;
+      font-size: 14px;
     }
     .back-button{
       color: #F97533 !important
@@ -41,7 +44,8 @@ page-register-step1 {
 
   .student{
     .toolbar-title{
-      color: #0096D7 !important
+      color: #0096D7 !important;
+      font-size: 14px;
     }
     .back-button{
       color: #0096D7 !important
@@ -59,7 +63,8 @@ page-register-step1 {
 
   .school{
     .toolbar-title{
-      color: #F31C62 !important
+      color: #F31C62 !important;
+      font-size: 14px;
     }
     .back-button{
       color: #F31C62 !important
@@ -77,10 +82,10 @@ page-register-step1 {
 
   .tagline{
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
     color: #fff;
     padding:5px 10px;
-    margin:10px -15px;
+    margin:0px -15px 10px;
     margin-bottom: 10px
   }
 
@@ -89,12 +94,13 @@ page-register-step1 {
     font-size: 18px;
     border-radius:5px;
     display: block;
-    height: 50px;
-    line-height: 50px;
+    height:45px;
+    line-height:45px;
     box-shadow:none;
     border:0;
     margin: 20px 0;
   }
+
 
 
 
@@ -117,6 +123,9 @@ page-register-step1 {
       color: #F97533;
     }
   }
+  .scroll-content{
+    padding-top: 0!important;
+  }
 }
 
 /*Genereal Css */
@@ -124,6 +133,8 @@ page-register-step1 {
   border: 0 !important;
   display: block;
   padding: 6px 0 5px 0;
+  margin:10px 0;
+  font-size: 14px;
   .input-wrapper{
     display: block;
     .label {
@@ -133,6 +144,7 @@ page-register-step1 {
       color: #000;
       float: none;
       max-width: 100%;
+      margin: 0;
     }
     .input {
       width: 100%;

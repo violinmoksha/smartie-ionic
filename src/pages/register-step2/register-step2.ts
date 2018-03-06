@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, Slides } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
-import { Globalization } from '@ionic-native/globalization';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
 
@@ -36,7 +35,7 @@ export class RegisterStep2Page {
   private partOfSchool: any;
   @ViewChild(Slides) studentSchool: Slides;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private globalization: Globalization, private smartieApi: SmartieAPI, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private smartieApi: SmartieAPI, private storage: Storage) {
     this.form1Values = navParams.data.form1Value;
     this.role = navParams.data.role;
     this.profilePicSrc = './assets/img/user-img-'+this.role+'.png';
@@ -70,7 +69,7 @@ export class RegisterStep2Page {
     }
 
 
-    if (this.globalization == undefined) {
+    /*if (this.globalization == undefined) {
       this.globalization.getLocaleName().then((locale) => {
         let LangAPI = this.smartieApi.getApi(
           'getNationalLanguages',
@@ -88,7 +87,7 @@ export class RegisterStep2Page {
         console.log(error);
       });
     } else {
-    }
+    }*/
   }
 
   public filterpartOfSchool(result: string): void {

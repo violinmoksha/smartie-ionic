@@ -37,7 +37,7 @@
           </ion-slide>
         </ion-slides>
 
-        <ion-list>
+        <ion-list id="resume-list">
           <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
             {{cert.name}}
             <a href="javascript:" (click)="deleteTeacherCert(cert)"><img src="./assets/img/delete-icon.png"></a>
@@ -79,8 +79,6 @@
         Preferred Location
       </div>
 
-      <h3>Available Timings</h3>
-
       <h3 *ngIf="role == 'teacher'">Available Timings</h3>
 
       <div *ngIf="role == 'teacher'" class="available-date">
@@ -114,7 +112,7 @@
         </div>
         <div class="right">
           <ion-item>
-            <ion-datetime displayFormat="HH:mm" formControlName="endTime"></ion-datetime>
+            <ion-datetime class="teacher" displayFormat="HH:mm" formControlName="endTime"></ion-datetime>
           </ion-item>
           <div *ngIf="Step3Form.get('endTime').invalid && Step3Form.get('endTime').touched" class="item item-message">
             End time is required.
@@ -122,9 +120,10 @@
         </div>
         <div class="clear"></div>
       </div>
+
+          <button class="button button-positive" [disabled]="!Step3Form.valid" ion-button full>Submit</button>
     </div>
 
-    <button class="button button-positive" [disabled]="!Step3Form.valid" ion-button full>Submit</button>
 
   </form>
 

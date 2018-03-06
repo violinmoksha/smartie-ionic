@@ -19,3 +19,14 @@
   overflow: hidden;
   padding: 0 !important;
 }
+.back-button.show-back-button{
+  font-size: 15px;
+  .back-button-icon-ios{
+    font-size: 15px;
+    min-width: 12px;
+  }
+}
+.toolbar-title-ios{
+  font-size: 14px;
+  font-weight: 400;
+}
