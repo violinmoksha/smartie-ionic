@@ -69,6 +69,8 @@ export class SmartieSearch {
             defaultStartTime: acceptedJob.teacher.defaultStartTime,
             defaultEndTime: acceptedJob.teacher.defaultEndTime
           }}));
+          console.log('DEFAULT END TIME: '+acceptedJob.teacher.defaultEndDate);
+          console.log('DEFAULT START TIME: '+acceptedJob.teacher.defaultStartTime);
         }
         acceptedScheduleModals.forEach((acceptedScheduleModal, ix) => {
           if (ix == 0) acceptedScheduleModal.present();
@@ -78,18 +80,7 @@ export class SmartieSearch {
           });
         });
       } else {
-        // accepted for Teacher --> Upcoming Appt Reminder
-        let upcomingApptModals = [];
-        for (let acceptedJob of this.accepteds) {
-          upcomingApptModals.push(this.modalCtrl.create("SchedulePage", acceptedJob));
-        }
-        upcomingApptModals.forEach((upcomingApptModal, ix) => {
-          if (ix == 0) upcomingApptModal.present();
-          upcomingApptModal.onDidDismiss(data => {
-            if (upcomingApptModals[ix+1] !== undefined)
-              upcomingApptModals[ix+1].present();
-          });
-        });
+        // accepted for Teacher --> Student needs to do the Scheduling
       }
     } else {
       localStorage.clear(); // dump ephemeral session
@@ -110,7 +101,7 @@ export class SmartieSearch {
         this.navCtrl.setRoot("LoginPage");
       } else {
         this.storage.get('phoneLatLng').then(phoneLatLng => {
-          if (phoneLatLng !== undefined) {
+          if (phoneLatLng !== undefined && phoneLatLng !== null) {
             this.smartieSearchResult(phoneLatLng, profile.profileData.role, null);
           } else {
             this.latLngUser = profile.profileData.latlng;
@@ -134,62 +125,65 @@ export class SmartieSearch {
             this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
               if(response.result.length > 0){
                 //console.log(response);
-                let alert = this.alertCtrl.create({
-                  title: 'Wow, check it out!',
-                  subTitle: `${response.result.length} of your notifications are new job request(s)! We'll show them to you so you can accept or reject!`,
-                  buttons: [
-                    {
-                      text: 'OK',
-                      handler: data => {
-                        let requestSentJobModals = [];
-                        if (this.role == 'teacher') {
-                          for (let requestSentJob of response.result) {
-                            requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
-                              profilePhoto: requestSentJob.otherProfile.profilePhoto,
-                              fullname: requestSentJob.otherProfile.fullname,
-                              role: requestSentJob.otherProfile.role,
-                              profileTitle: requestSentJob.otherProfile.profileTitle,
-                              profileAbout: requestSentJob.otherProfile.profileAbout,
-                              prefLocation: requestSentJob.otherProfile.prefLocation,
-                              teacherProfileId: requestSentJob.teacherProfile.objectId,
-                              otherProfileId: requestSentJob.otherProfile.objectId,
-                              fromWhere: "requestSentJobs"
-                            }}));
+                // don't launch this message if user busy scheduling acceptState=true sessions from constructor-launched modals
+                if (this.accepteds.length == 0) {
+                  let alert = this.alertCtrl.create({
+                    title: 'Wow, check it out!',
+                    subTitle: `${response.result.length} of your notifications are new job request(s)! We'll show them to you so you can accept or reject!`,
+                    buttons: [
+                      {
+                        text: 'OK',
+                        handler: data => {
+                          let requestSentJobModals = [];
+                          if (this.role == 'teacher') {
+                            for (let requestSentJob of response.result) {
+                              requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
+                                profilePhoto: requestSentJob.otherProfile.profilePhoto,
+                                fullname: requestSentJob.otherProfile.fullname,
+                                role: requestSentJob.otherProfile.role,
+                                profileTitle: requestSentJob.otherProfile.profileTitle,
+                                profileAbout: requestSentJob.otherProfile.profileAbout,
+                                prefLocation: requestSentJob.otherProfile.prefLocation,
+                                teacherProfileId: requestSentJob.teacherProfile.objectId,
+                                otherProfileId: requestSentJob.otherProfile.objectId,
+                                fromWhere: "requestSentJobs"
+                              }}));
+                            }
+                          } else {
+                            for (let requestSentJob of response.result) {
+                              console.log(requestSentJob);
+                              requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
+                                profilePhoto: requestSentJob.teacherProfile.profilePhoto,
+                                fullname: requestSentJob.teacherProfile.fullname,
+                                role: requestSentJob.teacherProfile.role,
+                                prefPayRate: requestSentJob.teacherProfile.prefPayRate,
+                                yrsExperience: requestSentJob.teacher.yrsExperience,
+                                profileTitle: requestSentJob.teacherProfile.profileTitle,
+                                profileAbout: requestSentJob.teacherProfile.profileAbout,
+                                prefLocation: requestSentJob.teacherProfile.prefLocation,
+                                defaultStartDate: requestSentJob.teacher.defaultStartDate,
+                                defaultEndDate: requestSentJob.teacher.defaultEndDate,
+                                defaultStartTime: requestSentJob.teacher.defaultStartTime,
+                                defaultEndTime: requestSentJob.teacher.defaultEndTime,
+                                teacherProfileId: requestSentJob.teacherProfile.objectId,
+                                otherProfileId: requestSentJob.otherProfile.objectId,
+                                fromWhere: "requestSentJobs"
+                              }}));
+                            }
                           }
-                        } else {
-                          for (let requestSentJob of response.result) {
-                            console.log(requestSentJob);
-                            requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
-                              profilePhoto: requestSentJob.teacherProfile.profilePhoto,
-                              fullname: requestSentJob.teacherProfile.fullname,
-                              role: requestSentJob.teacherProfile.role,
-                              prefPayRate: requestSentJob.teacherProfile.prefPayRate,
-                              yrsExperience: requestSentJob.teacher.yrsExperience,
-                              profileTitle: requestSentJob.teacherProfile.profileTitle,
-                              profileAbout: requestSentJob.teacherProfile.profileAbout,
-                              prefLocation: requestSentJob.teacherProfile.prefLocation,
-                              defaultStartDate: requestSentJob.teacher.defaultStartDate,
-                              defaultEndDate: requestSentJob.teacher.defaultEndDate,
-                              defaultStartTime: requestSentJob.teacher.defaultStartTime,
-                              defaultEndTime: requestSentJob.teacher.defaultEndTime,
-                              teacherProfileId: requestSentJob.teacherProfile.objectId,
-                              otherProfileId: requestSentJob.otherProfile.objectId,
-                              fromWhere: "requestSentJobs"
-                            }}));
-                          }
-                        }
-                        requestSentJobModals.forEach((requestSentJobModal, ix) => {
-                          if (ix == 0) requestSentJobModal.present();
-                          requestSentJobModal.onDidDismiss(data => {
-                            if (requestSentJobModals[ix+1] !== undefined)
-                              requestSentJobModals[ix+1].present();
+                          requestSentJobModals.forEach((requestSentJobModal, ix) => {
+                            if (ix == 0) requestSentJobModal.present();
+                            requestSentJobModal.onDidDismiss(data => {
+                              if (requestSentJobModals[ix+1] !== undefined)
+                                requestSentJobModals[ix+1].present();
+                            });
                           });
-                        });
+                        }
                       }
-                    }
-                  ]
-                });
-                alert.present();
+                    ]
+                  });
+                  alert.present();
+                }
               }
             }, err => {
               console.log(err);

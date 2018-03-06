@@ -23,7 +23,7 @@ export class SchedulePage {
   private endDate: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public modalCtrl: ModalController) {
-    this.params = this.navParams.data;
+    this.params = this.navParams.data.params;
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
     })
