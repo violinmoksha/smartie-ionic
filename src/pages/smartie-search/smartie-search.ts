@@ -135,6 +135,7 @@ export class SmartieSearch {
                       {
                         text: 'OK',
                         handler: data => {
+                          alert.dismiss();
                           let requestSentJobModals = [];
                           if (this.role == 'teacher') {
                             for (let requestSentJob of response.result) {
