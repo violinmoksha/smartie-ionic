@@ -3,7 +3,7 @@ import { Nav, Platform, Events, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
-import { Push, PushObject, PushOptions } from '@ionic-native/push';
+//import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { SmartieAPI } from '../providers/api/smartie';
 import { Geolocation } from '@ionic-native/geolocation';
 
@@ -17,7 +17,7 @@ export class SmartieApp {
 
   buttons: Array<{iconName: string, text: string}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, private push: Push, private alertCtrl: AlertController, public smartieApi: SmartieAPI, private geolocation: Geolocation) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, private alertCtrl: AlertController, public smartieApi: SmartieAPI, private geolocation: Geolocation) {
     this.initializeApp();
 
     this.storage.get('sessionToken').then(val => {
@@ -58,10 +58,10 @@ export class SmartieApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       if (this.platform.is('cordova')) {
+        this.initGeolocation();
         this.statusBar.styleDefault();
         this.splashScreen.hide();
         //this.initPushNotifications();
-        this.initGeolocation();
       }
     });
   }
@@ -72,11 +72,11 @@ export class SmartieApp {
       console.log('phoneLatLng: '+JSON.stringify(phoneLatLng));
       this.storage.set('phoneLatLng', phoneLatLng);
     }).catch((error) => {
-      console.log('Error getting phone location', error);
+      console.log('Error getting phone location', JSON.stringify(error));
     });
   }
 
-  initPushNotifications() {
+  /*initPushNotifications() {
     const options: PushOptions = {
       android: {
         senderID: '187672812179'
@@ -136,7 +136,7 @@ export class SmartieApp {
     });
 
     pushObject.on('error').subscribe(error => console.error('Error with Push plugin' + error));
-  }
+  }*/
 
   openPage(page) {
     // Reset the content nav to have just this page

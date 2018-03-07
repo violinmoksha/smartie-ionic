@@ -9,7 +9,7 @@ import { SmartieApp } from './app.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Push } from '@ionic-native/push';
+//import { Push } from '@ionic-native/push';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
@@ -38,12 +38,12 @@ import { Geolocation } from '@ionic-native/geolocation';
   providers: [
     StatusBar,
     SplashScreen,
+    Geolocation,
     Stripe,
     Camera,
     ParseProvider,
     SmartieAPI,
-    Push,
-    Geolocation,
+    //Push,
     IonicErrorHandler,
     [{provide: ErrorHandler, useClass: SmartieErrorHandler}]
   ]

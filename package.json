@@ -31,15 +31,15 @@
     "@ionic/pro": "^1.0.19",
     "@ionic/storage": "2.1.3",
     "cordova": "^8.0.0",
-    "cordova-android": "~7.0.0",
+    "cordova-android": "7.0.0",
     "cordova-ios": "4.5.4",
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-globalization": "^1.0.9",
-    "cordova-plugin-ionic": "^4.0.0",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-splashscreen": "^5.0.2",
+    "cordova-plugin-statusbar": "^2.4.1",
     "cordova-plugin-whitelist": "^1.3.3",
     "ion2-calendar": "^2.1.5",
     "ionic-angular": "3.9.2",
@@ -57,23 +57,19 @@
   "description": "An Ionic project",
   "cordova": {
     "plugins": {
-      "cordova-plugin-globalization": {},
-      "cordova-plugin-ionic": {
-        "APP_ID": "51a6d7d8",
-        "CHANNEL_NAME": "Production",
-        "UPDATE_METHOD": "auto"
-      },
       "cordova-plugin-whitelist": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-statusbar": {},
       "cordova-plugin-geolocation": {
-        "GEOLOCATION_USAGE_DESCRIPTION": "To locate your phone"
+        "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
       }
     },
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   }
 }
