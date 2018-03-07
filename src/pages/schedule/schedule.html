@@ -6,15 +6,15 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title>Schedule</ion-title>
+    <ion-title>Select Schedule</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <h4 style="color:red" *ngIf="userRole !== 'teacher'">{{ params.fullname }} Has ACCEPTED! Now book your session according to your teacher's availability!</h4>
-  <h4 style="color:red" *ngIf="userRole == 'teacher'">{{ params.fullname }} Has ACCEPTED! Now book your session according to your {{ params.role }}'s availability!</h4>
+  <h4 style="color:red" *ngIf="userRole == 'teacher'">{{ params.fullname }} Has ACCEPTED! Now book your session according to your own availability!</h4>
   <div class="left">
-    <div class="avatar"><img src="{{ params.profilePhoto }}"></div>
+    <div class="avatar"><img *ngIf="params.profilePhoto !== undefined" src="{{ params.profilePhoto }}"><img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}" /></div>
     <div class="u-detail">
       <div class="name">{{ params.fullname }}</div>
       <div class="profile-type">{{ params.role }}</div>
@@ -30,13 +30,12 @@
     <div class="jobprofile-details">
       <h3>Preferred Location</h3>
       <p>{{ params.prefLocation }}</p>
-      <div class="clear"></div>
     </div>
     <div *ngIf="params.defaultStartTime" class="job-availablity-details">
       <h3>Available Timings</h3>
-      <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
+      <p style="margin-bottom:0">{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
     </div>
-    <p>Select your schedule based on availability</p>
+    <p style="margin-top:50px;margin-bottom:5px;">Select your schedule based on availability</p>
     <button ion-button full (click)="pickDateCalendar()">Select Schedule</button>
     <ion-item *ngIf="selectedDate">
       <ion-label>{{ selectedDate }} from:</ion-label>

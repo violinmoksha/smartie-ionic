@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, PopoverController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 
@@ -22,11 +22,29 @@ export class SchedulePage {
   private startDate: string;
   private endDate: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public modalCtrl: ModalController) {
+  private genericAvatar: string;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public modalCtrl: ModalController, public popoverCtrl: PopoverController) {
     this.params = this.navParams.data.params;
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
     })
+
+    let otherRole;
+    if (this.userRole == 'teacher') {
+      otherRole = this.params.role;
+    } else {
+      otherRole = 'teacher';
+    }
+    if (otherRole == 'teacher') {
+      this.genericAvatar = '/assets/imgs/user-img-teacher.png';
+    } else if (otherRole == 'student') {
+      this.genericAvatar = '/assets/imgs/user-img-student.png';
+    } else if (otherRole == 'parent') {
+      this.genericAvatar = '/assets/imgs/user-img-parent.png';
+    } else if (otherRole == 'school') {
+      this.genericAvatar = '/assets/imgs/user-img-school.png';
+    }
   }
 
   ionViewDidLoad() {
@@ -52,8 +70,8 @@ export class SchedulePage {
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if(date){
-        let modal = this.modalCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years });
-        modal.present();
+        let popover = this.popoverCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years });
+        popover.present();
       }
     })
   }

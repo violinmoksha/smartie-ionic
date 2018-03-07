@@ -1,3 +1,18 @@
 page-time-selector {
+  .toolbar-title {
+    font-size:16px;
+    overflow:visible;
+  }
 
+  .scroll-content {
+    margin-top:30px!important;
+  }
+
+  .button {
+    border-radius:5px;
+  }
+
+  .item-inner {
+    border-bottom:0!important;
+  }
 }

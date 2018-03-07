@@ -6,17 +6,17 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title>time-selector</ion-title>
+    <ion-title>{{ selectedDate }} Timing</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <ion-item *ngIf="selectedDate">
-    <ion-label>{{ selectedDate }} from:</ion-label>
+    <ion-label>Starting at:</ion-label>
     <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
   </ion-item>
   <ion-item *ngIf="selectedDate">
-    <ion-label>{{ selectedDate }} to:</ion-label>
+    <ion-label>Finishing at:</ion-label>
     <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeEnds"></ion-datetime>
   </ion-item>
   <!-- TODO: add S45 buttons here -->
