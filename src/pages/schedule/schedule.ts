@@ -70,7 +70,7 @@ export class SchedulePage {
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if(date){
-        let popover = this.popoverCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years });
+        let popover = this.popoverCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years, startTime: this.params.defaultStartTime, endTime: this.params.defaultEndTime, prefPayRate: this.params.prefPayRate });
         popover.present();
       }
     })

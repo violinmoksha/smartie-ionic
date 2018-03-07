@@ -1,0 +1,37 @@
+page-edit-profile {
+  ion-title {
+    &.teacher {
+
+    }
+    &.student {
+      color: #0096D7 !important;
+    }
+    &.parent {
+      color: #F97533 !important;
+    }
+    &.school {
+      color: #F31C62 !important;
+    }
+  }
+  ion-content {
+    &.teacher {
+    }
+    &.student {
+    }
+    &.parent {
+    }
+    &.school {
+    }
+  }
+  .back-button{
+    &.student {
+      color: #0096D7 !important;
+    }
+    &.parent {
+      color: #F97533 !important;
+    }
+    &.school {
+      color: #F31C62 !important;
+    }
+  }
+}

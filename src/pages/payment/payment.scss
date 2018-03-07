@@ -1,0 +1,47 @@
+page-payment {
+  .left {
+    width: 70%;
+    float: left;
+    text-align: left;
+    max-height:0;
+    .avatar {
+      float: left;
+      width: 40px;
+      height: 40px;
+      overflow: hidden;
+      border-radius: 200px;
+      margin-right: 10px;
+      img {
+        width: 100%;
+      }
+    }
+  }
+
+    .rates{
+      margin-top: 50px;
+      float: left;
+      h2{
+        margin:0;
+      }
+    }
+
+    ul{
+      width: 100%;
+      float: left;
+      padding: 0 30px;
+      li.cart-type {
+        cursor: pointer;
+      	list-style: none !important;
+      	.card-img {
+      		width: 40px;
+          float: left;
+      	}
+        .card-name{
+          float: right;
+        }
+      }
+    }
+
+
+
+}

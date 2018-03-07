@@ -1,0 +1,55 @@
+page-edit-profile-step2 {
+  ion-title {
+    &.teacher {
+
+    }
+    &.student {
+      color: #0096D7 !important;
+    }
+    &.parent {
+      color: #F97533 !important;
+    }
+    &.school {
+      color: #F31C62 !important;
+    }
+  }
+  ion-content {
+    &.teacher {
+    }
+    &.student {
+    }
+    &.parent {
+    }
+    &.school {
+    }
+  }
+  .back-button{
+    &.student {
+      color: #0096D7 !important;
+    }
+    &.parent {
+      color: #F97533 !important;
+    }
+    &.school {
+      color: #F31C62 !important;
+    }
+  }
+  .cl-student .toolbar-title{
+    color: #0096D7 !important
+  }
+  .swiper-wrapper{
+    width: 120px;
+    margin: auto;
+    .swiper-slide.active{
+      border-color: #0096D7 !important;
+    }
+  }
+  .school-information{
+    text-align: center;
+    padding-top: 20px;
+    h2{
+      font-size: 23px;
+      color: #0096D7;
+    }
+  }
+}

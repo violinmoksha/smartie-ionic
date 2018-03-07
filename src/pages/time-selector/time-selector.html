@@ -13,12 +13,21 @@
 <ion-content padding>
   <ion-item *ngIf="selectedDate">
     <ion-label>Starting at:</ion-label>
-    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
+    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" (ionChange)="timeSet()" [(ngModel)]="event.timeStarts"></ion-datetime>
   </ion-item>
   <ion-item *ngIf="selectedDate">
     <ion-label>Finishing at:</ion-label>
-    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeEnds"></ion-datetime>
+    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" (ionChange)="timeSet()" [(ngModel)]="event.timeEnds"></ion-datetime>
   </ion-item>
+  <div *ngIf="selectedDate">
+    <ion-label>Total Hours:</ion-label>
+    <div>{{ totalHours }}</div>
+  </div>
+  <div *ngIf="selectedDate">
+    <ion-label>Total Amount:</ion-label>
+    <div>{{ totalAmount }}</div>
+  </div>
+
   <!-- TODO: add S45 buttons here -->
-  <button ion-button full (click)="goPay()">OK, Pay Now</button>
+  <button ion-button full [disabled]="!readyToPay" (click)="goPay()">OK, Pay Now</button>
 </ion-content>
