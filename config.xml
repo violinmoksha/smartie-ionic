@@ -98,6 +98,6 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.2">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="To take profile pics" />
     </plugin>
-    <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.4" />
+    <engine name="android" spec="~7.0.0" />
 </widget>

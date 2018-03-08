@@ -93,7 +93,10 @@ export class RegisterStep3Page {
     this.form2Values = navParams.data.form2Values;
     this.role = navParams.data.role;
 
-    console.log(this.role);
+    //profilePhoto
+    this.storage.get('profilePhotoDataUrl').then(profilePhoto => {
+      this.form2Values.profilePhoto = profilePhoto;
+    })
 
     if(this.role == 'teacher'){
       this.Step3Form = new FormGroup({

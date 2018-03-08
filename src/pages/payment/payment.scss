@@ -1,47 +1,101 @@
 page-payment {
-  .left {
-    width: 70%;
-    float: left;
-    text-align: left;
-    max-height:0;
-    .avatar {
-      float: left;
-      width: 40px;
-      height: 40px;
-      overflow: hidden;
-      border-radius: 200px;
-      margin-right: 10px;
-      img {
-        width: 100%;
-      }
-    }
-  }
-
-    .rates{
-      margin-top: 50px;
-      float: left;
-      h2{
-        margin:0;
-      }
-    }
-
-    ul{
+  .profile-data{
+      padding:15px;
       width: 100%;
       float: left;
-      padding: 0 30px;
-      li.cart-type {
-        cursor: pointer;
-      	list-style: none !important;
-      	.card-img {
+      text-align: center;
+      .left {
+        display: inline-block;
+        clear: both;
+        float: none;
+        margin-bottom: 15px;
+        .avatar {
           float: left;
-      	}
-        .card-name{
-          float: right;
+          width:40px;
+          height:40px;
+          overflow: hidden;
+          border-radius: 200px;
+          margin-right: 10px;
+          img {
+            width: 100%;
+          }
+        }
+        .u-detail{
+          padding:10px 0 0;
+          color: #fff;
+          float: left;
+          text-align: left;
+          .name{
+            font-size: 13px;
+          }
+          .profile-type{
+            font-size: 11px;
+          }
         }
       }
-    }
+      .rates{
+        display:block;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        clear: both;
+        h3{
+          font-size:15px;
+          color: #fff;
+          .money{
+            color: #ffff;
+            font-size: 25px;
+            line-height:30px;
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+            display: block;
+          }
+        }
+      }
+      }
 
-    .money {
-      color: #009345;
-    }
+      .student{
+         .profile-data{
+            background-color: #0095D2;
+          }
+       }
+
+  .scroll-content{
+    background-color: #fff;
+    padding: 0!important;
+    overflow: auto;
+  }
+  .payment-list{
+    ul{
+         width: 100%;
+         float: left;
+         padding: 0 15px;
+         li.cart-type {
+           cursor: pointer;
+           list-style: none !important;
+           border-bottom: 1px solid #cfcfcf;
+           display: inline-block;
+           padding:8px 0 5px;
+           width: 100%;
+           .card-img {
+             float: left;
+             width: 48px;
+           }
+           .card-name{
+             float: right;
+             font-size: 15px;
+             line-height: 30px;
+             ion-icon{
+               display: inline-block;
+                line-height: 30px;
+                font-size: 1.2em;
+                float: right;
+                margin-left: 10px;
+             }
+           }
+         }
+       }
+  }
+
 }

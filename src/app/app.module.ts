@@ -19,6 +19,8 @@ import { Stripe } from '@ionic-native/stripe';
 import { ParseProvider } from '../providers/parse';
 import { SmartieAPI } from '../providers/api/smartie';
 import { Geolocation } from '@ionic-native/geolocation';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TooltipsModule } from 'ionic-tooltips';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { Geolocation } from '@ionic-native/geolocation';
     HttpClientModule,
     IonicModule.forRoot(SmartieApp),
     IonicStorageModule.forRoot(),
-    CalendarModule
+    CalendarModule,
+    BrowserAnimationsModule,
+    TooltipsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

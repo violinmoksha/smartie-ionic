@@ -21,6 +21,7 @@ export class PaymentPage {
   private card: string = '/assets/imgs/visa-card.png';
   private totalHours: number;
   private totalAmount: number;
+  private params: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
     this.storage.get('UserProfile').then(UserProfile => {
@@ -28,6 +29,8 @@ export class PaymentPage {
     });
     this.totalHours = navParams.data.totalHours;
     this.totalAmount = navParams.data.totalAmount;
+    this.params = navParams.data.params
+
   }
 
   ionViewDidLoad() {

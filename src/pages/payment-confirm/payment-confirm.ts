@@ -18,13 +18,16 @@ export class PaymentConfirmPage {
 
   private totalAmount: number;
   private CardForm: FormGroup;
+  tooltipEvent: 'click' | 'press' = 'click';
+  showArrow: boolean = true;
+  duration: number = 3000;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.totalAmount = this.navParams.data.totalAmount;
 
     this.CardForm = new FormGroup({
-      cardnumber: new FormControl('', Validators.required),
-      monthexp: new FormControl('', Validators.required),
+      cardnumber: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(16)]),
+      monthexp: new FormControl('', [Validators.required, Validators.pattern('^[1-12]+$')]),
       yearexp: new FormControl('', Validators.required),
       cvv: new FormControl('', Validators.required)
     });

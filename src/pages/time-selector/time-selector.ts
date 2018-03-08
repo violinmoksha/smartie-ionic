@@ -15,13 +15,11 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 })
 export class TimeSelectorPage {
 
-  private startTime: string;
-  private endTime: string;
   private selectedDate: string;
   private readyToPay: boolean = false;
   private totalHours: any;
-  private prefPayRate: number;
   private totalAmount: number;
+  private params: any;
 
   public event = {
     timeStarts: '00:00',
@@ -30,9 +28,8 @@ export class TimeSelectorPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
     this.selectedDate = this.navParams.data.selectedDate;
-    this.startTime = this.navParams.data.startTime;
-    this.endTime = this.navParams.data.endTime;
-    this.prefPayRate = this.navParams.data.prefPayRate;
+    this.params = this.navParams.data.params;
+    console.log(this.params);
   }
 
   timeSet(){
@@ -46,7 +43,7 @@ export class TimeSelectorPage {
 
       alert.present();
       this.readyToPay = false;
-    }else if(this.startTime > this.event.timeStarts || this.endTime < this.event.timeEnds){
+    }else if(this.params.defaultStartTime > this.event.timeStarts || this.params.defaultEndTime < this.event.timeEnds){
       alert = this.alertCtrl.create({
         title: 'Scheduling...',
         subTitle: 'Please choose amongst the available times!',
@@ -68,15 +65,13 @@ export class TimeSelectorPage {
       var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
 
       this.totalHours = (diffHrs + diffMins) / 60;
-      console.log(this.totalHours);
-      console.log(this.prefPayRate);
-      this.totalAmount = this.totalHours * this.prefPayRate;
+      this.totalAmount = this.totalHours * this.params.prefPayRate;
       this.readyToPay = true;
     }
   }
 
   goPay(){
-    this.navCtrl.push("PaymentPage", { totalHours: this.parseHours(this.totalHours), totalAmount: this.parseMoney(this.totalAmount) });
+    this.navCtrl.push("PaymentPage", { totalHours: this.parseHours(this.totalHours), totalAmount: this.parseMoney(this.totalAmount), params: this.params });
   }
 
   ionViewDidLoad() {

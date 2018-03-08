@@ -144,12 +144,10 @@ export class RegisterStep2Page {
             };
 
             this.camera.getPicture(options).then((imageData) => {
-              console.log(photoFor);
              // imageData is either a base64 encoded string or a file URI
              // If it's base64:
               if(photoFor == 'prof'){
                 this.cameraUrl = "data:image/jpeg;base64," + imageData;
-                // localStorage.setItem('profilePhotoDataUrl', this.profileCameraUrl);
                 this.storage.set('profilePhotoDataUrl', this.cameraUrl);
                 this.photoSelected = true;
                 this.photoTaken = false;
@@ -160,8 +158,6 @@ export class RegisterStep2Page {
                 this.schoolPhotoSelected = true;
                 this.schoolPhotoTaken = false;
               }
-              // console.log(this.cameraUrl);
-
             }, (err) => {
              // Handle error
              console.log(err);
@@ -184,7 +180,6 @@ export class RegisterStep2Page {
     if(this.role == 'student' || this.role == 'parent'){
       form2Values.partOfSchool = this.partOfSchool;
     }
-    console.log(form2Values);
     this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
   }
 
