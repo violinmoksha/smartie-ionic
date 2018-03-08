@@ -15,4 +15,20 @@ page-time-selector {
   .item-inner {
     border-bottom:0!important;
   }
+
+  .left {
+    float:left;
+    font-size:1.1em;
+  }
+
+  .right {
+    float:right;
+
+    .total {
+      color: #009345;
+      margin-top: 5px;
+      font-size: 1.2em;
+      font-weight: 500;
+    }
+  }
 }

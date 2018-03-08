@@ -39,8 +39,8 @@ export class TimeSelectorPage {
     let alert;
     if(this.event.timeStarts > this.event.timeEnds){
       alert = this.alertCtrl.create({
-        title: 'Payment Failed !',
-        subTitle: 'Start Time should less than End Time',
+        title: 'Scheduling...',
+        subTitle: 'Please keep in mind, Start Time should be before End Time ;-)',
         buttons: ['OK']
       });
 
@@ -48,8 +48,8 @@ export class TimeSelectorPage {
       this.readyToPay = false;
     }else if(this.startTime > this.event.timeStarts || this.endTime < this.event.timeEnds){
       alert = this.alertCtrl.create({
-        title: 'Payment Failed !',
-        subTitle: 'Please choose between availabile time',
+        title: 'Scheduling...',
+        subTitle: 'Please choose amongst the available times!',
         buttons: ['OK']
       });
 
@@ -83,4 +83,11 @@ export class TimeSelectorPage {
     console.log('ionViewDidLoad TimeSelectorPage');
   }
 
+  parseMoney(val) {
+    return parseFloat(val).toFixed(2);
+  }
+
+  parseHours(val) {
+    return parseFloat(val).toFixed(1);
+  }
 }
