@@ -20,20 +20,20 @@
 
     <label class="item item-input">
       <span class="input-label">Month Expired</span>
-      <ion-input placeholder="" type="text" ></ion-input>
+      <ion-input placeholder="" type="text" name="monthexp"></ion-input>
     </label>
 
     <label class="item item-input">
       <span class="input-label">Year Expired</span>
-      <ion-input placeholder="" type="text"></ion-input>
+      <ion-input placeholder="" type="text" name="yearexp"></ion-input>
     </label>
 
     <label class="item item-input">
       <span class="input-label">CVV</span>
-      <ion-input placeholder="" type="text"></ion-input>
+      <ion-input placeholder="" type="text" name="cvv"></ion-input>
     </label>
 
-    <button class="button button-positive" (click)="pay()" ion-button full>Submit</button>
+    <button class="button button-positive" (click)="pay()" ion-button full>Pay {{ totalAmount }}</button>
 
   </form>
 </ion-content>

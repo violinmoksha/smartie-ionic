@@ -19,11 +19,15 @@ export class PaymentPage {
   private userRole: string;
   private genericAvatar: string = '/assets/imgs/user-img-teacher.png';
   private card: string = '/assets/imgs/visa-card.png';
+  private totalHours: number;
+  private totalAmount: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
-    })
+    });
+    this.totalHours = navParams.data.totalHours;
+    this.totalAmount = navParams.data.totalAmount;
   }
 
   ionViewDidLoad() {
@@ -32,7 +36,7 @@ export class PaymentPage {
 
   paymentConfirm(){
     console.log('test');
-    this.navCtrl.push("PaymentConfirmPage");
+    this.navCtrl.push("PaymentConfirmPage", { totalAmount: this.totalAmount });
     // this.navCtrl.push("PaymentPage");
   }
 

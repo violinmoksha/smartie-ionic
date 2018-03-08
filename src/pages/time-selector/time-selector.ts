@@ -76,7 +76,7 @@ export class TimeSelectorPage {
   }
 
   goPay(){
-    this.navCtrl.push("PaymentPage");
+    this.navCtrl.push("PaymentPage", { totalHours: this.parseHours(this.totalHours), totalAmount: this.parseMoney(this.totalAmount) });
   }
 
   ionViewDidLoad() {

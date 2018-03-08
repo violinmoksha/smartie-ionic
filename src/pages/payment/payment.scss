@@ -33,7 +33,6 @@ page-payment {
         cursor: pointer;
       	list-style: none !important;
       	.card-img {
-      		width: 40px;
           float: left;
       	}
         .card-name{
@@ -42,6 +41,7 @@ page-payment {
       }
     }
 
-
-
+    .money {
+      color: #009345;
+    }
 }
