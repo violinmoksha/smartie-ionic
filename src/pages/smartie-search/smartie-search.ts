@@ -4,6 +4,8 @@ import { NavController, NavParams, AlertController, ModalController } from 'ioni
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
+//import { ParseProvider } from '../../providers/parse';
+import { Parse } from 'parse';
 
 declare var google;
 
@@ -48,8 +50,29 @@ export class SmartieSearch {
     if (this.fromWhere == 'signUp') {
       // TODO: retrieve the profilePhoto and CVs from
       // this.storage HERE if we came from signUp,
+      console.log('We are here.');
       this.storage.get('UserProfile').then(UserProfile => {
-        // TODO: Parse.User.logIn with username+password
+        let Profile = new Parse.Object.extend('Profile');
+        let profQuery = new Parse.Query(Profile);
+        let userQuery = new Parse.Query(Parse.User);
+        userQuery.equalTo('username', UserProfile.userData.username);
+        userQuery.first({useMasterKey:true}).then(user => {
+          console.log('Ok, got the user hm');
+          profQuery.equalTo('user', user);
+          profQuery.first({useMasterKey:true}).then(profile => {
+            console.log('Ok, got the profile hm.');
+            this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
+              let parseFile = new Parse.File('photo.jpg', profilePhotoData);
+              parseFile.save({ useMasterKey: true }).then(file => {
+                console.log(file);
+                profile.set('profilePhoto', file);
+                profile.save({useMasterKey:true}).then(profile => {
+                  console.log(JSON.stringify(profile));
+                })
+              })
+            })
+          })
+        });
       });
     }
     if (navParams.data.notifications !== undefined) {
@@ -60,7 +83,10 @@ export class SmartieSearch {
           this.notifications.splice(ix, 1);
         }
       });
-      this.notifyCount = this.notifications.length;
+      if (this.notifications !== undefined)
+        this.notifyCount = this.notifications.length;
+      else
+        this.notifyCount = 0;
       if (this.role !== 'teacher') {
         // accepted for Others --> Scheduling flow
         let acceptedScheduleModals = [];
@@ -104,6 +130,7 @@ export class SmartieSearch {
 
   ionViewDidLoad(){
     this.storage.get('UserProfile').then(profile => {
+      console.log(JSON.stringify(profile));
       if (profile == null) {
         this.navCtrl.setRoot("LoginPage");
       } else {

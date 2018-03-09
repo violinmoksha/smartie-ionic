@@ -14,6 +14,7 @@
     <allow-navigation href="https://api.ionicjs.com" />
     <allow-navigation href="https://maps.googleapis.com" />
     <allow-navigation href="https://csi.gstatic.com" />
+    <allow-navigation href="about:blank" />
     <preference name="ScrollEnabled" value="false" />
     <preference name="android-minSdkVersion" value="16" />
     <preference name="BackupWebStorage" value="none" />
