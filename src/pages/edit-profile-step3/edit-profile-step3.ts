@@ -39,6 +39,8 @@ export class EditProfileStep3Page {
   private startDate: any;
   private endDate: any;
   // private teacherLevel: any;
+  private startTime: any;
+  private endTime: any;
 
   public partOfSchool: boolean;
   public prefLocation: string;
@@ -101,21 +103,26 @@ export class EditProfileStep3Page {
     this.form2Values = navParams.data.form2Value;
     this.partOfSchool = navParams.data.partOfSchool;
 
-    this.storage.get("role").then(role => {
-      this.userRole = role;
+    this.userRole = navParams.data.userRole;
 
-      if (role == 'teacher') {
-        this.EditProfilestep3Form = new FormGroup({
-          teacherCvCerts: new FormControl(''),
-          prefLocation: new FormControl('', Validators.required),
-          startTime: new FormControl('', Validators.required),
-          endTime: new FormControl('', [Validators.required, this.gretarThan('startTime')])
-        })
-      } else {
-        this.EditProfilestep3Form = new FormGroup({
-          prefLocation: new FormControl('', Validators.required)
-        })
-      }
+    if (this.userRole == 'teacher') {
+      this.EditProfilestep3Form = new FormGroup({
+        teacherCvCerts: new FormControl(''),
+        prefLocation: new FormControl('', Validators.required),
+        startTime: new FormControl('', Validators.required),
+        endTime: new FormControl('', [Validators.required, this.gretarThan('startTime')])
+      })
+    } else {
+      this.EditProfilestep3Form = new FormGroup({
+        prefLocation: new FormControl('', Validators.required)
+      })
+    }
+
+    this.storage.get("UserProfile").then(roleProfile => {
+      this.startDate = roleProfile.specificUser.defaultStartDate;
+      this.endDate = roleProfile.specificUser.defaultEndDate;
+      this.startTime = roleProfile.specificUser.defaultStartTime;
+      this.endTime = roleProfile.specificUser.defaultEndTime;
     });
   }
 

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Parse } from 'parse';
+import { ParseProvider } from '../../providers/parse';
 import { Storage } from '@ionic/storage';
 
 /**
@@ -24,15 +25,15 @@ export class EditProfilePage {
 
   private EditProfileForm : FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController, private parse: ParseProvider) {
     this.EditProfileForm = new FormGroup({
       password: new FormControl('', [Validators.required])
     });
 
-    this.storage.get("role").then(role => {
-      this.userRole = role;
-      this.email = JSON.parse(localStorage.getItem(`${role}UserProfile`)).userData.email;
-      this.username = JSON.parse(localStorage.getItem(`${role}UserProfile`)).userData.username;
+    this.storage.get("UserProfile").then(roleProfile => {
+      this.userRole = roleProfile.profileData.role;
+      this.email = roleProfile.userData.email;
+      this.username = roleProfile.userData.username;
     })
   }
 
@@ -42,7 +43,7 @@ export class EditProfilePage {
 
   next(form1Value){
     Parse.User.logIn(this.username, form1Value.password).then(user => {
-      this.navCtrl.push("EditProfileStep2Page", { form1Value : form1Value });
+      this.navCtrl.push("EditProfileStep2Page", { form1Value : form1Value, userRole: this.userRole });
     }).catch(err => {
       let alert = this.alertCtrl.create({
         title: 'Login Failed !',

@@ -62,14 +62,34 @@ export class SmartieSearch {
           profQuery.first({useMasterKey:true}).then(profile => {
             console.log('Ok, got the profile hm.');
             this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
-              let parseFile = new Parse.File('photo.jpg', profilePhotoData);
-              parseFile.save({ useMasterKey: true }).then(file => {
+              // let parseFile = new Parse.File('photo.jpg', profilePhotoData);
+              // let parseFile = new Parse.File('photo.jpg', {base64: profilePhotoData});
+
+              Parse.User.logIn('alphateacher9', 'alphateacher1', {
+                // If the username and password matches
+                success: function(user) {
+                let parseFile = new Parse.File('photo.jpg', {base64: profilePhotoData});
+                // console.log(parseCvFile);
+                parseFile.save({ useMasterKey: true }).then(file => {
+                  console.log(file);
+                  profile.set('profilePhoto', file);
+                  profile.save({ useMasterKey:true }).then(profile => {
+                    console.log(JSON.stringify(profile));
+                  })
+                })
+                },
+                // If there is an error
+                error: function(user, error) {
+                  console.log(error);
+                }
+              });
+              /*parseFile.save({ useMasterKey: true }).then(file => {
                 console.log(file);
                 profile.set('profilePhoto', file);
                 profile.save({useMasterKey:true}).then(profile => {
                   console.log(JSON.stringify(profile));
                 })
-              })
+              })*/
             })
           })
         });
@@ -130,7 +150,7 @@ export class SmartieSearch {
 
   ionViewDidLoad(){
     this.storage.get('UserProfile').then(profile => {
-      console.log(JSON.stringify(profile));
+      // console.log(JSON.stringify(profile));
       if (profile == null) {
         this.navCtrl.setRoot("LoginPage");
       } else {
@@ -187,7 +207,7 @@ export class SmartieSearch {
                             }
                           } else {
                             for (let requestSentJob of response.result) {
-                              console.log(requestSentJob);
+                              // console.log(requestSentJob);
                               requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
                                 profilePhoto: requestSentJob.teacherProfile.profilePhoto,
                                 fullname: requestSentJob.teacherProfile.fullname,

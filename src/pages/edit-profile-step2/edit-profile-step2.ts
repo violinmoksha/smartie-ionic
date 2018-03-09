@@ -39,53 +39,57 @@ export class EditProfileStep2Page {
   profileAbout: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage) {
-    this.storage.get("role").then(role => {
-      this.userRole = role;
 
-      if (role == 'teacher') {
+    this.userRole = navParams.data.userRole;
+
+    if(this.userRole == 'school'){
+      this.EditProfilestep2Form = new FormGroup({
+        schoolName: new FormControl('', Validators.required),
+        contactName: new FormControl('', Validators.required),
+        contactPosition: new FormControl('', Validators.required),
+        phone: new FormControl('', Validators.required),
+        profileAbout: new FormControl('', Validators.required)
+      });
+    } else if (this.userRole == 'teacher'){
+      this.EditProfilestep2Form = new FormGroup({
+        name: new FormControl('', Validators.required),
+        phone: new FormControl('', Validators.required),
+        profileTitle: new FormControl('', Validators.required),
+        profileAbout: new FormControl('', Validators.required),
+        othersSchoolName: new FormControl('')
+      });
+    } else{
+      this.EditProfilestep2Form = new FormGroup({
+        name: new FormControl('', Validators.required),
+        phone: new FormControl('', Validators.required),
+        profileAbout: new FormControl('', Validators.required),
+        othersSchoolName: new FormControl('')
+      });
+    }
+    this.storage.get("UserProfile").then(roleProfile => {
+      if (this.userRole == 'teacher') {
         this.pageProfileSrc = './assets/img/user-img-teacher.png';
-      } else if (role == 'student') {
+      } else if (this.userRole == 'student') {
         this.pageProfileSrc = './assets/img/user-img-student.png';
-      } else if (role == 'parent') {
+      } else if (this.userRole == 'parent') {
         this.pageProfileSrc = './assets/img/user-img-parent.png';
-      } else if (role == 'school') {
+      } else if (this.userRole == 'school') {
         this.pageProfileSrc = './assets/img/user-img-school.png';
       }
 
-      this.fullName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.fullname;
-      this.phone = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.phone;
-      this.profileTitle = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.profileTitle;
-      this.profileAbout = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.profileAbout;
+      this.fullName = roleProfile.profileData.fullname;
+      this.phone = roleProfile.profileData.phone;
+      this.profileTitle = roleProfile.profileData.profileTitle;
+      this.profileAbout = roleProfile.profileData.profileAbout;
 
-      if (role == 'school') {
-        this.schoolName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.schoolname;
-        this.contactName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.contactname;
-        this.contactPosition = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.contactposition;
-        this.EditProfilestep2Form = new FormGroup({
-          schoolName: new FormControl('', Validators.required),
-          contactName: new FormControl('', Validators.required),
-          contactPosition: new FormControl('', Validators.required),
-          phone: new FormControl('', Validators.required),
-          profileAbout: new FormControl('', Validators.required)
-        });
-      } else if (role == 'teacher') {
-        this.EditProfilestep2Form = new FormGroup({
-          name: new FormControl('', Validators.required),
-          phone: new FormControl('', Validators.required),
-          profileTitle: new FormControl('', Validators.required),
-          profileAbout: new FormControl('', Validators.required),
-          othersSchoolName: new FormControl('')
-        });
+      if (this.userRole == 'school') {
+        this.schoolName = roleProfile.specificUser.schoolname;
+        this.contactName = roleProfile.specificUser.contactname;
+        this.contactPosition = roleProfile.specificUser.contactposition;
+      } else if (this.userRole == 'teacher') {
       } else {
-        this.partOfSchool = JSON.parse(localStorage.getItem(`${role}UserProfile`)).specificUser.partOfSchool;
-        this.fullName = JSON.parse(localStorage.getItem(`${role}UserProfile`)).profileData.fullname;
-
-        this.EditProfilestep2Form = new FormGroup({
-          name: new FormControl('', Validators.required),
-          phone: new FormControl('', Validators.required),
-          profileAbout: new FormControl('', Validators.required),
-          othersSchoolName: new FormControl('')
-        });
+        this.partOfSchool = roleProfile.specificUser.partOfSchool;
+        this.fullName = roleProfile.profileData.fullname;
       }
 
       // and get the pageProfileSrc from localStorage???
@@ -172,7 +176,7 @@ export class EditProfileStep2Page {
   }
 
   next(form2Value){
-    this.navCtrl.push("EditProfileStep3Page", { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool });
+    this.navCtrl.push("EditProfileStep3Page", { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool, userRole: this.userRole });
   }
 
 }

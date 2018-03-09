@@ -38,6 +38,11 @@ export class RegisterStep3Page {
   private endDate: any;
   private role: any;
 
+  public event = {
+    timeStarts: '00:00',
+    timeEnds: '23:59'
+  }
+
   public years = [
     { "value": 1, "text": '1' },
     { "value": 2, "text": '2' },
@@ -93,6 +98,11 @@ export class RegisterStep3Page {
     this.form2Values = navParams.data.form2Values;
     this.role = navParams.data.role;
 
+    var today = new Date();
+    this.startDate = today.getMonth()+1 +'-'+today.getDate()+'-'+today.getFullYear();
+    var defEndDate = new Date(today.setDate(today.getDate() + 30));
+    this.endDate = defEndDate.getMonth()+1 +'-'+defEndDate.getDate()+'-'+defEndDate.getFullYear();
+
     //profilePhoto
     this.storage.get('profilePhotoDataUrl').then(profilePhoto => {
       //this.form2Values.profilePhoto = profilePhoto;
@@ -128,9 +138,7 @@ export class RegisterStep3Page {
 
   startDateCalendar() {
     const options: CalendarModalOptions = {
-      title: 'BASIC',
-      pickMode: 'single',
-      monthFormat: 'MMM YYYY'
+      pickMode: 'single'
     };
     let myCalendar =  this.modalCtrl.create(CalendarModal, {
       options: options
@@ -140,7 +148,7 @@ export class RegisterStep3Page {
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if(date){
-        this.startDate = date.date + '-' + date.months + '-' + date.years;
+        this.startDate = date.months + '-' + date.date + '-' + date.years;
         console.log(this.startDate);
       }
     })
@@ -148,7 +156,7 @@ export class RegisterStep3Page {
 
   endDateCalendar() {
     const options: CalendarModalOptions = {
-      title: 'BASIC',
+      pickMode: 'single'
     };
     let myCalendar =  this.modalCtrl.create(CalendarModal, {
       options: options
@@ -158,7 +166,7 @@ export class RegisterStep3Page {
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if(date){
-        this.endDate = date.date + '-' + date.months + '-' + date.years;
+        this.endDate = date.months + '-' + date.date + '-' + date.years;
         console.log(this.endDate);
       }
     })
@@ -199,8 +207,8 @@ export class RegisterStep3Page {
           // If the username and password matches
           success: function(user) {
           var parseCvFile = new Parse.File(obj['name'], {base64: obj['data']});
-          console.log(parseCvFile);
-            parseCvFile.save().then(function(cvFile){
+          // console.log(parseCvFile);
+            parseCvFile.save({useMasterKey :true}).then(function(cvFile){
               console.log('Test');
               console.log(cvFile);
               TeacherCVs.push(cvFile);
@@ -268,9 +276,9 @@ export class RegisterStep3Page {
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         signupResult => {
           // localStorage.setItem("teacherUserProfile", JSON.stringify(signupResult.result));
-          console.log(signupResult);
-          console.log(signupResult.result.userData.username);
-          console.log(this.form1Values.password);
+          // console.log(signupResult);
+          // console.log(signupResult.result.userData.username);
+          // console.log(this.form1Values.password);
 
           this.storage.set("UserProfile", signupResult.result);
           this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId});

@@ -115,9 +115,10 @@ export class RegisterStep2Page {
             };
             this.camera.getPicture(options).then((imageData) => {
               if(photoFor == 'prof'){
+                // console.log(imageData);
                 this.cameraData = 'data:image/jpeg;base64,' + imageData;
                 // localStorage.setItem('profilePhotoDataUrl', this.profileCameraData);
-                this.storage.set('profilePhotoDataUrl', this.cameraData);
+                this.storage.set('profilePhotoDataUrl', imageData);
                 this.photoTaken = true;
                 this.photoSelected = false;
               }else if(photoFor == 'school'){
