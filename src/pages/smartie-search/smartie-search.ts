@@ -45,6 +45,13 @@ export class SmartieSearch {
     this.role = navParams.data.role;
     this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
+    if (this.fromWhere == 'signUp') {
+      // TODO: retrieve the profilePhoto and CVs from
+      // this.storage HERE if we came from signUp,
+      this.storage.get('UserProfile').then(UserProfile => {
+        // TODO: Parse.User.logIn with username+password
+      });
+    }
     if (navParams.data.notifications !== undefined) {
       this.notifications = navParams.data.notifications;
       this.notifications.map((notification, ix) => {

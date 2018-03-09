@@ -95,7 +95,7 @@ export class RegisterStep3Page {
 
     //profilePhoto
     this.storage.get('profilePhotoDataUrl').then(profilePhoto => {
-      this.form2Values.profilePhoto = profilePhoto;
+      //this.form2Values.profilePhoto = profilePhoto;
     })
 
     if(this.role == 'teacher'){
@@ -273,19 +273,8 @@ export class RegisterStep3Page {
           console.log(this.form1Values.password);
 
           this.storage.set("UserProfile", signupResult.result);
-          // this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId});
+          this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId});
           this.loading.dismiss();
-
-          Parse.User.logIn(signupResult.result.userData.username, this.form1Values.password, {
-            // If the username and password matches
-            success: function(user) {
-              console.log(user);
-            },
-            // If there is an error
-            error: function(user, error) {
-              console.log(error);
-            }
-          });
 
           let cvPromises = [];
           // console.log(this.TeacherFiles);
@@ -320,10 +309,9 @@ export class RegisterStep3Page {
           }*/
         },
         err => {
-          let signupError = err.error;
           let alert = this.alertCtrl.create({
-            title: 'Signup Failed !',
-            subTitle: signupError.error.split(':')[2].split(/[0-9]{3}\s/g)[1],
+            title: 'Signup Failed!',
+            subTitle: JSON.stringify(err),
             buttons: ['OK']
           });
           this.loading.dismiss();
