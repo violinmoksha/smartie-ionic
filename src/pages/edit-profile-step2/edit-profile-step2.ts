@@ -56,16 +56,18 @@ export class EditProfileStep2Page {
         phone: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
         profileAbout: new FormControl('', Validators.required),
-        othersSchoolName: new FormControl('')
+        // othersSchoolName: new FormControl('')
       });
     } else{
       this.EditProfilestep2Form = new FormGroup({
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
+        profileTitle: new FormControl('', Validators.required),
         profileAbout: new FormControl('', Validators.required),
         othersSchoolName: new FormControl('')
       });
     }
+
     this.storage.get("UserProfile").then(roleProfile => {
       if (this.userRole == 'teacher') {
         this.pageProfileSrc = './assets/img/user-img-teacher.png';

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the PaymentthankyouPage page.
@@ -15,11 +16,21 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class PaymentthankyouPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private userRole: any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+    this.storage.get("UserProfile").then(roleProfile => {
+      this.userRole = roleProfile.profileData.role;
+    })
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PaymentthankyouPage');
+  }
+
+  goTo(){
+    console.log('Test');
+    // this.navCtrl.push("EditProfilePage", { userRole: this.userRole });
   }
 
 }

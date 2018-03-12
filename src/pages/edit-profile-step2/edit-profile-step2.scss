@@ -1,37 +1,49 @@
 page-edit-profile-step2 {
-  ion-title {
-    &.teacher {
-
+  .teacher {
+    .back-button-icon{
+      color: #00BC5B !important
     }
-    &.student {
-      color: #0096D7 !important;
+    .back-button-text{
+      color: #00BC5B !important
     }
-    &.parent {
-      color: #F97533 !important;
-    }
-    &.school {
-      color: #F31C62 !important;
+    .button-positive{
+      background-color: #00BC5B !important
     }
   }
-  ion-content {
-    &.teacher {
+  .student {
+    color: #0096D7 !important;
+    .back-button-icon{
+      color: #0096D7 !important
     }
-    &.student {
+    .back-button-text{
+      color: #0096D7 !important
     }
-    &.parent {
-    }
-    &.school {
+    .button-positive{
+      background-color: #0096D7 !important
     }
   }
-  .back-button{
-    &.student {
-      color: #0096D7 !important;
+  .parent {
+    color: #F97533 !important;
+    .back-button-icon{
+      color: #F97533 !important
     }
-    &.parent {
-      color: #F97533 !important;
+    .back-button-text{
+      color: #F97533 !important
     }
-    &.school {
-      color: #F31C62 !important;
+    .button-positive{
+      background-color: #F97533 !important
+    }
+  }
+  .school {
+    color: #F31C62 !important;
+    .back-button-icon{
+      color: #F31C62 !important
+    }
+    .back-button-text{
+      color: #F31C62 !important
+    }
+    .button-positive{
+      background-color: #F31C62 !important
     }
   }
   .cl-student .toolbar-title{
@@ -50,6 +62,29 @@ page-edit-profile-step2 {
     h2{
       font-size: 23px;
       color: #0096D7;
+    }
+  }
+  h3{
+    font-size: 15px;
+  }
+  .swiper-wrapper{
+    width:80px;
+    margin: auto;
+
+    .swiper-slide{
+      width: 100%!important;
+      border:2px solid transparent;
+      border-radius: 100px;
+      p{
+        margin:10px 0;
+      }
+    }
+  }
+  .school-information{
+    text-align: center;
+    padding-top: 20px;
+    h2{
+      font-size:20px;
     }
   }
 }

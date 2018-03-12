@@ -1,12 +1,85 @@
 page-edit-profile-step3 {
+  .teacher {
+    .back-button-icon{
+      color: #00BC5B !important;
+    }
+    .back-button-text{
+      color: #00BC5B !important;
+    }
+    .button-positive{
+      background-color: #00BC5B !important;
+    }
+    .tagline{
+      background-color: #00BC5B !important;
+    }
+    .swiper-slide.active{
+      border-color: #00BC5B !important;
+    }
+    .tagline{
+      background-color: #00BC5B !important;
+    }
+  }
+  .student {
+    .back-button-icon{
+      color: #0096D7 !important;
+    }
+    .back-button-text{
+      color: #0096D7 !important;
+    }
+    .button-positive{
+      background-color: #0096D7 !important;
+    }
+    .swiper-slide.active{
+      border-color: #0096D7 !important;
+    }
+    .tagline{
+      background-color: #0096D7 !important;
+    }
+  }
+  .parent {
+
+    .back-button-icon{
+      color: #F97533 !important;
+    }
+    .back-button-text{
+      color: #F97533 !important;
+    }
+    .button-positive{
+      background-color: #F97533 !important;
+    }
+    .swiper-slide.active{
+      border-color: #F97533 !important;
+    }
+    .tagline{
+      background-color: #F97533 !important;
+    }
+  }
+  .school {
+    
+    .back-button-icon{
+      color: #F31C62 !important;
+    }
+    .back-button-text{
+      color: #F31C62 !important;
+    }
+    .button-positive{
+      background-color: #F31C62 !important;
+    }
+    .swiper-slide.active{
+      border-color: #F31C62 !important;
+    }
+    .tagline{
+      background-color: #F31C62 !important;
+    }
+  }
   .clear{
     clear: both;
   }
   .cl-parent .toolbar-title{
-    color: #F97533 !important
+    color: #F97533 !important;
   }
   .back-button{
-    color: #F97533 !important
+    color: #F97533 !important;
   }
   .registration{
       .item-md{
@@ -19,9 +92,19 @@ page-edit-profile-step3 {
       }
   }
   .swiper-wrapper{
-    .swiper-slide.active{
-      border-color: #F97533 !important;
-    }
+    margin-bottom: 15px;
+
+  }
+  h3{
+    font-size: 15px;
+  }
+  .tagline{
+    text-align: center;
+    font-size: 14px;
+    color: #fff;
+    padding:5px 10px;
+    margin:0 -15px 10px;
+    margin-bottom: 10px
   }
 
   ion-list{
@@ -176,6 +259,10 @@ page-edit-profile-step3 {
           .item-input{
             padding: 0!important ;
             position: relative;
+            .item-inner{
+              padding-right: 0;
+              border:0;
+            }
             ::after{
               content: '';
               width: 100%;
@@ -220,6 +307,10 @@ page-edit-profile-step3 {
           .item-datetime{
             padding: 0!important ;
             position: relative;
+            .item-inner{
+              padding-right: 0;
+              border: 0;
+            }
             .datetime{
               border:0!important;
               height: 45px;

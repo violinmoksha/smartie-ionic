@@ -21,6 +21,14 @@ page-register-step2 {
       border-color: #006838;
       background-color: #006838;
     }
+    .swiper-slide.active{
+      border-color: #006838 !important;
+    }
+    .school-information{
+      h2{
+        color: #006838;
+      }
+    }
   }
 
   .parent{
@@ -38,6 +46,14 @@ page-register-step2 {
       background-color: #F97533;
       &:hover {
         background-color: #F97533;
+      }
+    }
+    .swiper-slide.active{
+      border-color: #F97533 !important;
+    }
+    .school-information{
+      h2{
+        color: #F97533;
       }
     }
   }
@@ -59,6 +75,15 @@ page-register-step2 {
         background-color: #0096D7;
       }
     }
+    .swiper-slide.active{
+      border-color: #0096D7 !important;
+    }
+    .school-information{
+      h2{
+        color: #0096D7;
+      }
+    }
+
   }
 
   .school{
@@ -78,8 +103,18 @@ page-register-step2 {
         background-color: #F31C62;
       }
     }
+    .swiper-slide.active{
+      border-color: #F31C62 !important;
+    }
+    .school-information{
+      h2{
+        color: #F31C62;
+      }
+    }
   }
-
+    h3{
+      font-size: 15px;
+    }
     .tagline{
       text-align: center;
       font-size: 14px;
@@ -105,18 +140,23 @@ page-register-step2 {
     }
 
     .swiper-wrapper{
-      width: 120px;
+      width:80px;
       margin: auto;
-      .swiper-slide.active{
-        border-color: #F97533 !important;
+
+      .swiper-slide{
+        width: 100%!important;
+        border:2px solid transparent;
+        border-radius: 100px;
+        p{
+          margin:10px 0;
+        }
       }
     }
     .school-information{
       text-align: center;
       padding-top: 20px;
       h2{
-        font-size: 23px;
-        color: #F97533;
+        font-size:20px;
       }
     }
     .scroll-content{
@@ -132,5 +172,17 @@ page-register-step2 {
        }
      }
     }
+    #student-school{
 
+    }
+    .school-pic{
+      .input-label{
+        width: 100%;
+        text-align: center;
+        display: block;
+        max-width: 100%;
+        margin-bottom: 15px;
+
+      }
+    }
 }

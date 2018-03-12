@@ -19,6 +19,17 @@
   overflow: hidden;
   padding: 0 !important;
 }
+.scroll-content {
+  overflow: hidden;
+  overflow-y:auto!important;
+  background-color: #fff!important
+}
+.content-ios:not([no-bounce]) > .scroll-content::before{
+  display: none!important;
+}
+.content-ios:not([no-bounce]) > .scroll-content::after{
+    display: none!important;
+}
 .back-button.show-back-button{
   font-size: 15px;
   .back-button-icon-ios{

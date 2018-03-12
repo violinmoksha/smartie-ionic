@@ -1,4 +1,7 @@
 page-register-step3 {
+  .scroll-content{
+    padding-top: 0!important;
+  }
   .teacher{
     .toolbar-title{
       color: #00BC5B !important;
@@ -20,6 +23,9 @@ page-register-step3 {
       border-color: #006838;
       background-color: #006838;
     }
+    .swiper-slide.active{
+      border:1px solid #006838 !important;
+    }
   }
 
   .parent{
@@ -38,6 +44,9 @@ page-register-step3 {
       &:hover {
         background-color: #F97533;
       }
+    }
+    .swiper-slide.active{
+      border:1px solid #F97533 !important;
     }
   }
 
@@ -58,6 +67,9 @@ page-register-step3 {
         background-color: #0096D7;
       }
     }
+    .swiper-slide.active{
+      border:1px solid #0096D7 !important;
+    }
   }
 
   .school{
@@ -76,6 +88,9 @@ page-register-step3 {
       &:hover {
         background-color: #F31C62;
       }
+    }
+    .swiper-slide.active{
+      border:1px solid #F31C62 !important;
     }
   }
 
@@ -216,6 +231,7 @@ page-register-step3 {
     width:auto!important;
     padding:13px 15px;
     border:1px solid transparent;
+    margin-bottom: 15px;
     p{
       margin: 0;
       line-height:15px;

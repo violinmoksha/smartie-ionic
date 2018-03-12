@@ -184,6 +184,10 @@ export class EditProfileStep3Page {
     this.yearExperience = years;
   }
 
+  getRole() {
+    return this.userRole;
+  }
+
   // Method executed when the slides are changed
   public yearChanged(): void {
     let currentIndex = this.yearExp.getActiveIndex();

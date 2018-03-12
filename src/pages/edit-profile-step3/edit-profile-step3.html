@@ -4,13 +4,13 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-header [class]="getRole()">
   <ion-navbar>
-    <ion-title class="getRole()">Level and Location</ion-title>
+    <ion-title>Level and Location</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content [class]="getRole()" padding>
   <form [formGroup]="EditProfilestep3Form" name="EditProfilestep3Form" (ngSubmit)="finalEditProfileSubmit(EditProfilestep3Form.value)" novalidate>
     <!-- TODO: same, make these classes role-specific via something like getRole() -->
     <ion-list class="list-inset registration teacher step3">
@@ -83,7 +83,7 @@
         <div class="available-time">
           <div class="left">
             <ion-item>
-              <ion-datetime displayFormat="HH:mm" [(ngModel)]="startTime" formControlName="startTime"></ion-datetime>
+              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="startTime" formControlName="startTime"></ion-datetime>
             </ion-item>
             <div *ngIf="EditProfilestep3Form.get('startTime').invalid && !EditProfilestep3Form.get('startTime').pristine" class="item item-message">
               Start time is required.
@@ -94,7 +94,7 @@
           </div>
           <div class="right">
             <ion-item>
-              <ion-datetime displayFormat="HH:mm" [(ngModel)]="endTime" formControlName="endTime"></ion-datetime>
+              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="endTime" formControlName="endTime"></ion-datetime>
             </ion-item>
             <div *ngIf="EditProfilestep3Form.get('endTime').invalid && !EditProfilestep3Form.get('endTime').pristine" class="item item-message">
               End time is required.

@@ -4,13 +4,20 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-header [class]="getRole()">
   <ion-navbar>
-    <ion-title class="getRole()">Personal Info</ion-title>
+    <ion-title>Personal Info</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content [class]="getRole()" padding>
+
+  <!--<div>
+    <h4>Debug</h4>
+    <pre>Form : {{EditProfilestep2Form.value | json }}</pre>
+    <pre>Form Status : {{EditProfilestep2Form.status }}</pre>
+  </div>-->
+
   <form [formGroup]="EditProfilestep2Form" name="EditProfilestep2Form" (ngSubmit)="next(EditProfilestep2Form.value)" novalidate>
     <!-- TODO: make these classes dynamic, like getRole() -->
     <ion-list class="list-inset registration teacher step2">
@@ -38,7 +45,7 @@
         </div>
       </div>
 
-      <!-- Names for School users
+      <!-- Names for School users -->
       <div *ngIf="userRole == 'school'">
         <ion-item>
           <ion-label fixed>School Name</ion-label>
@@ -66,7 +73,7 @@
         <div *ngIf="!EditProfilestep2Form.controls['contactPosition'].valid && !EditProfilestep2Form.controls['contactPosition'].pristine" class="item item-message">
           Contact Position is required
         </div>
-      </div>-->
+      </div>
 
       <!-- Phone -->
       <ion-item>
@@ -97,7 +104,7 @@
         Profile About Message is required
       </div>
 
-      <!--<div *ngIf="userRole == 'parent' || userRole == 'student'">
+      <div *ngIf="userRole == 'parent' || userRole == 'student'">
         <h3>Are you part of a school?</h3>
         <ion-slides id="student-school" slidesPerView="2">
           <ion-slide (click)="filterpartOfSchool(true)" [ngClass]="{'active': partOfSchool == true}">
@@ -119,7 +126,7 @@
             Your School Name is required
           </div>
         </div>
-      </div>-->
+      </div>
     </ion-list>
     <button class="button button-positive" [disabled]="!EditProfilestep2Form.valid" ion-button full>Next</button>
   </form>
