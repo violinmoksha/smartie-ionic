@@ -124,7 +124,7 @@ export class RegisterStep2Page {
               }else if(photoFor == 'school'){
                 this.schoolCameraData = 'data:image/jpeg;base64,' + imageData;
                 // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraData);
-                this.storage.set('schoolPhotoDataUrl', this.schoolCameraData);
+                this.storage.set('schoolPhotoDataUrl', imageData);
                 this.schoolPhotoTaken = true;
                 this.schoolPhotoSelected = false;
               }
@@ -149,13 +149,13 @@ export class RegisterStep2Page {
              // If it's base64:
               if(photoFor == 'prof'){
                 this.cameraUrl = "data:image/jpeg;base64," + imageData;
-                this.storage.set('profilePhotoDataUrl', this.cameraUrl);
+                this.storage.set('profilePhotoDataUrl', imageData);
                 this.photoSelected = true;
                 this.photoTaken = false;
               }else if(photoFor == 'school'){
                 this.schoolCameraUrl = "data:image/jpeg;base64," + imageData;
                 // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraUrl);
-                this.storage.set('schoolPhotoDataUrl', this.schoolCameraUrl);
+                this.storage.set('schoolPhotoDataUrl', imageData);
                 this.schoolPhotoSelected = true;
                 this.schoolPhotoTaken = false;
               }
