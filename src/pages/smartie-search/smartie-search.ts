@@ -64,7 +64,7 @@ export class SmartieSearch {
           profQuery.first({useMasterKey:true}).then(profile => {
             console.log('Ok, got the profile hm: '+JSON.stringify(profile));
             this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
-              Parse.User.logIn('alphateacher9', 'alphateacher1').then(user => {
+              //Parse.User.logIn('alphateacher9', 'alphateacher1').then(user => {
                 console.log('Logged in.');
                 let parseFile = new Parse.File('photo.jpg', profilePhotoData, "image/jpeg");
                 // console.log(parseCvFile);
