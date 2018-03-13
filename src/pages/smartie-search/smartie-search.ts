@@ -42,12 +42,14 @@ export class SmartieSearch {
 
   public notifications: any;
   public accepteds: any;
+  private password: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController) {
     this.role = navParams.data.role;
     this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
     if (this.fromWhere == 'signUp') {
+      this.password = navParams.data.password;
       // TODO: retrieve the profilePhoto and CVs from
       // this.storage HERE if we came from signUp,
       console.log('We are here.');
@@ -57,39 +59,27 @@ export class SmartieSearch {
         let userQuery = new Parse.Query(Parse.User);
         userQuery.equalTo('username', UserProfile.userData.username);
         userQuery.first({useMasterKey:true}).then(user => {
-          console.log('Ok, got the user hm');
+          console.log('Ok, got the user: '+JSON.stringify(user));
           profQuery.equalTo('user', user);
           profQuery.first({useMasterKey:true}).then(profile => {
-            console.log('Ok, got the profile hm.');
+            console.log('Ok, got the profile hm: '+JSON.stringify(profile));
             this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
-              // let parseFile = new Parse.File('photo.jpg', profilePhotoData);
-              // let parseFile = new Parse.File('photo.jpg', {base64: profilePhotoData});
-
-              Parse.User.logIn('alphateacher9', 'alphateacher1', {
-                // If the username and password matches
-                success: function(user) {
-                let parseFile = new Parse.File('photo.jpg', {base64: profilePhotoData});
+              Parse.User.logIn('alphateacher9', 'alphateacher1').then(user => {
+                console.log('Logged in.');
+                let parseFile = new Parse.File('photo.jpg', profilePhotoData, "image/jpeg");
                 // console.log(parseCvFile);
                 parseFile.save({ useMasterKey: true }).then(file => {
-                  console.log(file);
+                  console.log("OK, profilePhoto file saved!");
                   profile.set('profilePhoto', file);
                   profile.save({ useMasterKey:true }).then(profile => {
-                    console.log(JSON.stringify(profile));
+                    console.log('AND saved onto the profile supposedly');
+                    // TODO: run fetchNotifications here for the new user, same as in login.ts
                   })
+                }).catch(err => {
+                  console.log(JSON.stringify(err));
                 })
-                },
-                // If there is an error
-                error: function(user, error) {
-                  console.log(error);
-                }
-              });
-              /*parseFile.save({ useMasterKey: true }).then(file => {
-                console.log(file);
-                profile.set('profilePhoto', file);
-                profile.save({useMasterKey:true}).then(profile => {
-                  console.log(JSON.stringify(profile));
-                })
-              })*/
+              })
+
             })
           })
         });
@@ -136,8 +126,8 @@ export class SmartieSearch {
         // accepted for Teacher --> Student needs to do the Scheduling
       }
     } else {
-      localStorage.clear(); // dump ephemeral session
-      this.navCtrl.setRoot("LoginPage"); // send to Login
+      //localStorage.clear(); // dump ephemeral session
+      //this.navCtrl.setRoot("LoginPage"); // send to Login
     }
   }
 

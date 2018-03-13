@@ -281,7 +281,7 @@ export class RegisterStep3Page {
           // console.log(this.form1Values.password);
 
           this.storage.set("UserProfile", signupResult.result);
-          this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId});
+          this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, password: this.form1Values.password});
           this.loading.dismiss();
 
           let cvPromises = [];
