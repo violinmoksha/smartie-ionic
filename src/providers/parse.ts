@@ -21,9 +21,8 @@ export class ParseProvider {
   }
 
   parseInitialize(){
-    Parse.initialize(this.parseAppId);
+    Parse._initialize(this.parseAppId, null, this.parseMasterKey);
     Parse.serverURL = this.parseServerUrl;
-    Parse.masterKey = this.parseMasterKey;
   }
 
 }

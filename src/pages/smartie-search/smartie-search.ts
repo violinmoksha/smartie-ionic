@@ -4,7 +4,7 @@ import { NavController, NavParams, AlertController, ModalController } from 'ioni
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-//import { ParseProvider } from '../../providers/parse';
+import { ParseProvider } from '../../providers/parse';
 import { Parse } from 'parse';
 import { LoginPage } from '../login/login';
 
@@ -70,11 +70,15 @@ export class SmartieSearch {
         let schoolQuery = new Parse.Query(School);
         userQuery.equalTo('username', UserProfile.userData.username);
         userQuery.first({useMasterKey:true}).then(user => {
+          console.log('Got the user');
           profQuery.equalTo('user', user);
           profQuery.first({useMasterKey:true}).then(profile => {
+            console.log('Got the profile');
             if(this.profilePhotoData){
               let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
+              console.log('trying to save the file');
               parseFile.save({ useMasterKey: true }).then(file => {
+                console.log('Saved the file');
                 profile.set('profilePhoto', file);
                 profile.save({ useMasterKey:true }).then(profile => {
                   let API = this.smartieApi.getApi(
