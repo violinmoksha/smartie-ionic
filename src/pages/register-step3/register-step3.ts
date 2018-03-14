@@ -279,12 +279,31 @@ export class RegisterStep3Page {
           // console.log(signupResult);
           // console.log(signupResult.result.userData.username);
           // console.log(this.form1Values.password);
-
           this.storage.set("UserProfile", signupResult.result);
-          this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, password: this.form1Values.password});
-          this.loading.dismiss();
+          let API = this.smartieApi.getApi(
+            'fetchNotifications',
+            { profileId: signupResult.result.profileData.objectId, role: this.role }
+          );
 
-          let cvPromises = [];
+          return new Promise(resolve => {
+            interface Response {
+              result: any
+            };
+            this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
+              this.loading.dismiss();
+              this.sanitizeNotifications(Notifications.result).then(notifications => {
+                this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
+              })
+            }, err => {
+              console.log(err);
+            });
+          });
+
+
+          // this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, password: this.form1Values.password});
+
+
+          // let cvPromises = [];
           // console.log(this.TeacherFiles);
           /*if(this.TeacherFiles){
             for(let cvFile of this.TeacherFiles){
@@ -329,7 +348,36 @@ export class RegisterStep3Page {
     });
   }
 
-  setProfilePic() {
+  sanitizeNotifications(notifications:any){
+    // TODO: when these are more than just jobReqs
+    return new Promise(resolve => {
+      let activeJobReqs = [];
+      notifications.map(notification => {
+        if (notification.requestSent == true
+            || notification.acceptState == true) {
+          activeJobReqs.push(notification);
+        }
+      });
+      if (activeJobReqs.length > 0) {
+        for(let activeJob of activeJobReqs) {
+          notifications.forEach((notification, ix) => {
+            if (notification.teacherProfile.objectId == activeJob.teacherProfile.objectId &&
+                notification.otherProfile.objectId == activeJob.otherProfile.objectId &&
+                (notification.requestSent == false && notification.acceptState == false) ) {
+              notifications.splice(ix, 1);
+            }
+            if (ix >= notifications.length - 1) {
+              resolve(notifications);
+            }
+          });
+        }
+      } else {
+        resolve(notifications);
+      }
+    });
+  }
+
+  /*setProfilePic() {
     return new Promise(function(resolve, reject){
       if(localStorage.getItem('profilePhotoDataUrl') == null){
         resolve('success');
@@ -385,7 +433,7 @@ export class RegisterStep3Page {
         }
       });
     });
-  }
+  }*/
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterStep3Page');

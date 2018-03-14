@@ -4,7 +4,7 @@ import { NavController, NavParams, AlertController, ModalController } from 'ioni
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { ParseProvider } from '../../providers/parse';
+//import { ParseProvider } from '../../providers/parse';
 import { Parse } from 'parse';
 import { LoginPage } from '../login/login';
 
@@ -46,14 +46,12 @@ export class SmartieSearch {
 
   public notifications: any;
   public accepteds: any;
-  private password: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController, private login: LoginPage ) {
     this.role = navParams.data.role;
     this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
     if (this.fromWhere == 'signUp') {
-      // this.password = navParams.data.password;
       // TODO: retrieve the profilePhoto and CVs from
       // this.storage HERE if we came from signUp,
       this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
@@ -62,6 +60,7 @@ export class SmartieSearch {
       this.storage.get('schoolPhotoDataUrl').then(schoolPhotoDataUrl => {
         this.schoolPhotoDataUrl = schoolPhotoDataUrl;
       });
+      console.log('We are here.');
       this.storage.get('UserProfile').then(UserProfile => {
         let Profile = new Parse.Object.extend('Profile');
         let School = new Parse.Object.extend('School');
@@ -92,15 +91,14 @@ export class SmartieSearch {
                     };
                     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
                       login.sanitizeNotifications(Notifications.result).then(notifications => {
-                        this.navParams.data.notifications = notifications;
+                        navParams.data.notifications = notifications;
+
                         if(this.role == 'school'){
                           if(this.schoolPhotoDataUrl){
                             let parseSchoolFile = new Parse.File('school.jpg', { base64: this.schoolPhotoDataUrl });
                               parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
                                 profile.set('schoolPhoto', schoolFile);
                                 profile.save({ useMasterKey: true }).then(school => {
-                                  console.log(this.fromWhere);
-                                  this.getSmartieSearch();
                                   // TODO: run fetchNotifications here for the new user, same as in login.ts
                                 })
                               })
@@ -119,59 +117,9 @@ export class SmartieSearch {
           })
         });
       });
-    }else{
-      this.getSmartieSearch();
     }
-    // if (navParams.data.notifications !== undefined) {
-    //   this.notifications = navParams.data.notifications;
-    //   this.notifications.map((notification, ix) => {
-    //     if (notification.acceptState == true) {
-    //       this.accepteds.push(notification);
-    //       this.notifications.splice(ix, 1);
-    //     }
-    //   });
-    //   if (this.notifications !== undefined)
-    //     this.notifyCount = this.notifications.length;
-    //   else
-    //     this.notifyCount = 0;
-    //   if (this.role !== 'teacher') {
-    //     // accepted for Others --> Scheduling flow
-    //     let acceptedScheduleModals = [];
-    //     for (let acceptedJob of this.accepteds) {
-    //       acceptedScheduleModals.push(this.modalCtrl.create("SchedulePage", { params: {
-    //         profilePhoto: acceptedJob.teacherProfile.profilePhoto,
-    //         fullname: acceptedJob.teacherProfile.fullname,
-    //         role: acceptedJob.teacherProfile.role,
-    //         prefPayRate: acceptedJob.teacherProfile.prefPayRate,
-    //         prefLocation: acceptedJob.teacherProfile.prefLocation,
-    //         defaultStartDate: acceptedJob.teacher.defaultStartDate,
-    //         defaultEndDate: acceptedJob.teacher.defaultEndDate,
-    //         defaultStartTime: acceptedJob.teacher.defaultStartTime,
-    //         defaultEndTime: acceptedJob.teacher.defaultEndTime
-    //       }}));
-    //       //console.log('DEFAULT END TIME: '+acceptedJob.teacher.defaultEndDate);
-    //       //console.log('DEFAULT START TIME: '+acceptedJob.teacher.defaultStartTime);
-    //     }
-    //     acceptedScheduleModals.forEach((acceptedScheduleModal, ix) => {
-    //       if (ix == 0) acceptedScheduleModal.present();
-    //       acceptedScheduleModal.onDidDismiss(data => {
-    //         if (acceptedScheduleModals[ix+1] !== undefined)
-    //           acceptedScheduleModals[ix+1].present();
-    //       });
-    //     });
-    //   } else {
-    //     // accepted for Teacher --> Student needs to do the Scheduling
-    //   }
-    // } else {
-    //   //localStorage.clear(); // dump ephemeral session
-    //   //this.navCtrl.setRoot("LoginPage"); // send to Login
-    // }
-  }
-
-  getSmartieSearch(){
-    if (this.navParams.data.notifications !== undefined) {
-      console.log('test')
-      this.notifications = this.navParams.data.notifications;
+    if (navParams.data.notifications !== undefined) {
+      this.notifications = navParams.data.notifications;
       this.notifications.map((notification, ix) => {
         if (notification.acceptState == true) {
           this.accepteds.push(notification);
@@ -467,13 +415,9 @@ export class SmartieSearch {
     let pointNortheast = this.destinationPoint(45, radiusInKm / 2, mapCenter);
     this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
 
-    console.log(this.notifications);
-    if(this.notifications){
-      for(let searchResult of this.notifications){
-        this.createMarkerLocation(searchResult);
-      }
+    for(let searchResult of this.notifications){
+      this.createMarkerLocation(searchResult);
     }
-
 
     //let myPlace = new google.maps.LatLng(34.0522, -118.2437);
     //this.bounds.extend(myPlace);
