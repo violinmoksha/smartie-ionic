@@ -84,7 +84,7 @@ export class LoginPage {
     if (err) {
       alert = this.alertCtrl.create({
         title: 'Login Failed !',
-        subTitle: JSON.stringify(err),
+        subTitle: 'You may need to verify your email address first!',
         buttons: ['OK']
       });
     } else {

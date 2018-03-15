@@ -12,10 +12,10 @@ page-smartie-search {
   .notification{
     background: none!important;
     border: 0!important;
-    width: 23px;
-    height: 28px;
+    width: 23px !important;
+    height: 28px !important;
     z-index: 10;
-    position: relative;
+    position: relative !important;
     padding: 0;
     background-image: url(./../assets/imgs/Logo-icon-small.png)!important;
     background-repeat: no-repeat!important;
@@ -182,12 +182,11 @@ page-smartie-search {
       }
     }
   }
-  .toolbar-title{
-    max-width:160px;
+  .horizontal-logo{
+    height:40px!important;
     margin: auto;
-    img{
-      width: 100%;
-    }
+    background:url(./../assets/imgs/smartie-horzontal-logo.png) no-repeat center bottom !important;
+    background-size:160px !important;
   }
 
   .bottom-search-box{
@@ -204,11 +203,10 @@ page-smartie-search {
       text-indent: 10px;
       margin-top:15px;
       padding-left:25px;
-      height: 40px;
-      background-image: url(../../assets/imgs/teacher-map-icon30px.png);
-      background-size:20px;
-      background-position: 8px center;
-      background-repeat: no-repeat;
+      background-image: url(../../assets/imgs/teacher-map-icon30px.png) !important;
+      background-size:20px !important;
+      background-position: 8px center !important;
+      background-repeat: no-repeat !important;
     }
     .button{
         background-color: #00BC5B!important;

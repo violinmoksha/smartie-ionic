@@ -42,8 +42,6 @@ export class SmartieSearch {
   //private alertOpts: any;
   // private infoWindow: any;
 
-  public searchLogo = '/assets/imgs/smartie-horzontal-logo.png';
-
   public notifications: any;
   public accepteds: any;
 
