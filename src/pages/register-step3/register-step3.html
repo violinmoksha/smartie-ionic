@@ -71,7 +71,8 @@
         <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
       </label> -->
       <ion-item>
-        <ion-label fixed>Preferred Teaching Location</ion-label>
+        <ion-label *ngIf="role == 'teacher'" fixed>Preferred Teaching Location</ion-label>
+        <ion-label *ngIf="role != 'teacher'" fixed>Preferred Learning Location</ion-label>
         <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
       </ion-item>
 

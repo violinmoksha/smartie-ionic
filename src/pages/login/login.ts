@@ -60,7 +60,7 @@ export class LoginPage {
                 result: any
               };
               this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
-                this.sanitizeNotifications(Notifications.result).then(notifications => {
+                this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
                   this.navCtrl.push("SmartieSearch", { role: UserProfile.profileData.role, fromWhere: 'login', loggedProfileId: UserProfile.profileData.objectId, notifications: notifications });
                 })
               }, err => {
@@ -103,34 +103,5 @@ export class LoginPage {
 
   pushForgotPassword(){
     this.navCtrl.push("ForgotPassword");
-  }
-
-  sanitizeNotifications(notifications:any){
-    // TODO: when these are more than just jobReqs
-    return new Promise(resolve => {
-      let activeJobReqs = [];
-      notifications.map(notification => {
-        if (notification.requestSent == true
-            || notification.acceptState == true) {
-          activeJobReqs.push(notification);
-        }
-      });
-      if (activeJobReqs.length > 0) {
-        for(let activeJob of activeJobReqs) {
-          notifications.forEach((notification, ix) => {
-            if (notification.teacherProfile.objectId == activeJob.teacherProfile.objectId &&
-                notification.otherProfile.objectId == activeJob.otherProfile.objectId &&
-                (notification.requestSent == false && notification.acceptState == false) ) {
-              notifications.splice(ix, 1);
-            }
-            if (ix >= notifications.length - 1) {
-              resolve(notifications);
-            }
-          });
-        }
-      } else {
-        resolve(notifications);
-      }
-    });
   }
 }

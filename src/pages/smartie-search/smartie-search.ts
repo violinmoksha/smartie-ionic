@@ -6,7 +6,7 @@ import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 //import { ParseProvider } from '../../providers/parse';
 import { Parse } from 'parse';
-import { LoginPage } from '../login/login';
+// import { LoginPage } from '../login/login';
 
 declare var google;
 
@@ -19,7 +19,7 @@ declare var google;
 @IonicPage()@Component({
   selector: 'page-smartie-search',
   templateUrl: 'smartie-search.html',
-  providers: [ LoginPage ]
+  // providers: [ LoginPage ]
 })
 export class SmartieSearch {
 
@@ -45,7 +45,7 @@ export class SmartieSearch {
   public notifications: any;
   public accepteds: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController, private login: LoginPage ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController ) {
     this.role = navParams.data.role;
     this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
@@ -61,10 +61,9 @@ export class SmartieSearch {
       console.log('We are here.');
       this.storage.get('UserProfile').then(UserProfile => {
         let Profile = new Parse.Object.extend('Profile');
-        let School = new Parse.Object.extend('School');
         let profQuery = new Parse.Query(Profile);
         let userQuery = new Parse.Query(Parse.User);
-        let schoolQuery = new Parse.Query(School);
+
         userQuery.equalTo('username', UserProfile.userData.username);
         userQuery.first({useMasterKey:true}).then(user => {
           console.log('Got the user');
@@ -78,7 +77,18 @@ export class SmartieSearch {
                 console.log('Saved the file');
                 profile.set('profilePhoto', file);
                 profile.save({ useMasterKey:true }).then(profile => {
-                  let API = this.smartieApi.getApi(
+                  if(this.role == 'school'){
+                    if(this.schoolPhotoDataUrl){
+                      let parseSchoolFile = new Parse.File('school.jpg', { base64: this.schoolPhotoDataUrl });
+                        parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
+                          profile.set('schoolPhoto', schoolFile);
+                          profile.save({ useMasterKey: true }).then(school => {
+                            // TODO: run fetchNotifications here for the new user, same as in login.ts
+                          })
+                        })
+                    }
+                  }
+                  /*let API = this.smartieApi.getApi(
                     'fetchNotifications',
                     { profileId: profile.id, role: this.role }
                   );
@@ -88,8 +98,8 @@ export class SmartieSearch {
                       result: any
                     };
                     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
-                      login.sanitizeNotifications(Notifications.result).then(notifications => {
-                        navParams.data.notifications = notifications;
+                      // login.sanitizeNotifications(Notifications.result).then(notifications => {
+                        // navParams.data.notifications = notifications;
 
                         if(this.role == 'school'){
                           if(this.schoolPhotoDataUrl){
@@ -102,11 +112,11 @@ export class SmartieSearch {
                               })
                           }
                         }
-                      })
+                      // })
                     }, err => {
                       console.log(err);
                     });
-                  });
+                  });*/
                 })
               }).catch(err => {
                 console.log(JSON.stringify(err));
@@ -279,7 +289,7 @@ export class SmartieSearch {
     // TODO: there shud be a way to wrap this
     // so we don't need to include the frontend
     // SDK directly in our index.html
-    //console.log(locationData);
+    // console.log(locationData);
     let latLng;
     if (this.role == 'teacher') {
       latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
@@ -327,8 +337,7 @@ export class SmartieSearch {
           yrsExperience: locationData.teacherProfile.yrsExperience,
           profileAbout: locationData.teacherProfile.profileAbout,
           profileTitle: locationData.teacherProfile.profileTitle,
-          jobDescrioption: locationData.jobDescription,
-          prefLocation: locationData.prefLocation,
+          prefLocation: locationData.teacherProfile.prefLocation,
           phone: locationData.teacherProfile.phone,
           teacherProfileId: locationData.teacherProfile.objectId,
           loggedRole: this.role,
@@ -344,9 +353,8 @@ export class SmartieSearch {
           role: locationData.otherProfile.role,
           profileAbout: locationData.otherProfile.profileAbout,
           profileTitle: locationData.otherProfile.profileTitle,
-          jobDescription: locationData.jobDescription,
           prefPayRate: locationData.otherProfile.prefPayRate,
-          prefLocation: locationData.prefLocation,
+          prefLocation: locationData.otherProfile.prefLocation,
           phone: locationData.otherProfile.phone,
           otherProfileId: locationData.otherProfile.objectId,
           loggedRole: this.role
@@ -401,6 +409,7 @@ export class SmartieSearch {
       // TODO: this now needs to do a quick geocoder call
       mapCenter = this.notifications[0].latLng;
     }
+
     let mapOptions = {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };

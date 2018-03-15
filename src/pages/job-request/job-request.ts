@@ -28,6 +28,7 @@ export class JobRequestPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, private loadingCtrl: LoadingController) {
     this.params = navParams.data.params;
+    console.log(this.params);
     if (this.params.fromWhere && this.params.fromWhere == 'requestSentJobs') {
       this.congrats = true;
     } else {
@@ -112,6 +113,8 @@ export class JobRequestPage {
           role: profile.profileData.role
         };
       }
+
+      console.log(this.body);
 
       let API = this.smartieApi.getApi(
         'setJobRequest',

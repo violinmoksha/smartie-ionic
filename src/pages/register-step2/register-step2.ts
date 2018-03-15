@@ -33,6 +33,8 @@ export class RegisterStep2Page {
   private photoSelected: boolean;
   private schoolPhotoSelected: boolean;
   private partOfSchool: any;
+  private titlePlaceHolder: string;
+  private messagePlaceHolder: string;
   @ViewChild(Slides) studentSchool: Slides;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private smartieApi: SmartieAPI, private storage: Storage) {
@@ -42,6 +44,8 @@ export class RegisterStep2Page {
     this.partOfSchool = false;
 
     if(this.role == 'school'){
+      this.titlePlaceHolder = "School seeking CMRA";
+      this.messagePlaceHolder = "We looking for Market Research Analyst, who have hands of experience in CMRA for our school";
       this.Step2Form = new FormGroup({
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
@@ -52,6 +56,13 @@ export class RegisterStep2Page {
         contactPosition: new FormControl('', Validators.required)
       })
     }else if(this.role == 'student' || this.role == 'parent'){
+      if(this.role == 'parent'){
+        this.titlePlaceHolder = "Parent seeking CMRA";
+        this.messagePlaceHolder = "I'm a Parent looking for experienced Market Research Analyst for my child";
+      }else{
+        this.titlePlaceHolder = "Student seeking CMRA";
+        this.messagePlaceHolder = "I'm a student interested in learning Market Research Analyst and looking for experienced instructor";
+      }
       this.Step2Form = new FormGroup({
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
@@ -60,6 +71,8 @@ export class RegisterStep2Page {
         associateSchoolName: new FormControl('')
       })
     }else{
+      this.titlePlaceHolder = "I am a Certified TOEFL Instructor";
+      this.messagePlaceHolder = "Although I am certified in TOEFL I also have a passion for teaching Korean. Please book a session with me, you'll be amazed at the quick learning results!";
       this.Step2Form = new FormGroup({
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
