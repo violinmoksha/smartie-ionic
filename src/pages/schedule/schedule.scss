@@ -11,7 +11,7 @@ page-schedule {
           width: 70%;
           float: left;
           text-align: left;
-          max-height:0;
+          height:45px;
           .avatar {
             float: left;
             width: 40px;
@@ -19,12 +19,21 @@ page-schedule {
             overflow: hidden;
             border-radius: 200px;
             margin-right: 10px;
+              border:2px solid #cfcfcf;
             img {
               width: 100%;
+              height: 100%;
             }
           }
           .u-detail {
-            width: auto;
+              width: calc(100% - 70px);
+            float: left;
+            position: relative;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+
             .name {
               width:140px;
               font-weight: 500;
@@ -43,7 +52,7 @@ page-schedule {
 
         }
         .right {
-          width: 30%;
+          width: 25%;
           float: right;
           text-align: right;
 

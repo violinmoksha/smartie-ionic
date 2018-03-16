@@ -14,6 +14,7 @@ export class ParseProvider {
   private parseMasterKey: string = "49bc1a33-dfe7-4a32-bdcc-ee30b7ed8447"; // local and test
   //private parseServerUrl: string = "https://smartieapp.com/parse";
   private parseServerUrl: string = "https://test.t0tl3s.com/parse";
+  // private parseServerUrl: string = "http://172.16.1.179:1337/parse";
   // private parseServerUrl: string = "http://76.170.58.147:1337/parse";
 
   constructor() {

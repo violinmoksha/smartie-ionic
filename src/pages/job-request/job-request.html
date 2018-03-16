@@ -10,7 +10,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="cl-{{userRole}}" padding>
   <h4 *ngIf="params.fromWhere == 'requestSentJobs'" style="color:red">Congratulations, You Have Received a <span *ngIf="userRole == 'teacher'">Job</span><span *ngIf="userRole !== 'teacher'">Teaching</span> Request!</h4>
   <h4 *ngIf="params.fromWhere == 'acceptedJobs'" style="color:red">Congratulations, Your Job Request Has Been ACCEPTED!</h4>
 

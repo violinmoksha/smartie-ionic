@@ -4,7 +4,8 @@ export class Constants {
     baseUrls: {
       prod: 'https://smartieapp.com',
       test: 'https://test.t0tl3s.com',
-      local: 'http://76.170.58.147:1337'
+      // local: 'http://76.170.58.147:1337'
+      local: 'http://172.16.1.179:1337'
     },
     paths: {
       fn: '/parse/functions',

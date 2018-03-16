@@ -14,7 +14,7 @@
   <h4 style="color:red" *ngIf="userRole !== 'teacher'">{{ params.fullname }} Has ACCEPTED! Now book your session according to your teacher's availability!</h4>
   <h4 style="color:red" *ngIf="userRole == 'teacher'">{{ params.fullname }} Has ACCEPTED! Now book your session according to your own availability!</h4>
   <div class="left">
-    <div class="avatar"><img *ngIf="params.profilePhoto !== undefined" src="{{ params.profilePhoto }}"><img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}" /></div>
+    <div class="avatar"><img *ngIf="params.profilePhoto !== undefined" src="{{ params.profilePhoto.url }}"><img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}" /></div>
     <div class="u-detail">
       <div class="name">{{ params.fullname }}</div>
       <div class="profile-type">{{ params.role }}</div>

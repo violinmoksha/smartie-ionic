@@ -5,7 +5,7 @@ page-job-request {
   }
     .totles-pop-search{
       text-align: center;
-      padding:0 10px ;
+      padding:0 0 ;
       border-bottom: 1px solid #cfcfcf;
       .notification {
 
@@ -16,20 +16,28 @@ page-job-request {
           width: 70%;
           float: left;
           text-align: left;
-          max-height:0;
+          height:45px;
           .avatar {
             float: left;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             overflow: hidden;
             border-radius: 200px;
             margin-right: 10px;
+            border:2px solid #cfcfcf;
             img {
               width: 100%;
+              height: 100%;
             }
           }
           .u-detail {
-            width: auto;
+            width: calc(100% - 70px);
+            float: left;
+            position: relative;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
             .name {
               width:140px;
               font-weight: 500;
@@ -68,12 +76,8 @@ page-job-request {
       }
     }
 
-
-
-
-
     .jobprofile-content{
-      padding:30px 8px;
+      padding:15px 0 10px;
       overflow-y: auto;
 
       h2{
@@ -138,7 +142,7 @@ page-job-request {
           margin-right: 0;
         }
         img {
-          height:20px;
+          height:15px;
           margin-right:5px;
         }
       }
@@ -146,7 +150,7 @@ page-job-request {
 
 
     .alert-button-group{
-      padding: 8px;
+      padding: 0;
       .alert-button-default-md{
         width: 49%!important;
         padding: 10px 5px;
@@ -155,6 +159,7 @@ page-job-request {
         color: #fff;
         text-align: center;
         margin-right: 2%;
+        border-radius: 5px;
         &:last-child{
           margin-right: 0;
         }
@@ -166,6 +171,8 @@ page-job-request {
     }
 
     .jobprofile-content{
+      border-bottom: 1px solid #cfcfcf;
+      margin-bottom: 15px;
       h3{
         text-align: left;
         font-size: 13px;
@@ -182,45 +189,105 @@ page-job-request {
       }
     }
 
+
     .cl-teacher{
+      .toolbar-background{
+        background-color: #00BC5B !important;
+        color: #fff;
+      }
       .toolbar-title{
-        color: #00BC5B !important
+        color: #fff!important;
       }
       .back-button{
         color: #00BC5B !important
+      }
+      .price{
+        color: #00BC5B !important
+      }
+      .alert-button-default-md{
+        background-color: #00BC5B !important;
+        color: #fff;
       }
     }
     .cl-parent {
+      .toolbar-background{
+        background-color: #F97533 !important;
+        color: #fff;
+      }
       .toolbar-title{
-        color: #F97533 !important
+        color: #fff!important;
       }
       .back-button{
         color: #F97533 !important
+      }
+      .price{
+        color: #F97533 !important
+      }
+      .alert-button-default-md{
+        background-color: #F97533 !important;
+        color: #fff;
       }
     }
     .cl-school {
+      .toolbar-background{
+        background-color: #F31C62 !important;
+        color: #fff;
+      }
       .toolbar-title{
-        color: #F31C62 !important
+        color: #fff!important;
       }
       .back-button{
         color: #F31C62 !important
+      }
+      .price{
+        color: #F31C62 !important
+      }
+      .alert-button-default-md{
+        background-color: #F31C62 !important;
+        color: #fff;
       }
     }
     .cl-student {
+      .toolbar-background{
+        background-color: #0096D7 !important;
+        color: #fff;
+      }
       .toolbar-title{
-        color: #0096D7 !important
+        color: #fff!important;
       }
       .back-button{
         color: #0096D7 !important
       }
+      .price{
+        color: #0096D7 !important
+      }
+      .alert-button-default-md{
+        background-color: #0096D7 !important;
+        color: #fff;
+      }
+    }
+    .teacher{
+
+    }
+    .parent{
+
+    }
+    .school{
+
+    }
+    .student{
+      
     }
 
 }
 
+
 .popover-ios .popover-content {
   width:300px;
-  left:20px!important;
+  left:0px!important;
   top:90px!important;
+  right: 0!important;
+  margin: auto;
   max-height:80%!important;
 
   .scroll-content {

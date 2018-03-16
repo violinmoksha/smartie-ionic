@@ -6,7 +6,6 @@ import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 //import { ParseProvider } from '../../providers/parse';
 import { Parse } from 'parse';
-// import { LoginPage } from '../login/login';
 
 declare var google;
 
@@ -18,8 +17,7 @@ declare var google;
  */
 @IonicPage()@Component({
   selector: 'page-smartie-search',
-  templateUrl: 'smartie-search.html',
-  // providers: [ LoginPage ]
+  templateUrl: 'smartie-search.html'
 })
 export class SmartieSearch {
 

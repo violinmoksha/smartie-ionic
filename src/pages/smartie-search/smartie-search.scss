@@ -229,16 +229,43 @@ page-smartie-search {
   }
 
   .student, .parent, .school {
-    .button{
-      background-color: #488AFF!important;
-    }
-
     .bottom-search-box .item-input{
       background-image:url(../../assets/imgs/student-map-icon30px.png)
     }
+  }
 
+  .parent{
+    .button{
+      background-color: #F97533!important;
+    }
+    .bar-button-default-ios{
+      color: #F97533!important;
+    }
     .notification span{
-      background: #488AFF!important;
+      background: #F97533!important;
     }
   }
+  .school{
+    .button{
+      background-color: #F31C62!important;
+    }
+    .bar-button-default-ios{
+      color: #F31C62!important;
+    }
+    .notification span{
+      background: #F31C62!important;
+    }
+  }
+  .student{
+    .button{
+      background-color: #0096D7!important;
+    }
+    .bar-button-default-ios{
+      color: #0096D7!important;
+    }
+    .notification span{
+      background: #0096D7!important;
+    }
+  }
+
 }
