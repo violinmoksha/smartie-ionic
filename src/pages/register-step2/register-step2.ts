@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, Slides } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
+// import { Crop } from '@ionic-native/crop';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
 
@@ -124,7 +125,11 @@ export class RegisterStep2Page {
           handler: () => {
             var options = {
               sourceType: this.camera.PictureSourceType.CAMERA,
-              destinationType: this.camera.DestinationType.DATA_URL
+              destinationType: this.camera.DestinationType.DATA_URL,
+              allowEdit: true,
+              targetWidth: 500,
+              targetHeight: 500,
+              quality: 100
             };
             this.camera.getPicture(options).then((imageData) => {
               if(photoFor == 'prof'){
@@ -154,7 +159,10 @@ export class RegisterStep2Page {
             let options = {
               sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
               destinationType: this.camera.DestinationType.DATA_URL,
-              quality : 100
+              allowEdit: true,
+              targetWidth: 500,
+              targetHeight: 500,
+              quality: 75
             };
 
             this.camera.getPicture(options).then((imageData) => {
