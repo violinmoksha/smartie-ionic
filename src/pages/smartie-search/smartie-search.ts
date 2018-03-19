@@ -124,6 +124,7 @@ export class SmartieSearch {
         });
       });
     }
+    console.log(navParams.data.notifications);
     if (navParams.data.notifications !== undefined) {
       this.notifications = navParams.data.notifications;
       this.notifications.map((notification, ix) => {
@@ -137,6 +138,7 @@ export class SmartieSearch {
       else
         this.notifyCount = 0;
       if (this.role !== 'teacher') {
+        console.log(this.accepteds);
         // accepted for Others --> Scheduling flow
         let acceptedScheduleModals = [];
         for (let acceptedJob of this.accepteds) {

@@ -60,7 +60,8 @@ export class SchedulePage {
     const options: CalendarModalOptions = {
       pickMode: 'single',
       from: new Date(),
-      to: new Date(defaultEndYear, defaultEndMonth-1, defaultEndDate)
+      to: new Date(defaultEndYear, defaultEndMonth-1, defaultEndDate),
+      cssClass: this.userRole
     };
     let myCalendar =  this.modalCtrl.create(CalendarModal, {
       options: options
@@ -70,7 +71,7 @@ export class SchedulePage {
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if(date){
-        let popover = this.popoverCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years, params: this.params });
+        let popover = this.popoverCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years, params: this.params, loggedRole: this.userRole });
         popover.present();
       }
     })

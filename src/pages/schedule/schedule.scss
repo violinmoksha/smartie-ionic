@@ -218,6 +218,22 @@ page-schedule {
       }
     }
 
+    .student{
+      .job-availablity-details{
+        background-color: #0096D7!important;
+      }
+      .right{
+          .price{
+            color: #0096D7!important;
+          }
+      }
+      .button-default{
+        background-color: #0096D7!important;
+      }
+
+
+   }
+
     .button {
       border-radius: 5px;
       width: 90%;
@@ -257,4 +273,121 @@ page-schedule {
         }
       }
     }
+
 }
+page-time-selector{
+  .left{
+    width: 50%;
+    padding-left: 15px;
+  }
+  .right{
+    width: 50%;
+    padding-right: 15px;
+    text-align: right;
+  }
+}
+
+.popover-content{
+  .student{
+      .toolbar-background-ios{
+        background-color:#0096D7!important;
+      }
+      .toolbar-title{
+        color: #fff;
+      }
+      .button-ios{
+          background-color:#0096D7!important;
+      }
+      .total{
+        color:#0096D7!important;
+      }
+  }
+  .school{
+      .toolbar-background-ios{
+        background-color:#F31C62!important;
+      }
+      .toolbar-title{
+        color: #fff;
+      }
+      .button-ios{
+          background-color:#F31C62!important;
+      }
+      .total{
+        color:#F31C62!important;
+      }
+    }
+    .parent{
+        .toolbar-background-ios{
+          background-color:#F97533!important;
+        }
+        .toolbar-title{
+          color: #fff;
+        }
+        .button-ios{
+            background-color:#F97533!important;
+        }
+        .total{
+          color:#F97533!important;
+        }
+      }
+}
+.student{
+    .week-title.primary{
+        background-color:#0096D7!important;
+    }
+    .today{
+      p{
+        color:#0096D7!important;
+      }
+    }
+    .on-selected{
+        background-color:#0096D7!important;
+      p{
+        color: #fff!important;
+      }
+    }
+    .picker-button{
+      color:#0096D7!important;
+    }
+  }
+
+  .school{
+      .week-title.primary{
+          background-color:#F31C62!important;
+      }
+      .today{
+        p{
+          color:#F31C62!important;
+        }
+      }
+      .on-selected{
+          background-color:#F31C62!important;
+        p{
+          color: #fff!important;
+        }
+      }
+      .picker-button{
+        color:#F31C62!important;
+      }
+    }
+
+    .parent{
+        
+        .week-title.primary{
+            background-color:#F97533!important;
+        }
+        .today{
+          p{
+            color:#F97533!important;
+          }
+        }
+        .on-selected{
+            background-color:#F97533!important;
+          p{
+            color: #fff!important;
+          }
+        }
+        .picker-button{
+          color:#F97533!important;
+        }
+      }

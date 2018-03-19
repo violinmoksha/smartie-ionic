@@ -20,6 +20,7 @@ export class TimeSelectorPage {
   private totalHours: any;
   private totalAmount: number;
   private params: any;
+  private loggedRole: any;
 
   public event = {
     timeStarts: '00:00',
@@ -29,7 +30,7 @@ export class TimeSelectorPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
     this.selectedDate = this.navParams.data.selectedDate;
     this.params = this.navParams.data.params;
-    console.log(this.params);
+    this.loggedRole = this.navParams.data.loggedRole;
   }
 
   timeSet(){
