@@ -35,13 +35,9 @@ export class JobRequestPage {
       this.congrats = false;
     }
     this.submitInProgress = false;
-    this.loading = this.loadingCtrl.create({
-      content: 'Loading...'
-    });
   }
 
   ionViewDidLoad() {
-
     this.storage.get("UserProfile").then(roleProfile => {
       this.userRole = roleProfile.profileData.role;
 
@@ -70,7 +66,6 @@ export class JobRequestPage {
         );
         interface Response {};
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-          this.loading.dismiss();
           if(Object.keys(response).length > 0){
             this.requestSent = true;
           }else{
@@ -89,6 +84,9 @@ export class JobRequestPage {
 
   sendRequest(){
     this.submitInProgress = true;
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading...'
+    });
     this.loading.present();
 
     this.storage.get("UserProfile").then(profile => {
@@ -139,6 +137,9 @@ export class JobRequestPage {
   }
 
   accept(){
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading...'
+    });
     this.loading.present();
     this.storage.get("UserProfile").then(roleProfile => {
       if(this.userRole === 'teacher'){
@@ -169,6 +170,9 @@ export class JobRequestPage {
 
   reject(){
     // requestSent = false & acceptState=false
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading...'
+    });
     this.loading.present();
     this.storage.get("UserProfile").then(roleProfile => {
       if(this.userRole === 'teacher'){

@@ -41,13 +41,6 @@ export class LoginPage {
           result: any
         }
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data => {
-          /*let alert = this.alertCtrl.create({
-            title: 'Login Completed !',
-            subTitle: 'Kickass!',
-            buttons: ['OK']
-          });
-          alert.present();*/
-          console.log(data.result);
           this.storage.set('UserProfile', data.result).then(UserProfile => {
             // TODO server-side fetchNotifications endpoint
             // to return: all notifications including jobRequests
@@ -85,7 +78,7 @@ export class LoginPage {
     if (err) {
       alert = this.alertCtrl.create({
         title: 'Login Failed !',
-        subTitle: 'You may need to verify your email address first!',
+        subTitle: 'Username/Password invalid, or you may need to verify your email address.',
         buttons: ['OK']
       });
     } else {

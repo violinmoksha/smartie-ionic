@@ -152,7 +152,7 @@ export class SmartieApp {
     else if (button.iconName == 'add-circle')
       this.nav.push("CreateJobPage");
     else if (button.iconName == 'log-out') { // logout -->
-      localStorage.clear(); // dump ephemeral session
+      this.storage.clear(); // dump ephemeral session
       this.nav.setRoot("LoginPage"); // send to Login
     }
   }
