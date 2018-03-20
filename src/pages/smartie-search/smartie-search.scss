@@ -228,9 +228,19 @@ page-smartie-search {
     }
   }
 
-  .student, .parent, .school {
+  .student {
     .bottom-search-box .item-input{
-      background-image:url(../../assets/imgs/student-map-icon30px.png)
+      background-image:url(../../assets/imgs/student-map-icon30px.png) !important
+    }
+  }
+  .parent {
+    .bottom-search-box .item-input{
+      background-image:url(../../assets/imgs/parent-map-icon30px.png) !important
+    }
+  }
+  .school {
+    .bottom-search-box .item-input{
+      background-image:url(../../assets/imgs/school-map-icon30px.png) !important
     }
   }
 

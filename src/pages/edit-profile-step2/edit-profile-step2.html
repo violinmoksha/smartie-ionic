@@ -26,6 +26,13 @@
         <p>Tell us about yourself</p>
       </div>
 
+      <div class="school-pic" *ngIf="userRole == 'school'">
+        <img id="picForSchool" (click)="chooseUploadType($event, 'school')" [src]="schoolPicSrc" width="300px" *ngIf="!schoolPhotoSelected && !schoolPhotoTaken" />
+        <img (click)="chooseUploadType($event, 'school')" [src]="schoolCameraData" *ngIf="schoolPhotoTaken" width="150px">
+        <img (click)="chooseUploadType($event, 'school')" [src]="schoolCameraUrl" *ngIf="schoolPhotoSelected" width="150px">
+        <span class="input-label">Upload your school photo</span>
+      </div>
+
       <div class="profile-pic">
         <img id="picForDisplay" (click)="chooseUploadType($event)" [src]="pageProfileSrc" width="150px" *ngIf="!photoSelected && !photoTaken" />
         <img (click)="chooseUploadType($event)" [src]="cameraData" *ngIf="photoTaken" width="150px">

@@ -47,6 +47,7 @@ export class LoginPage {
             buttons: ['OK']
           });
           alert.present();*/
+          console.log(data.result);
           this.storage.set('UserProfile', data.result).then(UserProfile => {
             // TODO server-side fetchNotifications endpoint
             // to return: all notifications including jobRequests

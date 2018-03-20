@@ -22,7 +22,7 @@ export class EditProfileStep2Page {
   private EditProfilestep2Form: FormGroup;
   private form1Values: any;
   pageProfileSrc: string;
-  pageSchoolSrc:string = './assets/img/school-img.png';
+  schoolPicSrc:string;
   cameraData: string;
   photoTaken: boolean;
   cameraUrl: string;
@@ -48,6 +48,7 @@ export class EditProfileStep2Page {
         contactName: new FormControl('', Validators.required),
         contactPosition: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
+        profileTitle: new FormControl('', Validators.required),
         profileAbout: new FormControl('', Validators.required)
       });
     } else if (this.userRole == 'teacher'){
@@ -69,14 +70,22 @@ export class EditProfileStep2Page {
     }
 
     this.storage.get("UserProfile").then(roleProfile => {
-      if (this.userRole == 'teacher') {
-        this.pageProfileSrc = './assets/img/user-img-teacher.png';
-      } else if (this.userRole == 'student') {
-        this.pageProfileSrc = './assets/img/user-img-student.png';
-      } else if (this.userRole == 'parent') {
-        this.pageProfileSrc = './assets/img/user-img-parent.png';
-      } else if (this.userRole == 'school') {
-        this.pageProfileSrc = './assets/img/user-img-school.png';
+      if(roleProfile.profileData.schoolPhoto){
+        this.schoolPicSrc = roleProfile.profileData.schoolPhoto.url;
+      }
+      if(roleProfile.profileData.profilePhoto){
+        this.pageProfileSrc = roleProfile.profileData.profilePhoto.url;
+      }else{
+        if (this.userRole == 'teacher') {
+          this.pageProfileSrc = './assets/img/user-img-teacher.png';
+        } else if (this.userRole == 'student') {
+          this.pageProfileSrc = './assets/img/user-img-student.png';
+        } else if (this.userRole == 'parent') {
+          this.pageProfileSrc = './assets/img/user-img-parent.png';
+        } else if (this.userRole == 'school') {
+          this.pageProfileSrc = './assets/img/user-img-school.png';
+          this.schoolPicSrc = './assets/img/school-img.png';
+        }
       }
 
       this.fullName = roleProfile.profileData.fullname;
@@ -85,9 +94,9 @@ export class EditProfileStep2Page {
       this.profileAbout = roleProfile.profileData.profileAbout;
 
       if (this.userRole == 'school') {
-        this.schoolName = roleProfile.specificUser.schoolname;
-        this.contactName = roleProfile.specificUser.contactname;
-        this.contactPosition = roleProfile.specificUser.contactposition;
+        this.schoolName = roleProfile.specificUser.schoolName;
+        this.contactName = roleProfile.specificUser.contactName;
+        this.contactPosition = roleProfile.specificUser.contactPosition;
       } else if (this.userRole == 'teacher') {
       } else {
         this.partOfSchool = roleProfile.specificUser.partOfSchool;

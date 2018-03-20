@@ -36,6 +36,7 @@ export class SmartieSearch {
   private body: any;
   private profilePhotoData: any;
   private schoolPhotoDataUrl: any;
+  private teacherCv: any;
   //private searchData: any;
   //private alertOpts: any;
   // private infoWindow: any;
@@ -56,8 +57,13 @@ export class SmartieSearch {
       this.storage.get('schoolPhotoDataUrl').then(schoolPhotoDataUrl => {
         this.schoolPhotoDataUrl = schoolPhotoDataUrl;
       });
+      this.storage.get('teacherCreds').then(teacherCreds => {
+        this.teacherCv = teacherCreds;
+        console.log(this.teacherCv);
+      });
       console.log('We are here.');
       this.storage.get('UserProfile').then(UserProfile => {
+        console.log(UserProfile);
         let Profile = new Parse.Object.extend('Profile');
         let profQuery = new Parse.Query(Profile);
         let userQuery = new Parse.Query(Parse.User);
@@ -86,45 +92,31 @@ export class SmartieSearch {
                         })
                     }
                   }
-                  /*let API = this.smartieApi.getApi(
-                    'fetchNotifications',
-                    { profileId: profile.id, role: this.role }
-                  );
-
-                  return new Promise(resolve => {
-                    interface Response {
-                      result: any
-                    };
-                    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
-                      // login.sanitizeNotifications(Notifications.result).then(notifications => {
-                        // navParams.data.notifications = notifications;
-
-                        if(this.role == 'school'){
-                          if(this.schoolPhotoDataUrl){
-                            let parseSchoolFile = new Parse.File('school.jpg', { base64: this.schoolPhotoDataUrl });
-                              parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
-                                profile.set('schoolPhoto', schoolFile);
-                                profile.save({ useMasterKey: true }).then(school => {
-                                  // TODO: run fetchNotifications here for the new user, same as in login.ts
-                                })
-                              })
-                          }
-                        }
-                      // })
-                    }, err => {
-                      console.log(err);
-                    });
-                  });*/
                 })
               }).catch(err => {
                 console.log(JSON.stringify(err));
               })
             }
+            //setting teacher Credentials
+            if(this.role == 'teacher'){
+              if(this.teacherCv){
+                for(let teacherCv of this.teacherCv){
+                  var parseCvFile = new Parse.File(teacherCv.name, {base64: teacherCv.data});
+                  parseCvFile.save({ useMasterKey: true }).then(parseFile => {
+                    console.log(parseFile);
+                    let Credential = Parse.Object.extend('Credential');
+                    let cred = new Credential();
+                    // cred.set('teacher', teacher);
+                    cred.set('file', parseFile);
+                    cred.save({ useMasterKey: true });
+                  })
+                }
+              }
+            }
           })
         });
       });
     }
-    console.log(navParams.data.notifications);
     if (navParams.data.notifications !== undefined) {
       this.notifications = navParams.data.notifications;
       this.notifications.map((notification, ix) => {

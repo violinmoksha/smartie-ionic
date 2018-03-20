@@ -199,11 +199,19 @@ export class RegisterStep3Page {
   addTeacherCvCert(files){
     let TeacherCVs = new Array();
     let TeacherCVsView = new Array();
+    let requests = files.length;
+    // let k = 0;
     for(let file of files){
       TeacherCVsView.push(file);
       this.getBase64(file).then((obj) => {
+        // console.log(k);
+        // TeacherCVs[k]['name'] = obj['name'];
+        // TeacherCVs[k]['data'] = obj['data'];
+        TeacherCVs.push({name: obj['name'],data: obj['data']});
+        requests--;
+        // k++;
         // Call Parse Login function with those variables
-        Parse.User.logIn('alphateacher9', 'alphateacher1', {
+        /*Parse.User.logIn('alphateacher9', 'alphateacher1', {
           // If the username and password matches
           success: function(user) {
           var parseCvFile = new Parse.File(obj['name'], {base64: obj['data']});
@@ -218,14 +226,17 @@ export class RegisterStep3Page {
           error: function(user, error) {
             console.log(error);
           }
-        });
+        });*/
+        if(requests == 0) {
+          this.storage.set('teacherCreds', TeacherCVs);
+        }
       });
+
     }
-    this.TeacherFiles = TeacherCVs;
+
+    // this.TeacherFiles = TeacherCVs;
     this.TeacherFilesView = TeacherCVsView;
     //storing object in localstorage using JSON.stringify
-    // localStorage.setItem('teacherCreds', JSON.stringify(TeacherCVs));
-    this.storage.set('teacherCreds', TeacherCVs);
   }
 
   getBase64(file) {
@@ -275,10 +286,6 @@ export class RegisterStep3Page {
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         signupResult => {
-          // localStorage.setItem("teacherUserProfile", JSON.stringify(signupResult.result));
-          // console.log(signupResult);
-          // console.log(signupResult.result.userData.username);
-          // console.log(this.form1Values.password);
           this.storage.set("UserProfile", signupResult.result);
           let API = this.smartieApi.getApi(
             'fetchNotifications',
@@ -298,42 +305,6 @@ export class RegisterStep3Page {
               console.log(err);
             });
           });
-
-
-          // this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, password: this.form1Values.password});
-
-
-          // let cvPromises = [];
-          // console.log(this.TeacherFiles);
-          /*if(this.TeacherFiles){
-            for(let cvFile of this.TeacherFiles){
-              cvPromises.push(this.setTeacherCred(signupResult.result.objectId, cvFile).then((responseResult) => {
-                console.log(responseResult);
-              }).catch((rejectResult) => {
-                console.log(rejectResult);
-              }))
-            }
-
-            // finish all of the array of promises,
-            // then setProfilePic()
-            Promise.all(cvPromises).then(()=>{
-              this.setProfilePic().then((pictureResolve) => {
-                this.navCtrl.push("SmartieSearch", {role: 'teacher', fromwhere: 'signUp'});
-                this.loading.dismiss();
-              }).catch((pictureReject) => {
-                // TODO: do something in a modal?
-                console.log(pictureReject);
-              });
-            })
-          }else{
-            this.setProfilePic().then((pictureResolve) => {
-              this.navCtrl.push("SmartieSearch", {role: 'teacher', fromwhere: 'signUp'});
-              this.loading.dismiss();
-            }).catch((pictureReject) => {
-              // TODO: do something in the UX here!!
-              console.log(pictureReject);
-            });
-          }*/
         },
         err => {
           let alert = this.alertCtrl.create({

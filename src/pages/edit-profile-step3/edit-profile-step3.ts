@@ -119,10 +119,13 @@ export class EditProfileStep3Page {
     }
 
     this.storage.get("UserProfile").then(roleProfile => {
+      console.log(roleProfile);
       this.startDate = roleProfile.specificUser.defaultStartDate;
       this.endDate = roleProfile.specificUser.defaultEndDate;
       this.startTime = roleProfile.specificUser.defaultStartTime;
       this.endTime = roleProfile.specificUser.defaultEndTime;
+      this.prefLocation = roleProfile.profileData.prefLocation;
+      this.hourlyRate = roleProfile.profileData.prefPayRate;
     });
   }
 
