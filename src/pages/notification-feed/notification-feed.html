@@ -10,10 +10,16 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="cl-{{userRole}}">
   <ul>
+    <li class="accepted" *ngFor="let accepted of allAccepteds">
+      <a *ngIf="userRole == 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">{{ accepted.otherProfile.fullname }} has Accepted your Request !</a>
+      <a *ngIf="userRole != 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">{{ accepted.teacherProfile.fullname }} has Accepted your Request !</a>
+    </li>
+
     <li class="requested" *ngFor="let requested of allRequesteds">
-      <a href="javascript:" (click)="showJobRequest(requested)">A {{requested.role}} Has Requested You!</a>
+      <a *ngIf="userRole == 'teacher'" href="javascript:" (click)="showJobRequest(requested,'requestSentJobs')">{{ requested.otherProfile.fullname }} invited you !</a>
+      <a *ngIf="userRole != 'teacher'" href="javascript:" (click)="showJobRequest(requested,'requestSentJobs')">{{ requested.teacherProfile.fullname }} invited you !</a>
     </li>
   </ul>
 </ion-content>

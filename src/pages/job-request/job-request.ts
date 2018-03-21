@@ -143,9 +143,9 @@ export class JobRequestPage {
     this.loading.present();
     this.storage.get("UserProfile").then(roleProfile => {
       if(this.userRole === 'teacher'){
-        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.params.otherProfileId, requestSent: true, acceptState: true };
+        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.params.otherProfileId, requestSent: true, acceptState: true, role: this.userRole };
       }else{
-        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId, requestSent: true, acceptState: true };
+        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId, requestSent: true, acceptState: true, role: this.userRole };
       }
 
       console.log('sending '+JSON.stringify(this.body));

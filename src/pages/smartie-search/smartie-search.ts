@@ -30,7 +30,7 @@ export class SmartieSearch {
   private profilePhoto: string;
   private _contentTitle: string;
   private _contentMessage: string;
-  private notifyCount: any;
+  private notifyCount: any = 0;
   private latLngUser: any;
   private marker: any;
   private body: any;
@@ -48,6 +48,7 @@ export class SmartieSearch {
     this.role = navParams.data.role;
     this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
+    this.notifications = navParams.data.notifications;
     if (this.fromWhere == 'signUp') {
       // TODO: retrieve the profilePhoto and CVs from
       // this.storage HERE if we came from signUp,
@@ -104,9 +105,10 @@ export class SmartieSearch {
                   var parseCvFile = new Parse.File(teacherCv.name, {base64: teacherCv.data});
                   parseCvFile.save({ useMasterKey: true }).then(parseFile => {
                     console.log(parseFile);
-                    let Credential = Parse.Object.extend('Credential');
+                    let Credential = new Parse.Object.extend('Credential');
                     let cred = new Credential();
                     // cred.set('teacher', teacher);
+                    // cred.set('profile', profile);
                     cred.set('file', parseFile);
                     cred.save({ useMasterKey: true });
                   })
@@ -116,51 +118,6 @@ export class SmartieSearch {
           })
         });
       });
-    }
-    if (navParams.data.notifications !== undefined) {
-      this.notifications = navParams.data.notifications;
-      this.notifications.map((notification, ix) => {
-        if (notification.acceptState == true) {
-          this.accepteds.push(notification);
-          this.notifications.splice(ix, 1);
-        }
-      });
-      if (this.notifications !== undefined)
-        this.notifyCount = this.notifications.length;
-      else
-        this.notifyCount = 0;
-      if (this.role !== 'teacher') {
-        console.log(this.accepteds);
-        // accepted for Others --> Scheduling flow
-        let acceptedScheduleModals = [];
-        for (let acceptedJob of this.accepteds) {
-          acceptedScheduleModals.push(this.modalCtrl.create("SchedulePage", { params: {
-            profilePhoto: acceptedJob.teacherProfile.profilePhoto,
-            fullname: acceptedJob.teacherProfile.fullname,
-            role: acceptedJob.teacherProfile.role,
-            prefPayRate: acceptedJob.teacherProfile.prefPayRate,
-            prefLocation: acceptedJob.teacherProfile.prefLocation,
-            defaultStartDate: acceptedJob.teacher.defaultStartDate,
-            defaultEndDate: acceptedJob.teacher.defaultEndDate,
-            defaultStartTime: acceptedJob.teacher.defaultStartTime,
-            defaultEndTime: acceptedJob.teacher.defaultEndTime
-          }}));
-          //console.log('DEFAULT END TIME: '+acceptedJob.teacher.defaultEndDate);
-          //console.log('DEFAULT START TIME: '+acceptedJob.teacher.defaultStartTime);
-        }
-        acceptedScheduleModals.forEach((acceptedScheduleModal, ix) => {
-          if (ix == 0) acceptedScheduleModal.present();
-          acceptedScheduleModal.onDidDismiss(data => {
-            if (acceptedScheduleModals[ix+1] !== undefined)
-              acceptedScheduleModals[ix+1].present();
-          });
-        });
-      } else {
-        // accepted for Teacher --> Student needs to do the Scheduling
-      }
-    } else {
-      //localStorage.clear(); // dump ephemeral session
-      //this.navCtrl.setRoot("LoginPage"); // send to Login
     }
   }
 
@@ -202,70 +159,24 @@ export class SmartieSearch {
             };
             this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
               if(response.result.length > 0){
-                //console.log(response);
-                // don't launch this message if user busy scheduling acceptState=true sessions from constructor-launched modals
-                if (this.accepteds.length == 0) {
-                  let alert = this.alertCtrl.create({
-                    title: 'Wow, check it out!',
-                    subTitle: `You have ${response.result.length} new job request(s)! We'll show them to you now so you can accept or reject!`,
-                    buttons: [
-                      {
-                        text: 'OK',
-                        handler: data => {
-                          alert.dismiss();
-                          let requestSentJobModals = [];
-                          if (this.role == 'teacher') {
-                            for (let requestSentJob of response.result) {
-                              requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
-                                profilePhoto: requestSentJob.otherProfile.profilePhoto,
-                                fullname: requestSentJob.otherProfile.fullname,
-                                role: requestSentJob.otherProfile.role,
-                                profileTitle: requestSentJob.otherProfile.profileTitle,
-                                profileAbout: requestSentJob.otherProfile.profileAbout,
-                                prefLocation: requestSentJob.otherProfile.prefLocation,
-                                teacherProfileId: requestSentJob.teacherProfile.objectId,
-                                otherProfileId: requestSentJob.otherProfile.objectId,
-                                fromWhere: "requestSentJobs"
-                              }}));
-                            }
-                          } else {
-                            for (let requestSentJob of response.result) {
-                              // console.log(requestSentJob);
-                              requestSentJobModals.push(this.modalCtrl.create("JobRequestPage", { params: {
-                                profilePhoto: requestSentJob.teacherProfile.profilePhoto,
-                                fullname: requestSentJob.teacherProfile.fullname,
-                                role: requestSentJob.teacherProfile.role,
-                                prefPayRate: requestSentJob.teacherProfile.prefPayRate,
-                                yrsExperience: requestSentJob.teacher.yrsExperience,
-                                profileTitle: requestSentJob.teacherProfile.profileTitle,
-                                profileAbout: requestSentJob.teacherProfile.profileAbout,
-                                prefLocation: requestSentJob.teacherProfile.prefLocation,
-                                defaultStartDate: requestSentJob.teacher.defaultStartDate,
-                                defaultEndDate: requestSentJob.teacher.defaultEndDate,
-                                defaultStartTime: requestSentJob.teacher.defaultStartTime,
-                                defaultEndTime: requestSentJob.teacher.defaultEndTime,
-                                teacherProfileId: requestSentJob.teacherProfile.objectId,
-                                otherProfileId: requestSentJob.otherProfile.objectId,
-                                fromWhere: "requestSentJobs"
-                              }}));
-                            }
-                          }
-                          requestSentJobModals.forEach((requestSentJobModal, ix) => {
-                            if (ix == 0) requestSentJobModal.present();
-                            requestSentJobModal.onDidDismiss(data => {
-                              if (requestSentJobModals[ix+1] !== undefined)
-                                requestSentJobModals[ix+1].present();
-                            });
-                          });
-                        }
-                      }
-                    ]
-                  });
-                  alert.present();
-                }
+                this.notifyCount = response.result.length;
+                this.storage.set("userAllRequesteds", response.result);
               }
             }, err => {
               console.log(err);
+            })
+
+            //get AllAccepted Here
+            API = this.smartieApi.getApi(
+              'getAllAccepteds',
+              this.body
+            );
+            interface Response {
+              result: any;
+            };
+            this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+              this.notifyCount = this.notifyCount + response.result.length;
+              this.storage.set("userAllAccepteds", response.result);
             })
           })
         });

@@ -57,7 +57,7 @@
         <button class="button button-positive" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
       </div>
     </div>
-    <div class="alert-button-group" *ngIf="!congrats">
+    <div class="alert-button-group" *ngIf="!congrats && params.fromWhere != 'acceptedJobs'">
       <button ion-button="alert-button" class="alert-button alert-button-md alert-button-default alert-button-default-md" (click)="dismiss()"><span class="button-inner">Close</span><div class="button-effect"></div></button>
       <button ion-button="alert-button" [disabled]="requestSent || submitInProgress" (click)="sendRequest()" class="alert-button alert-button-md alert-button-default alert-button-default-md">
         <span class="button-inner" *ngIf="!requestSent">Send Request</span>

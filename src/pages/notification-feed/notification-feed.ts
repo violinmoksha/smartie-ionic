@@ -16,51 +16,56 @@ import { Storage } from '@ionic/storage';
 })
 export class NotificationFeedPage {
   private allAccepteds: any;
+  private allRequesteds: any;
   private body: any;
   private userRole: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private storage: Storage) {
+
   }
 
   ionViewDidLoad() {
     this.storage.get('UserProfile').then(profile => {
-      this.userRole = profile.profileData.role;
-      this.body = { profileId: profile.profileData.objectId, role: this.userRole };
 
-      let API = this.smartieApi.getApi('getAllRequesteds', this.body);
+      this.storage.get("userAllAccepteds").then(allAccepteds => {
+        this.allAccepteds = allAccepteds;
+      });
 
-      return new Promise(resolve => {
-        interface Response {
-          result: any;
-        };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
-          this.allAccepteds = res.result;
-        })
+      this.storage.get("userAllRequesteds").then(allRequesteds => {
+        this.allRequesteds = allRequesteds;
       })
+
+      this.userRole = profile.profileData.role;
     })
   }
 
-  showJobRequest(requested){
-    var requestingProfileId = requested.requestingProfile.objectId;
-    var requestedProfileId = requested.requestedProfile.objectId;
-
-    this.body = { requestingProfileId : requestingProfileId, requestedProfileId: requestedProfileId, role: this.navParams.data.activeRole }
-    let API = this.smartieApi.getApi('getAcceptedJobRequest', this.body);
-
-    return new Promise(resolve => {
-      interface Response {
-        result: any
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
-        if(res.result.prof.profilephoto){
-          res.result.prof.profilePhoto = res.result.prof.profilephoto.url;
-        }else{
-          res.result.prof.profilePhoto = './assets/img/user-round-icon.png';
+  showJobRequest(notification, requestState){
+    if(this.userRole != 'teacher'){
+      this.navCtrl.push("JobRequestPage", { params: {
+          profilePhoto: notification.teacherProfile.profilePhoto,
+          fullname: notification.teacherProfile.fullname,
+          role: notification.teacherProfile.role,
+          profileTitle: notification.teacherProfile.profileTitle,
+          profileAbout: notification.teacherProfile.profileAbout,
+          prefLocation: notification.teacherProfile.prefLocation,
+          teacherProfileId: notification.teacherProfile.objectId,
+          otherProfileId: notification.otherProfile.objectId,
+          fromWhere: requestState
         }
-        this.navCtrl.push("JobRequestPage", { result : res.result.prof, fromWhere: 'notification' });
-        // console.log(res.result);
       })
-    });
-
+    }else{
+      this.navCtrl.push("JobRequestPage", { params: {
+          profilePhoto: notification.otherProfile.profilePhoto,
+          fullname: notification.otherProfile.fullname,
+          role: notification.otherProfile.role,
+          profileTitle: notification.otherProfile.profileTitle,
+          profileAbout: notification.otherProfile.profileAbout,
+          prefLocation: notification.otherProfile.prefLocation,
+          teacherProfileId: notification.teacherProfile.objectId,
+          otherProfileId: notification.otherProfile.objectId,
+          fromWhere: requestState
+        }
+      })
+    }
   }
 }
