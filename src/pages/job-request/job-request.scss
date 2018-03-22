@@ -211,11 +211,11 @@ page-job-request {
     }
     .cl-parent {
       .toolbar-background{
-        background-color: #F97533 !important;
-        color: #fff;
+        background-color: #fff !important;
+        color: #F97533;
       }
       .toolbar-title{
-        color: #fff!important;
+        color: #F97533!important;
       }
       .back-button{
         color: #F97533 !important
@@ -227,6 +227,13 @@ page-job-request {
         background-color: #F97533 !important;
         color: #fff;
       }
+      .alert-button-group{
+        .button-default{
+          background-color: #F97533 !important;
+          border-radius: 5px;
+        }
+      }
+
     }
     .cl-school {
       .toolbar-background{
@@ -266,17 +273,18 @@ page-job-request {
         color: #fff;
       }
     }
+
     .teacher{
 
     }
     .parent{
-
+          
     }
     .school{
 
     }
     .student{
-      
+
     }
 
 }

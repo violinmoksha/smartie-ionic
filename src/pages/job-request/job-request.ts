@@ -28,7 +28,7 @@ export class JobRequestPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, private loadingCtrl: LoadingController) {
     this.params = navParams.data.params;
-    console.log(this.params);
+    
     if (this.params.fromWhere && this.params.fromWhere == 'requestSentJobs') {
       this.congrats = true;
     } else {
@@ -197,5 +197,19 @@ export class JobRequestPage {
       })
 
     });
+  }
+
+  scheduleJob(){
+    this.navCtrl.push('SchedulePage', { params: {
+      profilePhoto: this.params.profilePhoto,
+      fullname: this.params.fullname,
+      role: this.params.role,
+      prefPayRate: this.params.prefPayRate,
+      prefLocation: this.params.prefLocation,
+      defaultStartDate: this.params.defaultStartDate,
+      defaultEndDate: this.params.defaultEndDate,
+      defaultStartTime: this.params.defaultStartTime,
+      defaultEndTime: this.params.defaultEndTime
+    }})
   }
 }

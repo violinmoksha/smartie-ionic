@@ -64,6 +64,9 @@
         <span class="button-inner" *ngIf="requestSent">Invite Sent</span>
       <div class="button-effect"></div></button>
     </div>
+    <div class="alert-button-group" *ngIf="userRole != 'teacher' && params.fromWhere == 'acceptedJobs'">
+      <button ion-button full (click)="scheduleJob()"><span class="button-inner">Schedule Job</span></button>
+    </div>
     <div *ngIf="congrats">
       <button [disabled]="acceptState" ion-button full (click)="accept()"><span class="button-inner" *ngIf="acceptState">Accepted</span><span class="button-inner" *ngIf="!acceptState">Accept</span></button>
       <button [disabled]="acceptState" ion-button full (click)="reject()" style="background-color:red"><span class="button-inner">Reject</span></button>

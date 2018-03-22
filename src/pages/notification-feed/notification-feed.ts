@@ -40,6 +40,9 @@ export class NotificationFeedPage {
   }
 
   showJobRequest(notification, requestState){
+    console.log(notification);
+    console.log(this.userRole);
+    console.log(requestState);
     if(this.userRole != 'teacher'){
       this.navCtrl.push("JobRequestPage", { params: {
           profilePhoto: notification.teacherProfile.profilePhoto,
@@ -50,6 +53,11 @@ export class NotificationFeedPage {
           prefLocation: notification.teacherProfile.prefLocation,
           teacherProfileId: notification.teacherProfile.objectId,
           otherProfileId: notification.otherProfile.objectId,
+          prefPayRate: notification.teacherProfile.prefPayRate,
+          defaultStartDate: notification.teacher.defaultStartDate,
+          defaultEndDate: notification.teacher.defaultEndDate,
+          defaultStartTime: notification.teacher.defaultStartTime,
+          defaultEndTime: notification.teacher.defaultEndTime,
           fromWhere: requestState
         }
       })
@@ -63,6 +71,11 @@ export class NotificationFeedPage {
           prefLocation: notification.otherProfile.prefLocation,
           teacherProfileId: notification.teacherProfile.objectId,
           otherProfileId: notification.otherProfile.objectId,
+          prefPayRate: notification.teacherProfile.prefPayRate,
+          defaultStartDate: notification.teacher.defaultStartDate,
+          defaultEndDate: notification.teacher.defaultEndDate,
+          defaultStartTime: notification.teacher.defaultStartTime,
+          defaultEndTime: notification.teacher.defaultEndTime,
           fromWhere: requestState
         }
       })

@@ -232,6 +232,7 @@ page-schedule {
       }
 
 
+
    }
 
     .button {
@@ -272,6 +273,17 @@ page-schedule {
           color: #fff;
         }
       }
+    }
+    .parent{
+      .button-default{
+        background-color:#F97533 !important
+      }
+      .right{
+        .price{
+          color: #F97533 !important
+        }
+      }
+
     }
 
 }
@@ -329,6 +341,7 @@ page-time-selector{
         .total{
           color:#F97533!important;
         }
+
       }
 }
 .student{
@@ -372,7 +385,7 @@ page-time-selector{
     }
 
     .parent{
-        
+
         .week-title.primary{
             background-color:#F97533!important;
         }
@@ -390,4 +403,19 @@ page-time-selector{
         .picker-button{
           color:#F97533!important;
         }
+        .back-button-text{
+          color: #F97533!important;
+        }
+        .back-button{
+          color: #F97533!important;
+        }
+        .job-availablity-details{
+          background-color:  #F97533!important;
+        }
+        .header{
+          .toolbar-background{
+            background-color:#F97533 !important
+          }
+        }
+
       }

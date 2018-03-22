@@ -66,8 +66,10 @@ export class SmartieSearch {
       this.storage.get('UserProfile').then(UserProfile => {
         console.log(UserProfile);
         let Profile = new Parse.Object.extend('Profile');
+        let Teacher = new Parse.Object.extend('Teacher');
         let profQuery = new Parse.Query(Profile);
         let userQuery = new Parse.Query(Parse.User);
+        let teacherQuery = new Parse.Query(Teacher);
 
         userQuery.equalTo('username', UserProfile.userData.username);
         userQuery.first({useMasterKey:true}).then(user => {
@@ -101,18 +103,22 @@ export class SmartieSearch {
             //setting teacher Credentials
             if(this.role == 'teacher'){
               if(this.teacherCv){
-                for(let teacherCv of this.teacherCv){
-                  var parseCvFile = new Parse.File(teacherCv.name, {base64: teacherCv.data});
-                  parseCvFile.save({ useMasterKey: true }).then(parseFile => {
-                    console.log(parseFile);
-                    let Credential = new Parse.Object.extend('Credential');
-                    let cred = new Credential();
-                    // cred.set('teacher', teacher);
-                    // cred.set('profile', profile);
-                    cred.set('file', parseFile);
-                    cred.save({ useMasterKey: true });
-                  })
-                }
+                teacherQuery.equalTo('profile', profile);
+                teacherQuery.first({ useMasterKey: true }).then(teacher => {
+                  for(let teacherCv of this.teacherCv){
+                    var parseCvFile = new Parse.File(teacherCv.name, {base64: teacherCv.data});
+                    parseCvFile.save({ useMasterKey: true }).then(parseFile => {
+                      let Credential = new Parse.Object.extend('Credential');
+                      let cred = new Credential();
+                      cred.set('profile', profile);
+                      cred.set('file', parseFile);
+                      cred.save({ useMasterKey: true }).then(credential => {
+                        console.log(credential);
+                        console.log("Credentials saved successfully..!");                        
+                      });
+                    })
+                  }
+                })
               }
             }
           })

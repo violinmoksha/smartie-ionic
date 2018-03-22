@@ -30,7 +30,7 @@ export class PaymentPage {
     this.totalHours = navParams.data.totalHours;
     this.totalAmount = navParams.data.totalAmount;
     this.params = navParams.data.params
-
+    console.log(this.params);
   }
 
   ionViewDidLoad() {
@@ -39,7 +39,7 @@ export class PaymentPage {
 
   paymentConfirm(){
     console.log('test');
-    this.navCtrl.push("PaymentConfirmPage", { totalAmount: this.totalAmount });
+    this.navCtrl.push("PaymentConfirmPage", { totalAmount: this.totalAmount, params: this.params });
     // this.navCtrl.push("PaymentPage");
   }
 
