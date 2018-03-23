@@ -23,8 +23,8 @@ export class TimeSelectorPage {
   private loggedRole: any;
 
   public event = {
-    timeStarts: '00:00',
-    timeEnds: '23:59'
+    timeStarts: '10:00',
+    timeEnds: '22:00'
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {

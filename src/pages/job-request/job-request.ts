@@ -25,10 +25,11 @@ export class JobRequestPage {
   private userRole: any;
   private congrats: boolean;
   private genericAvatar: string;
+  private loaded: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, private loadingCtrl: LoadingController) {
     this.params = navParams.data.params;
-    
+
     if (this.params.fromWhere && this.params.fromWhere == 'requestSentJobs') {
       this.congrats = true;
     } else {

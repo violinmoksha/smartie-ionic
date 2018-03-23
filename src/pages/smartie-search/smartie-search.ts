@@ -114,7 +114,7 @@ export class SmartieSearch {
                       cred.set('file', parseFile);
                       cred.save({ useMasterKey: true }).then(credential => {
                         console.log(credential);
-                        console.log("Credentials saved successfully..!");                        
+                        console.log("Credentials saved successfully..!");
                       });
                     })
                   }
@@ -155,39 +155,68 @@ export class SmartieSearch {
             role: profile.profileData.role
           };
 
-          return new Promise(resolve => {
-            let API = this.smartieApi.getApi(
-              'getAllRequesteds',
-              this.body
-            );
-            interface Response {
-              result: any;
-            };
-            this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-              if(response.result.length > 0){
-                this.notifyCount = response.result.length;
-                this.storage.set("userAllRequesteds", response.result);
-              }
-            }, err => {
-              console.log(err);
-            })
-
-            //get AllAccepted Here
-            API = this.smartieApi.getApi(
-              'getAllAccepteds',
-              this.body
-            );
-            interface Response {
-              result: any;
-            };
-            this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-              this.notifyCount = this.notifyCount + response.result.length;
-              this.storage.set("userAllAccepteds", response.result);
-            })
+          //resolve all promises and if notifyCount > 0 make alert present and push to notification page
+          Promise.all([
+            this.getAllRequesteds(),
+            this.getAllAccepteds()
+          ]).then(value => {
+            if(this.notifyCount > 0){
+              let alert = this.alertCtrl.create({
+                title: 'Wow, check it out!',
+                subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page now!`,
+                buttons: [{
+                  text: 'OK',
+                  handler: () => {
+                    this.navCtrl.push('NotificationFeedPage');
+                  }
+                }]
+              });
+              alert.present();
+            }
           })
         });
       }
     });
+  }
+
+  getAllRequesteds(){
+    return new Promise(resolve => {
+      let API = this.smartieApi.getApi(
+        'getAllRequesteds',
+        this.body
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        if(response.result.length > 0){
+          this.notifyCount = response.result.length;
+          this.storage.set("userAllRequesteds", response.result);
+        }
+        resolve('success');
+      }, err => {
+        console.log(err);
+      })
+    })
+  }
+
+  getAllAccepteds(){
+    return new Promise(resolve => {
+      let API = this.smartieApi.getApi(
+        'getAllAccepteds',
+        this.body
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        if(response.result.length > 0){
+          this.notifyCount = this.notifyCount + response.result.length;
+          this.storage.set("userAllAccepteds", response.result);
+        }
+        resolve('success');
+      })
+    })
   }
 
   findJobsSearch(searchLoc){

@@ -10,7 +10,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-buttons end>
-      <button class="notification" (click)="pushAccepteds()"><span>{{ notifyCount }}</span></button>
+      <button [disabled]="!notifyCount" class="notification" (click)="pushAccepteds()"><span>{{ notifyCount }}</span></button>
     </ion-buttons>
     <ion-title class="horizontal-logo"></ion-title>
   </ion-toolbar>

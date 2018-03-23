@@ -99,4 +99,5 @@
     <plugin name="cordova-plugin-crop" spec="^0.4.0" />
     <engine name="ios" spec="4.5.4" />
     <engine name="android" spec="~7.0.0" />
+    <plugin name="cordova-plugin-file" spec="^6.0.1" />
 </widget>

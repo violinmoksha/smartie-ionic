@@ -18,8 +18,8 @@
     <div class="notification">
       <div class="left">
         <div class="avatar">
-          <img *ngIf="params.profilePhoto !== undefined" src="{{ params.profilePhoto.url }}">
-          <img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}" />
+          <img *ngIf="params.profilePhoto !== undefined" (load)="loaded = true" [hidden]="!loaded" src="{{ params.profilePhoto.url }}">
+          <img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}" [hidden]="loaded" />
         </div>
         <div class="u-detail">
           <div class="name">{{ params.fullname }}</div>

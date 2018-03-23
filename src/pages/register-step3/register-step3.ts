@@ -39,8 +39,8 @@ export class RegisterStep3Page {
   private role: any;
 
   public event = {
-    timeStarts: '00:00',
-    timeEnds: '23:59'
+    timeStarts: '10:00',
+    timeEnds: '22:00'
   }
 
   public years = [
@@ -100,7 +100,7 @@ export class RegisterStep3Page {
 
     var today = new Date();
     this.startDate = today.getMonth()+1 +'-'+today.getDate()+'-'+today.getFullYear();
-    var defEndDate = new Date(today.setDate(today.getDate() + 30));
+    var defEndDate = new Date(today.setDate(today.getDate() + 365));
     this.endDate = defEndDate.getMonth()+1 +'-'+defEndDate.getDate()+'-'+defEndDate.getFullYear();
 
     //profilePhoto

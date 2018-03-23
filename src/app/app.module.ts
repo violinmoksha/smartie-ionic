@@ -21,6 +21,7 @@ import { SmartieAPI } from '../providers/api/smartie';
 import { Geolocation } from '@ionic-native/geolocation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipsModule } from 'ionic-tooltips';
+import { IonicImageLoader } from 'ionic-image-loader';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { TooltipsModule } from 'ionic-tooltips';
     IonicStorageModule.forRoot(),
     CalendarModule,
     BrowserAnimationsModule,
-    TooltipsModule
+    TooltipsModule,
+    IonicImageLoader.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -13,11 +13,11 @@
 <ion-content class="{{ loggedRole }}" padding>
   <ion-item *ngIf="selectedDate">
     <ion-label>Starting at:</ion-label>
-    <ion-datetime class="test" displayFormat="h:mm A" pickerFormat="h mm A" (ionChange)="timeSet()" [(ngModel)]="event.timeStarts"></ion-datetime>
+    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" minuteValues="[00,15,30,45]" (ionChange)="timeSet()" [(ngModel)]="event.timeStarts"></ion-datetime>
   </ion-item>
   <ion-item *ngIf="selectedDate">
     <ion-label>Finishing at:</ion-label>
-    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" (ionChange)="timeSet()" [(ngModel)]="event.timeEnds"></ion-datetime>
+    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" minuteValues="[00,15,30,45]" (ionChange)="timeSet()" [(ngModel)]="event.timeEnds"></ion-datetime>
   </ion-item>
   <div *ngIf="totalHours !== undefined" class="left">
     <ion-label style="margin-top:6px">Total Hours:<br />{{ parseHours(totalHours) }}</ion-label>

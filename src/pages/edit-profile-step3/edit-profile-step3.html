@@ -83,7 +83,7 @@
         <div class="available-time">
           <div class="left">
             <ion-item>
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="startTime" formControlName="startTime"></ion-datetime>
+              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" minuteValues="[00,15,30,45]" [(ngModel)]="startTime" formControlName="startTime"></ion-datetime>
             </ion-item>
             <div *ngIf="EditProfilestep3Form.get('startTime').invalid && !EditProfilestep3Form.get('startTime').pristine" class="item item-message">
               Start time is required.
@@ -94,7 +94,7 @@
           </div>
           <div class="right">
             <ion-item>
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="endTime" formControlName="endTime"></ion-datetime>
+              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" minuteValues="[00,15,30,45]" [(ngModel)]="endTime" formControlName="endTime"></ion-datetime>
             </ion-item>
             <div *ngIf="EditProfilestep3Form.get('endTime').invalid && !EditProfilestep3Form.get('endTime').pristine" class="item item-message">
               End time is required.

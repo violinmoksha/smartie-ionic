@@ -102,7 +102,7 @@
       <div *ngIf="role == 'teacher'" class="available-time">
         <div class="left">
           <ion-item>
-            <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="startTime" [(ngModel)]="event.timeStarts"></ion-datetime>
+            <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" minuteValues="[00,15,30,45]" formControlName="startTime" [(ngModel)]="event.timeStarts"></ion-datetime>
           </ion-item>
           <div *ngIf="Step3Form.get('startTime').invalid && Step3Form.get('startTime').touched" class="item item-message">
             Start time is required.
@@ -113,7 +113,7 @@
         </div>
         <div class="right">
           <ion-item>
-            <ion-datetime class="teacher" displayFormat="h:mm A" pickerFormat="h mm A" formControlName="endTime" [(ngModel)]="event.timeEnds"></ion-datetime>
+            <ion-datetime class="teacher" displayFormat="h:mm A" pickerFormat="h mm A" minuteValues="[00,15,30,45]" formControlName="endTime" [(ngModel)]="event.timeEnds"></ion-datetime>
           </ion-item>
           <div *ngIf="Step3Form.get('endTime').invalid && Step3Form.get('endTime').touched" class="item item-message">
             End time is required.
