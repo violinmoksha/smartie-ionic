@@ -1,6 +1,6 @@
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
 
@@ -25,9 +25,9 @@ export class JobRequestPage {
   private userRole: any;
   private congrats: boolean;
   private genericAvatar: string;
-  private loaded: boolean = false;
+  private loaded: any = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.params = navParams.data.params;
 
     if (this.params.fromWhere && this.params.fromWhere == 'requestSentJobs') {
@@ -38,9 +38,41 @@ export class JobRequestPage {
     this.submitInProgress = false;
   }
 
+  loadImage(){
+    console.log('test');
+    this.loaded = true;
+  }
+
   ionViewDidLoad() {
     this.storage.get("UserProfile").then(roleProfile => {
       this.userRole = roleProfile.profileData.role;
+
+      if(this.userRole != 'teacher' && this.params.fromWhere == 'acceptedJobs'){
+        console.log('test');
+        // this.scheduleJob();
+        let alert = this.alertCtrl.create({
+          title: 'Wow, check it out!',
+          subTitle: `You have to schedule a Job! Tap OK to visit your Schedule page now!`,
+          buttons: [{
+            text: 'OK',
+            handler: () => {
+              // this.navCtrl.push('NotificationFeedPage');
+              this.navCtrl.push('SchedulePage', { params: {
+                profilePhoto: this.params.profilePhoto,
+                fullname: this.params.fullname,
+                role: this.params.role,
+                prefPayRate: this.params.prefPayRate,
+                prefLocation: this.params.prefLocation,
+                defaultStartDate: this.params.defaultStartDate,
+                defaultEndDate: this.params.defaultEndDate,
+                defaultStartTime: this.params.defaultStartTime,
+                defaultEndTime: this.params.defaultEndTime
+              }})
+            }
+          }]
+        });
+        alert.present();
+      }
 
       let otherRole;
       if(this.userRole === 'teacher'){

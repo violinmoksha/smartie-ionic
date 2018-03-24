@@ -151,6 +151,8 @@ export class SmartieApp {
       this.nav.push("EditProfilePage");
     else if (button.iconName == 'add-circle')
       this.nav.push("CreateJobPage");
+    else if (button.iconName == 'card')
+      this.nav.push("PaymentDetailsPage");
     else if (button.iconName == 'log-out') { // logout -->
       this.storage.clear(); // dump ephemeral session
       this.nav.setRoot("LoginPage"); // send to Login

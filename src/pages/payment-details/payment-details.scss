@@ -1,0 +1,33 @@
+page-payment-details {
+  .payment-landing{
+    text-align: center;
+    p{
+      font-size: 12px;
+      text-align: center;
+      margin: 0;
+      margin-bottom:5px;
+
+    }
+    img{
+      width: 100%;
+      max-width: 150px;
+      margin-top: 15px;
+    }
+    .top_content {
+      margin-bottom: 20px;
+      p{
+       color: red;
+     }
+     .headtitle{
+       font-size: 15px;
+     }
+    }
+    .middle_content {
+      margin-bottom: 20px;
+    }
+    .bottom_content {
+      margin-bottom: 20px;
+    }
+
+  }  
+}

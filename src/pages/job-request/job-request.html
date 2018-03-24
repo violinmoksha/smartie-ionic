@@ -18,8 +18,8 @@
     <div class="notification">
       <div class="left">
         <div class="avatar">
-          <img *ngIf="params.profilePhoto !== undefined" (load)="loaded = true" [hidden]="!loaded" src="{{ params.profilePhoto.url }}">
-          <img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}" [hidden]="loaded" />
+          <img *ngIf="params.profilePhoto !== undefined" (load)="loadImage()" src="{{ params.profilePhoto.url }}">
+          <img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}"/>
         </div>
         <div class="u-detail">
           <div class="name">{{ params.fullname }}</div>
@@ -64,9 +64,9 @@
         <span class="button-inner" *ngIf="requestSent">Invite Sent</span>
       <div class="button-effect"></div></button>
     </div>
-    <div class="alert-button-group" *ngIf="userRole != 'teacher' && params.fromWhere == 'acceptedJobs'">
+    <!--<div class="alert-button-group" *ngIf="userRole != 'teacher' && params.fromWhere == 'acceptedJobs'">
       <button ion-button full (click)="scheduleJob()"><span class="button-inner">Schedule Job</span></button>
-    </div>
+    </div>-->
     <div *ngIf="congrats">
       <button [disabled]="acceptState" ion-button full (click)="accept()"><span class="button-inner" *ngIf="acceptState">Accepted</span><span class="button-inner" *ngIf="!acceptState">Accept</span></button>
       <button [disabled]="acceptState" ion-button full (click)="reject()" style="background-color:red"><span class="button-inner">Reject</span></button>
