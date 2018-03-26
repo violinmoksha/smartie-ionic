@@ -293,7 +293,7 @@ page-job-request {
 
 
 .popover-ios .popover-content {
-  width:300px;
+  width:calc(100% - 30px);
   left:0px!important;
   top:90px!important;
   right: 0!important;

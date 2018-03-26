@@ -15,9 +15,10 @@
 
   <div class="thankyou-page">
     <img src="./assets/imgs/success-icon.png" />
-    <h2>Thank you</h2>
+    <!-- <h2>Thank you</h2>
     <p>Your Payment is scucess</p>
-    <p class="mail">{{ emailId }}</p>
+    <p class="mail">{{ emailId }}</p> -->
+    <div [innerHTML]="pageContent"></div>
     <button class="button button-positive" ion-button full (click)="goTo()">Go to Home</button>
   </div>
 

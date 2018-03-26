@@ -34,9 +34,11 @@
       </div>
 
       <div class="profile-pic">
+        <div class="p-image">
         <img id="picForDisplay" (click)="chooseUploadType($event)" [src]="pageProfileSrc" width="150px" *ngIf="!photoSelected && !photoTaken" />
         <img (click)="chooseUploadType($event)" [src]="cameraData" *ngIf="photoTaken" width="150px">
         <img (click)="chooseUploadType($event)" [src]="cameraUrl" *ngIf="photoSelected" width="150px">
+        </div>
         <span class="input-label">Upload your photo</span>
       </div>
 

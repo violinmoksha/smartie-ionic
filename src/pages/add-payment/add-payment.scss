@@ -82,18 +82,21 @@ page-add-payment {
             border-radius: 5px;
           }
           .item-radio-checked{
-            background-color: #009345;
+            background-color: #00BC5B;
             border-radius: 5px;
             .radio-checked{
-              border-color:#fff;
               .radio-inner{
-                  background-color: #fff;
+                  color: #fff;
+                  border-color: #fff;
               }
             }
             .item-inner{
               .label-md{
                 color: #fff!important;
               }
+            }
+            ion-label{
+              color: #fff!important;
             }
           }
         }
@@ -106,5 +109,33 @@ page-add-payment {
         line-height: 40px;
       }
     }
+  }
+  .teacher{
+    .button-default{
+      background-color: #00BC5B!important;
+      border-radius: 4px;
+    }
+    .back-button-text{
+      color: #00BC5B!important;
+    }
+    .bar-button-default-ios{
+      color: #00BC5B!important;
+    }
+  }
+  .enter-email{
+    .input-label{
+        width:100%;
+        text-align: left!important;
+    }
+    .input{
+      input{
+        width: 100%;
+        border:1px solid #cfcfcf;
+        border-radius: 5px;
+        padding:0 10px;
+        margin: 0;
+      }
+    }
+
   }
 }

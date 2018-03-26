@@ -17,15 +17,22 @@ import { Storage } from '@ionic/storage';
 export class PaymentthankyouPage {
 
   private userRole: any;
+  private pageContent: any;
+  private fromWhere: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+    this.fromWhere = navParams.data.fromWhere;
     this.storage.get("UserProfile").then(roleProfile => {
       this.userRole = roleProfile.profileData.role;
     })
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PaymentthankyouPage');
+    if(this.fromWhere == 'nonTeacherPayment'){
+      this.pageContent = "<h2>Thank you</h2><p>Your Payment is scucess</p><p class='mail'></p>";
+    }else if(this.fromWhere == 'teacherStripePayment'){
+      this.pageContent = "<h2>Success</h2><p>Your stripe account added to your payment details</p><p class='mail'></p>";
+    }
   }
 
   goTo(){

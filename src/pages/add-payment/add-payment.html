@@ -30,9 +30,9 @@
 
     <div class="profile_email">
       <span>Is this your Stripe account email id ?</span>
-      <span class="stripe_email">{{email}}</span>
+      <span class="stripe_email">{{ email }}</span>
 
-      <!--<form [formGroup]="PaymentForm" name="PaymentForm" (ngSubmit)="submitPayment(PaymentForm.value)" novalidate>
+      <form [formGroup]="PaymentForm" name="PaymentForm" (ngSubmit)="submitPayment(PaymentForm.value)" novalidate>
 
         <div class="list list-inset registration payment-page parent">
 
@@ -49,8 +49,8 @@
           </ion-list>
 
           <div *ngIf="PaymentForm.get('emailConfirm').value == 'no'">
-            <label class="item item-input">
-              <span class="input-label">Email</span>
+            <label class="item item-input enter-email">
+              <span class="input-label">Please enter your email Id</span>
               <ion-input placeholder="yourmail@mail.com" type="email" formControlName="emailPayment"></ion-input>
             </label>
 
@@ -63,7 +63,7 @@
 
         <button class="button button-positive" [disabled]="!PaymentForm.valid && PaymentForm.get('emailConfirm').value == 'no'" ion-button full>Add Stripe account</button>
 
-      </form>-->
+      </form>
     </div>
 
   </div>

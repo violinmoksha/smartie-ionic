@@ -1,7 +1,22 @@
 page-edit-profile-step2 {
   .profile-pic{
     background-image: url(../assets/imgs/loader.gif);
-    background-size: 100% 100%;
+    background-size:190px;
+    background-position:top center;
+    background-repeat: no-repeat;
+    .p-image{
+      width: 130px;
+      height: 130px;
+      border-radius: 500px;
+      overflow: hidden;
+      margin: auto;
+
+      img{
+        width: 100%!important;
+        height: 100%!important;
+
+      }
+    }
   }
   .teacher {
     .back-button-icon{

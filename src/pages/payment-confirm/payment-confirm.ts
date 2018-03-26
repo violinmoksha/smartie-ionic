@@ -44,7 +44,7 @@ export class PaymentConfirmPage {
   }
 
   pay(){
-    this.navCtrl.push("PaymentthankyouPage");
+    this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
   }
 
 }
