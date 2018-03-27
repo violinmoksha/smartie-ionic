@@ -58,23 +58,28 @@ export class AddPaymentPage {
       cvc: '220'
     };
 
-    this.body = {
-      emailPayment: data.emailPayment,
-      card: card,
-      profileId: this.profileId
-    };
+    this.stripe.setPublishableKey('pk_test_HZ10V0AINd5NjEOyoEAeYSEe');
+    this.stripe.createCardToken(card).then(token => {
+      console.log(token);
+      this.body = {
+        emailPayment: data.emailPayment,
+        card: card,
+        profileId: this.profileId,
+        token: token.id
+      };
 
-    let API = this.smartieApi.getApi(
-      'createCustomer',
-      this.body
-    );
-    interface Response {
-      result: any;
-    };
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
-    }, err => {
-      console.log(err);
+      let API = this.smartieApi.getApi(
+        'createCustomer',
+        this.body
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
+      }, err => {
+        console.log(err);
+      })
     })
 
   }

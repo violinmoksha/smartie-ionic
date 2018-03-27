@@ -43,7 +43,7 @@
     <span *ngIf="CardForm.controls['cvv'].invalid && CardForm.controls['cvv'].touched"  class="card-error">Please enter CVV</span>
 
     <!-- <span class="card-error">Error Message</span> -->
-    <button class="button button-positive" [disabled]="CardForm.invalid" (click)="pay()" ion-button full>Pay {{ totalAmount }}</button>
+    <button class="button button-positive" [disabled]="CardForm.invalid" (click)="pay(totalAmount)" ion-button full>Pay {{ totalAmount }}</button>
 
   </form>
 </ion-content>
