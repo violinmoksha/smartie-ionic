@@ -26,6 +26,8 @@ export class AddPaymentPage {
   private PaymentForm : FormGroup;
   private body: any;
   private profileId: any;
+  private stripeEndpoint: any;
+  private stripeAccountId: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI) {
     this.PaymentForm = new FormGroup({
@@ -41,6 +43,27 @@ export class AddPaymentPage {
       this.fullName = UserProfile.profileData.fullname;
       this.email = UserProfile.userData.email;
       this.profilePhoto = UserProfile.profileData.profilePhoto.url;
+      this.stripeAccountId = UserProfile.profileData.stripeCustomer.id;
+    })
+  }
+
+  updateStripeAccount(){
+    console.log(this.stripeAccountId);
+    this.body = {
+      stripeAccountId: this.stripeAccountId,
+      profileId: this.profileId,
+    };
+    let API = this.smartieApi.getApi(
+      'updateTeacherAccount',
+      this.body
+    );
+    interface Response {
+      result: any;
+    };
+    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+      this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
+    }, err => {
+      console.log(err);
     })
   }
 
@@ -49,7 +72,11 @@ export class AddPaymentPage {
       data.emailPayment = this.email;
     }
 
-    console.log(data);
+    if(this.userRole == 'teacher'){
+      this.stripeEndpoint = 'createTeacherAccount';
+    }else{
+      this.stripeEndpoint = 'createCustomer';
+    }
 
     let card = {
       number: '4242424242424242',
@@ -60,7 +87,7 @@ export class AddPaymentPage {
 
     this.stripe.setPublishableKey('pk_test_HZ10V0AINd5NjEOyoEAeYSEe');
     this.stripe.createCardToken(card).then(token => {
-      console.log(token);
+
       this.body = {
         emailPayment: data.emailPayment,
         card: card,
@@ -69,7 +96,7 @@ export class AddPaymentPage {
       };
 
       let API = this.smartieApi.getApi(
-        'createCustomer',
+        this.stripeEndpoint,
         this.body
       );
       interface Response {
