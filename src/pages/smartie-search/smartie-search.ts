@@ -269,6 +269,7 @@ export class SmartieSearch {
       if (this.role !== 'teacher') {
         params = {
           profilePhoto: locationData.teacherProfile.profilePhoto,
+          profileStripeAccount: locationData.teacherProfile.stripeCustomer,
           fullname: locationData.teacherProfile.fullname,
           role: locationData.teacherProfile.role,
           prefPayRate: locationData.teacherProfile.prefPayRate,
@@ -287,6 +288,7 @@ export class SmartieSearch {
       } else {
         params = {
           profilePhoto: locationData.otherProfile.profilePhoto,
+          profileStripeAccount: locationData.otherProfile.stripeCustomer,
           fullname: locationData.otherProfile.fullname,
           role: locationData.otherProfile.role,
           profileAbout: locationData.otherProfile.profileAbout,

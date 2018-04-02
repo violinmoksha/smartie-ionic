@@ -26,6 +26,8 @@ export class SchedulePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public modalCtrl: ModalController, public popoverCtrl: PopoverController) {
     this.params = this.navParams.data.params;
+    console.log('Schedule Page');
+    console.log(this.params);
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
     })
@@ -48,7 +50,6 @@ export class SchedulePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SchedulePage');
   }
 
   pickDateCalendar() {

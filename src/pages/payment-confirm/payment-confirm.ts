@@ -23,12 +23,16 @@ export class PaymentConfirmPage {
   private userRole: any;
   private stripeCustomer: any;
   private body: any;
+  private params: any;
 
   tooltipEvent: 'click' | 'press' = 'click';
   showArrow: boolean = true;
   duration: number = 3000;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI) {
+    this.params = navParams.data.params
+    console.log("Payment Confirm Page");
+    console.log(this.params);
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
       if(UserProfile.profileData.stripeCustomer){
@@ -46,7 +50,6 @@ export class PaymentConfirmPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PaymentConfirmPage');
   }
 
   pay(amount){
@@ -54,7 +57,8 @@ export class PaymentConfirmPage {
     console.log(this.stripeCustomer);
     this.body = {
       amountpayable: amount,
-      customerId: this.stripeCustomer
+      customerId: this.stripeCustomer,
+      teacherAccountId: this.params.profileStripeAccount.id
     };
     let API = this.smartieApi.getApi(
       'createTransaction',

@@ -29,6 +29,8 @@ export class JobRequestPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.params = navParams.data.params;
+    console.log('Job Request Page');
+    console.log(this.params);
 
     if (this.params.fromWhere && this.params.fromWhere == 'requestSentJobs') {
       this.congrats = true;
@@ -39,7 +41,6 @@ export class JobRequestPage {
   }
 
   loadImage(){
-    console.log('test');
     this.loaded = true;
   }
 
@@ -48,7 +49,6 @@ export class JobRequestPage {
       this.userRole = roleProfile.profileData.role;
 
       if(this.userRole != 'teacher' && this.params.fromWhere == 'acceptedJobs'){
-        console.log('test');
         // this.scheduleJob();
         let alert = this.alertCtrl.create({
           title: 'Wow, check it out!',
@@ -59,6 +59,7 @@ export class JobRequestPage {
               // this.navCtrl.push('NotificationFeedPage');
               this.navCtrl.push('SchedulePage', { params: {
                 profilePhoto: this.params.profilePhoto,
+                profileStripeAccount: this.params.profileStripeAccount,
                 fullname: this.params.fullname,
                 role: this.params.role,
                 prefPayRate: this.params.prefPayRate,
