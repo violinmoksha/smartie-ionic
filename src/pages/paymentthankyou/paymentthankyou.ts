@@ -29,15 +29,15 @@ export class PaymentthankyouPage {
 
   ionViewDidLoad() {
     if(this.fromWhere == 'nonTeacherPayment'){
-      this.pageContent = "<h2>Thank you</h2><p>Your Payment is scucess</p><p class='mail'></p>";
+      this.pageContent = "<h2>Thank you</h2><p>Your Payment was successful</p><p class='mail'></p>";
     }else if(this.fromWhere == 'teacherStripePayment'){
-      this.pageContent = "<h2>Success</h2><p>Your stripe account added to your payment details</p><p class='mail'></p>";
+      this.pageContent = "<h2>Success</h2><p>Your stripe account has been added to your payment details</p><p class='mail'></p>";
     }
   }
 
   goTo(){
-    console.log('Test');
-    // this.navCtrl.push("EditProfilePage", { userRole: this.userRole });
+    //console.log('Test');
+    this.navCtrl.setRoot("SmartieSearch");
   }
 
 }

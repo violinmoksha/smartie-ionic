@@ -74,17 +74,27 @@ export class TimeSelectorPage {
   }
 
   goPay(){
-    this.navCtrl.push("PaymentPage", { totalHours: this.parseHours(this.totalHours), totalAmount: this.parseMoney(this.totalAmount), params: this.params });
+    this.navCtrl.push("PaymentPage", { totalHours: this.parseHours(this.totalHours), totalAmount: this.smartieTotal(this.totalAmount), params: this.params });
   }
 
   ionViewDidLoad() {
   }
 
   parseMoney(val) {
-    return parseFloat(val).toFixed(2);
+    return val.toFixed(2);
   }
 
   parseHours(val) {
-    return parseFloat(val).toFixed(1);
+    return val.toFixed(1);
+  }
+
+  smartieFee(val) {
+    val = val * .2; // 20% fee
+    return val.toFixed(2);
+  }
+
+  smartieTotal(val) {
+    val = val + (val * .2); // 20% fee
+    return val.toFixed(2);
   }
 }

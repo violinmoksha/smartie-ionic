@@ -28,12 +28,17 @@ export class AddPaymentPage {
   private profileId: any;
   private stripeEndpoint: any;
   private stripeAccountId: any;
+  private userIP: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI) {
     this.PaymentForm = new FormGroup({
       emailPayment: new FormControl('', Validators.required),
       emailConfirm: new FormControl('yes'),
     });
+    this.smartieApi.http.get('https://icanhazip.com', { responseType: 'text' }).subscribe(res => {
+      this.userIP = res;
+      console.log(`IP ADDRESS: ${this.userIP}`);
+    })
   }
 
   ionViewDidLoad() {
@@ -52,6 +57,7 @@ export class AddPaymentPage {
     this.body = {
       stripeAccountId: this.stripeAccountId,
       profileId: this.profileId,
+      userIP: this.userIP // for TOS acceptance
     };
     let API = this.smartieApi.getApi(
       'updateTeacherAccount',

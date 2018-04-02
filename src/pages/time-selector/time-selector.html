@@ -20,10 +20,22 @@
     <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" minuteValues="[00,15,30,45]" (ionChange)="timeSet()" [(ngModel)]="event.timeEnds"></ion-datetime>
   </ion-item>
   <div *ngIf="totalHours !== undefined" class="left">
-    <ion-label style="margin-top:6px">Total Hours:<br />{{ parseHours(totalHours) }}</ion-label>
+    <ion-label style="margin-top:6px">Total Hours: {{ parseHours(totalHours) }}</ion-label>
   </div>
   <div *ngIf="selectedDate" class="right">
     <div class="total" *ngIf="totalAmount !== undefined">${{ parseMoney(totalAmount) }}</div>
+  </div>
+  <div *ngIf="totalHours !== undefined" class="left">
+    <ion-label>Smartie Fee:</ion-label>
+  </div>
+  <div *ngIf="selectedDate" class="right">
+    <div class="total" *ngIf="totalAmount !== undefined">${{ smartieFee(totalAmount) }}</div>
+  </div>
+  <div *ngIf="totalHours !== undefined" class="left">
+    <ion-label>TOTAL:</ion-label>
+  </div>
+  <div *ngIf="selectedDate" class="right">
+    <div class="total" *ngIf="totalAmount !== undefined">${{ smartieTotal(totalAmount) }}</div>
   </div>
   <div class="clear"></div>
 

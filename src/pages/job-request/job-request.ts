@@ -51,8 +51,8 @@ export class JobRequestPage {
       if(this.userRole != 'teacher' && this.params.fromWhere == 'acceptedJobs'){
         // this.scheduleJob();
         let alert = this.alertCtrl.create({
-          title: 'Wow, check it out!',
-          subTitle: `You have to schedule a Job! Tap OK to visit your Schedule page now!`,
+          title: 'Time to schedule!',
+          subTitle: `You must now schedule your session! Tap OK to visit your Schedule page now!`,
           buttons: [{
             text: 'OK',
             handler: () => {

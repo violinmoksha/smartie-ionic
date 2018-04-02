@@ -44,8 +44,8 @@ export class PaymentConfirmPage {
     this.CardForm = new FormGroup({
       cardnumber: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(16)]),
       monthexp: new FormControl('', [Validators.required, Validators.pattern('^[1-12]+$')]),
-      yearexp: new FormControl('', Validators.required),
-      cvv: new FormControl('', Validators.required)
+      yearexp: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      cvv: new FormControl('', [Validators.required, Validators.minLength(3)])
     });
   }
 
@@ -56,7 +56,7 @@ export class PaymentConfirmPage {
     console.log(amount);
     console.log(this.stripeCustomer);
     this.body = {
-      amountpayable: amount,
+      amountPayable: amount * 100, // in cents
       customerId: this.stripeCustomer,
       teacherAccountId: this.params.profileStripeAccount.id
     };
