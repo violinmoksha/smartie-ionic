@@ -32,7 +32,6 @@ export class SmartieApp {
     this.events.subscribe("buttonsLoad", eventData => {
       if (eventData !== 'teacher') {
         this.buttons = [
-          { iconName: 'card', text: 'Payment Details' },
           { iconName: 'book', text: 'Manage Orders' },
           { iconName: 'qr-scanner', text: 'Scan QR Promo' },
           { iconName: 'settings', text: 'Profile Settings' },

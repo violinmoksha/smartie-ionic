@@ -52,7 +52,7 @@ export class JobRequestPage {
         // this.scheduleJob();
         let alert = this.alertCtrl.create({
           title: 'Time to schedule!',
-          subTitle: `You must now schedule your session! Tap OK to visit your Schedule page now!`,
+          subTitle: `You must now schedule your session! Tap OK to visit your Schedule page!`,
           buttons: [{
             text: 'OK',
             handler: () => {

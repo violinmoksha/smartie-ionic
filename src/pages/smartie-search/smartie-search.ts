@@ -163,7 +163,7 @@ export class SmartieSearch {
             if(this.notifyCount > 0){
               let alert = this.alertCtrl.create({
                 title: 'Wow, check it out!',
-                subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page now!`,
+                subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
                 buttons: [{
                   text: 'OK',
                   handler: () => {

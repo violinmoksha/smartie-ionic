@@ -26,7 +26,6 @@ export class AddPaymentPage {
   private PaymentForm : FormGroup;
   private body: any;
   private profileId: any;
-  private stripeEndpoint: any;
   private stripeAccountId: any;
   private userIP: string;
 
@@ -73,48 +72,24 @@ export class AddPaymentPage {
     })
   }
 
-  submitPayment(data){
+  addStripeAccount(data){
     if(data.emailConfirm == 'yes'){
       data.emailPayment = this.email;
     }
 
-    if(this.userRole == 'teacher'){
-      this.stripeEndpoint = 'createTeacherAccount';
-    }else{
-      this.stripeEndpoint = 'createCustomer';
-    }
-
-    let card = {
-      number: '4242424242424242',
-      expMonth: 12,
-      expYear: 2020,
-      cvc: '220'
+    // NB: this page flow is only for Teachers
+    // there is no Payment Details flow in non-Teachers!
+    let API = this.smartieApi.getApi(
+      'createTeacherAccount',
+      { emailPayment: data.emailPayment }
+    );
+    interface Response {
+      result: any;
     };
-
-    this.stripe.setPublishableKey('pk_test_HZ10V0AINd5NjEOyoEAeYSEe');
-    this.stripe.createCardToken(card).then(token => {
-
-      this.body = {
-        emailPayment: data.emailPayment,
-        card: card,
-        profileId: this.profileId,
-        token: token.id
-      };
-
-      let API = this.smartieApi.getApi(
-        this.stripeEndpoint,
-        this.body
-      );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
-      }, err => {
-        console.log(err);
-      })
+    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+      this.navCtrl.push("AddBankAccountPage");
+    }, err => {
+      console.log(err);
     })
-
   }
-
 }

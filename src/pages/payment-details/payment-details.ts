@@ -28,7 +28,7 @@ export class PaymentDetailsPage {
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
-      if(UserProfile.profileData.stripeCustomer){
+      if(UserProfile.profileData.stripeCustomer.id){
         this.registeredWithStripe = true;
       }
     });

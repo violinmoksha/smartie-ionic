@@ -32,7 +32,7 @@
       <span>Is this your Stripe account email id ?</span>
       <span class="stripe_email">{{ email }}</span>
 
-      <form [formGroup]="PaymentForm" name="PaymentForm" (ngSubmit)="submitPayment(PaymentForm.value)" novalidate>
+      <form [formGroup]="PaymentForm" name="PaymentForm" (ngSubmit)="addStripeAccount(PaymentForm.value)" novalidate>
 
         <div class="list list-inset registration payment-page parent">
 

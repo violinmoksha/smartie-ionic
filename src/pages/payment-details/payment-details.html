@@ -14,13 +14,13 @@
 <ion-content padding class="{{ userRole }}">
   <!-- {{ userProfileData | json }} -->
   <div class="payment-landing">
-    <div class="top_content" [ngClass]="{'stripeActive': registeredWithStripe}">
+    <div class="top-content" [ngClass]="{'stripeActive': registeredWithStripe}">
       <p class="headtitle">Hi {{ fullName }}</p>
       <p *ngIf='!registeredWithStripe'>You have not entered your payment details.</p>
       <p *ngIf='registeredWithStripe'>You have entered your payment details.</p>
     </div>
 
-    <div class="middle_content">
+    <div class="middle-content">
       <p>In order to recieve your fees you must have a Stripe account</p>
       <p>If you don't have an account we will help you create one</p>
       <div class="payment-icon">
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="bottom_content">
+    <div class="bottom-content">
       <p>Please continue with the process by clicking below</p>
     </div>
 
