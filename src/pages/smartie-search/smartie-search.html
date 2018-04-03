@@ -21,7 +21,7 @@
   <div #map id="map"></div>
   <div class="bottom-search-box">
     <input class="item item-input" name="searchloc" type="text" placeholder="Los Angeles, CA" #searchloc>
-    <button class="button button-positive" (click)="findJobsSearch(searchloc.value)">
+    <button class="button button-positive" (click)="findJobsSearch(searchloc.value, role)">
       <span *ngIf="role == 'teacher'">Find Jobs</span>
       <span *ngIf="role !== 'teacher'">Find Teachers</span>
     </button>

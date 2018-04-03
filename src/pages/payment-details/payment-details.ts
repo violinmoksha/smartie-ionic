@@ -18,6 +18,7 @@ export class PaymentDetailsPage {
 
   private userRole: string;
   private fullName: any;
+  private registeredWithStripe: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
 
@@ -27,6 +28,9 @@ export class PaymentDetailsPage {
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
+      if(UserProfile.profileData.stripeCustomer){
+        this.registeredWithStripe = true;
+      }
     });
   }
 

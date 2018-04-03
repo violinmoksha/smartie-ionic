@@ -219,8 +219,39 @@ export class SmartieSearch {
     })
   }
 
+  getGeoPoint(searchLoc){
+    return new Promise(resolve => {
+      let geocoder = new google.maps.Geocoder();
+      geocoder.geocode({
+      'address': searchLoc
+      }, function(results, status) {
+
+        // hide actual geopoint
+        let x0 = results[0].geometry.location.lng();
+        let y0 = results[0].geometry.location.lat();
+
+        // 5km rad as deg (reasonably close but not too far)
+        let rd = 5000/111300, u = Math.random(), v = Math.random();
+        let w = rd * Math.sqrt(u);
+        let t = 2 * Math.PI * v;
+        let x = w * Math.cos(t);
+        let y = w * Math.sin(t);
+        let xp = x/Math.cos(y0);
+
+        let searchLocLatLng = new Parse.GeoPoint({
+          latitude: y+y0,
+          longitude: xp+x0
+        });
+
+        resolve(searchLocLatLng);
+      });
+    })
+  }
+
   findJobsSearch(searchLoc){
-    this.smartieSearchResult(null, this.navParams.data.role, searchLoc);
+    this.getGeoPoint(searchLoc).then(response => {
+      this.smartieSearchResult(null, this.navParams.data.role, response);
+    });
   }
 
   createMarkerLocation(locationData){
@@ -346,8 +377,8 @@ export class SmartieSearch {
     if(latLng !== null){
       mapCenter = latLng;
     } else if (searchLoc !== null) {
-      // TODO: this now needs to do a quick geocoder call
-      mapCenter = this.notifications[0].latLng;
+      // TODO: this now needs to do a quick geocoder call (fixed)
+      mapCenter = searchLoc;
     }
 
     let mapOptions = {

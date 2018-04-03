@@ -283,7 +283,20 @@ page-schedule {
           color: #F97533 !important
         }
       }
-
+      .back-button-text{
+        color: #F97533!important;
+      }
+      .back-button{
+        color: #F97533!important;
+      }
+      .job-availablity-details{
+        background-color:  #F97533!important;
+      }
+      .header{
+        .toolbar-background{
+          background-color:#F97533 !important
+        }
+      }
     }
 
 }
@@ -342,80 +355,77 @@ page-time-selector{
           color:#F97533!important;
         }
 
+
       }
 }
-.student{
-    .week-title.primary{
-        background-color:#0096D7!important;
-    }
-    .today{
-      p{
-        color:#0096D7!important;
-      }
-    }
-    .on-selected{
-        background-color:#0096D7!important;
-      p{
-        color: #fff!important;
-      }
-    }
-    .picker-button{
-      color:#0096D7!important;
-    }
-  }
 
-  .school{
+.modal-wrapper{
+  .student{
+    .header{
+      .toolbar-background{
+        background-color:#0096D7!important;
+      }
+    }
       .week-title.primary{
-          background-color:#F31C62!important;
+          background-color:#0096D7!important;
       }
       .today{
         p{
-          color:#F31C62!important;
+          color:#0096D7!important;
         }
       }
       .on-selected{
-          background-color:#F31C62!important;
+          background-color:#0096D7!important;
         p{
           color: #fff!important;
         }
       }
       .picker-button{
-        color:#F31C62!important;
+        color:#0096D7!important;
       }
     }
 
-    .parent{
-
-        .week-title.primary{
-            background-color:#F97533!important;
+    .school{
+      .week-title.primary{
+            background-color:#F31C62!important;
         }
         .today{
           p{
-            color:#F97533!important;
+            color:#F31C62!important;
           }
         }
         .on-selected{
-            background-color:#F97533!important;
+            background-color:#F31C62!important;
           p{
             color: #fff!important;
           }
         }
         .picker-button{
-          color:#F97533!important;
+          color:#F31C62!important;
         }
-        .back-button-text{
-          color: #F97533!important;
-        }
-        .back-button{
-          color: #F97533!important;
-        }
-        .job-availablity-details{
-          background-color:  #F97533!important;
-        }
-        .header{
-          .toolbar-background{
-            background-color:#F97533 !important
+      }
+
+      .parent{
+
+          .week-title.primary{
+              background-color:#F97533!important;
           }
+          .today{
+            p{
+              color:#F97533!important;
+            }
+          }
+          .on-selected{
+              background-color:#F97533!important;
+            p{
+              color: #fff!important;
+            }
+          }
+          .picker-button{
+            color:#F97533!important;
+          }
+
+
         }
 
-      }
+}

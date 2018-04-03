@@ -194,17 +194,22 @@ page-job-request {
 
     .cl-teacher{
       .toolbar-background{
-        background-color: #00BC5B !important;
-        color: #fff;
+        background-color: #fff !important;
+        color: #00BC5B;
       }
       .toolbar-title{
-        color: #fff!important;
+        color: #00BC5B!important;
       }
       .back-button{
         color: #00BC5B !important
       }
       .price{
         color: #00BC5B !important
+      }
+      .jobprofile-content{
+        h3{
+          color: #333333 !important
+        }
       }
       .alert-button-default-md{
         background-color: #00BC5B !important;
@@ -225,6 +230,11 @@ page-job-request {
       .price{
         color: #F97533 !important
       }
+      .jobprofile-content{
+        h3{
+          color: #333333 !important
+        }
+      }
       .alert-button-default-md{
         background-color: #F97533 !important;
         color: #fff;
@@ -239,11 +249,11 @@ page-job-request {
     }
     .cl-school {
       .toolbar-background{
-        background-color: #F31C62 !important;
-        color: #fff;
+        background-color: #fff !important;
+        color: #F31C62;
       }
       .toolbar-title{
-        color: #fff!important;
+        color: #F31C62!important;
       }
       .back-button{
         color: #F31C62 !important
@@ -255,20 +265,30 @@ page-job-request {
         background-color: #F31C62 !important;
         color: #fff;
       }
+      .jobprofile-content{
+        h3{
+          color: #333333 !important
+        }
+      }
     }
     .cl-student {
       .toolbar-background{
-        background-color: #0096D7 !important;
-        color: #fff;
+        background-color: #fff !important;
+        color: #0096D7;
       }
       .toolbar-title{
-        color: #fff!important;
+        color: #0096D7!important;
       }
       .back-button{
         color: #0096D7 !important
       }
       .price{
         color: #0096D7 !important
+      }
+      .jobprofile-content{
+        h3{
+          color: #333333 !important
+        }
       }
       .alert-button-default-md{
         background-color: #0096D7 !important;
@@ -299,6 +319,8 @@ page-job-request {
   right: 0!important;
   margin: auto;
   max-height:80%!important;
+  width: 90%!important;
+
 
   .scroll-content {
     margin-top:23px;

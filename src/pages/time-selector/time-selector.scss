@@ -11,20 +11,33 @@ page-time-selector {
   .button {
     border-radius:5px;
   }
+  .item-ios{
+    padding-left: 0!important;
+  }
 
   .item-inner {
     border-bottom:0!important;
+    padding-right: 0!important;
   }
-
+  .label-ios{
+    font-size:15px;
+    margin:5px 0;
+    padding-left: 0;
+  }
+  .datetime-ios{
+    padding: 5px 0;
+    font-size: 15px;
+  }
   .left {
     clear:both;
     float:left;
-    font-size:1.1em;
+    font-size:15px;
+    padding-left: 0;
   }
 
   .right {
     float:right;
-
+    padding-right: 0px;
     .total {
       color: #009345;
       margin-top: 5px;

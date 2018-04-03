@@ -22,6 +22,9 @@ page-payment-details {
        font-size: 15px;
      }
     }
+    .stripeActive p{
+      color: green !important;
+    }
     .middle_content {
       margin-bottom: 20px;
     }
@@ -30,6 +33,7 @@ page-payment-details {
     }
 
   }
+
   .teacher{
     .button-default{
       background-color: #00BC5B!important;
@@ -41,5 +45,42 @@ page-payment-details {
     .bar-button-default-ios{
       color: #00BC5B!important;
     }
+  }
+  .student{
+    .button-default{
+      background-color: #0096D7!important;
+      border-radius: 4px;
+    }
+    .back-button-text{
+      color: #0096D7!important;
+    }
+    .bar-button-default-ios{
+      color: #0096D7!important;
+    }
+  }
+  .school{
+    .button-default{
+      background-color: #F31C62!important;
+      border-radius: 4px;
+    }
+    .back-button-text{
+      color: #F31C62!important;
+    }
+    .bar-button-default-ios{
+      color: #F31C62!important;
+    }
+  }
+  .parent{
+    .button-default{
+      background-color: #F97533!important;
+      border-radius: 4px;
+    }
+    .back-button-text{
+      color: #F97533!important;
+    }
+    .bar-button-default-ios{
+      color: #F97533!important;
+    }
+
   }
 }
