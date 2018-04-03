@@ -87,7 +87,10 @@ export class AddPaymentPage {
       result: any;
     };
     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      this.navCtrl.push("AddBankAccountPage");
+      // TODO: we pass the stripeAccount to VerifyIdentityPage
+      // so that we can find the required additional fields in
+      // stripeAccount.verification.fields_needed
+      this.navCtrl.push("VerifyIdentityPage", { stripeAccount: response.result });
     }, err => {
       console.log(err);
     })
