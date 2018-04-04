@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { Stripe } from '@ionic-native/stripe';
+import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
+import { SmartieAPI } from '../../providers/api/smartie';
 
 /**
  * Generated class for the AddBankAccountPage page.
@@ -15,11 +19,68 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class AddBankAccountPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private BankAccountForm: FormGroup;
+  private params: any;
+  private userRole: any;
+  private profileId: any;
+  private fullName: any;
+  private body: any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI) {
+    this.params = navParams.data;
+
+    this.BankAccountForm = new FormGroup({
+      accountNumber: new FormControl('', Validators.required),
+      routingNumber: new FormControl('', Validators.required),
+      accountHolderName: new FormControl('', Validators.required),
+      accountHolderType: new FormControl('', Validators.required)
+    })
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddBankAccountPage');
+    this.storage.get('UserProfile').then(UserProfile => {
+      this.profileId = UserProfile.profileData.objectId;
+      this.userRole = UserProfile.profileData.role;
+      this.fullName = UserProfile.profileData.fullname;
+    })
+  }
+
+  submit(bankAccoutnValues){
+
+    this.stripe.setPublishableKey('pk_test_HZ10V0AINd5NjEOyoEAeYSEe');
+    this.stripe.createBankAccountToken({
+      country: 'US',
+      currency: 'usd',
+      routing_number: bankAccoutnValues.routingNumber,
+      account_number: bankAccoutnValues.accountNumber,
+      account_holder_name: bankAccoutnValues.accountHolderName,
+      account_holder_type: bankAccoutnValues.accountHolderType,
+    }).then(bankToken => {
+      console.log(bankToken);
+      this.body = {
+        stripeAccountId: this.params.stripeAccount.id,
+        profileId: this.profileId,
+        bankToken: bankToken
+      };
+      let API = this.smartieApi.getApi(
+        'addBankAccount',
+        this.body
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
+      }, err => {
+        console.log(err);
+      })
+    })
+
+
+
+    /*
+
+    */
   }
 
 }

@@ -28,6 +28,7 @@ export class AddPaymentPage {
   private profileId: any;
   private stripeAccountId: any;
   private userIP: string;
+  private userIPd: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI) {
     this.PaymentForm = new FormGroup({
@@ -35,7 +36,7 @@ export class AddPaymentPage {
       emailConfirm: new FormControl('yes'),
     });
     this.smartieApi.http.get('https://icanhazip.com', { responseType: 'text' }).subscribe(res => {
-      this.userIP = res;
+      this.userIP = res.replace(/\s/g, "");
       console.log(`IP ADDRESS: ${this.userIP}`);
     })
   }
@@ -47,19 +48,19 @@ export class AddPaymentPage {
       this.fullName = UserProfile.profileData.fullname;
       this.email = UserProfile.userData.email;
       this.profilePhoto = UserProfile.profileData.profilePhoto.url;
-      this.stripeAccountId = UserProfile.profileData.stripeCustomer.id;
+      // this.stripeAccountId = UserProfile.profileData.stripeCustomer.id;
     })
   }
 
   updateStripeAccount(){
-    console.log(this.stripeAccountId);
+    //console.log(this.stripeAccountId);
     this.body = {
-      stripeAccountId: this.stripeAccountId,
-      profileId: this.profileId,
-      userIP: this.userIP // for TOS acceptance
+      // stripeAccountId: this.stripeAccountId,
+      // profileId: this.profileId,
+      // userIP: this.userIP // for TOS acceptance
     };
     let API = this.smartieApi.getApi(
-      'updateTeacherAccount',
+      'deleteTeacherAccount',
       this.body
     );
     interface Response {
@@ -76,12 +77,12 @@ export class AddPaymentPage {
     if(data.emailConfirm == 'yes'){
       data.emailPayment = this.email;
     }
-
+    
     // NB: this page flow is only for Teachers
     // there is no Payment Details flow in non-Teachers!
     let API = this.smartieApi.getApi(
       'createTeacherAccount',
-      { emailPayment: data.emailPayment }
+      { emailPayment: data.emailPayment, userIP: this.userIP, profileId: this.profileId  }
     );
     interface Response {
       result: any;

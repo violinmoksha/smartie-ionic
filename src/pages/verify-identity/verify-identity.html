@@ -5,12 +5,12 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar hideBackButton="true">
+  <ion-navbar hideBackButton="true" class="{{ userRole }}">
     <ion-title>Verify Your Identity</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding class="{{ userRole }}">
 <!--
 
 TODO: make a form that gets the following info and
@@ -18,7 +18,7 @@ sends it to a backend endpoint which updates the account:
 
 Per https://stripe.com/docs/connect/required-verification-information#minimum-verification-requirements-for-united-states
 
-external_account
+TODO: external_account - This is the token genrated by tokenising the bank account info or it will happened in the nextpage
 legal_entity.address.city
 legal_entity.address.line1
 legal_entity.address.postal_code
@@ -30,8 +30,116 @@ legal_entity.first_name
 legal_entity.last_name
 legal_entity.ssn_last_4
 legal_entity.type	= 'individual'
-tos_acceptance.date
-tos_acceptance.ip
 
 -->
+
+  <form [formGroup]="VerifyIdentityForm" name="VerifyIdentityForm" (ngSubmit)="submit(VerifyIdentityForm.value)" novalidate>
+
+    <ion-item>
+      <ion-label fixed>First Name </ion-label>
+      <ion-input placeholder="John Doe" type="text" formControlName="legalFirstName"></ion-input>
+    </ion-item>
+
+    <div *ngIf="VerifyIdentityForm.controls['legalFirstName'].invalid && VerifyIdentityForm.controls['legalFirstName'].touched" class="item item-message">
+      Legal First Name is required
+    </div>
+
+
+    <ion-item>
+      <ion-label fixed>Last Name </ion-label>
+      <ion-input placeholder="John Doe" type="text" formControlName="legalLastName"></ion-input>
+    </ion-item>
+
+    <div *ngIf="VerifyIdentityForm.controls['legalLastName'].invalid && VerifyIdentityForm.controls['legalLastName'].touched" class="item item-message">
+      Legal Last Name is required
+    </div>
+
+
+    <ion-item>
+      <ion-label fixed>City </ion-label>
+      <ion-input placeholder="Los Angeles" type="text" formControlName="legalAddressCity"></ion-input>
+    </ion-item>
+
+    <div *ngIf="VerifyIdentityForm.controls['legalAddressCity'].invalid && VerifyIdentityForm.controls['legalAddressCity'].touched" class="item item-message">
+      Legal City is required
+    </div>
+
+
+    <ion-item>
+      <ion-label fixed>Address 1 </ion-label>
+      <ion-input placeholder="1120 N Street Sacramento" type="text" formControlName="legalAddressLine1"></ion-input>
+    </ion-item>
+
+    <div *ngIf="VerifyIdentityForm.controls['legalAddressLine1'].invalid && VerifyIdentityForm.controls['legalAddressLine1'].touched" class="item item-message">
+      Legal Address is required
+    </div>
+
+
+    <ion-item>
+      <ion-label fixed>Postal Code </ion-label>
+      <ion-input placeholder="90001" type="text" formControlName="legalAddressPostalCode"></ion-input>
+    </ion-item>
+
+    <div *ngIf="VerifyIdentityForm.controls['legalAddressPostalCode'].invalid && VerifyIdentityForm.controls['legalAddressPostalCode'].touched" class="item item-message">
+      Legal Postal Code is required
+    </div>
+
+
+    <ion-item>
+      <ion-label fixed>State </ion-label>
+      <ion-input placeholder="California" type="text" formControlName="legalAddressState"></ion-input>
+    </ion-item>
+
+    <div *ngIf="VerifyIdentityForm.controls['legalAddressState'].invalid && VerifyIdentityForm.controls['legalAddressState'].touched" class="item item-message">
+      Legal State is required
+    </div>
+
+
+
+    <ion-item>
+      <ion-label fixed>DOB Date </ion-label>
+      <ion-input placeholder="03" type="text" formControlName="legalDobDate"></ion-input>
+    </ion-item>
+
+    <div *ngIf="VerifyIdentityForm.controls['legalDobDate'].invalid && VerifyIdentityForm.controls['legalDobDate'].touched" class="item item-message">
+      Legal Date is required
+    </div>
+
+
+    <ion-item>
+      <ion-label fixed>DOB Month </ion-label>
+      <ion-input placeholder="01" type="text" formControlName="legalDobMonth"></ion-input>
+    </ion-item>
+
+    <div *ngIf="VerifyIdentityForm.controls['legalDobMonth'].invalid && VerifyIdentityForm.controls['legalDobMonth'].touched" class="item item-message">
+      Legal Month is required
+    </div>
+
+
+    <ion-item>
+      <ion-label fixed>DOB Year </ion-label>
+      <ion-input placeholder="2018" type="text" formControlName="legalDobYear"></ion-input>
+    </ion-item>
+
+    <div *ngIf="VerifyIdentityForm.controls['legalDobYear'].invalid && VerifyIdentityForm.controls['legalDobYear'].touched" class="item item-message">
+      Legal Year is required
+    </div>
+
+
+    <ion-item>
+      <ion-label fixed>SSN Number </ion-label>
+      <ion-input placeholder="Add last 4 digit of your ssn" type="text" formControlName="legalSsn"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Type</ion-label>
+      <ion-select formControlName="legalType">
+        <ion-option value="individual">Individual</ion-option>
+        <ion-option value="bussiness">Bussiness</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <button class="button button-positive" [disabled]="VerifyIdentityForm.invalid" ion-button full> Submit</button>
+
+  </form>
 </ion-content>

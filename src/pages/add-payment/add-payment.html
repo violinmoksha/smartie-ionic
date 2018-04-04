@@ -16,7 +16,7 @@
       <div class="profile_logo">
         <img src="{{ profilePhoto }}" />
       </div>
-      <span class="profile_name">{{ fullName }}</span>
+      <span class="profile-name">{{ fullName }}</span>
       <span class="profession">{{ userRole }}</span>
     </div>
 
@@ -34,7 +34,7 @@
 
       <form [formGroup]="PaymentForm" name="PaymentForm" (ngSubmit)="addStripeAccount(PaymentForm.value)" novalidate>
 
-        <div class="list list-inset registration payment-page parent">
+        <div class="list list-inset registration payment-page">
 
           <ion-list radio-group formControlName="emailConfirm">
             <ion-item>
