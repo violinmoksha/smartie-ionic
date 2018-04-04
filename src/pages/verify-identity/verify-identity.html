@@ -18,12 +18,20 @@ sends it to a backend endpoint which updates the account:
 
 Per https://stripe.com/docs/connect/required-verification-information#minimum-verification-requirements-for-united-states
 
-SUCH AS:
-
-- The entity type (individual or company)
-- The business name (company only)
-- Full legal name of the individual or company representative
-- Date of birth of the individual or company representative
+external_account
+legal_entity.address.city
+legal_entity.address.line1
+legal_entity.address.postal_code
+legal_entity.address.state
+legal_entity.dob.day
+legal_entity.dob.month
+legal_entity.dob.year
+legal_entity.first_name
+legal_entity.last_name
+legal_entity.ssn_last_4
+legal_entity.type	= 'individual'
+tos_acceptance.date
+tos_acceptance.ip
 
 -->
 </ion-content>
