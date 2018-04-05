@@ -1,7 +1,6 @@
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
 
 /**
@@ -17,10 +16,9 @@ import { Storage } from '@ionic/storage';
 export class NotificationFeedPage {
   private allAccepteds: any;
   private allRequesteds: any;
-  private body: any;
   private userRole: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
 
   }
 

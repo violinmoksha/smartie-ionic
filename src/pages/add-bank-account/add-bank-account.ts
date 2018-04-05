@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Stripe } from '@ionic-native/stripe';
-import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
 
 /**
@@ -25,6 +25,7 @@ export class AddBankAccountPage {
   private profileId: any;
   private fullName: any;
   private body: any;
+  private profilePhoto: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI) {
     this.params = navParams.data;
@@ -42,6 +43,7 @@ export class AddBankAccountPage {
       this.profileId = UserProfile.profileData.objectId;
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
+      this.profilePhoto = this.profilePhoto = UserProfile.profileData.profilePhoto.url;
     })
   }
 
@@ -56,7 +58,6 @@ export class AddBankAccountPage {
       account_holder_name: bankAccoutnValues.accountHolderName,
       account_holder_type: bankAccoutnValues.accountHolderType,
     }).then(bankToken => {
-      console.log(bankToken);
       this.body = {
         stripeAccountId: this.params.stripeAccount.id,
         profileId: this.profileId,

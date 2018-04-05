@@ -11,6 +11,20 @@
 </ion-header>
 
 <ion-content padding class="{{ userRole }}">
+  <div class="profile-data">
+    <div class="left">
+      <div class="avatar">
+        <img src="{{ profilePhoto }}" >
+      </div>
+      <div class="u-detail">
+        <div class="name">John Mercandro</div>
+        <div class="profile-type">Teacher</div>
+      </div>
+    </div>
+    <div class="rates">
+
+    </div>
+  </div>
 <!-- TODO: Form for all Bank Acct Details including external_account -->
   <form [formGroup]="BankAccountForm" name="BankAccountForm" (ngSubmit)="submit(BankAccountForm.value)" novalidate>
 

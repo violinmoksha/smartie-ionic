@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
-import { Stripe } from '@ionic-native/stripe';
 import { SmartieAPI } from '../../providers/api/smartie';
 
 /**
@@ -28,9 +27,8 @@ export class AddPaymentPage {
   private profileId: any;
   private stripeAccountId: any;
   private userIP: string;
-  private userIPd: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI) {
     this.PaymentForm = new FormGroup({
       emailPayment: new FormControl('', Validators.required),
       emailConfirm: new FormControl('yes'),
@@ -77,7 +75,7 @@ export class AddPaymentPage {
     if(data.emailConfirm == 'yes'){
       data.emailPayment = this.email;
     }
-    
+
     // NB: this page flow is only for Teachers
     // there is no Payment Details flow in non-Teachers!
     let API = this.smartieApi.getApi(

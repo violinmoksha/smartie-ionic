@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
 
 /**
@@ -23,6 +23,7 @@ export class VerifyIdentityPage {
   private fullName: any;
   private params: any;
   private body: any;
+  private profilePhoto: any;
   private profileId: any;
 
 
@@ -50,6 +51,7 @@ export class VerifyIdentityPage {
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
       this.profileId = UserProfile.profileData.objectId;
+      this.profilePhoto = this.profilePhoto = UserProfile.profileData.profilePhoto.url;
     });
   }
 

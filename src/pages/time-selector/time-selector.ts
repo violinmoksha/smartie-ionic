@@ -30,8 +30,6 @@ export class TimeSelectorPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
     this.selectedDate = this.navParams.data.selectedDate;
     this.params = this.navParams.data.params;
-    console.log('Time Page');
-    console.log(this.params);
     this.loggedRole = this.navParams.data.loggedRole;
   }
 

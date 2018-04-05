@@ -32,7 +32,20 @@ legal_entity.ssn_last_4
 legal_entity.type	= 'individual'
 
 -->
+<div class="profile-data">
+  <div class="left">
+    <div class="avatar">
+      <img src="{{ profilePhoto }}" >
+    </div>
+    <div class="u-detail">
+      <div class="name">{{ fullName }}</div>
+      <div class="profile-type">{{ userRole }}</div>
+    </div>
+  </div>
+  <div class="rates">
 
+  </div>
+</div>
   <form [formGroup]="VerifyIdentityForm" name="VerifyIdentityForm" (ngSubmit)="submit(VerifyIdentityForm.value)" novalidate>
 
     <ion-item>
