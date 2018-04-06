@@ -37,9 +37,10 @@
     min-width: 12px;
   }
 }
-.toolbar-title-ios{
+.toolbar-title-ios, .toolbar-title-md{
   font-size: 14px;
   font-weight: 400;
+  text-align: center;
 }
 
 h4 {
@@ -52,4 +53,260 @@ h4 {
 
 .menu-inner ion-icon {
   line-height:1;
+}
+
+
+/*PopOver Content */
+.popover-content {
+  width:calc(100% - 30px);
+  left:0px!important;
+  top:90px!important;
+  right: 0!important;
+  margin: auto;
+  max-height:80%!important;
+  width: 90%!important;
+
+
+  .scroll-content {
+    margin-top:23px;
+    padding:0!important;
+    overflow:hidden;
+  }
+}
+
+/*Buttons */
+.button-positive{
+  width: 100%;
+  color: #fff;
+  padding: 0px;
+  font-size: 15px;
+  border-radius:5px;
+  display: block;
+  height:45px;
+  line-height:45px;
+  box-shadow:none;
+  border:0;
+  margin: 10px 0 10px;
+}
+
+.tagline{
+  text-align: center;
+  font-size: 14px;
+  color: #fff;
+  padding:5px 10px;
+  margin:-15px -15px 10px;
+  margin-bottom: 10px
+}
+
+.back-button.show-back-button{
+  position: absolute;
+  left: 0;
+  top: 10px;
+  z-index: 9999;
+}
+
+.bg-parent{
+    background-color: #F97533!important;
+}
+
+.teacher{
+  .button-positive{
+    background-color: #00BC5B!important;
+    &:hover {
+      background-color: #006838;
+    }
+  }
+  .notification span{
+    background: #00BC5B!important;
+  }
+  .back-button-icon{
+    color: #00BC5B !important
+  }
+  .back-button-text{
+    color: #00BC5B !important
+  }
+  .profile-data{
+     background-color: #00BC5B!important;
+   }
+   .swiper-slide.active{
+     border-color: #00BC5B !important;
+   }
+   .tagline{
+     background-color: #00BC5B !important;
+   }
+   .card-title{
+     background-color: #00BC5B!important;
+     color: #fff!important;
+   }
+   .swiper-slide.active{
+     border-color: #00BC5B !important;
+   }
+}
+.student{
+  .button-positive{
+    background-color: #0096D7!important;
+    &:hover {
+      background-color: #0096D7;
+    }
+  }
+  .notification span{
+    background: #0096D7!important;
+  }
+  .back-button-icon{
+    color: #0096D7 !important
+  }
+  .back-button-text{
+    color: #0096D7 !important
+  }
+  .profile-data{
+     background-color: #0096D7!important;
+   }
+   .swiper-slide.active{
+     border-color: #0096D7 !important;
+   }
+   .tagline{
+     background-color: #0096D7 !important;
+   }
+   .card-title{
+     background-color: #0096D7!important;
+     color: #fff!important;
+   }
+   .swiper-slide.active{
+     border-color: #0096D7 !important;
+   }
+   .job-availablity-details{
+     background-color: #0096D7!important;
+   }
+   .right{
+       .price{
+         color: #0096D7!important;
+       }
+   }
+   .total{
+     color:#0096D7!important;
+   }
+}
+.parent{
+  .button-positive{
+    background-color: #F97533!important;
+    &:hover {
+      background-color: #F97533;
+    }
+  }
+  .notification span{
+    background: #F97533!important;
+  }
+  .back-button-icon{
+    color: #F97533 !important
+  }
+  .back-button-text{
+    color: #F97533 !important
+  }
+  .profile-data{
+     background-color: #F97533!important;
+   }
+   .swiper-slide.active{
+     border-color: #F97533 !important;
+   }
+   .tagline{
+     background-color: #F97533 !important;
+   }
+   .card-title{
+     background-color: #F97533!important;
+     color: #fff!important;
+   }
+   .swiper-slide.active{
+     border-color: #F97533 !important;
+   }
+   .job-availablity-details{
+     background-color:  #F97533!important;
+   }
+   .right{
+     .price{
+       color: #F97533 !important
+     }
+   }
+   .total{
+     color:#F97533!important;
+   }
+
+}
+.school{
+  .button-positive{
+    background-color: #F31C62!important;
+    &:hover {
+      background-color: #F31C62;
+    }
+  }
+  .notification span{
+    background: #F31C62!important;
+  }
+  .back-button-icon{
+    color: #F31C62 !important
+  }
+  .back-button-text{
+    color: #F31C62 !important
+  }
+  .profile-data{
+     background-color: #F31C62;
+   }
+   .swiper-slide.active{
+     border-color: #F31C62 !important;
+   }
+   .tagline{
+     background-color: #F31C62 !important;
+   }
+   .card-title{
+     background-color: #F31C62!important;
+     color: #fff!important;
+   }
+   .swiper-slide.active{
+     border-color: #F31C62 !important;
+   }
+   .total{
+     color:#F31C62!important;
+   }
+}
+
+.cl-teacher{
+  .toolbar-title{
+    color: #00BC5B !important
+  }
+  .back-button{
+    color: #00BC5B !important
+  }
+}
+.cl-parent {
+  .toolbar-title{
+    color: #F97533 !important
+  }
+  .back-button{
+    color: #F97533 !important
+  }
+}
+.cl-school {
+  .toolbar-title{
+    color: #F31C62 !important
+  }
+  .back-button{
+    color: #F31C62 !important
+  }
+}
+.cl-student {
+  .toolbar-title{
+    color: #0096D7 !important
+  }
+  .back-button{
+    color: #0096D7 !important
+  }
+}
+
+
+/* Profile Data , Avatar Images */
+
+.profile-data{
+  padding:15px;
+  width: 100%;
+  float: left;
+  text-align: center;
 }

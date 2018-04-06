@@ -1,9 +1,9 @@
 page-add-payment {
-  .payment_profile{
+  .payment-profile{
     text-align: center;
-    .profile_top{
+    .profile-top{
       margin-bottom: 15px;
-      .profile_logo{
+      .profile-logo{
         width: 100px;
         height: 100px;
         border-radius: 300px;
@@ -15,7 +15,7 @@ page-add-payment {
           height: 100%;
         }
       }
-      .profile_name{
+      .profile-name{
         display: block;
         text-align: center;
         font-size:20px;
@@ -28,14 +28,14 @@ page-add-payment {
         color: #009345;
       }
     }
-    .profile_contact{
+    .profile-contact{
       background-color: #eee;
       min-height:40px;
       padding:5px 0;
       margin-bottom: 50px;
-      .profile_phone{
+      .profile-phone{
         font-size: 15px;
-        .phone_lable{
+        .phone-lable{
           display: block;
           font-size: 12px;
           color: #009345;
@@ -43,12 +43,12 @@ page-add-payment {
         }
       }
     }
-    .profile_email{
+    .profile-email{
       margin-bottom: 50px;
       span{
         display: block;
       }
-      .stripe_email{
+      .stripe-mail{
         font-size: 13px;
         color: #009345;
         margin-top:5px;
@@ -101,13 +101,7 @@ page-add-payment {
           }
         }
 
-      }
-      .button.button-positive{
-        display: block;
-        margin-top: 10px;
-        clear:both;
-        line-height: 40px;
-      }
+      }      
     }
   }
   .teacher{
@@ -140,7 +134,7 @@ page-add-payment {
     .profession{
       color: #0096D7!important;
     }
-    .stripe_email{
+    .stripe-mail{
       color: #0096D7!important;
     }
      .item-radio-checked{
@@ -158,13 +152,13 @@ page-add-payment {
     .bar-button-default-ios{
       color: #F31C62!important;
     }
-    .profile_name{
+    .profile-name{
       color: #F31C62!important;
     }
     .profession{
       color: #F31C62!important;
     }
-    .stripe_email{
+    .stripe-mail{
       color: #F31C62!important;
     }
      .item-radio-checked{
@@ -182,13 +176,13 @@ page-add-payment {
     .bar-button-default-ios{
       color: #F97533!important;
     }
-    .profile_name{
+    .profile-name{
       color: #F97533!important;
     }
     .profession{
       color: #F97533!important;
     }
-    .stripe_email{
+    .stripe-mail{
       color: #F97533!important;
     }
      .item-radio-checked{

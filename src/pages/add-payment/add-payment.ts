@@ -27,8 +27,13 @@ export class AddPaymentPage {
   private profileId: any;
   private stripeAccountId: any;
   private userIP: string;
+  private fromWhere: any;
+  private smartieEndPoint: any;
+  private targetNavpage: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI) {
+
+    this.fromWhere = navParams.data.fromWhere;
     this.PaymentForm = new FormGroup({
       emailPayment: new FormControl('', Validators.required),
       emailConfirm: new FormControl('yes'),
@@ -72,6 +77,15 @@ export class AddPaymentPage {
   }
 
   addStripeAccount(data){
+
+    if(this.fromWhere !== 'teacher'){
+      this.smartieEndPoint = 'createCustomer';
+      this.targetNavpage = 'NotificationFeedPage';
+    }else{
+      this.smartieEndPoint = 'createTeacherAccount';
+      this.targetNavpage = 'VerifyIdentityPage';
+    }
+
     if(data.emailConfirm == 'yes'){
       data.emailPayment = this.email;
     }
@@ -79,7 +93,7 @@ export class AddPaymentPage {
     // NB: this page flow is only for Teachers
     // there is no Payment Details flow in non-Teachers!
     let API = this.smartieApi.getApi(
-      'createTeacherAccount',
+      this.smartieEndPoint,
       { emailPayment: data.emailPayment, userIP: this.userIP, profileId: this.profileId  }
     );
     interface Response {
@@ -89,7 +103,7 @@ export class AddPaymentPage {
       // TODO: we pass the stripeAccount to VerifyIdentityPage
       // so that we can find the required additional fields in
       // stripeAccount.verification.fields_needed
-      this.navCtrl.push("VerifyIdentityPage", { stripeAccount: response.result });
+      this.navCtrl.push(this.targetNavpage, { stripeAccount: response.result });
     }, err => {
       console.log(err);
     })

@@ -1,9 +1,9 @@
 page-payment {
   .profile-data{
-      padding:15px;
+      /*padding:15px;
       width: 100%;
       float: left;
-      text-align: center;
+      text-align: center;*/
       .left {
         display: inline-block;
         clear: both;
@@ -57,21 +57,7 @@ page-payment {
       }
       }
 
-      .student{
-         .profile-data{
-            background-color: #0095D2;
-          }
-       }
-       .parent{
-          .profile-data{
-             background-color: #F97533;
-           }
-        }
-      .school{
-           .profile-data{
-              background-color: #F31C62;
-            }
-       }
+
 
 
   .scroll-content{
@@ -206,40 +192,6 @@ page-payment {
   }
 
 
-  .student{
-    .card-title{
-      background-color: #eee!important;
-      color: #333!important;
-      clear: both;
-    }
-    .button-positive{
-      background-color: #0096D7!important;
-      color: #fff!important;
-    }
-
-  }
-  .parent{
-    .card-title{
-      background-color: #eee!important;
-      color: #333!important;
-      clear: both;
-    }
-    .button-positive{
-      background-color: #F97533!important;
-      color: #fff!important;
-    }
-  }
-  .school{
-    .card-title{
-      background-color: #eee!important;
-      color: #333!important;
-      clear: both;
-    }
-    .button-positive{
-      background-color: #F31C62!important;
-      color: #fff!important;
-    }
-  }
 
   .scroll-content{
     padding: 0!important;

@@ -11,26 +11,26 @@
 </ion-header>
 
 <ion-content padding class="{{ userRole }}">
-  <div class="payment_profile">
-    <div class="profile_top">
-      <div class="profile_logo">
+  <div class="payment-profile">
+    <div class="profile-top">
+      <div class="profile-logo">
         <img src="{{ profilePhoto }}" />
       </div>
       <span class="profile-name">{{ fullName }}</span>
       <span class="profession">{{ userRole }}</span>
     </div>
 
-    <!--<div class="profile_contact">
-      <div class="profile_phone">
-        <span class="phone_lable">Phone No</span>
+    <!--<div class="profile-contact">
+      <div class="profile-phone">
+        <span class="phone-lable">Phone No</span>
         <span>92582 58558</span>
       </div>
     </div>-->
 
 
-    <div class="profile_email">
+    <div class="profile-email">
       <span>Is this your Stripe account email id ?</span>
-      <span class="stripe_email">{{ email }}</span>
+      <span class="stripe-mail">{{ email }}</span>
 
       <form [formGroup]="PaymentForm" name="PaymentForm" (ngSubmit)="addStripeAccount(PaymentForm.value)" novalidate>
 
