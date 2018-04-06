@@ -31,6 +31,7 @@ export class SmartieSearch {
   private _contentTitle: string;
   private _contentMessage: string;
   private notifyCount: any = 0;
+  private upcomingsCount: any = 0;
   private latLngUser: any;
   private marker: any;
   private body: any;
@@ -43,6 +44,8 @@ export class SmartieSearch {
 
   public notifications: any;
   public accepteds: any;
+
+  private hasUpcomings: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController ) {
     this.role = navParams.data.role;
@@ -141,6 +144,7 @@ export class SmartieSearch {
         this.navCtrl.setRoot("LoginPage");
       } else {
         this.storage.get('phoneLatLng').then(phoneLatLng => {
+
           //console.log(phoneLatLng);
           if (phoneLatLng !== undefined && phoneLatLng !== null) {
             this.smartieSearchResult(phoneLatLng, profile.profileData.role, null);
@@ -158,9 +162,30 @@ export class SmartieSearch {
           //resolve all promises and if notifyCount > 0 make alert present and push to notification page
           Promise.all([
             this.getAllRequesteds(),
-            this.getAllAccepteds()
+            this.getAllAccepteds(),
+            this.getAllUpcomings()
           ]).then(value => {
-            if(this.notifyCount > 0){
+            if(this.hasUpcomings == true) {
+              let title, subTitle;
+              if (this.upcomingsCount == 1) {
+                title = "You have an upcoming appointment!";
+                subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
+              } else {
+                title = "You have upcoming appointments";
+                subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
+              }
+              let alert = this.alertCtrl.create({
+                title: title,
+                subTitle: subTitle,
+                buttons: [{
+                  text: 'OK',
+                  handler: () => {
+                    this.navCtrl.push('NotificationFeedPage');
+                  }
+                }]
+              });
+              alert.present();
+            } else if(this.notifyCount > 0) {
               let alert = this.alertCtrl.create({
                 title: 'Wow, check it out!',
                 subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
@@ -215,6 +240,29 @@ export class SmartieSearch {
           this.storage.set("userAllAccepteds", response.result);
         }
         resolve('success');
+      })
+    })
+  }
+
+  getAllUpcomings(){
+    return new Promise(resolve => {
+      let API = this.smartieApi.getApi(
+        'getAllUpcomings',
+        this.body
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        if(response.result.length > 0){
+          this.hasUpcomings = true;
+          this.upcomingsCount = response.result.length;
+          this.notifyCount = this.notifyCount + response.result.length;
+          this.storage.set("userAllUpcomings", response.result);
+        }
+        resolve('success');
+      }, err => {
+        console.log(err);
       })
     })
   }
