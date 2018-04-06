@@ -51,17 +51,13 @@ page-add-bank-account {
     }
 
   }
-  .button-positive{
-    border-radius: 5px;
-    margin-top: 20px;
-    margin-bottom:10px;
-  }
+
 
   .profile-data{
-      padding:15px;
+      /*padding:15px;
       width: 100%;
       float: left;
-      text-align: center;
+      text-align: center;*/
       margin-bottom: 30px;
       .left {
         display: inline-block;
@@ -126,64 +122,6 @@ page-add-bank-account {
         }
       }
       }
-      .teacher{
-         .profile-data{
-            background-color: #00BC5B;
-          }
-          .back-button-icon{
-            color: #00BC5B !important
-          }
-          .back-button-text{
-            color: #00BC5B !important
-          }
-          .button-positive{
-            background-color: #00BC5B !important
-          }
-       }
-      .student{
 
-        .back-button-icon{
-          color: #0096D7 !important
-        }
-        .back-button-text{
-          color: #0096D7 !important
-        }
-        .button-positive{
-          background-color: #0096D7 !important
-        }
-         .profile-data{
-            background-color: #0095D2;
-          }
-       }
-       .parent{
-
-         .back-button-icon{
-           color: #F97533 !important
-         }
-         .back-button-text{
-           color: #F97533 !important
-         }
-         .button-positive{
-           background-color: #F97533 !important
-         }
-          .profile-data{
-             background-color: #F97533;
-           }
-        }
-      .school{
-
-            .back-button-icon{
-              color: #F31C62 !important
-            }
-            .back-button-text{
-              color: #F31C62 !important
-            }
-            .button-positive{
-              background-color: #F31C62 !important
-            }
-           .profile-data{
-              background-color: #F31C62;
-            }
-       }
 
 }

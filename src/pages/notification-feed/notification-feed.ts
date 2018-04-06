@@ -40,6 +40,7 @@ export class NotificationFeedPage {
   showJobRequest(notification, requestState){
     if(this.userRole != 'teacher'){
       this.navCtrl.push("JobRequestPage", { params: {
+          jobRequestId: notification.objectId,
           profilePhoto: notification.teacherProfile.profilePhoto,
           profileStripeAccount: notification.teacherProfile.stripeCustomer,
           fullname: notification.teacherProfile.fullname,
@@ -59,6 +60,7 @@ export class NotificationFeedPage {
       })
     }else{
       this.navCtrl.push("JobRequestPage", { params: {
+          jobRequestId: notification.objectId,
           profilePhoto: notification.otherProfile.profilePhoto,
           profileStripeAccount: notification.otherProfile.stripeCustomer,
           fullname: notification.otherProfile.fullname,

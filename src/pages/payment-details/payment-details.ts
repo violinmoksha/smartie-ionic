@@ -35,7 +35,7 @@ export class PaymentDetailsPage {
   }
 
   addPayment(){
-    this.navCtrl.push('AddPaymentPage');
+    this.navCtrl.push('AddPaymentPage', { fromWhere: 'teacher' });
   }
 
 }

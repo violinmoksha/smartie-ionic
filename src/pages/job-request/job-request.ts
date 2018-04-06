@@ -56,6 +56,7 @@ export class JobRequestPage {
             handler: () => {
               // this.navCtrl.push('NotificationFeedPage');
               this.navCtrl.push('SchedulePage', { params: {
+                jobRequestId: this.params.jobRequestId,
                 profilePhoto: this.params.profilePhoto,
                 profileStripeAccount: this.params.profileStripeAccount,
                 fullname: this.params.fullname,

@@ -7,46 +7,12 @@ page-register-step3 {
       color: #00BC5B !important;
       font-size: 14px;
     }
-    .back-button{
-      color: #00BC5B;
-    }
-    .tagline{
-      background-color: #00BC5B;
-    }
-    .button.button-positive {
-      background-color: #00BC5B;
-      &:hover {
-        background-color: #006838;
-      }
-    }
-    .button.button-positive.activated {
-      border-color: #006838;
-      background-color: #006838;
-    }
-    .swiper-slide.active{
-      border:1px solid #006838 !important;
-    }
   }
 
   .parent{
     .toolbar-title{
       color: #F97533 !important;
       font-size: 14px;
-    }
-    .back-button{
-      color: #F97533 !important
-    }
-    .tagline{
-      background-color: #F97533;
-    }
-    .button.button-positive {
-      background-color: #F97533;
-      &:hover {
-        background-color: #F97533;
-      }
-    }
-    .swiper-slide.active{
-      border:1px solid #F97533 !important;
     }
   }
 
@@ -55,21 +21,6 @@ page-register-step3 {
       color: #0096D7 !important;
       font-size: 14px;
     }
-    .back-button{
-      color: #0096D7 !important
-    }
-    .tagline{
-      background-color: #0096D7;
-    }
-    .button.button-positive {
-      background-color: #0096D7;
-      &:hover {
-        background-color: #0096D7;
-      }
-    }
-    .swiper-slide.active{
-      border:1px solid #0096D7 !important;
-    }
   }
 
   .school{
@@ -77,46 +28,7 @@ page-register-step3 {
       color: #F31C62 !important;
       font-size: 14px;
     }
-    .back-button{
-      color: #F31C62 !important
-    }
-    .tagline{
-      background-color: #F31C62;
-    }
-    .button.button-positive {
-      background-color: #F31C62;
-      &:hover {
-        background-color: #F31C62;
-      }
-    }
-    .swiper-slide.active{
-      border:1px solid #F31C62 !important;
-    }
   }
-
-      .tagline{
-        text-align: center;
-        font-size: 14px;
-        color: #fff;
-        padding:5px 10px;
-        margin:0 -15px 10px;
-        margin-bottom: 10px
-      }
-
-      .button.button-positive {
-        padding: 0px;
-        font-size: 18px;
-        border-radius:5px;
-        display: block;
-        height:45px;
-        line-height:45px;
-        box-shadow:none;
-        border:0;
-        margin: 20px 0;
-      }
-      .bg-parent{
-        background-color: #F97533!important;
-      }
 
  ion-list{
     .teacher-certs{

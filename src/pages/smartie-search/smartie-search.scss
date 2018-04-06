@@ -1,5 +1,5 @@
 page-smartie-search {
-  
+
   .scroll-content {
     overflow: hidden;
   }
@@ -208,75 +208,39 @@ page-smartie-search {
       background-position: 8px center !important;
       background-repeat: no-repeat !important;
     }
-    .button{
-        background-color: #00BC5B!important;
-        color: #fff;
-        width: 100%;
-        padding: 15px;
-        height: auto;
-        line-height: 15px;
-        margin:5px 0 0 0;
-        font-size:1em;
-    }
   }
 
-  .teacher {
+  /*.teacher {
     .bar-button-default-ios,
     .bar-button-default.bar-button-ios-default,
     .bar-button-clear-ios-default {
       color: #00BC5B!important;
     }
-  }
+  }*/
 
   .student {
     .bottom-search-box .item-input{
       background-image:url(../../assets/imgs/student-map-icon30px.png) !important
+    }
+    .bar-button-default-ios{
+      color: #0096D7!important;
     }
   }
   .parent {
     .bottom-search-box .item-input{
       background-image:url(../../assets/imgs/parent-map-icon30px.png) !important
     }
+    .bar-button-default-ios{
+      color: #F97533!important;
+    }
   }
   .school {
     .bottom-search-box .item-input{
       background-image:url(../../assets/imgs/school-map-icon30px.png) !important
     }
-  }
-
-  .parent{
-    .button{
-      background-color: #F97533!important;
-    }
     .bar-button-default-ios{
-      color: #F97533!important;
-    }
-    .notification span{
-      background: #F97533!important;
-    }
+        color: #F31C62!important;
+      }
   }
-  .school{
-    .button{
-      background-color: #F31C62!important;
-    }
-    .bar-button-default-ios{
-      color: #F31C62!important;
-    }
-    .notification span{
-      background: #F31C62!important;
-    }
-  }
-  .student{
-    .button{
-      background-color: #0096D7!important;
-    }
-    .bar-button-default-ios{
-      color: #0096D7!important;
-    }
-    .notification span{
-      background: #0096D7!important;
-    }
-  }
-
 
 }

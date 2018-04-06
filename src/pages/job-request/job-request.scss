@@ -310,21 +310,3 @@ page-job-request {
     }
 
 }
-
-
-.popover-ios .popover-content {
-  width:calc(100% - 30px);
-  left:0px!important;
-  top:90px!important;
-  right: 0!important;
-  margin: auto;
-  max-height:80%!important;
-  width: 90%!important;
-
-
-  .scroll-content {
-    margin-top:23px;
-    padding:0!important;
-    overflow:hidden;
-  }
-}
