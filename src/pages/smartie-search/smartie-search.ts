@@ -144,7 +144,6 @@ export class SmartieSearch {
         this.navCtrl.setRoot("LoginPage");
       } else {
         this.storage.get('phoneLatLng').then(phoneLatLng => {
-
           //console.log(phoneLatLng);
           if (phoneLatLng !== undefined && phoneLatLng !== null) {
             this.smartieSearchResult(phoneLatLng, profile.profileData.role, null);
@@ -200,6 +199,21 @@ export class SmartieSearch {
             }
           })
         });
+      }
+
+      if (profile.profileData.role == 'teacher' &&
+          profile.profileData.stripeCustomer == undefined) {
+        let alert = this.alertCtrl.create({
+          title: 'We have no way of paying you!',
+          subTitle: 'In order to pay you we must update your payment details! Tap OK and we can get started!',
+          buttons: [{
+            text: 'OK',
+            handler: () => {
+              this.navCtrl.push('PaymentDetailsPage');
+            }
+          }]
+        });
+        alert.present();
       }
     });
   }

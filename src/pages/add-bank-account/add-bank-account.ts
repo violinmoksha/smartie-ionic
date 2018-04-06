@@ -82,11 +82,6 @@ export class AddBankAccountPage {
       })
     })
 
-
-
-    /*
-
-    */
   }
 
 }
