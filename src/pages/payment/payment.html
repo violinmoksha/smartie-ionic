@@ -37,7 +37,7 @@
     <div class="name-row">
       <label class="item item-input">
         <span class="input-label">Card Number</span>
-        <ion-input type="text" name="cardnumber" formControlName="cardnumber" value="**** **** **** {{ stripeCustomerCard.last4 }}"></ion-input>
+        <ion-input type="text" name="cardnumber" formControlName="cardnumber" value="**** **** **** {{ stripeCustomerCard.last4 || '****' }}"></ion-input>
       </label>
     </div>
     <span *ngIf="CardForm.controls['cardnumber'].invalid && CardForm.controls['cardnumber'].touched"  class="card-error">Please enter valid credit card number</span>

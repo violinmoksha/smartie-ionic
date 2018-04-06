@@ -140,6 +140,7 @@ export class JobRequestPage {
           prefLocation: this.params.prefLocation,
           requestSent: true,
           acceptState: false,
+          paidAndUpcoming: false,
           role: profile.profileData.role
         };
       }
@@ -175,9 +176,9 @@ export class JobRequestPage {
     this.loading.present();
     this.storage.get("UserProfile").then(roleProfile => {
       if(this.userRole === 'teacher'){
-        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.params.otherProfileId, requestSent: true, acceptState: true, role: this.userRole };
+        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.params.otherProfileId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole };
       }else{
-        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId, requestSent: true, acceptState: true, role: this.userRole };
+        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole };
       }
 
       console.log('sending '+JSON.stringify(this.body));
@@ -208,9 +209,9 @@ export class JobRequestPage {
     this.loading.present();
     this.storage.get("UserProfile").then(roleProfile => {
       if(this.userRole === 'teacher'){
-        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.params.otherProfileId, requestSent: false, acceptState: false };
+        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.params.otherProfileId, requestSent: false, acceptState: false, paidAndUpcoming: false };
       }else{
-        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId, requestSent: false, acceptState: false };
+        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId, requestSent: false, acceptState: false, paidAndUpcoming: false };
       }
 
       let API = this.smartieApi.getApi(
