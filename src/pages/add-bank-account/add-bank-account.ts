@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Stripe } from '@ionic-native/stripe';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
@@ -27,7 +27,7 @@ export class AddBankAccountPage {
   private body: any;
   private profilePhoto: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
     this.params = navParams.data;
 
     this.BankAccountForm = new FormGroup({
@@ -48,6 +48,10 @@ export class AddBankAccountPage {
   }
 
   submit(bankAccoutnValues){
+    let loading = this.loadingCtrl.create({
+      content: 'Adding Bank Account...'
+    });
+    loading.present();
 
     this.stripe.setPublishableKey('pk_test_HZ10V0AINd5NjEOyoEAeYSEe');
     this.stripe.createBankAccountToken({
@@ -71,6 +75,7 @@ export class AddBankAccountPage {
         result: any;
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        loading.dismiss();
         this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
       }, err => {
         console.log(err);

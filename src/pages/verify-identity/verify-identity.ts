@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
@@ -27,7 +27,7 @@ export class VerifyIdentityPage {
   private profileId: any;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
     this.params = navParams.data;
 
     this.VerifyIdentityForm = new FormGroup({
@@ -56,6 +56,11 @@ export class VerifyIdentityPage {
   }
 
   submit(legalEntityValues){
+    let loading = this.loadingCtrl.create({
+      content: 'Verifying identity...'
+    });
+    loading.present();
+
     this.body = {
       stripeAccountId: this.params.stripeAccount.id,
       profileId: this.profileId,
@@ -70,6 +75,7 @@ export class VerifyIdentityPage {
       result: any;
     };
     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+      loading.dismiss();
       this.navCtrl.push("AddBankAccountPage", { stripeAccount: response.result });
     }, err => {
       console.log(err);
