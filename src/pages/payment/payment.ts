@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Stripe } from '@ionic-native/stripe';
 import { SmartieAPI } from '../../providers/api/smartie';
 
 /**
@@ -21,7 +20,6 @@ export class PaymentPage {
 
   private userRole: string;
   private genericAvatar: string = '/assets/imgs/user-img-teacher.png';
-  private card: string = '/assets/imgs/visa-card.png';
   private totalHours: number;
   private totalAmount: number;
   private params: any;
@@ -31,7 +29,7 @@ export class PaymentPage {
   private body: any;
   private otherProfileId: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private stripe: Stripe) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private alertCtrl: AlertController) {
 
     this.totalHours = navParams.data.totalHours;
     this.totalAmount = navParams.data.totalAmount;
@@ -85,34 +83,34 @@ export class PaymentPage {
   pay(amount, cardValue){
     console.log(amount);
     console.log(this.stripeCustomer);
-    this.stripe.setPublishableKey('pk_test_HZ10V0AINd5NjEOyoEAeYSEe');
+    console.log(this.stripeCustomerCard);
+
+    if(this.stripeCustomerCard == undefined){
+      console.log(cardValue);
+      let API = this.smartieApi.getApi(
+        'createCardToken',
+        { cardValue: cardValue, customerId: this.stripeCustomer, otherProfileId: this.otherProfileId }
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.createTransaction(amount);
+      }, err => {
+        console.log(err);
+      })
+    }else{
+      this.createTransaction(amount);
+    }
+    /*this.stripe.setPublishableKey('pk_test_HZ10V0AINd5NjEOyoEAeYSEe');
     this.stripe.createCardToken({
       number: cardValue.cardnumber,
       expMonth: cardValue.monthexp,
       expYear: cardValue.yearexp,
       cvc: cardValue.cvv,
     }).then(cardToken => {
-      this.body = {
-        amountPayable: amount * 100, // in cents
-        customerId: this.stripeCustomer,
-        teacherAccountId: this.params.profileStripeAccount.id,
-        otherProfileId: this.otherProfileId,
-        cardToken: cardToken.id,
-        jobRequestId: this.params.jobRequestId
-      };
-      let API = this.smartieApi.getApi(
-        'createTransaction',
-        this.body
-      );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
-      }, err => {
-        console.log(err);
-      })
-    })
+
+    })*/
 
     /*this.body = {
       amountPayable: amount * 100, // in cents
@@ -133,6 +131,28 @@ export class PaymentPage {
       console.log(err);
     })*/
     // this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
+  }
+
+  createTransaction(amount){
+    this.body = {
+      amountPayable: amount * 100, // in cents
+      customerId: this.stripeCustomer,
+      teacherAccountId: this.params.profileStripeAccount.id,
+      otherProfileId: this.otherProfileId,
+      jobRequestId: this.params.jobRequestId
+    };
+    let API = this.smartieApi.getApi(
+      'createTransaction',
+      this.body
+    );
+    interface Response {
+      result: any;
+    };
+    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+      this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
+    }, err => {
+      console.log(err);
+    })
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
@@ -31,7 +31,7 @@ export class AddPaymentPage {
   private smartieEndPoint: any;
   private targetNavpage: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
 
     this.fromWhere = navParams.data.fromWhere;
     this.PaymentForm = new FormGroup({
@@ -78,6 +78,11 @@ export class AddPaymentPage {
 
   addStripeAccount(data){
 
+    let loading = this.loadingCtrl.create({
+      content: 'Creating Stripe Account...'
+    });
+    loading.present();
+
     if(this.fromWhere !== 'teacher'){
       this.smartieEndPoint = 'createCustomer';
       this.targetNavpage = 'NotificationFeedPage';
@@ -103,6 +108,7 @@ export class AddPaymentPage {
       // TODO: we pass the stripeAccount to VerifyIdentityPage
       // so that we can find the required additional fields in
       // stripeAccount.verification.fields_needed
+      loading.dismiss();
       this.navCtrl.push(this.targetNavpage, { stripeAccount: response.result });
     }, err => {
       console.log(err);
