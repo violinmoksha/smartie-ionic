@@ -15,7 +15,7 @@ export class SmartieApp {
 
   rootPage: any;
 
-  buttons: Array<{iconName: string, text: string}>;
+  buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string }>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation) {
     this.initializeApp();
@@ -32,21 +32,21 @@ export class SmartieApp {
     this.events.subscribe("buttonsLoad", eventData => {
       if (eventData !== 'teacher') {
         this.buttons = [
-          { iconName: 'book', text: 'Manage Orders' },
-          { iconName: 'qr-scanner', text: 'Scan QR Promo' },
-          { iconName: 'settings', text: 'Profile Settings' },
-          { iconName: 'paper', text: 'Give Feedback' },
-          { iconName: 'add-circle', text: 'Create a Job' },
-          { iconName: 'log-out', text: 'Logout' }
+          { iconName: 'book', text: 'Manage Orders', pageName: '' },
+          { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
+          { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 0, pageTitle: 'Edit User' },
+          { iconName: 'paper', text: 'Give Feedback', pageName: '' },
+          { iconName: 'add-circle', text: 'Create a Job', pageName: '' },
+          { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
       } else {
         this.buttons = [
-          { iconName: 'card', text: 'Payment Details' },
-          { iconName: 'book', text: 'Manage Orders' },
-          { iconName: 'qr-scanner', text: 'Scan QR Promo' },
-          { iconName: 'settings', text: 'Profile Settings' },
-          { iconName: 'paper', text: 'Give Feedback' },
-          { iconName: 'log-out', text: 'Logout' }
+          { iconName: 'card', text: 'Payment Details', pageName: 'PaymentDetailsPage', index: 0, pageTitle: 'Payment Options' },
+          { iconName: 'book', text: 'Manage Orders', pageName: '' },
+          { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
+          { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
+          { iconName: 'paper', text: 'Give Feedback', pageName: '' },
+          { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
       }
     });
@@ -137,17 +137,29 @@ export class SmartieApp {
     pushObject.on('error').subscribe(error => console.error('Error with Push plugin' + error));
   }*/
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
-  }
+  pushPage(event, page) {
 
-  pushPage(event, button) {
-    if (button.iconName == 'paper')
+    if (page.iconName == 'log-out') { // logout -->
+      this.storage.clear(); // dump ephemeral session
+      this.nav.setRoot("LoginPage"); // send to Login
+    }else{
+
+      let params = {};
+
+      // The index is equal to the order of our tabs inside tabs.ts
+      if (page.index) {
+        params = { tabIndex: page.index, tabTitle: page.pageTitle };
+      }
+
+      this.nav.setRoot("TabsPage", params);
+      // this.nav.setRoot(page.pageName);
+
+    }
+
+    /*if (button.iconName == 'paper')
       this.nav.push("FeedbackPage");
     else if (button.iconName == 'settings')
-      this.nav.push("EditProfilePage");
+      this.nav.setRoot("TabsPage", { tabIndex: 1} );
     else if (button.iconName == 'add-circle')
       this.nav.push("CreateJobPage");
     else if (button.iconName == 'card')
@@ -155,6 +167,6 @@ export class SmartieApp {
     else if (button.iconName == 'log-out') { // logout -->
       this.storage.clear(); // dump ephemeral session
       this.nav.setRoot("LoginPage"); // send to Login
-    }
+    }*/
   }
 }
