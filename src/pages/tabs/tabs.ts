@@ -8,6 +8,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class TabsPage {
 
+  tab0Root: any = 'SmartieSearch';
   tab1Root: any = 'PaymentDetailsPage';
   tab2Root: any = 'EditProfilePage';
   tab3Root: any = 'NotificationFeedPage';

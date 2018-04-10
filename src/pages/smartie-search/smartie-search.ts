@@ -455,9 +455,9 @@ export class SmartieSearch {
     let pointNortheast = this.destinationPoint(45, radiusInKm / 2, mapCenter);
     this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
 
-    for(let searchResult of this.notifications){
+    /*for(let searchResult of this.notifications){
       this.createMarkerLocation(searchResult);
-    }
+    }*/
 
     //let myPlace = new google.maps.LatLng(34.0522, -118.2437);
     //this.bounds.extend(myPlace);

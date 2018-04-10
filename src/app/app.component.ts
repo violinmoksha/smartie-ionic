@@ -20,14 +20,16 @@ export class SmartieApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation) {
     this.initializeApp();
 
-    this.storage.get('sessionToken').then(val => {
+    /*this.storage.get('sessionToken').then(val => {
       if (val !== 'undefined') {
         this.rootPage = "LoginPage";
       } else {
         this.rootPage = "LoginPage";
       }
     });
-    //this.rootPage = EditUserComponent;
+    this.rootPage = "EditUserComponent";*/
+    this.storage.clear(); // dump ephemeral session
+    this.rootPage = "LoginPage"; // send to Login
 
     this.events.subscribe("buttonsLoad", eventData => {
       if (eventData !== 'teacher') {
@@ -138,12 +140,10 @@ export class SmartieApp {
   }*/
 
   pushPage(event, page) {
-
     if (page.iconName == 'log-out') { // logout -->
       this.storage.clear(); // dump ephemeral session
       this.nav.setRoot("LoginPage"); // send to Login
     }else{
-
       let params = {};
 
       // The index is equal to the order of our tabs inside tabs.ts
@@ -153,7 +153,6 @@ export class SmartieApp {
 
       this.nav.setRoot("TabsPage", params);
       // this.nav.setRoot(page.pageName);
-
     }
 
     /*if (button.iconName == 'paper')
