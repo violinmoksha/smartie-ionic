@@ -43,10 +43,10 @@ export class SmartieApp {
         ];
       } else {
         this.buttons = [
-          { iconName: 'card', text: 'Payment Details', pageName: 'PaymentDetailsPage', index: 0, pageTitle: 'Payment Options' },
+          { iconName: 'card', text: 'Payment Details', pageName: 'PaymentDetailsPage', index: 1, pageTitle: 'Payment Options' },
           { iconName: 'book', text: 'Manage Orders', pageName: '' },
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
-          { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
+          { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 2, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: '' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];

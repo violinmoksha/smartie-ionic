@@ -48,10 +48,8 @@ export class SmartieSearch {
   private hasUpcomings: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController ) {
-    this.role = navParams.data.role;
     this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
-    this.notifications = navParams.data.notifications;
     if (this.fromWhere == 'signUp') {
       // TODO: retrieve the profilePhoto and CVs from
       // this.storage HERE if we came from signUp,
@@ -140,64 +138,82 @@ export class SmartieSearch {
   ionViewDidLoad(){
     this.storage.get('UserProfile').then(profile => {
       // console.log(JSON.stringify(profile));
+      this.role = profile.profileData.role;
       if (profile == null) {
         this.navCtrl.setRoot("LoginPage");
       } else {
-        this.storage.get('phoneLatLng').then(phoneLatLng => {
-          //console.log(phoneLatLng);
-          if (phoneLatLng !== undefined && phoneLatLng !== null) {
-            this.smartieSearchResult(phoneLatLng, profile.profileData.role, null);
-          } else {
-            this.latLngUser = profile.profileData.latlng;
-            this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
-          }
+        let API = this.smartieApi.getApi(
+          'fetchNotifications',
+          { profileId: profile.profileData.objectId, role: profile.profileData.role }
+        );
 
-          //get all requested's
-          this.body = {
-            profileId: profile.profileData.objectId,
-            role: profile.profileData.role
+        return new Promise(resolve => {
+          interface Response {
+            result: any
           };
+          this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
+            this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
+              this.notifications = notifications;
+              this.storage.get('phoneLatLng').then(phoneLatLng => {
+                //console.log(phoneLatLng);
+                if (phoneLatLng !== undefined && phoneLatLng !== null) {
+                  this.smartieSearchResult(phoneLatLng, profile.profileData.role, null);
+                } else {
+                  this.latLngUser = profile.profileData.latlng;
+                  this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
+                }
 
-          //resolve all promises and if notifyCount > 0 make alert present and push to notification page
-          Promise.all([
-            this.getAllRequesteds(),
-            this.getAllAccepteds(),
-            this.getAllUpcomings()
-          ]).then(value => {
-            if(this.hasUpcomings == true) {
-              let title, subTitle;
-              if (this.upcomingsCount == 1) {
-                title = "You have an upcoming appointment!";
-                subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
-              } else {
-                title = "You have upcoming appointments";
-                subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
-              }
-              let alert = this.alertCtrl.create({
-                title: title,
-                subTitle: subTitle,
-                buttons: [{
-                  text: 'OK',
-                  handler: () => {
-                    this.navCtrl.push('NotificationFeedPage');
+                //get all requested's
+                this.body = {
+                  profileId: profile.profileData.objectId,
+                  role: profile.profileData.role
+                };
+
+                //resolve all promises and if notifyCount > 0 make alert present and push to notification page
+                Promise.all([
+                  this.getAllRequesteds(),
+                  this.getAllAccepteds(),
+                  this.getAllUpcomings()
+                ]).then(value => {
+                  if(this.hasUpcomings == true) {
+                    let title, subTitle;
+                    if (this.upcomingsCount == 1) {
+                      title = "You have an upcoming appointment!";
+                      subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
+                    } else {
+                      title = "You have upcoming appointments";
+                      subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
+                    }
+                    let alert = this.alertCtrl.create({
+                      title: title,
+                      subTitle: subTitle,
+                      buttons: [{
+                        text: 'OK',
+                        handler: () => {
+                          this.navCtrl.push('NotificationFeedPage');
+                        }
+                      }]
+                    });
+                    alert.present();
+                  } else if(this.notifyCount > 0) {
+                    let alert = this.alertCtrl.create({
+                      title: 'Wow, check it out!',
+                      subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
+                      buttons: [{
+                        text: 'OK',
+                        handler: () => {
+                          this.navCtrl.push('NotificationFeedPage');
+                        }
+                      }]
+                    });
+                    alert.present();
                   }
-                }]
+                })
               });
-              alert.present();
-            } else if(this.notifyCount > 0) {
-              let alert = this.alertCtrl.create({
-                title: 'Wow, check it out!',
-                subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
-                buttons: [{
-                  text: 'OK',
-                  handler: () => {
-                    this.navCtrl.push('NotificationFeedPage');
-                  }
-                }]
-              });
-              alert.present();
-            }
-          })
+            })
+          }, err => {
+            console.log(err);
+          });
         });
       }
 
@@ -455,9 +471,9 @@ export class SmartieSearch {
     let pointNortheast = this.destinationPoint(45, radiusInKm / 2, mapCenter);
     this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
 
-    /*for(let searchResult of this.notifications){
+    for(let searchResult of this.notifications){
       this.createMarkerLocation(searchResult);
-    }*/
+    }
 
     //let myPlace = new google.maps.LatLng(34.0522, -118.2437);
     //this.bounds.extend(myPlace);

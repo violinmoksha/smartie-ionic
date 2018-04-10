@@ -131,6 +131,7 @@ export class JobRequestPage {
           prefLocation: this.params.prefLocation,
           requestSent: true,
           acceptState: false,
+          paidAndUpcoming: false,
           role: 'teacher'
         };
       } else {

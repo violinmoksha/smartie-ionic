@@ -42,7 +42,8 @@ export class LoginPage {
         }
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data => {
           this.storage.set('UserProfile', data.result).then(UserProfile => {
-            console.log(UserProfile);
+            this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch" });
+            /*console.log(UserProfile);
             // TODO server-side fetchNotifications endpoint
             // to return: all notifications including jobRequests
             let API = this.smartieApi.getApi(
@@ -62,7 +63,7 @@ export class LoginPage {
               }, err => {
                 console.log(err);
               });
-            });
+            });*/
           });
         },
         (err) => {
