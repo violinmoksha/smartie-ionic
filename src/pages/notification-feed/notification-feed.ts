@@ -19,7 +19,6 @@ export class NotificationFeedPage {
   private userRole: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
-
   }
 
   ionViewDidLoad() {

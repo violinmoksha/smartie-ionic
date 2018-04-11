@@ -47,7 +47,7 @@ export class SmartieSearch {
 
   private hasUpcomings: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController) {
     this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
     if (this.fromWhere == 'signUp') {
@@ -190,7 +190,7 @@ export class SmartieSearch {
                       buttons: [{
                         text: 'OK',
                         handler: () => {
-                          this.navCtrl.push('NotificationFeedPage');
+                          this.navCtrl.parent.select(2);
                         }
                       }]
                     });
@@ -202,7 +202,7 @@ export class SmartieSearch {
                       buttons: [{
                         text: 'OK',
                         handler: () => {
-                          this.navCtrl.push('NotificationFeedPage');
+                          this.navCtrl.parent.select(3);
                         }
                       }]
                     });
@@ -225,7 +225,7 @@ export class SmartieSearch {
           buttons: [{
             text: 'OK',
             handler: () => {
-              this.navCtrl.push('PaymentDetailsPage');
+              this.navCtrl.parent.select(1);
             }
           }]
         });
@@ -486,6 +486,6 @@ export class SmartieSearch {
   }
 
   pushAccepteds(){
-    this.navCtrl.push("NotificationFeedPage", { activeRole: this.role });
+    this.navCtrl.parent.select(3);
   }
 }
