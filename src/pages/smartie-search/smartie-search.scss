@@ -182,17 +182,11 @@ page-smartie-search {
       }
     }
   }
-  .horizontal-logo{
-    height:40px!important;
-    margin: auto;
-    background:url(./../assets/imgs/smartie-horzontal-logo.png) no-repeat center bottom !important;
-    background-size:160px !important;
-  }
 
   .bottom-search-box{
     width: 100% !important;
     position: fixed;
-    bottom: 0;
+    bottom: 42px;
     padding: 15px 5px 0 5px;
     height: 128px;
     .item-input{
