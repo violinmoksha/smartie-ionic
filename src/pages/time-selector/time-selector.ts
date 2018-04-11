@@ -72,10 +72,8 @@ export class TimeSelectorPage {
   }
 
   goPay(){
-    // TODO: call API endpoint setJobTimings which will set
-    //       date, startTime, endTime on
-    // TODO: then, once payment finishes, call API endpoint
-    //       setJobRequest with paidAndUpcoming == true
+    // TODO: when payment occurs, also set
+    //       date, startTime, endTime, and paidAndUpcoming==true on jobRequest
     // TODO: then, style Upcomings in Notification Feed
 
     this.navCtrl.push("PaymentPage", { totalHours: this.parseHours(this.totalHours), totalAmount: this.smartieTotal(this.totalAmount), params: this.params });
