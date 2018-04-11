@@ -24,7 +24,7 @@ export class TimeSelectorPage {
 
   public event = {
     timeStarts: '10:00',
-    timeEnds: '22:00'
+    timeEnds: '11:00'
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
@@ -72,6 +72,12 @@ export class TimeSelectorPage {
   }
 
   goPay(){
+    // TODO: call API endpoint setJobTimings which will set
+    //       date, startTime, endTime on
+    // TODO: then, once payment finishes, call API endpoint
+    //       setJobRequest with paidAndUpcoming == true
+    // TODO: then, style Upcomings in Notification Feed
+
     this.navCtrl.push("PaymentPage", { totalHours: this.parseHours(this.totalHours), totalAmount: this.smartieTotal(this.totalAmount), params: this.params });
   }
 
