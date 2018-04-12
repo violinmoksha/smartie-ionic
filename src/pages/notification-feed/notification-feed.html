@@ -24,5 +24,9 @@
       <a *ngIf="userRole == 'teacher'" href="javascript:" (click)="showJobRequest(requested,'requestSentJobs')">{{ requested.otherProfile.fullname }} invited you!</a>
       <a *ngIf="userRole != 'teacher'" href="javascript:" (click)="showJobRequest(requested,'requestSentJobs')">{{ requested.teacherProfile.fullname }} invited you!</a>
     </li>
+
+    <li class="accepted" *ngFor="let upcoming of allUpcomings">
+      <a *ngIf="userRole == 'teacher'" href="javascript:">{{ upcoming.otherProfile.fullname }} made payment and booked appointment !</a>
+    </li>
   </ul>
 </ion-content>

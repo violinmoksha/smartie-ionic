@@ -45,7 +45,6 @@ export class JobRequestPage {
   ionViewDidLoad() {
     this.storage.get("UserProfile").then(roleProfile => {
       this.userRole = roleProfile.profileData.role;
-      console.log(roleProfile);
       if(this.userRole == 'teacher' && (roleProfile.profileData.stripeCustomer == undefined || roleProfile.profileData.stripeCustomer == '' )){
         let alert = this.alertCtrl.create({
           title: 'Time to add Stripe Account!',

@@ -16,6 +16,7 @@ import { Storage } from '@ionic/storage';
 export class NotificationFeedPage {
   private allAccepteds: any;
   private allRequesteds: any;
+  private allUpcomings: any;
   private userRole: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
@@ -30,6 +31,10 @@ export class NotificationFeedPage {
 
       this.storage.get("userAllRequesteds").then(allRequesteds => {
         this.allRequesteds = allRequesteds;
+      });
+
+      this.storage.get("userAllUpcomings").then(allUpcomings => {
+        this.allUpcomings = allUpcomings;
       })
 
       this.userRole = profile.profileData.role;
