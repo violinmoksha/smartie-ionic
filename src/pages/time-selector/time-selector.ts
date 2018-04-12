@@ -76,7 +76,14 @@ export class TimeSelectorPage {
     //       date, startTime, endTime, and paidAndUpcoming==true on jobRequest
     // TODO: then, style Upcomings in Notification Feed
 
-    this.navCtrl.push("PaymentPage", { totalHours: this.parseHours(this.totalHours), totalAmount: this.smartieTotal(this.totalAmount), params: this.params });
+    this.navCtrl.push("PaymentPage", {
+      totalHours: this.parseHours(this.totalHours),
+      totalAmount: this.smartieTotal(this.totalAmount),
+      apptDate: this.selectedDate,
+      apptStartTime: this.event.timeStarts,
+      apptEndTime: this.event.timeEnds,
+      params: this.params
+    });
   }
 
   ionViewDidLoad() {

@@ -137,7 +137,6 @@ export class SmartieSearch {
 
   ionViewDidLoad(){
     this.storage.get('UserProfile').then(profile => {
-      // console.log(JSON.stringify(profile));
       this.role = profile.profileData.role;
       if (profile == null) {
         this.navCtrl.setRoot("LoginPage");
@@ -190,7 +189,11 @@ export class SmartieSearch {
                       buttons: [{
                         text: 'OK',
                         handler: () => {
-                          this.navCtrl.parent.select(2);
+                          if(this.role !== 'teacher'){
+                            this.navCtrl.parent.select(2);
+                          }else{
+                            this.navCtrl.parent.select(3);
+                          }
                         }
                       }]
                     });
@@ -202,7 +205,11 @@ export class SmartieSearch {
                       buttons: [{
                         text: 'OK',
                         handler: () => {
-                          this.navCtrl.parent.select(3);
+                          if(this.role !== 'teacher'){
+                            this.navCtrl.parent.select(2);
+                          }else{
+                            this.navCtrl.parent.select(3);
+                          }
                         }
                       }]
                     });
@@ -486,6 +493,10 @@ export class SmartieSearch {
   }
 
   pushAccepteds(){
-    this.navCtrl.parent.select(3);
+    if(this.role !== 'teacher'){
+      this.navCtrl.parent.select(2);
+    }else{
+      this.navCtrl.parent.select(3);
+    }
   }
 }

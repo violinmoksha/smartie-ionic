@@ -28,14 +28,18 @@ export class PaymentPage {
   private stripeCustomer: any;
   private body: any;
   private otherProfileId: any;
+  private apptDate: any;
+  private apptStartTime: any;
+  private apptEndTime: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private alertCtrl: AlertController) {
 
     this.totalHours = navParams.data.totalHours;
     this.totalAmount = navParams.data.totalAmount;
+    this.apptDate = navParams.data.apptDate;
+    this.apptStartTime = navParams.data.apptStartTime;
+    this.apptEndTime = navParams.data.apptEndTime;
     this.params = navParams.data.params
-
-    console.log(this.params);
 
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
@@ -139,7 +143,10 @@ export class PaymentPage {
       customerId: this.stripeCustomer,
       teacherAccountId: this.params.profileStripeAccount.id,
       otherProfileId: this.otherProfileId,
-      jobRequestId: this.params.jobRequestId
+      jobRequestId: this.params.jobRequestId,
+      apptDate: this.apptDate,
+      startTime: this.apptStartTime,
+      endTime: this.apptEndTime
     };
     let API = this.smartieApi.getApi(
       'createTransaction',

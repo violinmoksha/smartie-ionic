@@ -16,14 +16,14 @@ import { Storage } from '@ionic/storage';
 })
 export class PaymentthankyouPage {
 
-  private userRole: any;
+  private role: any;
   private pageContent: any;
   private fromWhere: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
     this.fromWhere = navParams.data.fromWhere;
     this.storage.get("UserProfile").then(roleProfile => {
-      this.userRole = roleProfile.profileData.role;
+      this.role = roleProfile.profileData.role;
     })
   }
 
@@ -37,7 +37,7 @@ export class PaymentthankyouPage {
 
   goTo(){
     //console.log('Test');
-    this.navCtrl.setRoot("SmartieSearch");
+    this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role });
   }
 
 }
