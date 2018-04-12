@@ -42,7 +42,7 @@ export class LoginPage {
         }
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data => {
           this.storage.set('UserProfile', data.result).then(UserProfile => {
-            this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch" });
+            this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: UserProfile.profileData.role });
             /*console.log(UserProfile);
             // TODO server-side fetchNotifications endpoint
             // to return: all notifications including jobRequests

@@ -32,11 +32,13 @@ export class SmartieApp {
     this.rootPage = "LoginPage"; // send to Login
 
     this.events.subscribe("buttonsLoad", eventData => {
+
+      //Tabs index 0 is always set to search
       if (eventData !== 'teacher') {
         this.buttons = [
           { iconName: 'book', text: 'Manage Orders', pageName: '' },
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
-          { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 0, pageTitle: 'Edit User' },
+          { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: '' },
           { iconName: 'add-circle', text: 'Create a Job', pageName: '' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
@@ -144,15 +146,17 @@ export class SmartieApp {
       this.storage.clear(); // dump ephemeral session
       this.nav.setRoot("LoginPage"); // send to Login
     }else{
-      let params = {};
+      this.storage.get("UserProfile").then(userProfile => {
+        let params = {};
 
-      // The index is equal to the order of our tabs inside tabs.ts
-      if (page.index) {
-        params = { tabIndex: page.index, tabTitle: page.pageTitle };
-      }
+        // The index is equal to the order of our tabs inside tabs.ts
+        if (page.index) {
+          params = { tabIndex: page.index, tabTitle: page.pageTitle, role: userProfile.profileData.role };
+        }
 
-      this.nav.setRoot("TabsPage", params);
-      // this.nav.setRoot(page.pageName);
+        this.nav.setRoot("TabsPage", params);
+        // this.nav.setRoot(page.pageName);
+      })
     }
 
     /*if (button.iconName == 'paper')
