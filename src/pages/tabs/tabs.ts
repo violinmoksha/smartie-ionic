@@ -42,7 +42,5 @@ export class TabsPage {
         { tabRoot: 'NotificationFeedPage', tabTitle: 'Notifications', tabIcon: 'md-notifications' }
       ]
     }
-
-    console.log(this.tabs);
   }
 }

@@ -134,6 +134,9 @@ h4 {
    .swiper-slide.active{
      border-color: #00BC5B !important;
    }
+  .bar-button-default{
+    color: #00BC5B!important;
+  }
 }
 .student{
   .button-positive{
@@ -178,7 +181,12 @@ h4 {
    .total{
      color:#0096D7!important;
    }
+   .bar-button-default{
+     color: #0096D7!important;
+   }
 }
+
+
 .parent{
   .button-positive{
     background-color: #F97533!important;
@@ -222,6 +230,9 @@ h4 {
    .total{
      color:#F97533!important;
    }
+   .bar-button-default{
+     color: #F97533!important;
+   }
 
 }
 .school{
@@ -258,6 +269,9 @@ h4 {
    }
    .total{
      color:#F31C62!important;
+   }
+   .bar-button-default{
+     color: #F31C62!important;
    }
 }
 
