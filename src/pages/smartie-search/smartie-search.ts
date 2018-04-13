@@ -46,8 +46,11 @@ export class SmartieSearch {
   public accepteds: any;
 
   private hasUpcomings: boolean;
+  // TODO: autopopulate input with user's location
+  private reverseGeocodedLocation: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController) {
+
     this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
     if (this.fromWhere == 'signUp') {

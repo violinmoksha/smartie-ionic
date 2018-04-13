@@ -1,6 +1,6 @@
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 /**
@@ -19,7 +19,7 @@ export class NotificationFeedPage {
   private allUpcomings: any;
   private userRole: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -42,7 +42,17 @@ export class NotificationFeedPage {
   }
 
   toTimeZone(apptDate) {
-    return apptDate.substr(0, 10);
+    let yearMonthDay = apptDate.substr(0, 10);
+    let tmpArr = yearMonthDay.split('-');
+    return tmpArr[1] + '-' + tmpArr[2] + '-' + tmpArr[0];
+  }
+
+  showUpcomingAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Remember to Show!',
+      subTitle: 'Life is all about showing up, so please show up to your booked session!'
+    });
+    alert.present();
   }
 
   showJobRequest(notification, requestState){

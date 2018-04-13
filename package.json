@@ -77,7 +77,8 @@
       },
       "cordova-plugin-crop": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-stripe": {}
+      "cordova-plugin-stripe": {},
+      "cordova-plugin-camera": {}
     },
     "platforms": [
       "android",
