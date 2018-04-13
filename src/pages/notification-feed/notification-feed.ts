@@ -41,6 +41,10 @@ export class NotificationFeedPage {
     })
   }
 
+  toTimeZone(apptDate) {
+    return apptDate.substr(0, 10);
+  }
+
   showJobRequest(notification, requestState){
     if(this.userRole != 'teacher'){
       this.navCtrl.push("JobRequestPage", { params: {
