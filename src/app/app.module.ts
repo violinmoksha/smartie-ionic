@@ -22,6 +22,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipsModule } from 'ionic-tooltips';
 import { IonicImageLoader } from 'ionic-image-loader';
+import { Globalization } from '@ionic-native/globalization';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { IonicImageLoader } from 'ionic-image-loader';
     SmartieAPI,
     //Push,
     IonicErrorHandler,
+    Globalization,
     [{provide: ErrorHandler, useClass: SmartieErrorHandler}]
   ]
 })

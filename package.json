@@ -26,7 +26,7 @@
     "@ionic-native/crop": "^4.5.3",
     "@ionic-native/file": "^4.6.0",
     "@ionic-native/geolocation": "^4.5.3",
-    "@ionic-native/globalization": "^4.5.3",
+    "@ionic-native/globalization": "^4.7.0",
     "@ionic-native/push": "^4.5.3",
     "@ionic-native/splash-screen": "4.4.0",
     "@ionic-native/status-bar": "4.4.0",
@@ -78,7 +78,8 @@
       "cordova-plugin-crop": {},
       "cordova-plugin-file": {},
       "cordova-plugin-stripe": {},
-      "cordova-plugin-camera": {}
+      "cordova-plugin-camera": {},
+      "cordova-plugin-globalization": {}
     },
     "platforms": [
       "android",

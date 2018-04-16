@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 //import { ParseProvider } from '../../providers/parse';
 import { Parse } from 'parse';
+import { Globalization } from '@ionic-native/globalization';
 
 declare var google;
 
@@ -49,7 +50,18 @@ export class SmartieSearch {
   // TODO: autopopulate input with user's location
   private reverseGeocodedLocation: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController, private globalization: Globalization) {
+
+    let dt = new Date();
+    let options = {
+      formatLength:'short',
+      selector:'date and time'
+    }
+    this.globalization.getDatePattern(options).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    })
 
     this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
