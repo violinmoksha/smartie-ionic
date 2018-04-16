@@ -53,6 +53,7 @@ export class SmartieSearch {
 
     this.accepteds = [];
     this.fromWhere = navParams.data.fromWhere;
+    console.log(this.fromWhere);
     if (this.fromWhere == 'signUp') {
       // TODO: retrieve the profilePhoto and CVs from
       // this.storage HERE if we came from signUp,
@@ -68,6 +69,7 @@ export class SmartieSearch {
       });
       console.log('We are here.');
       this.storage.get('UserProfile').then(UserProfile => {
+        this.role = UserProfile.profileData.role;
         console.log(UserProfile);
         let Profile = new Parse.Object.extend('Profile');
         let Teacher = new Parse.Object.extend('Teacher');
@@ -107,6 +109,7 @@ export class SmartieSearch {
             //setting teacher Credentials
             if(this.role == 'teacher'){
               if(this.teacherCv){
+                console.log("Getting into teacher credentials save");
                 teacherQuery.equalTo('profile', profile);
                 teacherQuery.first({ useMasterKey: true }).then(teacher => {
                   for(let teacherCv of this.teacherCv){

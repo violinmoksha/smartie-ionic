@@ -16,21 +16,23 @@ export class TabsPage {
   tab2Root: any = 'EditProfilePage';
   tab3Root: any = 'NotificationFeedPage';
 
-  private tabs: any = [{ "tabRoot": '', "tabTitle": '', "tabIcon": ''}];
+  private tabs: any = [{ "tabRoot": '', "rootParams": '', "tabTitle": '', "tabIcon": ''}];
   private role: string;
 
   myIndex: number;
 
   pageTitle: string;
+  fromWhere: any;
 
   constructor(navParams: NavParams, public storage: Storage, private smartieSearch: SmartieSearch) {
     // Set the active tab based on the passed index from menu.ts
     this.myIndex = navParams.data.tabIndex || 0;
     this.role = navParams.data.role;
+    this.fromWhere = { fromWhere: navParams.data.fromWhere };
 
     if(this.role == 'teacher'){
       this.tabs = [
-        { tabRoot: 'SmartieSearch', tabTitle: 'Search', tabIcon: 'search' },
+        { tabRoot: 'SmartieSearch', "rootParams": 'this.fromWhere', tabTitle: 'Search', tabIcon: 'search' },
         { tabRoot: 'PaymentDetailsPage', tabTitle: 'Payment', tabIcon: 'card' },
         { tabRoot: 'EditProfilePage', tabTitle: 'Edit Profile', tabIcon: 'settings' },
         { tabRoot: 'NotificationFeedPage', tabTitle: 'Notifications', tabIcon: 'md-notifications' }
