@@ -261,4 +261,8 @@ export class JobRequestPage {
       defaultEndTime: this.params.defaultEndTime
     }})
   }
+
+  initChat(){
+    this.navCtrl.push("ChatPage", { params: this.params });
+  }
 }
