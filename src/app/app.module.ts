@@ -23,7 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipsModule } from 'ionic-tooltips';
 import { IonicImageLoader } from 'ionic-image-loader';
 import { Globalization } from '@ionic-native/globalization';
-import { ChatProvider } from '../providers/chat/chat';
+import { ChatProvider } from '../providers/chat';
 
 @NgModule({
   declarations: [
