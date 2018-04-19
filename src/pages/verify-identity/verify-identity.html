@@ -23,8 +23,8 @@ legal_entity.address.city
 legal_entity.address.line1
 legal_entity.address.postal_code
 legal_entity.address.state
-legal_entity.dob.day
 legal_entity.dob.month
+legal_entity.dob.day
 legal_entity.dob.year
 legal_entity.first_name
 legal_entity.last_name
@@ -108,6 +108,15 @@ legal_entity.type	= 'individual'
     </div>
 
 
+    <ion-item>
+      <ion-label fixed>DOB Month </ion-label>
+      <ion-input placeholder="01" type="text" formControlName="legalDobMonth"></ion-input>
+    </ion-item>
+
+    <div *ngIf="VerifyIdentityForm.controls['legalDobMonth'].invalid && VerifyIdentityForm.controls['legalDobMonth'].touched" class="item item-message">
+      Legal Month is required
+    </div>
+
 
     <ion-item>
       <ion-label fixed>DOB Date </ion-label>
@@ -116,16 +125,6 @@ legal_entity.type	= 'individual'
 
     <div *ngIf="VerifyIdentityForm.controls['legalDobDate'].invalid && VerifyIdentityForm.controls['legalDobDate'].touched" class="item item-message">
       Legal Date is required
-    </div>
-
-
-    <ion-item>
-      <ion-label fixed>DOB Month </ion-label>
-      <ion-input placeholder="01" type="text" formControlName="legalDobMonth"></ion-input>
-    </ion-item>
-
-    <div *ngIf="VerifyIdentityForm.controls['legalDobMonth'].invalid && VerifyIdentityForm.controls['legalDobMonth'].touched" class="item item-message">
-      Legal Month is required
     </div>
 
 
