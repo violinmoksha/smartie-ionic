@@ -54,16 +54,16 @@ export class TimeSelectorPage {
       alert.present();
       this.readyToPay = false;
     }else{
-      var timeStarts = new Date(this.selectedDate+ ' ' + this.event.timeStarts);
-      var timeStarts_ms = timeStarts.getTime();
+      let tmpArr = this.selectedDate.split('-');
 
-      var timeEnds = new Date(this.selectedDate+ ' ' + this.event.timeEnds);
-      var timeEnds_ms = timeEnds.getTime();
+      let timeStarts_ms = new Date(parseInt(tmpArr[2]), parseInt(tmpArr[0]), parseInt(tmpArr[1]), parseInt(this.event.timeStarts.split(':')[0]), parseInt(this.event.timeStarts.split(':')[1])).getTime();
+      let timeEnds_ms = new Date(parseInt(tmpArr[2]), parseInt(tmpArr[0]), parseInt(tmpArr[1]), parseInt(this.event.timeEnds.split(':')[0]), parseInt(this.event.timeEnds.split(':')[1])).getTime();
 
-      var diffMs = timeEnds_ms - timeStarts_ms;
+      let diffMs = timeEnds_ms - timeStarts_ms;
+
       // Convert back to days and return
-      var diffHrs = Math.floor((diffMs % 86400000) / 3600000) * 60;
-      var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+      let diffHrs = Math.floor((diffMs % 86400000) / 3600000) * 60;
+      let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
 
       this.totalHours = (diffHrs + diffMins) / 60;
       this.totalAmount = this.totalHours * this.params.prefPayRate;
@@ -72,10 +72,6 @@ export class TimeSelectorPage {
   }
 
   goPay(){
-    // TODO: when payment occurs, also set
-    //       date, startTime, endTime, and paidAndUpcoming==true on jobRequest
-    // TODO: then, style Upcomings in Notification Feed
-
     this.navCtrl.push("PaymentPage", {
       totalHours: this.parseHours(this.totalHours),
       totalAmount: this.smartieTotal(this.totalAmount),
