@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { ChatProvider } from '../../providers/chat/chat';
+import { ChatProvider } from '../../providers/chat';
 
 /**
  * Generated class for the ChatPage page.
@@ -21,15 +21,15 @@ export class ChatPage {
   private params: any;
   private role: any;
   private senderProfileId: any;
-  private newmessage: any;
-  private allmessages: any;
+  private newMessage: any;
+  private allMessages: any;
   private photoURL: string = './assets/imgs/user-img-teacher.png';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public chatService: ChatProvider, public events: Events) {
     this.params = navParams.data.params;
 
     // Initialize chat
-    this.chatService.initializebuddy(this.params);
+    this.chatService.initializeBuddy(this.params);
 
     this.storage.get("UserProfile").then(profile => {
       this.role = profile.profileData.role;
@@ -37,9 +37,9 @@ export class ChatPage {
     })
 
     this.scrollto();
-    this.events.subscribe("newmessage", () => {
-      this.allmessages = this.chatService.allMessages;
-      console.log(this.allmessages);
+    this.events.subscribe("newMessage", () => {
+      this.allMessages = this.chatService.allMessages;
+      console.log(this.allMessages);
     })
 
   }
@@ -52,12 +52,12 @@ export class ChatPage {
     this.chatService.getAllMessages(this.senderProfileId);
   }
 
-  addmessage() {
-    this.chatService.addnewmessage(this.newmessage, this.senderProfileId).then((response) => {
+  addMessage() {
+    this.chatService.addNewMessage(this.newMessage, this.senderProfileId).then((response) => {
       console.log('test');
       this.content.scrollToBottom();
-      this.newmessage = '';
-      console.log(this.newmessage);
+      this.newMessage = '';
+      console.log(this.newMessage);
     })
   }
 

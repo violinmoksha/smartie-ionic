@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { SmartieAPI } from './api/smartie';
 
 /*
   Generated class for the ChatProvider provider.
@@ -20,7 +20,7 @@ export class ChatProvider {
     // console.log('Hello ChatProvider Provider');
   }
 
-  initializebuddy(profile) {
+  initializeBuddy(profile) {
     this.profile = profile;
 
     if(this.profile.role != 'teacher'){
@@ -30,7 +30,7 @@ export class ChatProvider {
     }
   }
 
-  addnewmessage(msg, senderProfileId) {
+  addNewMessage(msg, senderProfileId) {
     if (this.profile) {
       console.log(msg);
       console.log("Sender ID : " + senderProfileId);
