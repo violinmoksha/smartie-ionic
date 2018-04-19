@@ -11,7 +11,7 @@
 </ion-header>
 
 <ion-content class="{{ userRole }}" padding>
-  <h4 style="color:red" *ngIf="userRole !== 'teacher'">{{ params.fullname }} Has ACCEPTED! Now book your session according to your teacher's availability!</h4>
+  <h4 style="color:red" *ngIf="userRole !== 'teacher'">Congrats! Now book your session according to your teacher's availability!</h4>
   <h4 style="color:red" *ngIf="userRole == 'teacher'">{{ params.fullname }} Has ACCEPTED! Now book your session according to your own availability!</h4>
   <div class="left">
     <div class="avatar"><img *ngIf="params.profilePhoto !== undefined" src="{{ params.profilePhoto.url }}"><img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}" /></div>
