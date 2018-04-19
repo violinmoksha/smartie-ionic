@@ -21,7 +21,9 @@ export class ChatPage {
   private params: any;
   private role: any;
   private senderProfileId: any;
-  newmessage: any;
+  private newmessage: any;
+  private allmessages: any;
+  private photoURL: string = './assets/imgs/user-img-teacher.png';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public chatService: ChatProvider, public events: Events) {
     this.params = navParams.data.params;
@@ -34,17 +36,35 @@ export class ChatPage {
       this.senderProfileId = profile.profileData.objectId;
     })
 
+    this.scrollto();
+    this.events.subscribe("newmessage", () => {
+      this.allmessages = this.chatService.allMessages;
+      console.log(this.allmessages);
+    })
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatPage');
   }
 
+  ionViewDidEnter() {
+    this.chatService.getAllMessages(this.senderProfileId);
+  }
+
   addmessage() {
-    this.chatService.addnewmessage(this.newmessage, this.senderProfileId).then(() => {
+    this.chatService.addnewmessage(this.newmessage, this.senderProfileId).then((response) => {
+      console.log('test');
       this.content.scrollToBottom();
       this.newmessage = '';
+      console.log(this.newmessage);
     })
+  }
+
+  scrollto() {
+    setTimeout(() => {
+      this.content.scrollToBottom();
+    }, 1000);
   }
 
 }

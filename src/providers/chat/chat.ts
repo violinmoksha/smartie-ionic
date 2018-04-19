@@ -14,7 +14,9 @@ export class ChatProvider {
 
   profile: any;
   receiverProfileId: any;
-  constructor(public http: HttpClient, public smartieApi: SmartieAPI) {
+  allMessages = [];
+
+  constructor(public http: HttpClient, public smartieApi: SmartieAPI, public events: Events) {
     // console.log('Hello ChatProvider Provider');
   }
 
@@ -42,13 +44,47 @@ export class ChatProvider {
 
         interface Response {};
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-          console.log(response);
+          resolve(response);
         }, err => {
           console.log(err);
         })
       });
-
     }
+  }
+
+  getAllMessages(senderProfileId) {
+    console.log("Getting all messages here...!");
+    console.log(senderProfileId);
+    console.log(this.receiverProfileId);
+
+    return new Promise(resolve => {
+      let API = this.smartieApi.getApi(
+        'getAllMessages',
+        { sender: senderProfileId, receiver: this.receiverProfileId }
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.allMessages = [];
+        for(let chat of response.result){
+          this.allMessages.push(chat);
+        }
+        // this.allMessages = response.result;
+        this.events.publish('newmessage');
+      }, err => {
+        console.log(err);
+      })
+    })
+    /*let temp;
+    this.firebuddychats.child(firebase.auth().currentUser.uid).child(this.buddy.uid).on('value', (snapshot) => {
+      this.buddymessages = [];
+      temp = snapshot.val();
+      for (var tempkey in temp) {
+        this.buddymessages.push(temp[tempkey]);
+      }
+      this.events.publish('newmessage');
+    })*/
   }
 
 }
