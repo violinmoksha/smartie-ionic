@@ -211,6 +211,10 @@ export class JobRequestPage {
           this.viewCtrl.dismiss();
           this.loading.dismiss();
           this.submitInProgress = false;
+
+          if (this.userRole !== 'teacher') {
+            this.scheduleJob();
+          }
         });
       })
 
