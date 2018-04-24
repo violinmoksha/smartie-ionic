@@ -266,7 +266,7 @@ export class JobRequestPage {
     }})
   }
 
-  initChat(){
-    this.navCtrl.push("ChatPage", { params: this.params });
+  initSendEmail(){
+    this.navCtrl.push("SendEmailPage", { params: this.params });
   }
 }

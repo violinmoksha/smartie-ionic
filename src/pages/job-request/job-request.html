@@ -54,7 +54,7 @@
       <div class="jobprofile-buttons">
         <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
         <!-- TODO: this button should "send a mail" from within the app -->
-        <button class="button button-positive" (click)="initChat()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
+        <button class="button button-positive" [disabled]="!params.hasUpcomings" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
       </div>
     </div>
     <div class="alert-button-group" *ngIf="!congrats && params.fromWhere != 'acceptedJobs'">

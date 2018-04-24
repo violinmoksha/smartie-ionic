@@ -23,7 +23,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipsModule } from 'ionic-tooltips';
 import { IonicImageLoader } from 'ionic-image-loader';
 import { Globalization } from '@ionic-native/globalization';
-import { ChatProvider } from '../providers/chat';
 
 @NgModule({
   declarations: [
@@ -37,7 +36,7 @@ import { ChatProvider } from '../providers/chat';
     CalendarModule,
     BrowserAnimationsModule,
     TooltipsModule,
-    IonicImageLoader.forRoot()
+    IonicImageLoader.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -54,8 +53,7 @@ import { ChatProvider } from '../providers/chat';
     //Push,
     IonicErrorHandler,
     Globalization,
-    [{provide: ErrorHandler, useClass: SmartieErrorHandler}],
-    ChatProvider
+    [{provide: ErrorHandler, useClass: SmartieErrorHandler}]
   ]
 })
 export class AppModule {}

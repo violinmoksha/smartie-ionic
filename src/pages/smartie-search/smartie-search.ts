@@ -46,7 +46,7 @@ export class SmartieSearch {
   public notifications: any;
   public accepteds: any;
 
-  private hasUpcomings: boolean;
+  private hasUpcomings: boolean = false;
   // TODO: autopopulate input with user's location
   private reverseGeocodedLocation: string;
 
@@ -418,6 +418,7 @@ export class SmartieSearch {
           defaultEndDate: locationData.teacherProfile.defaultEndDate,
           defaultStartTime: locationData.teacherProfile.defaultStartTime,
           defaultEndTime: locationData.teacherProfile.defaultEndTime,
+          hasUpcomings: this.hasUpcomings
         };
       } else {
         params = {
@@ -431,7 +432,8 @@ export class SmartieSearch {
           prefLocation: locationData.otherProfile.prefLocation,
           phone: locationData.otherProfile.phone,
           otherProfileId: locationData.otherProfile.objectId,
-          loggedRole: this.role
+          loggedRole: this.role,
+          hasUpcomings: this.hasUpcomings
         }
       }
       let popover = this.popoverCtrl.create("JobRequestPage", { params: params });
