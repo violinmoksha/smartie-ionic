@@ -45,20 +45,6 @@ export class JobRequestPage {
   ionViewDidLoad() {
     this.storage.get("UserProfile").then(roleProfile => {
       this.userRole = roleProfile.profileData.role;
-      if(this.userRole == 'teacher' && (roleProfile.profileData.stripeCustomer == undefined || roleProfile.profileData.stripeCustomer == '' )){
-        let alert = this.alertCtrl.create({
-          title: 'Time to add Stripe Account!',
-          subTitle: `You must add Stripe Account to make others to make payment to your account! Tap OK to Account!`,
-          buttons: [{
-            text: 'OK',
-            handler: () => {
-              // this.navCtrl.push('NotificationFeedPage');
-              this.navCtrl.parent.select(1);
-            }
-          }]
-        });
-        alert.present();
-      }
 
       if(this.userRole !== 'teacher' && this.params.fromWhere == 'acceptedJobs'){
         // this.scheduleJob();

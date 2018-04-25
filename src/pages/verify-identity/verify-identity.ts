@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
@@ -27,7 +27,7 @@ export class VerifyIdentityPage {
   private profileId: any;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.params = navParams.data;
 
     this.VerifyIdentityForm = new FormGroup({
@@ -78,8 +78,21 @@ export class VerifyIdentityPage {
       loading.dismiss();
       this.navCtrl.push("AddBankAccountPage", { stripeAccount: response.result });
     }, err => {
-      console.log(err);
+      loading.dismiss();
+      console.log(err.error.error.message);
+      this.verifyIdentityError(err.error.error.message);
     })
+  }
+
+  verifyIdentityError(errorMessage){
+    let alert;
+    alert = this.alertCtrl.create({
+      title: 'Identify Verification Failed !',
+      subTitle: errorMessage,
+      buttons: ['OK']
+    });
+
+    alert.present();
   }
 
 }

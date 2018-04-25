@@ -45,6 +45,7 @@ export class SmartieSearch {
 
   public notifications: any;
   public accepteds: any;
+  private paymentAdded: boolean = false;
 
   private hasUpcomings: boolean = false;
   // TODO: autopopulate input with user's location
@@ -52,7 +53,8 @@ export class SmartieSearch {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController, private globalization: Globalization) {
 
-    let dt = new Date();
+    console.log("Why loading twice ?");
+    
     let options = {
       formatLength:'short',
       selector:'date and time'
@@ -64,8 +66,17 @@ export class SmartieSearch {
     })
 
     this.accepteds = [];
-    this.fromWhere = navParams.data.fromWhere;
-    console.log(this.fromWhere);
+    this.fromWhere = navParams.get('fromWhere');
+
+    // console.log(navParams.get('fromWhere'));
+    // console.log(navParams.data.fromWhere);
+    // console.log(navParams.get('payment'));
+    // console.log(navParams.data.payment);
+
+    if(navParams.get('payment') == 'success'){
+      this.paymentAdded = true;
+    }
+    
     if (this.fromWhere == 'signUp') {
       // TODO: retrieve the profilePhoto and CVs from
       // this.storage HERE if we came from signUp,
@@ -82,7 +93,24 @@ export class SmartieSearch {
       console.log('We are here.');
       this.storage.get('UserProfile').then(UserProfile => {
         this.role = UserProfile.profileData.role;
-        console.log(UserProfile);
+        if(this.role == 'teacher' && (UserProfile.profileData.stripeCustomer == undefined || UserProfile.profileData.stripeCustomer == '' )){
+          this.paymentAdded = false;
+        }else{
+          this.paymentAdded = true;
+        }
+        console.log(this.paymentAdded);
+
+        if(!this.paymentAdded){
+          //checking user to add stripe account  
+          this.checkStripeAccount(UserProfile);
+        }
+        /*if(this.role == 'teacher' && (UserProfile.profileData.stripeCustomer == undefined || UserProfile.profileData.stripeCustomer == '' ) && !this.payment){
+          console.log("What is this ?");
+          //checking user to add stripe account  
+          this.checkStripeAccount(UserProfile);
+        }*/
+        
+
         let Profile = new Parse.Object.extend('Profile');
         let Teacher = new Parse.Object.extend('Teacher');
         let profQuery = new Parse.Query(Profile);
@@ -156,6 +184,20 @@ export class SmartieSearch {
   ionViewDidLoad(){
     this.storage.get('UserProfile').then(profile => {
       this.role = profile.profileData.role;
+
+      if(this.role == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '' )){
+        this.paymentAdded = false;
+      }else{
+        this.paymentAdded = true;
+      }
+
+      console.log(this.paymentAdded);
+
+      if(!this.paymentAdded){
+        //checking user to add stripe account  
+        this.checkStripeAccount(profile);
+      }
+
       if (profile == null) {
         this.navCtrl.setRoot("LoginPage");
       } else {
@@ -518,5 +560,21 @@ export class SmartieSearch {
     }else{
       this.navCtrl.parent.select(3);
     }
+  }
+
+  checkStripeAccount(profile){
+      let alert = this.alertCtrl.create({
+        title: 'Time to add Stripe Account!',
+        subTitle: `You must add Stripe Account to make others to make payment to your account! Tap OK to Account!`,
+        enableBackdropDismiss: false,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            // this.navCtrl.push('NotificationFeedPage');
+            this.navCtrl.parent.select(1);
+          }
+        }]        
+      });
+      alert.present();
   }
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Stripe } from '@ionic-native/stripe';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
@@ -27,7 +27,7 @@ export class AddBankAccountPage {
   private body: any;
   private profilePhoto: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.params = navParams.data;
 
     this.BankAccountForm = new FormGroup({
@@ -78,10 +78,29 @@ export class AddBankAccountPage {
         loading.dismiss();
         this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
       }, err => {
-        console.log(err);
+        console.log(err.error.message);
+        this.addBankAccountError(err.error.message);
       })
+    }, err => {
+      console.log(err);
+      loading.dismiss();
+      this.addBankAccountError(err);
     })
 
+  }
+
+  addBankAccountError(errorMessage){
+    let alert;
+    // let errorMessage = error.split(":");
+    // console.log(errorMessage);
+
+    alert = this.alertCtrl.create({
+      title: 'Identify Verification Failed !',
+      subTitle: errorMessage,
+      buttons: ['OK']
+    });
+
+    alert.present();
   }
 
 }
