@@ -52,9 +52,16 @@
         <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
       </div>
       <div class="jobprofile-buttons">
-        <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
+        <span *ngIf="!params.hasUpcomings">
+          <button style="width:100%" class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
+        </span>
+        <span *ngIf="params.hasUpcomings">
+          <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
+        </span>
         <!-- TODO: this button should "send a mail" from within the app -->
-        <button class="button button-positive" [disabled]="!params.hasUpcomings" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
+        <span *ngIf="params.hasUpcomings">
+          <button class="button button-positive" [disabled]="!params.hasUpcomings" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
+        </span>
       </div>
     </div>
     <div class="alert-button-group" *ngIf="!congrats && params.fromWhere != 'acceptedJobs'">
