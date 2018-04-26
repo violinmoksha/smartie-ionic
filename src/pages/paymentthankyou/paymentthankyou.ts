@@ -32,6 +32,7 @@ export class PaymentthankyouPage {
       this.pageContent = "<h2>Thank you</h2><p>Your Payment was successful</p><p class='mail'></p>";
     }else if(this.fromWhere == 'teacherStripePayment'){
       this.pageContent = "<h2>Success</h2><p>Your stripe account has been added to your payment details</p><p class='mail'></p>";
+      this.storage.set("registeredWithStripe", true);
     }
   }
 

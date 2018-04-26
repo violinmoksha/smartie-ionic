@@ -25,13 +25,13 @@ export class PaymentDetailsPage {
   }
 
   ionViewDidLoad() {
-    this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
+    //this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
-      /*if(UserProfile.profileData.stripeCustomer.id){
+      if(UserProfile.profileData.stripeCustomer !== undefined){
         this.registeredWithStripe = true;
-      }*/
+      }
     });
   }
 
