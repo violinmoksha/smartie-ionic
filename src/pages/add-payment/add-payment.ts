@@ -108,8 +108,10 @@ export class AddPaymentPage {
       // TODO: we pass the stripeAccount to VerifyIdentityPage
       // so that we can find the required additional fields in
       // stripeAccount.verification.fields_needed
-      loading.dismiss();
-      this.navCtrl.push(this.targetNavpage, { stripeAccount: response.result });
+      this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
+        loading.dismiss();
+        this.navCtrl.push(this.targetNavpage, { stripeAccount: response.result });
+      })
     }, err => {
       console.log(err);
     })

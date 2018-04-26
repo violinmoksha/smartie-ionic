@@ -63,7 +63,7 @@ export class AddBankAccountPage {
       account_holder_type: bankAccoutnValues.accountHolderType,
     }).then(bankToken => {
       this.body = {
-        stripeAccountId: this.params.stripeAccount.id,
+        stripeAccountId: this.params.stripeAccount.stripeCustomer.id,
         profileId: this.profileId,
         bankToken: bankToken
       };
@@ -75,8 +75,10 @@ export class AddBankAccountPage {
         result: any;
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        loading.dismiss();
-        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
+        this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
+          loading.dismiss();
+          this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
+        });
       }, err => {
         console.log(err.error.message);
         this.addBankAccountError(err.error.message);

@@ -89,8 +89,8 @@ export class SmartieSearch {
       this.storage.get('UserProfile').then(UserProfile => {
         this.role = UserProfile.profileData.role;
 
-        this.storage.get('registeredWithStripe').then(regdWithStripe => {
-          if (this.role == 'teacher' && regdWithStripe == false) {
+        // this.storage.get('registeredWithStripe').then(regdWithStripe => {
+          if(this.role == 'teacher' && (UserProfile.profileData.stripeCustomer == undefined || UserProfile.profileData.stripeCustomer == '' )) {
             this.checkStripeAccount(UserProfile);
           } else {
             let Profile = new Parse.Object.extend('Profile');
@@ -153,7 +153,7 @@ export class SmartieSearch {
               })
             });
           }
-        })
+        // })
       });
     }
   }
@@ -169,8 +169,9 @@ export class SmartieSearch {
     this.storage.get('UserProfile').then(profile => {
       this.role = profile.profileData.role;
 
-      this.storage.get('registeredWithStripe').then(regdWithStripe => {
-        if (this.role == 'teacher' && regdWithStripe == undefined) {
+      // this.storage.get('registeredWithStripe').then(regdWithStripe => {
+        console.log(profile.profileData);
+        if(this.role == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '' )) {
           this.checkStripeAccount(profile);
         } else {
           if (profile == null) {
@@ -259,7 +260,7 @@ export class SmartieSearch {
             });
           }
         }
-      });
+      // });
     });
   }
 

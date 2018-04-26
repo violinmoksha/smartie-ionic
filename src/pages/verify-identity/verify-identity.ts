@@ -29,6 +29,7 @@ export class VerifyIdentityPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.params = navParams.data;
+    console.log(this.params.stripeAccount.stripeCustomer.id);
 
     this.VerifyIdentityForm = new FormGroup({
       legalAddressCity: new FormControl('', Validators.required),
@@ -48,6 +49,9 @@ export class VerifyIdentityPage {
 
   ionViewDidLoad() {
     this.storage.get('UserProfile').then(UserProfile => {
+
+      console.log(UserProfile);
+
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
       this.profileId = UserProfile.profileData.objectId;
@@ -62,7 +66,7 @@ export class VerifyIdentityPage {
     loading.present();
 
     this.body = {
-      stripeAccountId: this.params.stripeAccount.id,
+      stripeAccountId: this.params.stripeAccount.stripeCustomer.id,
       profileId: this.profileId,
       legalEntityValues: legalEntityValues
     };
@@ -75,8 +79,10 @@ export class VerifyIdentityPage {
       result: any;
     };
     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      loading.dismiss();
-      this.navCtrl.push("AddBankAccountPage", { stripeAccount: response.result });
+      this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
+        loading.dismiss();
+        this.navCtrl.push("AddBankAccountPage", { stripeAccount: response.result });
+      });
     }, err => {
       loading.dismiss();
       console.log(err.error.error.message);

@@ -168,7 +168,7 @@ export class JobRequestPage {
   }
 
   viewProfile(){
-    this.navCtrl.push("ViewProfile", this.params);
+    this.navCtrl.push("ViewProfilePage", { params: this.params });
   }
 
   accept(){

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Constants } from './constants';
+import { Storage } from '@ionic/storage';
 
 /*
   Generated class for the SmartieAPI provider.
@@ -14,7 +15,7 @@ export class SmartieAPI {
   private applicationId: string;
   private contentType: string;
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public storage: Storage) {
   }
 
   getApi(endPoint, body){
@@ -69,5 +70,21 @@ export class SmartieAPI {
         resolve(notifications);
       }
     });
+  }
+
+  updateUserProfileStorage(updatedProfile){
+   
+      return new Promise(resolve => {
+        this.storage.get("UserProfile").then(profile => {
+          console.log(profile);
+          delete profile['profileData'];
+          console.log(profile);
+          profile['profileData'] = updatedProfile;
+          this.storage.set("UserProfile", profile).then(()=>{
+            resolve(profile);
+          })
+        })
+      });
+    
   }
 }
