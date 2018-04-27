@@ -115,7 +115,6 @@ page-view-profile {
         border: 1px solid #cfcfcf;
         border-radius: 5px;
         padding: 0px 5px;
-        width: 49%;
         margin-right: 2%;
         display: inline-block;
         float: left;
@@ -160,6 +159,9 @@ page-view-profile {
         margin: 0;
         margin-bottom: 5px;
       }
+      h2{
+        margin-bottom: 20px;
+      }
       p{
         font-size: 13px;
         font-weight: normal;
@@ -167,6 +169,7 @@ page-view-profile {
         margin-bottom:10px;
         color: #333333;
       }
+      padding: 15px;
     }
   
   

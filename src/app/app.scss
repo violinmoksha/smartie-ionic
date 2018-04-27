@@ -171,9 +171,9 @@ h4 {
    .swiper-slide.active{
      border-color: #0096D7 !important;
    }
-   .job-availablity-details{
+   /*.job-availablity-details{
      background-color: #0096D7!important;
-   }
+   }*/
    .right{
        .price{
          color: #0096D7!important;
@@ -220,9 +220,9 @@ h4 {
    .swiper-slide.active{
      border-color: #F97533 !important;
    }
-   .job-availablity-details{
+   /* .job-availablity-details{
      background-color:  #F97533!important;
-   }
+   } */
    .right{
      .price{
        color: #F97533 !important
@@ -274,6 +274,11 @@ h4 {
    .bar-button-default{
      color: #F31C62!important;
    }
+   .right{
+    .price{
+      color: #F31C62!important;
+    }
+}
 }
 
 .cl-teacher{

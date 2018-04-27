@@ -1,0 +1,97 @@
+page-reviews {
+    .review-title{
+        font-size: 20px;
+        font-weight: bold;
+        color: #009345;
+        padding: 10px 25px;
+        }
+        .review-pop-search{
+        text-align: center;
+        padding:0 10px ;
+        border-bottom: 3px solid #009345;
+        margin-bottom: 10px;
+
+        .notification {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            min-height: 60px;
+            border-bottom: 1px solid #cfcfcf;
+            .left {
+                width: 70%;
+                float: left;
+                text-align: left;
+                .avatar {
+                float: left;
+                width: 40px;
+                height: 40px;
+                overflow: hidden;
+                border-radius: 200px;
+                margin-right: 10px;
+                img {
+                        width: 100%;
+                    }
+                }
+                .u-detail {
+                float: left;
+                width: auto;
+                .name {
+                    font-weight: 500;
+                    color: #000;
+                    font-size: 14px;
+                    line-height: 15px;
+                    margin-top: 7px;
+                    }
+                    .profile-type {
+                        font-size: 12px;
+                        color: #969696;
+                        font-weight: normal;
+                        line-height: 15px;
+                    }
+                }
+
+            }
+            .right {
+                width: 30%;
+                float: right;
+                text-align: right;
+                .star{
+                float:none;
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                background-image: url(./../assets/img/small-star-grey.png);
+                background-size: 100%;
+                background-repeat: no-repeat;
+                }
+                .orange{
+                background-image: url(./../assets/img/small-star-yellow.png)!important;
+                background-size: 100%;
+                background-repeat: no-repeat;
+                }
+            }
+        }
+        }
+
+        .review-content{
+        text-align: left;
+        padding: 15px 0;
+        font-size: 15px;
+        color: #333333;
+        .review-date{
+            font-size: 12px;
+            color: #848484;
+            margin-top: 10px;
+        }
+        }
+        .item-md{
+        border-bottom: 0;
+        }
+        .button.button-positive{
+        background-color: #0096D7!important;
+        }
+        h2{
+        color:  #0096D7!important;
+        font-size:18px;
+        }
+    
+}

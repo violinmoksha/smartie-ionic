@@ -169,8 +169,6 @@ export class SmartieSearch {
     this.storage.get('UserProfile').then(profile => {
       this.role = profile.profileData.role;
 
-      // this.storage.get('registeredWithStripe').then(regdWithStripe => {
-        console.log(profile.profileData);
         if(this.role == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '' )) {
           this.checkStripeAccount(profile);
         } else {
@@ -260,7 +258,6 @@ export class SmartieSearch {
             });
           }
         }
-      // });
     });
   }
 
@@ -412,17 +409,17 @@ export class SmartieSearch {
           fullname: locationData.teacherProfile.fullname,
           role: locationData.teacherProfile.role,
           prefPayRate: locationData.teacherProfile.prefPayRate,
-          yrsExperience: locationData.teacherProfile.yrsExperience,
+          yrsExperience: locationData.teacher.yrsExperience,
           profileAbout: locationData.teacherProfile.profileAbout,
           profileTitle: locationData.teacherProfile.profileTitle,
           prefLocation: locationData.teacherProfile.prefLocation,
           phone: locationData.teacherProfile.phone,
           teacherProfileId: locationData.teacherProfile.objectId,
           loggedRole: this.role,
-          defaultStartDate: locationData.teacherProfile.defaultStartDate,
-          defaultEndDate: locationData.teacherProfile.defaultEndDate,
-          defaultStartTime: locationData.teacherProfile.defaultStartTime,
-          defaultEndTime: locationData.teacherProfile.defaultEndTime,
+          defaultStartDate: locationData.teacher.defaultStartDate,
+          defaultEndDate: locationData.teacher.defaultEndDate,
+          defaultStartTime: locationData.teacher.defaultStartTime,
+          defaultEndTime: locationData.teacher.defaultEndTime,
           hasUpcomings: this.hasUpcomings
         };
       } else {

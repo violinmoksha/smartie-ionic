@@ -21,15 +21,18 @@ export class ViewProfilePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
     this.params = navParams.data.params;
-    console.log(this.params);
 
     this.storage.get("UserProfile").then(profile => {
       this.role = profile.profileData.role;
     })
   }
 
-  ionViewDidLoad() {
+  /* ionViewDidLoad() {
     console.log('ionViewDidLoad ViewProfilePage');
+  } */
+
+  viewReviews(){
+    this.navCtrl.push("ReviewsPage", { params: this.params });
   }
 
 }

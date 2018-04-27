@@ -30,7 +30,8 @@
   </div>
 
   <div class="jobprofile-content">
-    <!-- <h2 *ngIf="params.role == 'teacher">Hi I am a {{ params.experience }} Years Experience Teacher</h2> -->
+    <h2 *ngIf="params.role == 'teacher'">Hi I am a {{ params.yrsExperience }} Years Experience Teacher</h2>
+    <h2 *ngIf="params.role != 'teacher'">{{ params.profileTitle }} </h2>
     <div class="jobprofile-details">
       <h3>Details:</h3>
       <p>{{ params.profileAbout }}</p>
@@ -43,14 +44,14 @@
       </p>
       <div class="clear"></div>
     </div>
-    <!--<div class="job-availablity-details" *ngIf="params.role == 'teacher">
+    <div class="job-availablity-details" *ngIf="params.role == 'teacher'">
       <h3>Available Timings</h3>
-      <p>{{ params.defStartTime }} to {{ params.defEndTime}} on {{ params.defStartDate}} to {{ params.defEndDate}}</p>
-    </div>-->
+      <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
+    </div>
     <div class="jobprofile-buttons">
       <!-- <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/img/job-profile-icon.png" /> View Job Proife</button> 
       <button class="button button-positive" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i> Send Mail</button>-->
-      <button (click)="viewReviews(params.requestedId)" class="button button-positive" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i> View Reviews</button>
+      <button (click)="viewReviews()" class="button button-positive" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i> View Reviews</button>
     </div>
   </div>
   <!--<div class="alert-button-group">
