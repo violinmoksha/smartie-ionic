@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SmartieAPI } from '../../providers/api/smartie';
+// import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
 
 
@@ -20,14 +19,14 @@ import { Storage } from '@ionic/storage';
 export class SetReviewPage {
 
   profileData: any;
-  ReviewForm : FormGroup;
   role: any;
-  rating: any = '';
-  review: any = '';
+  rating: any = '5';
+  review: any = 'test12345';
   private reviewedProfileId: any;
   private reviewingProfileId: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, private smartieApi: SmartieAPI, public storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
+    console.log("dasd")
     this.profileData = navParams.data.profileData;
     this.reviewedProfileId = this.profileData.objectId;
 
@@ -45,7 +44,7 @@ export class SetReviewPage {
     console.log(this.rating);
     console.log(this.review);
 
-    let API = this.smartieApi.getApi(
+    /*let API = this.smartieApi.getApi(
       'setReview',
       { reviewedProfileId: this.reviewedProfileId, reviewingProfileId: this.reviewingProfileId, reviewStars: this.rating, reviewFeedback: this.review }
     );
@@ -54,7 +53,7 @@ export class SetReviewPage {
     }
     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
       console.log(response.result);
-    })
+    })*/
 
   }
 

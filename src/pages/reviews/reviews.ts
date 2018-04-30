@@ -22,6 +22,8 @@ export class ReviewsPage {
   role: any;
   reviewCount: number;
   private profileData: any;
+  profilePhoto: any;
+  reviews: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI) {
     this.params = navParams.data.params;
@@ -51,9 +53,36 @@ export class ReviewsPage {
       }
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
         console.log(response.result);
-        this.reviewCount = response.result.reviews.length;
-        this.profileData = response.result.reviewedProfile;
+        let userReviews = response.result;
+        this.reviewCount = userReviews.reviews.length;
+        this.profileData = userReviews.reviewedProfile;
+
+        for(let review of userReviews.reviews){
+          this.getReviewingProfileData(review);
+        }
+
       })
+    })
+  }
+
+  getReviewingProfileData(review){
+    return new Promise(resolve => {
+      let API = this.smartieApi.getApi(
+        'getReviewingProfile',
+        { reviewingProfileId: review.reviewingProfileId}
+      );
+      interface Response {
+        result: any
+      }
+      return this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+        if(response.result.reviewingProfile.profilePhoto){
+          this.profilePhoto = response.result.reviewingProfile.profilePhoto.url;
+        }else{
+          this.profilePhoto = "./assets/img/user-round-icon.png";
+        }
+        this.reviews.push({ 'fullname': response.result.reviewingProfile.fullname, 'role':  response.result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
+      })
+
     })
   }
 

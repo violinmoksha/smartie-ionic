@@ -163,6 +163,7 @@ export class SmartieSearch {
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
     this.events.publish("buttonsLoad", this.role);
+    // this.navCtrl.push('TestingPage');
   }
 
   ionViewDidLoad(){
