@@ -106,35 +106,6 @@ export class PaymentPage {
     }else{
       this.createTransaction(amount);
     }
-    /*this.stripe.setPublishableKey('pk_test_HZ10V0AINd5NjEOyoEAeYSEe');
-    this.stripe.createCardToken({
-      number: cardValue.cardnumber,
-      expMonth: cardValue.monthexp,
-      expYear: cardValue.yearexp,
-      cvc: cardValue.cvv,
-    }).then(cardToken => {
-
-    })*/
-
-    /*this.body = {
-      amountPayable: amount * 100, // in cents
-      customerId: this.stripeCustomer,
-      teacherAccountId: this.params.profileStripeAccount.id,
-      otherProfileId: this.otherProfileId
-    };
-    let API = this.smartieApi.getApi(
-      'createTransaction',
-      this.body
-    );
-    interface Response {
-      result: any;
-    };
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
-    }, err => {
-      console.log(err);
-    })*/
-    // this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
   }
 
   createTransaction(amount){

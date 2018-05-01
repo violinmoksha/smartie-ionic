@@ -1,5 +1,5 @@
 import { IonicPage, Events, PopoverController } from 'ionic-angular';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgZone } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
@@ -50,7 +50,7 @@ export class SmartieSearch {
   // TODO: autopopulate input with user's location
   private reverseGeocodedLocation: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController, private globalization: Globalization) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone) {
 
     console.log("Why loading twice ?");
 
@@ -163,7 +163,7 @@ export class SmartieSearch {
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
     this.events.publish("buttonsLoad", this.role);
-    // this.navCtrl.push('TestingPage');
+    // this.navCtrl.push('Test1Page');
   }
 
   ionViewDidLoad(){
@@ -402,7 +402,15 @@ export class SmartieSearch {
 
     this.marker.addListener('click', ()=> {
 
-      let params;
+      this.ngZone.run(() => {
+        this.initJobRequestPopUp(locationData);
+      })
+    });
+
+  }
+
+  initJobRequestPopUp(locationData){
+    let params;
       if (this.role !== 'teacher') {
         params = {
           profilePhoto: locationData.teacherProfile.profilePhoto,
@@ -442,8 +450,6 @@ export class SmartieSearch {
       let popover = this.popoverCtrl.create("JobRequestPage", { params: params });
       popover.present();
       //this.navCtrl.push("JobRequestPage", { params: params });
-    });
-
   }
 
   public contentTitle() {

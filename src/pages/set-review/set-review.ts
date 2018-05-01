@@ -20,13 +20,12 @@ export class SetReviewPage {
 
   profileData: any;
   role: any;
-  rating: any = '5';
-  review: any = 'test12345';
+  rating: any = '';
+  review: any = '';
   private reviewedProfileId: any;
   private reviewingProfileId: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
-    console.log("dasd")
     this.profileData = navParams.data.profileData;
     this.reviewedProfileId = this.profileData.objectId;
 
@@ -38,6 +37,11 @@ export class SetReviewPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SetReviewPage');
+  }
+
+  ratingChanged(event){
+    console.log(event);
+    this.rating = event;
   }
 
   submitReview(){

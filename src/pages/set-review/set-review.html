@@ -13,12 +13,6 @@
 
 <ion-content padding>
 
-    <div>
-      <h4>Debug</h4>
-      <pre>Rating : {{ rating }}</pre>
-      <pre>Review : {{ review }}</pre>
-    </div>
-
     <div class="profile-column">
       <div class="pr-review-top">
         <span class="reveiwer-image" *ngIf="profileData.profilePhoto"><img src="{{ profileData.profilePhoto.url }}"></span>
@@ -36,7 +30,7 @@
         <ion-textarea [(ngModel)]="review" placeholder="Put any comment..."></ion-textarea>
         
       </div>
-      <button class="button button-positive" (click)="submitReview()" ion-button full>Submit Your Rating</button>
+      <button class="button button-positive" [disabled]="review == '' || rating ==''" (click)="submitReview()" ion-button full>Submit Your Rating</button>
     </div>
     
 
