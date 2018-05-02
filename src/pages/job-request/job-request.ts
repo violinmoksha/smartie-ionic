@@ -248,7 +248,9 @@ export class JobRequestPage {
       defaultStartDate: this.params.defaultStartDate,
       defaultEndDate: this.params.defaultEndDate,
       defaultStartTime: this.params.defaultStartTime,
-      defaultEndTime: this.params.defaultEndTime
+      defaultEndTime: this.params.defaultEndTime,
+      profileStripeAccount: this.params.profileStripeAccount,
+      jobRequestId: this.params.jobRequestId
     }})
   }
 

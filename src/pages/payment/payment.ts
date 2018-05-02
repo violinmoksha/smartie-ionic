@@ -41,6 +41,8 @@ export class PaymentPage {
     this.apptEndTime = navParams.data.apptEndTime;
     this.params = navParams.data.params
 
+    console.log(this.params);
+
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
       this.otherProfileId = UserProfile.profileData.objectId;
