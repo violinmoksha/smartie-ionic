@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Parse } from 'parse';
-import { ParseProvider } from '../../providers/parse';
 import { Storage } from '@ionic/storage';
 
 /**
@@ -25,7 +24,7 @@ export class EditProfilePage {
 
   private EditProfileForm : FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController, private parse: ParseProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController) {
     this.EditProfileForm = new FormGroup({
       password: new FormControl('', [Validators.required])
     });

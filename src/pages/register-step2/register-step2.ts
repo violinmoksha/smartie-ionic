@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, ActionSheetController, Slides } fr
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 // import { Crop } from '@ionic-native/crop';
-import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
 
 /**
@@ -24,7 +23,7 @@ export class RegisterStep2Page {
   private form1Values: any;
   private role: any;
   private profilePicSrc:string;
-  private schoolPicSrc:string = './assets/img/school-img.png';
+  public schoolPicSrc:string = './assets/img/school-img.png';
   private cameraData: string;
   private schoolCameraData: string;
   private photoTaken: boolean;
@@ -38,7 +37,7 @@ export class RegisterStep2Page {
   private messagePlaceHolder: string;
   @ViewChild(Slides) studentSchool: Slides;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private smartieApi: SmartieAPI, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage) {
     this.form1Values = navParams.data.form1Value;
     this.role = navParams.data.role;
     this.profilePicSrc = './assets/img/user-img-'+this.role+'.png';

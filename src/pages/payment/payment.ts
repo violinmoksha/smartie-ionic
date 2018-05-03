@@ -19,7 +19,7 @@ import { SmartieAPI } from '../../providers/api/smartie';
 export class PaymentPage {
 
   private userRole: string;
-  private genericAvatar: string = '/assets/imgs/user-img-teacher.png';
+  public genericAvatar: string = '/assets/imgs/user-img-teacher.png';
   private totalHours: number;
   private totalAmount: number;
   private params: any;

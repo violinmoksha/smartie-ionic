@@ -19,8 +19,6 @@ export class SchedulePage {
 
   private params: any;
   private userRole: string;
-  private startDate: string;
-  private endDate: string;
 
   private genericAvatar: string;
 

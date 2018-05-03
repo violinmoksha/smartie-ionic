@@ -25,7 +25,7 @@ export class AddPaymentPage {
   private PaymentForm : FormGroup;
   private body: any;
   private profileId: any;
-  private stripeAccountId: any;
+  // private stripeAccountId: any;
   private userIP: string;
   private fromWhere: any;
   private smartieEndPoint: any;

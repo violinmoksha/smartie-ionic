@@ -1,9 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Slides, ModalController, LoadingController  } from 'ionic-angular';
-import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { Parse } from 'parse';
-import { ParseProvider } from '../../providers/parse';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { Storage } from '@ionic/storage';
 
@@ -33,7 +31,6 @@ export class RegisterStep3Page {
   @ViewChild(Slides) hourRate: Slides;
   private yearExperience: any;
   private hourlyRate: any;
-  private userCurrency: any;
   private startDate: any;
   private endDate: any;
   private role: any;
@@ -89,7 +86,7 @@ export class RegisterStep3Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private parse: ParseProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage) {
     // this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
       content: 'Creating Account...'

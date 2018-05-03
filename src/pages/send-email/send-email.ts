@@ -21,7 +21,6 @@ export class SendEmailPage {
   role: any;
   recipientProfileId: any;
   recipientName: any;
-  private body: any;
   message: any = '';
   subject: any = '';
   messageIsValid: boolean = false;

@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { SmartieSearch } from '../smartie-search/smartie-search';
 
 @IonicPage()
 @Component({
   selector: 'page-tabs',
   templateUrl: 'tabs.html',
-  providers: [ SmartieSearch ]
+  // providers: [ SmartieSearch ]
 })
 export class TabsPage {
 
@@ -24,7 +23,7 @@ export class TabsPage {
   pageTitle: string;
   fromWhere: any;
 
-  constructor(navParams: NavParams, public storage: Storage, private smartieSearch: SmartieSearch) {
+  constructor(navParams: NavParams, public storage: Storage) {
     // Set the active tab based on the passed index from menu.ts
     this.myIndex = navParams.data.tabIndex || 0;
     this.role = navParams.data.role;
