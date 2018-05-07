@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 /**
  * Generated class for the AddPaymentPage page.
@@ -31,7 +32,7 @@ export class AddPaymentPage {
   private smartieEndPoint: any;
   private targetNavpage: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private iab: InAppBrowser) {
 
     this.fromWhere = navParams.data.fromWhere;
     this.PaymentForm = new FormGroup({
@@ -78,7 +79,28 @@ export class AddPaymentPage {
 
   addStripeAccount(data){
 
-    let loading = this.loadingCtrl.create({
+    if(data.emailConfirm == 'yes'){
+      data.emailPayment = this.email;
+    }
+
+    data.firstName = this.fullName;
+    data.businessType = 'individual';
+
+    // ca_CZWQogI2PEylvxAJTYTaxEwrLQQVMA5x  --> CLIENT_ID
+
+    console.log(data);
+
+    let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQogI2PEylvxAJTYTaxEwrLQQVMA5x&stripe_user[business_type]="+data.businessType+"&stripe_user[email]="+data.emailPayment+"&stripe_user[first_name]="+data.firstName;
+
+    const browser = this.iab.create(url);
+
+    browser.on('loadstop').subscribe(event => {
+        // We can retreive account details hers and can store in our db
+    });
+
+    browser.show();
+
+    /*let loading = this.loadingCtrl.create({
       content: 'Creating Stripe Account...'
     });
     loading.present();
@@ -89,10 +111,6 @@ export class AddPaymentPage {
     }else{
       this.smartieEndPoint = 'createTeacherAccount';
       this.targetNavpage = 'VerifyIdentityPage';
-    }
-
-    if(data.emailConfirm == 'yes'){
-      data.emailPayment = this.email;
     }
 
     // NB: this page flow is only for Teachers
@@ -114,6 +132,6 @@ export class AddPaymentPage {
       })
     }, err => {
       console.log(err);
-    })
+    })*/
   }
 }

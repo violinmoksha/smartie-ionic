@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipsModule } from 'ionic-tooltips';
 import { IonicImageLoader } from 'ionic-image-loader';
 import { Globalization } from '@ionic-native/globalization';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { Globalization } from '@ionic-native/globalization';
     //Push,
     IonicErrorHandler,
     Globalization,
+    InAppBrowser,
     [{provide: ErrorHandler, useClass: SmartieErrorHandler}]
   ]
 })

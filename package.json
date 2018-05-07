@@ -27,6 +27,7 @@
     "@ionic-native/file": "^4.6.0",
     "@ionic-native/geolocation": "^4.5.3",
     "@ionic-native/globalization": "^4.7.0",
+    "@ionic-native/in-app-browser": "^4.7.0",
     "@ionic-native/push": "^4.5.3",
     "@ionic-native/splash-screen": "4.4.0",
     "@ionic-native/status-bar": "4.4.0",
@@ -42,6 +43,7 @@
     "cordova-plugin-file": "^6.0.1",
     "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-globalization": "^1.0.9",
+    "cordova-plugin-inappbrowser": "^3.0.0",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^1.1.19",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -81,7 +83,8 @@
       "cordova-plugin-file": {},
       "cordova-plugin-stripe": {},
       "cordova-plugin-camera": {},
-      "cordova-plugin-globalization": {}
+      "cordova-plugin-globalization": {},
+      "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
       "android",
