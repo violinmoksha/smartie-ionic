@@ -18,6 +18,7 @@ export class SmartieApp {
   buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string }>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation) {
+
     this.initializeApp();
 
     /*this.storage.get('sessionToken').then(val => {

@@ -5,6 +5,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Pro } from '@ionic/pro';
+import { URLSearchParams } from '@angular/http';
 
 /**
  * Generated class for the LoginPage page.
@@ -22,6 +23,13 @@ export class LoginPage {
   private LoginForm: FormGroup;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI) {
+
+    console.log(navParams);
+
+    let params = new URLSearchParams(window.location.search);
+    let someParam = params.get('code');
+
+    console.log(someParam);
 
     this.LoginForm = new FormGroup({
       username: new FormControl(''),

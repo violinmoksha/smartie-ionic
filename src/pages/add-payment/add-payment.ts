@@ -90,13 +90,16 @@ export class AddPaymentPage {
 
     console.log(data);
 
-    let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQogI2PEylvxAJTYTaxEwrLQQVMA5x&stripe_user[business_type]="+data.businessType+"&stripe_user[email]="+data.emailPayment+"&stripe_user[first_name]="+data.firstName;
+    // let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQogI2PEylvxAJTYTaxEwrLQQVMA5x&state=state&stripe_user[business_type]="+data.businessType+"&stripe_user[email]="+data.emailPayment+"&stripe_user[first_name]="+data.firstName;
+
+    let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQIYkWpLrTkC9gAvq3gHcmBlUfLXBH&state=state&stripe_user[email]="+data.emailPayment;
+    
 
     const browser = this.iab.create(url);
 
-    browser.on('loadstop').subscribe(event => {
+    /* browser.on('loadstop').subscribe(event => {
         // We can retreive account details hers and can store in our db
-    });
+    }); */
 
     browser.show();
 
