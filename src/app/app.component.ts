@@ -33,6 +33,7 @@ export class SmartieApp {
     this.rootPage = "LoginPage"; // send to Login
 
     this.events.subscribe("buttonsLoad", eventData => {
+      console.log(eventData);
 
       //Tabs index 0 is always set to search
       if (eventData !== 'teacher') {
@@ -47,6 +48,7 @@ export class SmartieApp {
       } else {
         this.buttons = [
           { iconName: 'card', text: 'Payment Details', pageName: 'PaymentDetailsPage', index: 1, pageTitle: 'Payment Options' },
+          { iconName: 'card', text: 'Wallet', pageName: 'WalletPage' },
           { iconName: 'book', text: 'Manage Orders', pageName: '' },
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 2, pageTitle: 'Edit User' },
@@ -146,6 +148,8 @@ export class SmartieApp {
     if (page.iconName == 'log-out') { // logout -->
       this.storage.clear(); // dump ephemeral session
       this.nav.setRoot("LoginPage"); // send to Login
+    }else if(page.text == 'Wallet'){
+      this.nav.push("WalletPage");
     }else{
       this.storage.get("UserProfile").then(userProfile => {
         let params = {};

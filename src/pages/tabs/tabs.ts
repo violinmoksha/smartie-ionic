@@ -22,26 +22,13 @@ export class TabsPage {
 
   pageTitle: string;
   fromWhere: any;
+  rootParams: any = [];
 
   constructor(navParams: NavParams, public storage: Storage) {
     // Set the active tab based on the passed index from menu.ts
     this.myIndex = navParams.data.tabIndex || 0;
-    this.role = navParams.data.role;
-    this.fromWhere = { fromWhere: navParams.data.fromWhere, payment: 'success' };
-
-    if(this.role == 'teacher'){
-      this.tabs = [
-        { tabRoot: 'SmartieSearch', "rootParams": this.fromWhere, tabTitle: 'Search', tabIcon: 'search' },
-        { tabRoot: 'PaymentDetailsPage', tabTitle: 'Payment', tabIcon: 'card' },
-        { tabRoot: 'EditProfilePage', tabTitle: 'Edit Profile', tabIcon: 'settings' },
-        { tabRoot: 'NotificationFeedPage', tabTitle: 'Notifications', tabIcon: 'md-notifications' }
-      ]
-    }else{
-      this.tabs = [
-        { tabRoot: 'SmartieSearch', tabTitle: 'Search', tabIcon: 'search' },
-        { tabRoot: 'EditProfilePage', tabTitle: 'Edit Profile', tabIcon: 'settings' },
-        { tabRoot: 'NotificationFeedPage', tabTitle: 'Notifications', tabIcon: 'md-notifications' }
-      ]
-    }
+    this.role = navParams.get('role');
+    this.fromWhere = navParams.get('fromWhere');
+    this.rootParams = navParams.data;
   }
 }

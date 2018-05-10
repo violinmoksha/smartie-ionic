@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { Response } from '@angular/http';
 
 /**
  * Generated class for the AddPaymentPage page.
@@ -31,6 +32,7 @@ export class AddPaymentPage {
   private fromWhere: any;
   private smartieEndPoint: any;
   private targetNavpage: any;
+  private authenticationCode: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private iab: InAppBrowser) {
 
@@ -95,13 +97,44 @@ export class AddPaymentPage {
     let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQIYkWpLrTkC9gAvq3gHcmBlUfLXBH&state=state&stripe_user[email]="+data.emailPayment;
     
 
-    const browser = this.iab.create(url);
+    const browser = this.iab.create(url, 'location=no');
 
-    /* browser.on('loadstop').subscribe(event => {
+    browser.on('loadstop').subscribe(event => {
+      console.log(event.url);
+      this.authenticationCode = this.smartieApi.getParameterByName('code', event.url);
+      console.log(this.authenticationCode);
+      if(this.authenticationCode){
+        browser.close();
+
+        let loading = this.loadingCtrl.create({
+          content: 'Creating Stripe Account...'
+        });
+        loading.present();
+  
+        let API = this.smartieApi.getApi(
+          'createStripeTeacherAccount',
+          { emailPayment: data.emailPayment, profileId: this.profileId, code: this.authenticationCode  }
+        );
+        interface Response {
+          result: any;
+        };
+  
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+          console.log(response.result);
+          this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
+            loading.dismiss();
+            this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.result });
+          })
+        }, err => {
+          console.log(err);
+        });
+      }
+    });
+
+   /*  browser.on('loadstop').subscribe(event => {
+      console.log('test');
         // We can retreive account details hers and can store in our db
     }); */
-
-    browser.show();
 
     /*let loading = this.loadingCtrl.create({
       content: 'Creating Stripe Account...'
