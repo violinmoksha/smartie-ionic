@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { SmartieAPI } from '../../providers/api/smartie';
 
 /**
  * Generated class for the WalletPage page.
@@ -15,11 +17,44 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class WalletPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  role: any;
+  private stripeCustomer: any;
+  availableBalance: any = 0;
+  pendingBalance: any = 0;
+  profileData: any = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
+    this.storage.get("UserProfile").then(profile => {
+      this.role = profile.profileData.role;
+      this.stripeCustomer = profile.profileData.stripeCustomer;
+      this.profileData = profile.profileData;
+
+      let loading = this.loadingCtrl.create({
+        content: 'You available balance is coming...'
+      });
+      loading.present();
+  
+      let API = this.smartieApi.getApi(
+        'getTeacherAvailableBalance',
+        { stripeAccountId: this.stripeCustomer.stripe_user_id, profileId: profile.profileData.objectId }
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        loading.dismiss();
+        console.log(response.result);
+        this.availableBalance = response.result.available[0].amount / 100;
+        this.pendingBalance = response.result.pending[0].amount / 100;
+      }, err => {
+        loading.dismiss();
+        console.log(err.error.error.message);
+      })
+    })
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletPage');
+    
   }
 
 }

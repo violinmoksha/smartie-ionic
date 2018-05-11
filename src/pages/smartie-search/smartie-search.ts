@@ -53,9 +53,7 @@ export class SmartieSearch {
   constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone) {
 
     this.role = navParams.get('role');
-    console.log(this.role);
     
-
     let options = {
       formatLength:'short',
       selector:'date and time'
@@ -164,7 +162,6 @@ export class SmartieSearch {
     // send proper buttons into side-menu from here
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
-    console.log(this.role);
     this.events.publish("buttonsLoad", this.role);
     // this.navCtrl.push('Test1Page');
     

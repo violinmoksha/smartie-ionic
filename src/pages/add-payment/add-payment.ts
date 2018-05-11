@@ -24,7 +24,7 @@ export class AddPaymentPage {
   private fullName: any;
   private email: any;
   private profilePhoto: any;
-  private PaymentForm : FormGroup;
+  private PaymentForm: FormGroup;
   private body: any;
   private profileId: any;
   // private stripeAccountId: any;
@@ -58,7 +58,7 @@ export class AddPaymentPage {
     })
   }
 
-  updateStripeAccount(){
+  updateStripeAccount() {
     //console.log(this.stripeAccountId);
     this.body = {
       // stripeAccountId: this.stripeAccountId,
@@ -72,16 +72,16 @@ export class AddPaymentPage {
     interface Response {
       result: any;
     };
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
+    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+      this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment' });
     }, err => {
       console.log(err);
     })
   }
 
-  addStripeAccount(data){
+  addStripeAccount(data) {
 
-    if(data.emailConfirm == 'yes'){
+    if (data.emailConfirm == 'yes') {
       data.emailPayment = this.email;
     }
 
@@ -92,82 +92,52 @@ export class AddPaymentPage {
 
     console.log(data);
 
-    // let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQogI2PEylvxAJTYTaxEwrLQQVMA5x&state=state&stripe_user[business_type]="+data.businessType+"&stripe_user[email]="+data.emailPayment+"&stripe_user[first_name]="+data.firstName;
+    if (this.userRole == 'teacher') {
+      // let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQogI2PEylvxAJTYTaxEwrLQQVMA5x&state=state&stripe_user[business_type]="+data.businessType+"&stripe_user[email]="+data.emailPayment+"&stripe_user[first_name]="+data.firstName;
 
-    let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQIYkWpLrTkC9gAvq3gHcmBlUfLXBH&state=state&stripe_user[email]="+data.emailPayment;
-    
+      let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQIYkWpLrTkC9gAvq3gHcmBlUfLXBH&state=state&stripe_user[email]=" + data.emailPayment;
 
-    const browser = this.iab.create(url, 'location=no');
 
-    browser.on('loadstop').subscribe(event => {
-      console.log(event.url);
-      this.authenticationCode = this.smartieApi.getParameterByName('code', event.url);
-      console.log(this.authenticationCode);
-      if(this.authenticationCode){
-        browser.close();
+      const browser = this.iab.create(url, 'location=no');
 
-        let loading = this.loadingCtrl.create({
-          content: 'Creating Stripe Account...'
-        });
-        loading.present();
-  
-        let API = this.smartieApi.getApi(
-          'createStripeTeacherAccount',
-          { emailPayment: data.emailPayment, profileId: this.profileId, code: this.authenticationCode  }
-        );
-        interface Response {
-          result: any;
-        };
-  
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-          console.log(response.result);
-          this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
-            loading.dismiss();
-            this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.result });
-          })
-        }, err => {
-          console.log(err);
-        });
-      }
-    });
+      browser.on('loadstop').subscribe(event => {
+        this.authenticationCode = this.smartieApi.getParameterByName('code', event.url);
 
-   /*  browser.on('loadstop').subscribe(event => {
-      console.log('test');
-        // We can retreive account details hers and can store in our db
-    }); */
+        if (this.authenticationCode) {
+          browser.close();
 
-    /*let loading = this.loadingCtrl.create({
+          this.body = { emailPayment: data.emailPayment, profileId: this.profileId, code: this.authenticationCode }
+          this.createStripeAccount('createStripeTeacherAccount', this.body );
+        }
+      });
+
+    }else{
+      this.body = { emailPayment: data.emailPayment, userIP: this.userIP, profileId: this.profileId  };
+      this.createStripeAccount('createCustomer', this.body );
+    }
+  }
+
+  createStripeAccount(endPoint, body){
+    let loading = this.loadingCtrl.create({
       content: 'Creating Stripe Account...'
     });
     loading.present();
 
-    if(this.fromWhere !== 'teacher'){
-      this.smartieEndPoint = 'createCustomer';
-      this.targetNavpage = 'NotificationFeedPage';
-    }else{
-      this.smartieEndPoint = 'createTeacherAccount';
-      this.targetNavpage = 'VerifyIdentityPage';
-    }
-
-    // NB: this page flow is only for Teachers
-    // there is no Payment Details flow in non-Teachers!
     let API = this.smartieApi.getApi(
-      this.smartieEndPoint,
-      { emailPayment: data.emailPayment, userIP: this.userIP, profileId: this.profileId  }
+      endPoint,
+      body
     );
     interface Response {
       result: any;
     };
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      // TODO: we pass the stripeAccount to VerifyIdentityPage
-      // so that we can find the required additional fields in
-      // stripeAccount.verification.fields_needed
+    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+      console.log(response.result);
       this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
         loading.dismiss();
-        this.navCtrl.push(this.targetNavpage, { stripeAccount: response.result });
+        this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.result });
       })
     }, err => {
       console.log(err);
-    })*/
+    });
   }
 }

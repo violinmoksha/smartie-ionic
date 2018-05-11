@@ -36,6 +36,7 @@
     </div>
 
     <button class="button button-positive" [disabled]='registeredWithStripe' ion-button full (click)="addPayment()">Register your Stripe Account</button>
+    <button *ngIf="userRole == 'teacher'" [disabled]='!registeredWithStripe' class="button button-positive" ion-button full (click)="viewStripeDashboard()">View your Stripe Dashboard</button>
   </div>
 
   <p>By registering your account, you agree to our Services Agreement and the <a target="_blank" href="https://stripe.com/connect-account/legal">Stripe Connected Account Agreement</a>.</p>

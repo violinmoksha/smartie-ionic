@@ -33,8 +33,6 @@ export class SmartieApp {
     this.rootPage = "LoginPage"; // send to Login
 
     this.events.subscribe("buttonsLoad", eventData => {
-      console.log(eventData);
-
       //Tabs index 0 is always set to search
       if (eventData !== 'teacher') {
         this.buttons = [

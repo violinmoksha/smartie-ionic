@@ -34,12 +34,12 @@ export class PaymentPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private alertCtrl: AlertController) {
 
-    this.totalHours = navParams.data.totalHours;
-    this.totalAmount = navParams.data.totalAmount;
-    this.apptDate = navParams.data.apptDate;
-    this.apptStartTime = navParams.data.apptStartTime;
-    this.apptEndTime = navParams.data.apptEndTime;
-    this.params = navParams.data.params
+    this.totalHours = navParams.get('totalHours');
+    this.totalAmount = navParams.get('totalAmount');
+    this.apptDate = navParams.get('apptDate');
+    this.apptStartTime = navParams.get('apptStartTime');
+    this.apptEndTime = navParams.get('apptEndTime');
+    this.params = navParams.get('params')
 
     console.log(this.params);
 
@@ -114,7 +114,7 @@ export class PaymentPage {
     this.body = {
       amountPayable: amount * 100, // in cents
       customerId: this.stripeCustomer,
-      teacherAccountId: this.params.profileStripeAccount.id,
+      teacherAccountId: this.params.profileStripeAccount.stripe_user_id,
       otherProfileId: this.otherProfileId,
       jobRequestId: this.params.jobRequestId,
       apptDate: this.apptDate,

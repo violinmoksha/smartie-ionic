@@ -4,15 +4,34 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
-
+<ion-header class="{{ role }}">
   <ion-navbar>
     <ion-title>Wallet</ion-title>
   </ion-navbar>
-
 </ion-header>
 
+<ion-content padding class="{{ role }}">
+  <div class="wallet-wrapper">
+    <div class="w-icon">
+        <img src="./assets/imgs/wallet-icon.png" />
+    </div>
+    <h2>Smartie wallet</h2>
+    <div class="user-name">
+      Hi {{ profileData.fullname }}
+    </div>
+    <div class="wallet-balance">
+      Balance: <span>${{ availableBalance }}</span>
+    </div>
 
-<ion-content padding>
-
+    <div class="wallet-balance">
+      Pending: <span>${{ pendingBalance }}</span>
+    </div>
+    <span>Pending funds are not yet available to pay out</span>
+    <button [disabled]="!availableBalance" class="button button-positive">
+        Withdraw Wallet Money
+    </button>
+    <button class="button button-default trans-button">
+        Transaction History
+    </button>
+  </div>
 </ion-content>
