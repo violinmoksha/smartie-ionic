@@ -27,7 +27,7 @@
       Pending: <span>${{ pendingBalance }}</span>
     </div>
     <span>Pending funds are not yet available to pay out</span>
-    <button [disabled]="!availableBalance" class="button button-positive">
+    <button (click)="initPayout()" class="button button-positive">
         Withdraw Wallet Money
     </button>
     <button class="button button-default trans-button">

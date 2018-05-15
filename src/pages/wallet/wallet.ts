@@ -53,6 +53,33 @@ export class WalletPage {
     })
   }
 
+  initPayout(){
+    console.log(this.stripeCustomer.stripe_user_id);
+    console.log(this.profileData.objectId);
+    console.log(this.availableBalance * 100);
+
+    let loading = this.loadingCtrl.create({
+      content: 'Transaction being process..'
+    });
+    loading.present();
+
+    let API = this.smartieApi.getApi(
+      'createInstantPayouts',
+      { stripeAccountId: this.stripeCustomer.stripe_user_id, amount: this.availableBalance * 100, profileId: this.profileData.objectId }
+    );
+    interface Response {
+      result: any;
+    };
+    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+      loading.dismiss();
+        console.log(response.result);
+    }, err => {
+      loading.dismiss();
+      console.log(err.error.error);
+    })
+
+  }
+
   ionViewDidLoad() {
     
   }

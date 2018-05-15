@@ -149,6 +149,7 @@ export class SmartieApp {
     }else if(page.text == 'Wallet'){
       this.nav.push("WalletPage");
     }else{
+      console.log(page);
       this.storage.get("UserProfile").then(userProfile => {
         let params = {};
 

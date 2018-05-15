@@ -366,6 +366,7 @@ export class SmartieSearch {
         result: any;
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.notifyCount = '';
         if(response.result.length > 0){
           this.notifyCount = response.result.length;
           this.storage.set("userAllRequesteds", response.result);
