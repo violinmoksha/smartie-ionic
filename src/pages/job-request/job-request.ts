@@ -28,7 +28,7 @@ export class JobRequestPage {
   private loaded: any = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController) {
-    this.params = navParams.data.params;
+    this.params = navParams.get('params');
 
     if (this.params.fromWhere && this.params.fromWhere == 'requestSentJobs') {
       this.congrats = true;

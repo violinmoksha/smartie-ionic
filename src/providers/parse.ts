@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Parse } from 'parse';
+// import { Parse } from 'parse';
+const Parse = require('parse');
 import 'rxjs/add/operator/map';
 
 /*

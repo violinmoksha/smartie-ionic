@@ -3,7 +3,8 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController, Slides, LoadingController } from 'ionic-angular';
 import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { Parse } from 'parse';
+// import { Parse } from 'parse';
+const Parse = require('parse');
 import { Storage } from '@ionic/storage';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 

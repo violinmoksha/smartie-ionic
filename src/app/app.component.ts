@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 //import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { SmartieAPI } from '../providers/api/smartie';
 import { Geolocation } from '@ionic-native/geolocation';
+import { ParseProvider } from '../providers/parse';
 
 @Component({
   templateUrl: 'app.html'
@@ -17,7 +18,7 @@ export class SmartieApp {
 
   buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider) {
 
     this.initializeApp();
 
@@ -33,6 +34,7 @@ export class SmartieApp {
     this.rootPage = "LoginPage"; // send to Login
 
     this.events.subscribe("buttonsLoad", eventData => {
+      console.log(eventData);
       //Tabs index 0 is always set to search
       if (eventData !== 'teacher') {
         this.buttons = [
@@ -67,6 +69,7 @@ export class SmartieApp {
         this.splashScreen.hide();
         //this.initPushNotifications();
       }
+      this.parseProvider.parseInitialize();
     });
   }
 

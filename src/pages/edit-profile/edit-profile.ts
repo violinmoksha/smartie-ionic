@@ -2,7 +2,10 @@ import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Parse } from 'parse';
+// import { Parse } from 'parse';
+import { ParseProvider } from '../../providers/parse';
+// const Parse = require('parse');
+// import * as Parse from 'parse';
 import { Storage } from '@ionic/storage';
 
 /**

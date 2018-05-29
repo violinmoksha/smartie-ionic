@@ -37,7 +37,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
     CalendarModule,
     BrowserAnimationsModule,
     TooltipsModule,
-    IonicImageLoader.forRoot(),
+    IonicImageLoader.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

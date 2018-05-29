@@ -4,8 +4,10 @@ import { NavController, NavParams, AlertController, ModalController } from 'ioni
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-//import { ParseProvider } from '../../providers/parse';
-import { Parse } from 'parse';
+import { ParseProvider } from '../../providers/parse';
+// import { Parse } from 'parse';
+const Parse = require('parse');
+// import * as Parse from 'parse';
 import { Globalization } from '@ionic-native/globalization';
 
 declare var google;
@@ -162,6 +164,7 @@ export class SmartieSearch {
     // send proper buttons into side-menu from here
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
+    console.log('test-enter');
     this.events.publish("buttonsLoad", this.role);
     // this.navCtrl.push('Test1Page');
     
@@ -260,7 +263,13 @@ export class SmartieSearch {
     });
   }
 
+  ionViewWillEnter() {
+    console.log('On page enter');
+  }
+
   ionViewDidLoad(){
+    console.log('test-load');
+    this.events.publish("buttonsLoad", this.role);
     /* this.storage.get('UserProfile').then(profile => {
       this.role = profile.profileData.role;
 

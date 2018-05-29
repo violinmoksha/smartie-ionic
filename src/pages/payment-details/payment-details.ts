@@ -58,6 +58,7 @@ export class PaymentDetailsPage {
     };
     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
       if(response.result.url){
+        loading.dismiss();
         const browser = this.iab.create(response.result.url, 'location=no');
 
         /* browser.on('loadstop').subscribe(event => {

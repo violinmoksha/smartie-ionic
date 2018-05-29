@@ -37,6 +37,10 @@ export class NotificationFeedPage {
         this.allUpcomings = allUpcomings;
       })
 
+      console.log(this.allAccepteds);
+      console.log(this.allRequesteds);
+      console.log(this.allUpcomings);
+
       this.userRole = profile.profileData.role;
     })
   }
