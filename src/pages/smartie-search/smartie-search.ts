@@ -263,10 +263,6 @@ export class SmartieSearch {
     });
   }
 
-  ionViewWillEnter() {
-    console.log('On page enter');
-  }
-
   ionViewDidLoad(){
     console.log('test-load');
     this.events.publish("buttonsLoad", this.role);

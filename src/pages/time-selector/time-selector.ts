@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
 
 /**
  * Generated class for the TimeSelectorPage page.
@@ -27,7 +27,7 @@ export class TimeSelectorPage {
     timeEnds: '11:00'
   }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, public viewCtrl: ViewController) {
     this.selectedDate = this.navParams.data.selectedDate;
     this.params = this.navParams.data.params;
     this.loggedRole = this.navParams.data.loggedRole;
@@ -72,7 +72,7 @@ export class TimeSelectorPage {
   }
 
   goPay(){
-    this.navCtrl.push("PaymentPage", {
+    this.viewCtrl.dismiss({
       totalHours: this.parseHours(this.totalHours),
       totalAmount: this.smartieTotal(this.totalAmount),
       apptDate: this.selectedDate,

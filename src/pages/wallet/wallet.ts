@@ -79,13 +79,4 @@ export class WalletPage {
     })
 
   }
-
-  ionViewDidLoad() {
-    
-  }
-
-  ionViewWillLeave(){
-    console.log("Leave wallet page");
-  }
-
 }
