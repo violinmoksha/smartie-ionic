@@ -29,6 +29,7 @@ export class JobRequestPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.params = navParams.get('params');
+    console.log(this.params);
 
     if (this.params.fromWhere && this.params.fromWhere == 'requestSentJobs') {
       this.congrats = true;
@@ -60,6 +61,7 @@ export class JobRequestPage {
                 profilePhoto: this.params.profilePhoto,
                 profileStripeAccount: this.params.profileStripeAccount,
                 fullname: this.params.fullname,
+                teacherProfileId: this.params.teacherProfileId,
                 role: this.params.role,
                 prefPayRate: this.params.prefPayRate,
                 prefLocation: this.params.prefLocation,
@@ -146,8 +148,6 @@ export class JobRequestPage {
           role: profile.profileData.role
         };
       }
-
-      console.log(this.body);
 
       let API = this.smartieApi.getApi(
         'setJobRequest',
@@ -242,6 +242,7 @@ export class JobRequestPage {
     this.navCtrl.push('SchedulePage', { params: {
       profilePhoto: this.params.profilePhoto,
       fullname: this.params.fullname,
+      teacherProfileId: this.params.teacherProfileId,
       role: this.params.role,
       prefPayRate: this.params.prefPayRate,
       prefLocation: this.params.prefLocation,
