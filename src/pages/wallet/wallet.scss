@@ -45,6 +45,29 @@ page-wallet {
             border-radius: 5px;
             font-size: 15px;
         }
+        .disclaimer{
+            color: red;
+            width: 100%;
+            display:block;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        .info-message{
+            background-color: #00BA63;
+            text-align: center;
+            color: #fff;
+            padding:10px 15px;
+            text-align: center;
+            width: 100%;
+            display:block;
+            text-align: center;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            line-break: 20px;
+        }
 
     }
 }
