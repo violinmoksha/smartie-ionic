@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 
 /**
  * Generated class for the PaymentDetailsPage page.
@@ -23,7 +24,7 @@ export class PaymentDetailsPage {
   private registeredWithStripe: boolean = false;
   private stripeCustomerId: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private iab: InAppBrowser) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private iab: InAppBrowser, private themeableBrowser: ThemeableBrowser) {
 
   }
 
@@ -59,7 +60,20 @@ export class PaymentDetailsPage {
     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
       if(response.result.url){
         loading.dismiss();
-        const browser = this.iab.create(response.result.url, 'location=no');
+        const options: ThemeableBrowserOptions = {
+          toolbar: {
+            height: 44,
+            color: '#00BA63'
+          },
+          title: {
+            color: '#ffffff',
+            showPageTitle: true,
+            staticText: "Payment Details"
+          },
+          backButtonCanClose: true
+        }
+        // const browser = this.iab.create(response.result.url, '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
+        const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_self', options);
 
         /* browser.on('loadstop').subscribe(event => {
           console.log(event);

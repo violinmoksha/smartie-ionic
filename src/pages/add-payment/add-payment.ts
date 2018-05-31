@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 import { Response } from '@angular/http';
 
 /**
@@ -34,7 +35,7 @@ export class AddPaymentPage {
   private targetNavpage: any;
   private authenticationCode: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private iab: InAppBrowser) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private iab: InAppBrowser, private themeableBrowser: ThemeableBrowser) {
 
     this.fromWhere = navParams.data.fromWhere;
     this.PaymentForm = new FormGroup({
@@ -97,8 +98,22 @@ export class AddPaymentPage {
 
       let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQIYkWpLrTkC9gAvq3gHcmBlUfLXBH&state=state&stripe_user[email]=" + data.emailPayment;
 
+      const options: ThemeableBrowserOptions = {
+        toolbar: {
+          height: 44,
+          color: '#00BA63'
+        },
+        title: {
+          color: '#ffffff',
+          showPageTitle: true,
+          staticText: "Add Stripe Payment"
+        },
+        backButtonCanClose: true
+      }
 
-      const browser = this.iab.create(url, 'location=no');
+      // const browser = this.iab.create(url,  '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
+
+      const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_self', options);
 
       browser.on('loadstop').subscribe(event => {
         this.authenticationCode = this.smartieApi.getParameterByName('code', event.url);

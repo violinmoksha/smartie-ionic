@@ -62,6 +62,7 @@ export class SmartieSearch {
     }
     this.globalization.getDatePattern(options).then(res => {
       console.log(res);
+      this.storage.set('userTimeZone', res.timezone);
     }).catch(err => {
       console.log(err);
     })

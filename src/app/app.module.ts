@@ -24,6 +24,7 @@ import { TooltipsModule } from 'ionic-tooltips';
 import { IonicImageLoader } from 'ionic-image-loader';
 import { Globalization } from '@ionic-native/globalization';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
     IonicErrorHandler,
     Globalization,
     InAppBrowser,
+    ThemeableBrowser,
     [{provide: ErrorHandler, useClass: SmartieErrorHandler}]
   ]
 })

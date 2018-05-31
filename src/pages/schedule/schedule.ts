@@ -70,8 +70,8 @@ export class SchedulePage {
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if(date){
-        // this.navCtrl.push("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole, payment: "success" });
-        let popover = this.popoverCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years, params: this.params, loggedRole: this.userRole });
+        // this.navCtrl.push("TimeSelectorMultiPage", { selectedDates: date, params: this.params, loggedRole: this.userRole });
+         let popover = this.popoverCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years, params: this.params, loggedRole: this.userRole });
         popover.present();
         popover.onDidDismiss( data => {
           console.log('dismiss');
