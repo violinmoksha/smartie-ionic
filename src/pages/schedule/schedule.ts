@@ -57,7 +57,7 @@ export class SchedulePage {
     let defaultEndYear = endDateComponents[2];
 
     const options: CalendarModalOptions = {
-      pickMode: 'single',
+      pickMode: 'multi',
       from: new Date(),
       to: new Date(defaultEndYear, defaultEndMonth-1, defaultEndDate),
       cssClass: this.userRole
@@ -70,8 +70,8 @@ export class SchedulePage {
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if(date){
-        // this.navCtrl.push("TimeSelectorMultiPage", { selectedDates: date, params: this.params, loggedRole: this.userRole });
-         let popover = this.popoverCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years, params: this.params, loggedRole: this.userRole });
+        this.navCtrl.push("TimeSelectorMultiPage", { selectedDates: date, params: this.params, loggedRole: this.userRole });
+        /* let popover = this.popoverCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years, params: this.params, loggedRole: this.userRole });
         popover.present();
         popover.onDidDismiss( data => {
           console.log('dismiss');
@@ -84,7 +84,7 @@ export class SchedulePage {
             apptEndTime: data.apptEndTime,
             params: data.params
           });
-        })
+        }) */
       }
     })
   }

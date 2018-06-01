@@ -1,3 +1,67 @@
 page-time-selector-multi {
+    .toolbar-title {
+        font-size:16px;
+        overflow:visible;
+    }
+    .scroll-content {
+        margin-top:30px!important;
+    }
 
+    .button {
+        border-radius:5px;
+    }
+    .item-ios{
+        padding-left: 0!important;
+    }
+
+    .item-inner {
+        border-bottom:0!important;
+        padding-right: 0!important;
+    }
+    .label-ios, .label-md{
+        font-size:15px;
+        margin:5px 0;
+        padding-left: 0;
+    }
+    .datetime-ios{
+        padding: 5px 0;
+        font-size: 15px;
+    }
+    .left {
+        clear:both;
+        float:left;
+        font-size:15px;
+        padding-left: 0;
+    }
+
+    .right {
+        float:right;
+        padding-right: 0px;
+        .total {
+            color: #009345;
+            margin-top: 5px;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+    }
+
+    .date-title{
+        margin-top:15px;
+        display: inline-block;
+        width: 100%;
+        border-bottom: 1px solid #cfcfcf;        
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+
+        h2{
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        &:first-child{
+            margin-top: 30px;
+        }
+    }
 }

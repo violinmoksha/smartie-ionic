@@ -28,18 +28,20 @@ export class PaymentPage {
   private stripeCustomer: any;
   private body: any;
   private otherProfileId: any;
-  private apptDate: any;
-  private apptStartTime: any;
-  private apptEndTime: any;
+  private selectedDates: any;
+  // private apptDate: any;
+  // private apptStartTime: any;
+  // private apptEndTime: any;
   private loading: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
 
     this.totalHours = navParams.get('totalHours');
     this.totalAmount = navParams.get('totalAmount');
-    this.apptDate = navParams.get('apptDate');
-    this.apptStartTime = navParams.get('apptStartTime');
-    this.apptEndTime = navParams.get('apptEndTime');
+    this.selectedDates = navParams.get('selectedDates');
+    // this.apptDate = navParams.get('apptDate');
+    // this.apptStartTime = navParams.get('apptStartTime');
+    // this.apptEndTime = navParams.get('apptEndTime');
     this.params = navParams.get('params')
 
     console.log(this.params);
@@ -125,9 +127,10 @@ export class PaymentPage {
       fullName: this.params.fullName,
       otherProfileId: this.otherProfileId,
       jobRequestId: this.params.jobRequestId,
-      apptDate: this.apptDate,
-      startTime: this.apptStartTime,
-      endTime: this.apptEndTime
+      selectedDates: this.selectedDates,
+      // apptDate: this.apptDate,
+      // startTime: this.apptStartTime,
+      // endTime: this.apptEndTime
     };
     let API = this.smartieApi.getApi(
       'createTransaction',
