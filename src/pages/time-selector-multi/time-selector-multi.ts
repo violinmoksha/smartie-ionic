@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the TimeSelectorMultiPage page.
@@ -24,10 +25,18 @@ export class TimeSelectorMultiPage {
   grossAmount: number = 0;
   grossHours: number = 0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage) {
     this.selectedDates = this.navParams.get("selectedDates");
     this.params = this.navParams.get("params");
-    this.loggedRole = this.navParams.get("loggedRole");    
+    this.loggedRole = this.navParams.get("loggedRole"); 
+
+    this.storage.get("utcOffset").then(utcOffset => {
+      console.log(utcOffset);
+      let newDate = new Date();
+      let utc = newDate.getTime();
+      let zoneTime = new Date(utc + utcOffset);
+      console.log(zoneTime);
+    })
 
     for(let selectedDate of this.selectedDates){
       selectedDate.startTime = '10:00';
