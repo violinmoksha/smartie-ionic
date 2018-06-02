@@ -139,7 +139,7 @@ export class TimeSelectorMultiPage {
     console.log(this.params);
 
     this.navCtrl.push("PaymentPage", {
-      apptDateTime: this.selectedDates,
+      selectedDates: this.selectedDates,
       totalHours: this.parseHours(this.grossHours),
       totalAmount: this.smartieTotal(this.grossAmount),
       params: this.params

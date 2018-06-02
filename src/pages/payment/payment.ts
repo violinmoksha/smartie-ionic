@@ -45,6 +45,7 @@ export class PaymentPage {
     this.params = navParams.get('params')
 
     console.log(this.params);
+    console.log(this.selectedDates);
 
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;

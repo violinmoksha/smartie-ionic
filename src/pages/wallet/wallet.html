@@ -22,14 +22,14 @@
     <div class="user-name">
       Hi {{ profileData.fullname }}
     </div>
-    <div class="wallet-balance">
+    <!-- <div class="wallet-balance">
       Balance: <span>${{ availableBalance }}</span>
-    </div>
+    </div> -->
 
     <div class="wallet-balance">
-      Pending: <span>${{ pendingBalance }}</span>
+      Uncleared Amount: <span>${{ pendingBalance }}</span>
     </div>
-    <span class="disclaimer">*Pending funds are not yet available to pay out.</span>
+    <span class="disclaimer">*Uncleared amount are considered as Pending amount are not yet available to pay out.</span>
 
     <span class="info-message">If your funds are eligible for payouts, It will be auto payed to your account daily.</span>
     <!--<button (click)="initPayout()" class="button button-positive">
