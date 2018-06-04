@@ -15,7 +15,10 @@
 
     <div class="profile-column">
       <div class="pr-review-top">
-        <span class="reveiwer-image" *ngIf="profileData.profilePhoto"><img src="{{ profileData.profilePhoto.url }}"></span>
+        <span class="reveiwer-image">
+          <img *ngIf="profileData.profilePhoto !== undefined" src="{{ profileData.profilePhoto.url }}">
+          <img *ngIf="profileData.profilePhoto == undefined" src="{{ genericAvatar }}">
+        </span>
         <span class="reviewer-name">{{ profileData.fullname }}</span>
         <span class="reviewer-type">{{ profileData.role }}</span>
       </div>

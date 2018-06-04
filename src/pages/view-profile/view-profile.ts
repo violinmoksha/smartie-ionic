@@ -18,9 +18,21 @@ export class ViewProfilePage {
 
   role: any;
   params: any;
+  genericAvatar: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
-    this.params = navParams.data.params;
+    this.params = navParams.get("params");
+    console.log(this.params);
+
+    if (this.params.role == 'teacher') {
+      this.genericAvatar = '/assets/imgs/user-img-teacher.png';
+    } else if (this.params.role == 'student') {
+      this.genericAvatar = '/assets/imgs/user-img-student.png';
+    } else if (this.params.role == 'parent') {
+      this.genericAvatar = '/assets/imgs/user-img-parent.png';
+    } else if (this.params.role == 'school') {
+      this.genericAvatar = '/assets/imgs/user-img-school.png';
+    }
 
     this.storage.get("UserProfile").then(profile => {
       this.role = profile.profileData.role;

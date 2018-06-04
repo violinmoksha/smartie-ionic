@@ -5,7 +5,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Pro } from '@ionic/pro';
-import { URLSearchParams } from '@angular/http';
+// import { URLSearchParams } from '@angular/http';
 
 /**
  * Generated class for the LoginPage page.

@@ -15,7 +15,7 @@ export class TabsPage {
   tab2Root: any = 'EditProfilePage';
   tab3Root: any = 'NotificationFeedPage';
 
-  private tabs: any = [{ "tabRoot": '', "rootParams": '', "tabTitle": '', "tabIcon": ''}];
+  // private tabs: any = [{ "tabRoot": '', "rootParams": '', "tabTitle": '', "tabIcon": ''}];
   private role: string;
 
   myIndex: number;

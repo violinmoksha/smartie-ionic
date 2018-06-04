@@ -22,7 +22,8 @@
           <img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}"/>
         </div>
         <div class="u-detail">
-          <div class="name">{{ params.fullname }}</div>
+          <div *ngIf="params.role !== 'school'" class="name">{{ params.fullname }}</div>
+          <div *ngIf="params.role == 'school'" class="name">{{ params.schoolName }}</div>
           <div class="profile-type">{{ params.role }}</div>
         </div>
       </div>
@@ -46,36 +47,43 @@
       <h3>Preferred Location</h3>
       <p>{{ params.prefLocation }}</p>
       <div class="clear"></div>
-      </div>
-      <div *ngIf="params.defaultStartTime" class="job-availablity-details">
-        <h3>Available Timings</h3>
-        <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
-      </div>
-      <div class="jobprofile-buttons">
-        <span *ngIf="!params.hasUpcomings">
-          <button style="width:100%" class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
-        </span>
-        <span *ngIf="params.hasUpcomings">
-          <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
-        </span>
-        <!-- TODO: this button should "send a mail" from within the app -->
-        <span *ngIf="params.hasUpcomings">
-          <button class="button button-positive" [disabled]="!params.hasUpcomings" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
-        </span>
-      </div>
     </div>
-    <div class="alert-button-group" *ngIf="!congrats && params.fromWhere != 'acceptedJobs'">
-      <button ion-button="alert-button" class="alert-button alert-button-md alert-button-default alert-button-default-md" (click)="dismiss()"><span class="button-inner">Close</span><div class="button-effect"></div></button>
-      <button ion-button="alert-button" [disabled]="requestSent || submitInProgress" (click)="sendRequest()" class="alert-button alert-button-md alert-button-default alert-button-default-md">
-        <span class="button-inner" *ngIf="!requestSent">Send Request</span>
-        <span class="button-inner" *ngIf="requestSent">Invite Sent</span>
-      <div class="button-effect"></div></button>
+
+    <div *ngIf="params.role == 'school'" class="jobprofile-details">
+      <h3>Contact Person</h3>
+      <p>{{ params.contactName }}</p>
+      <div class="clear"></div>
     </div>
+
+    <div *ngIf="params.defaultStartTime" class="job-availablity-details">
+      <h3>Available Timings</h3>
+      <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
+    </div>
+    <div class="jobprofile-buttons">
+      <span *ngIf="!params.hasUpcomings">
+        <button style="width:100%" class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
+      </span>
+      <span *ngIf="params.hasUpcomings">
+        <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
+      </span>
+      <!-- TODO: this button should "send a mail" from within the app -->
+      <span *ngIf="params.hasUpcomings">
+        <button class="button button-positive" [disabled]="!params.hasUpcomings" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
+      </span>
+    </div>
+  </div>
+  <div class="alert-button-group" *ngIf="!congrats && params.fromWhere != 'acceptedJobs'">
+    <button ion-button="alert-button" class="alert-button alert-button-md alert-button-default alert-button-default-md" (click)="dismiss()"><span class="button-inner">Close</span><div class="button-effect"></div></button>
+    <button ion-button="alert-button" [disabled]="requestSent || submitInProgress" (click)="sendRequest()" class="alert-button alert-button-md alert-button-default alert-button-default-md">
+      <span class="button-inner" *ngIf="!requestSent">Send Request</span>
+      <span class="button-inner" *ngIf="requestSent">Invite Sent</span>
+    <div class="button-effect"></div></button>
+  </div>
     <!--<div class="alert-button-group" *ngIf="userRole != 'teacher' && params.fromWhere == 'acceptedJobs'">
       <button ion-button full (click)="scheduleJob()"><span class="button-inner">Schedule Job</span></button>
     </div>-->
-    <div *ngIf="congrats">
-      <button [disabled]="acceptState" ion-button full (click)="accept()"><span class="button-inner" *ngIf="acceptState">Accepted</span><span class="button-inner" *ngIf="!acceptState">Accept</span></button>
-      <button [disabled]="acceptState" ion-button full (click)="reject()" style="background-color:red"><span class="button-inner">Reject</span></button>
-    </div>
+  <div *ngIf="congrats">
+    <button [disabled]="acceptState" ion-button full (click)="accept()"><span class="button-inner" *ngIf="acceptState">Accepted</span><span class="button-inner" *ngIf="!acceptState">Accept</span></button>
+    <button [disabled]="acceptState" ion-button full (click)="reject()" style="background-color:red"><span class="button-inner">Reject</span></button>
+  </div>
 </ion-content>

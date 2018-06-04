@@ -15,7 +15,10 @@
   <div class="notification-wrapper totles-pop-search" id="profile-info">
     <div class="notification">
       <div class="left">
-        <div class="avatar"><img src="{{ params.profilePhoto.url }}"></div>
+        <div class="avatar">
+          <img *ngIf="params.profilePhoto !== undefined" src="{{ params.profilePhoto.url }}">
+          <img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}"/>
+        </div>
         <div class="u-detail">
           <div class="name">{{ params.fullname }}</div>
           <div class="profile-type">{{ params.role }}</div>

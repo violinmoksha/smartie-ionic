@@ -3,9 +3,9 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
+// import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
-import { Response } from '@angular/http';
+// import { Response } from '@angular/http';
 
 /**
  * Generated class for the AddPaymentPage page.
@@ -28,14 +28,11 @@ export class AddPaymentPage {
   private PaymentForm: FormGroup;
   private body: any;
   private profileId: any;
-  // private stripeAccountId: any;
   private userIP: string;
   private fromWhere: any;
-  private smartieEndPoint: any;
-  private targetNavpage: any;
   private authenticationCode: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private iab: InAppBrowser, private themeableBrowser: ThemeableBrowser) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser) {
 
     this.fromWhere = navParams.data.fromWhere;
     this.PaymentForm = new FormGroup({

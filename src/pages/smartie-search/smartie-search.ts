@@ -4,7 +4,7 @@ import { NavController, NavParams, AlertController, ModalController } from 'ioni
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { ParseProvider } from '../../providers/parse';
+// import { ParseProvider } from '../../providers/parse';
 // import { Parse } from 'parse';
 const Parse = require('parse');
 // import * as Parse from 'parse';
@@ -546,7 +546,9 @@ export class SmartieSearch {
           phone: locationData.otherProfile.phone,
           otherProfileId: locationData.otherProfile.objectId,
           loggedRole: this.role,
-          hasUpcomings: this.hasUpcomings
+          hasUpcomings: this.hasUpcomings,
+          schoolName: locationData.otherProfile.schoolName,
+          contactName: locationData.otherProfile.contactName
         }
       }
       let popover = this.popoverCtrl.create("JobRequestPage", { params: params });

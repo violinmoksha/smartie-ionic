@@ -24,10 +24,21 @@ export class SetReviewPage {
   review: any = '';
   private reviewedProfileId: any;
   private reviewingProfileId: any;
+  genericAvatar: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
-    this.profileData = navParams.data.profileData;
+    this.profileData = navParams.get("profileData");    
     this.reviewedProfileId = this.profileData.objectId;
+
+    if (this.profileData.role == 'teacher') {
+      this.genericAvatar = '/assets/imgs/user-img-teacher.png';
+    } else if (this.profileData.role == 'student') {
+      this.genericAvatar = '/assets/imgs/user-img-student.png';
+    } else if (this.profileData.role == 'parent') {
+      this.genericAvatar = '/assets/imgs/user-img-parent.png';
+    } else if (this.profileData.role == 'school') {
+      this.genericAvatar = '/assets/imgs/user-img-school.png';
+    }
 
     this.storage.get("UserProfile").then(profile => {
       this.role = profile.profileData.role;
