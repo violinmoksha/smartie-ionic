@@ -34,6 +34,7 @@ export class RegisterStep3Page {
   private startDate: any;
   private endDate: any;
   private role: any;
+  private today: any;
 
   public event = {
     timeStarts: '10:00',
@@ -95,10 +96,16 @@ export class RegisterStep3Page {
     this.form2Values = navParams.data.form2Values;
     this.role = navParams.data.role;
 
-    var today = new Date();
-    this.startDate = today.getMonth()+1 +'-'+today.getDate()+'-'+today.getFullYear();
-    var defEndDate = new Date(today.setDate(today.getDate() + 365));
+    this.today = new Date();
+    this.startDate = this.today.getMonth()+1 +'-'+this.today.getDate()+'-'+this.today.getFullYear();
+    var defEndDate = new Date(this.today.setDate(this.today.getDate() + 365));
     this.endDate = defEndDate.getMonth()+1 +'-'+defEndDate.getDate()+'-'+defEndDate.getFullYear();
+
+    let timeZoneStartTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), 10);
+    this.event.timeStarts = timeZoneStartTime.toLocaleTimeString();
+
+    let timeZoneEndTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), 23);
+    this.event.timeEnds = timeZoneEndTime.toLocaleTimeString();
 
     //profilePhoto
     this.storage.get('profilePhotoDataUrl').then(profilePhoto => {
@@ -270,6 +277,14 @@ export class RegisterStep3Page {
       form3Values.yrseExperience = this.yearExperience;
       form3Values.defaultStartDate = this.startDate;
       form3Values.defaultEndDate = this.endDate;
+      
+      let UTCstartTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), parseInt(form3Values.startTime.split(':')[0]), parseInt(form3Values.startTime.split(':')[1]));
+
+      form3Values.defaultUTCStartTime = UTCstartTime.getUTCHours()+':'+UTCstartTime.getUTCMinutes();
+
+      let UTCendTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), parseInt(form3Values.endTime.split(':')[0]), parseInt(form3Values.endTime.split(':')[1]));
+
+      form3Values.defaultUTCEndTime = UTCendTime.getUTCHours()+':'+UTCendTime.getUTCMinutes();
     }
 
     let API = this.smartieApi.getApi(

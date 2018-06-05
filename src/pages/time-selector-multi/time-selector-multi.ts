@@ -31,16 +31,19 @@ export class TimeSelectorMultiPage {
     this.loggedRole = this.navParams.get("loggedRole"); 
 
     this.storage.get("utcOffset").then(utcOffset => {
-      console.log(utcOffset);
+      // console.log(utcOffset);
       let newDate = new Date();
       let utc = newDate.getTime();
       let zoneTime = new Date(utc + utcOffset);
-      console.log(zoneTime);
+      // console.log(zoneTime);
     })
 
+
     for(let selectedDate of this.selectedDates){
-      selectedDate.startTime = '10:00';
-      selectedDate.endTime = '11:00';
+      let timeZoneStartTime = new Date(selectedDate.years, selectedDate.months, selectedDate.date, 10);
+      let timeZoneEndTime = new Date(selectedDate.years, selectedDate.months, selectedDate.date, 23);
+      selectedDate.startTime = timeZoneStartTime.toLocaleTimeString();
+      selectedDate.endTime = timeZoneEndTime.toLocaleTimeString();
     }
   }
 
@@ -61,7 +64,15 @@ export class TimeSelectorMultiPage {
     }else{
       let timeStarts_ms = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.startTime.split(':')[0]), parseInt(date.startTime.split(':')[1])).getTime();
 
+      let UTCstartTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.startTime.split(':')[0]), parseInt(date.startTime.split(':')[1]));
+
+      date.UTCstartTime = UTCstartTime.getUTCHours()+':'+UTCstartTime.getUTCMinutes();
+
       let timeEnds_ms = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1])).getTime();
+
+      let UTCendTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1]));
+
+      date.UTCendTime = UTCendTime.getUTCHours()+':'+UTCendTime.getUTCMinutes();
 
       date.diffMs = timeEnds_ms - timeStarts_ms;
       date.diffHrs = Math.floor((date.diffMs % 86400000) / 3600000) * 60;
@@ -105,13 +116,13 @@ export class TimeSelectorMultiPage {
   }
 
   calGrossAmount(){
-    console.log(this.selectedDates);
+    // console.log(this.selectedDates);
     this.grossAmount = 0;
     for(let selectedDate of this.selectedDates){
       if(selectedDate.totalAmount)
         this.grossAmount += selectedDate.totalAmount;
     }
-    console.log(this.grossAmount)
+    // console.log(this.grossAmount)
   }
 
   calGrossHours(){
@@ -120,7 +131,7 @@ export class TimeSelectorMultiPage {
       if(selectedDate.totalHours)
         this.grossHours += selectedDate.totalHours;
     }
-    console.log(this.grossHours)
+    // console.log(this.grossHours)
   }
 
   parseMoney(val) {
