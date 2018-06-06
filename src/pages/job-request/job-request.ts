@@ -31,6 +31,13 @@ export class JobRequestPage {
     this.params = navParams.get('params');
     console.log(this.params);
 
+    let UTCStartTime = new Date(Date.UTC(this.params.defaultStartDate.split('-')[2], this.params.defaultStartDate.split('-')[0], this.params.defaultStartDate.split('-')[1], this.params.defaultStartTime.split(':')[0], this.params.defaultStartTime.split(':')[1]));
+
+    let UTCEndTime = new Date(Date.UTC(this.params.defaultEndDate.split('-')[2], this.params.defaultEndDate.split('-')[0], this.params.defaultEndDate.split('-')[1], this.params.defaultEndTime.split(':')[0], this.params.defaultEndTime.split(':')[1]));
+
+    this.params.UTCStartTime = UTCStartTime.getHours() + ':' + UTCStartTime.getMinutes();
+    this.params.UTCEndTime = UTCEndTime.getHours() + ':' + UTCEndTime.getMinutes();
+
     if (this.params.fromWhere && this.params.fromWhere == 'requestSentJobs') {
       this.congrats = true;
     } else {

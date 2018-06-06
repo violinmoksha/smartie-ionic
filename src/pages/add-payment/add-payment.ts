@@ -51,7 +51,12 @@ export class AddPaymentPage {
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
       this.email = UserProfile.userData.email;
-      this.profilePhoto = UserProfile.profileData.profilePhoto.url;
+      if(UserProfile.profileData.profilePhoto){
+        this.profilePhoto = UserProfile.profileData.profilePhoto.url;
+      }else{
+        this.profilePhoto = './assets/imgs/user-img-teacher.png';
+      }
+      
       // this.stripeAccountId = UserProfile.profileData.stripeCustomer.id;
     })
   }

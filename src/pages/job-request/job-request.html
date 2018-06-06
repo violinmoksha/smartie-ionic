@@ -57,7 +57,7 @@
 
     <div *ngIf="params.defaultStartTime" class="job-availablity-details">
       <h3>Available Timings</h3>
-      <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
+      <p>{{ params.UTCStartTime }} to {{ params.UTCEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
     </div>
     <div class="jobprofile-buttons">
       <span *ngIf="!params.hasUpcomings">
