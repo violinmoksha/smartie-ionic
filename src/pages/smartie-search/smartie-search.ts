@@ -41,6 +41,9 @@ export class SmartieSearch {
   private profilePhotoData: any;
   private schoolPhotoDataUrl: any;
   private teacherCv: any;
+  private markerCount: Array<number> = []
+  private radiusInKm: number = 50;
+  private extendBound: boolean = false;
   //private searchData: any;
   //private alertOpts: any;
   // private infoWindow: any;
@@ -194,10 +197,10 @@ export class SmartieSearch {
                   this.storage.get('phoneLatLng').then(phoneLatLng => {
                     //console.log(phoneLatLng);
                     if (phoneLatLng !== undefined && phoneLatLng !== null) {
-                      this.smartieSearchResult(phoneLatLng, profile.profileData.role, null);
+                      this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
                     } else {
                       this.latLngUser = profile.profileData.latlng;
-                      this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
+                      this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, this.extendBound);
                     }
 
                     //get all requested's
@@ -458,7 +461,8 @@ export class SmartieSearch {
 
   findJobsSearch(searchLoc){
     this.getGeoPoint(searchLoc).then(response => {
-      this.smartieSearchResult(null, this.navParams.data.role, response);
+      console.log(this.extendBound);
+      this.smartieSearchResult(null, this.navParams.get("role"), response, this.extendBound);
     });
   }
 
@@ -494,7 +498,19 @@ export class SmartieSearch {
       position: latLng,
       icon: this.userIcon
     });
-    //this.bounds.extend(latLng);
+    console.log(this.extendBound);
+    if(this.extendBound){
+      this.bounds.extend(latLng);
+    }
+    // this.bounds.extend(latLng);
+
+    // console.log(this.bounds);
+    if(this.bounds.contains(new google.maps.LatLng(this.marker.position.lat(), this.marker.position.lng()))){
+      // console.log("Yes within bounds");
+      this.markerCount.push(this.marker);
+    }else{
+      // console.log("Yes without bounds");
+    }
 
     if(locationData.profilePhoto){
       this.profilePhoto = locationData.profilePhoto.url;
@@ -590,7 +606,7 @@ export class SmartieSearch {
     return new google.maps.LatLng(this.toDeg(lat2), this.toDeg(lon2));
   }
 
-  smartieSearchResult(latLng, searchRole, searchLoc){
+  smartieSearchResult(latLng, searchRole, searchLoc, extendBound){
     let mapCenter;
     if(latLng !== null){
       mapCenter = latLng;
@@ -606,13 +622,28 @@ export class SmartieSearch {
 
     // map always should cover 200km radius from Profile user
     // thus the actual applied trigonometry yaaaaaaay!!!!^$%^
-    let radiusInKm = 50;
-    let pointSouthwest = this.destinationPoint(220, radiusInKm / 2, mapCenter);
-    let pointNortheast = this.destinationPoint(45, radiusInKm / 2, mapCenter);
-    this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
+    // let radiusInKm = 50;
+    console.log(this.radiusInKm);
+    if(extendBound){
+      this.bounds = new google.maps.LatLngBounds();  
+    }else{
+      this.markerCount = [];
+      let pointSouthwest = this.destinationPoint(220, this.radiusInKm / 2, mapCenter);
+      let pointNortheast = this.destinationPoint(45, this.radiusInKm / 2, mapCenter);
+      this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
+    }
+    
 
     for(let searchResult of this.notifications){
       this.createMarkerLocation(searchResult);
+    }
+
+    console.log(this.markerCount.length);
+    if(this.markerCount.length < 5){
+      this.extendBound = true;
+      this.smartieSearchResult(latLng, searchRole, searchLoc, this.extendBound);
+    }else{
+      console.log("test");
     }
 
     //let myPlace = new google.maps.LatLng(34.0522, -118.2437);
