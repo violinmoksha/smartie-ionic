@@ -26,17 +26,22 @@ export class JobRequestPage {
   private congrats: boolean;
   private genericAvatar: string;
   private loaded: any = false;
+  timeZone: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.params = navParams.get('params');
-    console.log(this.params);
 
-    let UTCStartTime = new Date(Date.UTC(this.params.defaultStartDate.split('-')[2], this.params.defaultStartDate.split('-')[0], this.params.defaultStartDate.split('-')[1], this.params.defaultStartTime.split(':')[0], this.params.defaultStartTime.split(':')[1]));
+    // Converting defaultStartDateTime and defaultEndDateTime to current device TimeZone
+    var availStartDateTime = new Date(this.params.defaultStartDateTime.iso);
+    var availEndDateTime = new Date(this.params.defaultEndDateTime.iso);
 
-    let UTCEndTime = new Date(Date.UTC(this.params.defaultEndDate.split('-')[2], this.params.defaultEndDate.split('-')[0], this.params.defaultEndDate.split('-')[1], this.params.defaultEndTime.split(':')[0], this.params.defaultEndTime.split(':')[1]));
+    this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
-    this.params.UTCStartTime = UTCStartTime.getHours() + ':' + UTCStartTime.getMinutes();
-    this.params.UTCEndTime = UTCEndTime.getHours() + ':' + UTCEndTime.getMinutes();
+    this.params.UTCStartTime = this.formatTime(availStartDateTime);
+    this.params.UTCEndTime = this.formatTime(availEndDateTime);
+
+    this.params.UTCstartDate = (availStartDateTime.getMonth()+1) + '-' + availStartDateTime.getDate() + '-' + availStartDateTime.getFullYear();
+    this.params.UTCendDate = (availEndDateTime.getMonth()+1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
 
     if (this.params.fromWhere && this.params.fromWhere == 'requestSentJobs') {
       this.congrats = true;
@@ -44,6 +49,11 @@ export class JobRequestPage {
       this.congrats = false;
     }
     this.submitInProgress = false;
+  }
+
+  // This function used to convert Time into US format with AM/PM
+  formatTime(dateTime){
+    return dateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
   }
 
   loadImage(){

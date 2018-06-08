@@ -274,17 +274,21 @@ export class RegisterStep3Page {
 
     form3Values.prefPayRate = this.hourlyRate;
     if(this.role == 'teacher'){
-      form3Values.yrseExperience = this.yearExperience;
-      form3Values.defaultStartDate = this.startDate;
-      form3Values.defaultEndDate = this.endDate;
+      form3Values.yrseExperience = this.yearExperience; 
       
-      let UTCstartTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), parseInt(form3Values.startTime.split(':')[0]), parseInt(form3Values.startTime.split(':')[1]));
+      let UTCstartTime = new Date(this.startDate.split('-')[2], (this.startDate.split('-')[0] - 1), this.startDate.split('-')[1], parseInt(form3Values.startTime.split(':')[0]), parseInt(form3Values.startTime.split(':')[1]));
 
-      form3Values.defaultUTCStartTime = UTCstartTime.getUTCHours()+':'+UTCstartTime.getUTCMinutes();
+      form3Values.defaultStartDateTime = UTCstartTime;
 
-      let UTCendTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), parseInt(form3Values.endTime.split(':')[0]), parseInt(form3Values.endTime.split(':')[1]));
+      // form3Values.defaultUTCStartTime = UTCstartTime.getUTCHours()+':'+UTCstartTime.getUTCMinutes();
 
-      form3Values.defaultUTCEndTime = UTCendTime.getUTCHours()+':'+UTCendTime.getUTCMinutes();
+      let UTCendTime = new Date(this.endDate.split('-')[2], (this.endDate.split('-')[0] - 1), this.endDate.split('-')[1], parseInt(form3Values.endTime.split(':')[0]), parseInt(form3Values.endTime.split(':')[1]));
+
+      form3Values.defaultEndDateTime = UTCendTime;
+
+      console.log(form3Values);
+
+      // form3Values.defaultUTCEndTime = UTCendTime.getUTCHours()+':'+UTCendTime.getUTCMinutes();
     }
 
     let API = this.smartieApi.getApi(

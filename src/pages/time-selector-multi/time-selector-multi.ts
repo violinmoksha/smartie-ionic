@@ -30,6 +30,8 @@ export class TimeSelectorMultiPage {
     this.params = this.navParams.get("params");
     this.loggedRole = this.navParams.get("loggedRole"); 
 
+    console.log(this.selectedDates);
+
     this.storage.get("utcOffset").then(utcOffset => {
       // console.log(utcOffset);
       let newDate = new Date();
@@ -66,13 +68,13 @@ export class TimeSelectorMultiPage {
 
       let UTCstartTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.startTime.split(':')[0]), parseInt(date.startTime.split(':')[1]));
 
-      date.UTCstartTime = UTCstartTime.getUTCHours()+':'+UTCstartTime.getUTCMinutes();
+      date.UTCstartTime = UTCstartTime;
 
       let timeEnds_ms = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1])).getTime();
 
       let UTCendTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1]));
 
-      date.UTCendTime = UTCendTime.getUTCHours()+':'+UTCendTime.getUTCMinutes();
+      date.UTCendTime = UTCendTime;
 
       date.diffMs = timeEnds_ms - timeStarts_ms;
       date.diffHrs = Math.floor((date.diffMs % 86400000) / 3600000) * 60;

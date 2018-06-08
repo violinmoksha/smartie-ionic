@@ -45,7 +45,9 @@ export class PaymentPage {
     this.params = navParams.get('params')
 
     console.log(this.params);
-    console.log(this.selectedDates);
+    // console.log(this.selectedDates);
+    console.log(this.selectedDates[0].UTCstartTime);
+    console.log(typeof this.selectedDates[0].UTCstartTime);
 
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
