@@ -45,6 +45,18 @@
       <!-- Name for non-School users -->
       <div *ngIf="userRole !== 'school'">
         <ion-item>
+          <ion-label fixed>User Name</ion-label>
+          <ion-input [value]="userName" type="text" formControlName="username"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed>Password</ion-label>
+          <ion-input type="password" formControlName="password"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed>Email</ion-label>
+          <ion-input [value]="email" type="text" formControlName="email"></ion-input>
+        </ion-item>
+        <ion-item>
           <ion-label fixed>Name</ion-label>
           <ion-input [value]="fullName" type="text" formControlName="name"></ion-input>
         </ion-item>

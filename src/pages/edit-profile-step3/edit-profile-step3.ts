@@ -42,6 +42,7 @@ export class EditProfileStep3Page {
   // private teacherLevel: any;
   private startTime: any;
   private endTime: any;
+  private userData: any;
 
   public partOfSchool: boolean;
   public prefLocation: string;
@@ -100,11 +101,13 @@ export class EditProfileStep3Page {
       content: 'Editing Account...'
     });
 
-    this.form1Values = navParams.data.form1Value;
-    this.form2Values = navParams.data.form2Value;
-    this.partOfSchool = navParams.data.partOfSchool;
+    this.form1Values = navParams.get("form1Value");
+    this.form2Values = navParams.get("form2Value");
+    this.partOfSchool = navParams.get("partOfSchool");
+    this.userRole = navParams.get("userRole");
 
-    this.userRole = navParams.data.userRole;
+    console.log(this.form1Values);
+    console.log(this.form2Values);
 
     if (this.userRole == 'teacher') {
       this.EditProfilestep3Form = new FormGroup({
@@ -120,6 +123,8 @@ export class EditProfileStep3Page {
     }
 
     this.storage.get("UserProfile").then(roleProfile => {
+      console.log(roleProfile);
+      this.userData = roleProfile.userData;
       this.startDate = roleProfile.specificUser.defaultStartDate;
       this.endDate = roleProfile.specificUser.defaultEndDate;
       this.startTime = roleProfile.specificUser.defaultStartTime;
@@ -244,21 +249,19 @@ export class EditProfileStep3Page {
     this.submitInProgress = true;
     this.loading.present();
 
-    let userData = JSON.parse(localStorage.getItem(`${this.userRole}UserProfile`)).userData;
-
     let API;
     if (this.userRole == 'teacher') {
       API = this.smartieApi.getApi(
         'editUser',
         {
           role: this.userRole,
-          userData: userData,
+          userData: this.userData,
           password: this.form1Values.password,
           editables: {
-            username: this.form1Values.username.toLowerCase(),
-            email: this.form1Values.email.toLowerCase(),
+            username: this.form2Values.username.toLowerCase(),
+            email: this.form2Values.email.toLowerCase(),
             profile: {
-              profileabout: this.form2Values.profileMessage,
+              profileabout: this.form2Values.profileAbout,
               prefpayrate: this.hourlyRate,
               phone: this.form2Values.phone,
               fullname: this.form2Values.name,
@@ -280,11 +283,11 @@ export class EditProfileStep3Page {
         'editUser',
         {
           role: this.userRole,
-          userData: userData,
+          userData: this.userData,
           password: this.form1Values.password,
           editables: {
-            username: this.form1Values.username.toLowerCase(),
-            email: this.form1Values.email.toLowerCase(),
+            username: this.form2Values.username.toLowerCase(),
+            email: this.form2Values.email.toLowerCase(),
             profile: {
               profileabout: this.form2Values.profileMessage,
               prefpayrate: this.hourlyRate,
@@ -305,11 +308,11 @@ export class EditProfileStep3Page {
         'editUser',
         {
           role: this.userRole,
-          userData: userData,
+          userData: this.userData,
           password: this.form1Values.password,
           editables: {
-            username: this.form1Values.username.toLowerCase(),
-            email: this.form1Values.email.toLowerCase(),
+            username: this.form2Values.username.toLowerCase(),
+            email: this.form2Values.email.toLowerCase(),
             profile: {
               profileabout: this.form2Values.profileMessage,
               prefpayrate: this.hourlyRate,

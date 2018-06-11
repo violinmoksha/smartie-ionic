@@ -30,6 +30,8 @@ export class EditProfileStep2Page {
   partOfSchool: string;
   @ViewChild(Slides) roleSchool: Slides;
 
+  userName: string;
+  email: string;
   fullName: string;
   schoolName: string;
   contactName: string;
@@ -40,10 +42,13 @@ export class EditProfileStep2Page {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage) {
 
-    this.userRole = navParams.data.userRole;
+    this.userRole = navParams.get("userRole");
 
     if(this.userRole == 'school'){
       this.EditProfilestep2Form = new FormGroup({
+        username: new FormControl('', Validators.required),
+        password: new FormControl(''),
+        email: new FormControl('', Validators.required),
         schoolName: new FormControl('', Validators.required),
         contactName: new FormControl('', Validators.required),
         contactPosition: new FormControl('', Validators.required),
@@ -53,6 +58,9 @@ export class EditProfileStep2Page {
       });
     } else if (this.userRole == 'teacher'){
       this.EditProfilestep2Form = new FormGroup({
+        username: new FormControl('', Validators.required),
+        password: new FormControl(''),
+        email: new FormControl('', Validators.required),
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
@@ -61,6 +69,9 @@ export class EditProfileStep2Page {
       });
     } else{
       this.EditProfilestep2Form = new FormGroup({
+        username: new FormControl('', Validators.required),
+        password: new FormControl(''),
+        email: new FormControl('', Validators.required),
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
@@ -88,6 +99,8 @@ export class EditProfileStep2Page {
         }
       }
 
+      this.userName = roleProfile.userData.username;
+      this.email = roleProfile.userData.email;
       this.fullName = roleProfile.profileData.fullname;
       this.phone = roleProfile.profileData.phone;
       this.profileTitle = roleProfile.profileData.profileTitle;
