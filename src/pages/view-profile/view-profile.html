@@ -49,7 +49,7 @@
     </div>
     <div class="job-availablity-details" *ngIf="params.role == 'teacher'">
       <h3>Available Timings</h3>
-      <p>{{ params.defaultStartTime }} to {{ params.defaultEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
+      <p>{{ params.UTCStartTime }} to {{ params.UTCEndTime}} ({{ timeZone }}) on {{ params.UTCstartDate}} to {{ params.UTCendDate}}</p>
     </div>
     <div class="jobprofile-buttons">
       <!-- <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/img/job-profile-icon.png" /> View Job Proife</button> 

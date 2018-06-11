@@ -73,11 +73,13 @@ export class NotificationFeedPage {
           teacherProfileId: notification.teacherProfile.objectId,
           otherProfileId: notification.otherProfile.objectId,
           prefPayRate: notification.teacherProfile.prefPayRate,
-          defaultStartDate: notification.teacher.defaultStartDate,
-          defaultEndDate: notification.teacher.defaultEndDate,
-          defaultStartTime: notification.teacher.defaultStartTime,
-          defaultEndTime: notification.teacher.defaultEndTime,
-          fromWhere: requestState
+          // defaultStartDate: notification.teacher.defaultStartDate,
+          // defaultEndDate: notification.teacher.defaultEndDate,
+          // defaultStartTime: notification.teacher.defaultStartTime,
+          // defaultEndTime: notification.teacher.defaultEndTime,
+          fromWhere: requestState,
+          defaultStartDateTime: notification.teacher.defaultStartDateTime,
+          defaultEndDateTime: notification.teacher.defaultEndDateTime,
         }
       })
     }else{
@@ -93,11 +95,13 @@ export class NotificationFeedPage {
           teacherProfileId: notification.teacherProfile.objectId,
           otherProfileId: notification.otherProfile.objectId,
           prefPayRate: notification.teacherProfile.prefPayRate,
-          defaultStartDate: notification.teacher.defaultStartDate,
-          defaultEndDate: notification.teacher.defaultEndDate,
-          defaultStartTime: notification.teacher.defaultStartTime,
-          defaultEndTime: notification.teacher.defaultEndTime,
-          fromWhere: requestState
+          // defaultStartDate: notification.teacher.defaultStartDate,
+          // defaultEndDate: notification.teacher.defaultEndDate,
+          // defaultStartTime: notification.teacher.defaultStartTime,
+          // defaultEndTime: notification.teacher.defaultEndTime,
+          fromWhere: requestState,
+          defaultStartDateTime: notification.teacher.defaultStartDateTime,
+          defaultEndDateTime: notification.teacher.defaultEndDateTime,
         }
       })
     }

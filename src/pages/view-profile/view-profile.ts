@@ -19,10 +19,13 @@ export class ViewProfilePage {
   role: any;
   params: any;
   genericAvatar: any;
+  timeZone: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
     this.params = navParams.get("params");
     console.log(this.params);
+
+    this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
     if (this.params.role == 'teacher') {
       this.genericAvatar = '/assets/imgs/user-img-teacher.png';

@@ -31,9 +31,9 @@
       <h3>Preferred Location</h3>
       <p>{{ params.prefLocation }}</p>
     </div>
-    <div *ngIf="params.defaultStartTime" class="job-availablity-details">
+    <div *ngIf="params.UTCStartTime" class="job-availablity-details">
       <h3>Available Timings</h3>
-      <p style="margin-bottom:0">{{ params.UTCStartTime }} to {{ params.UTCEndTime}} on {{ params.defaultStartDate}} to {{ params.defaultEndDate}}</p>
+      <p style="margin-bottom:0">{{ params.UTCStartTime }} to {{ params.UTCEndTime}} ({{ timeZone }}) on {{ params.UTCstartDate}} to {{ params.UTCendDate}}</p>
     </div>
     <p style="margin-top:50px;margin-bottom:5px;">Select your schedule based on availability</p>
     <button class="button button-positive" ion-button full (click)="pickDateCalendar()">Select Schedule</button>

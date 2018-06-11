@@ -30,18 +30,21 @@ export class JobRequestPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.params = navParams.get('params');
+    console.log(this.params);
 
-    // Converting defaultStartDateTime and defaultEndDateTime to current device TimeZone
-    var availStartDateTime = new Date(this.params.defaultStartDateTime.iso);
-    var availEndDateTime = new Date(this.params.defaultEndDateTime.iso);
+    if(this.params.role == 'teacher'){
+      // Converting defaultStartDateTime and defaultEndDateTime to current device TimeZone
+      var availStartDateTime = new Date(this.params.defaultStartDateTime.iso);
+      var availEndDateTime = new Date(this.params.defaultEndDateTime.iso);
 
-    this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
+      this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
-    this.params.UTCStartTime = this.formatTime(availStartDateTime);
-    this.params.UTCEndTime = this.formatTime(availEndDateTime);
+      this.params.UTCStartTime = this.formatTime(availStartDateTime);
+      this.params.UTCEndTime = this.formatTime(availEndDateTime);
 
-    this.params.UTCstartDate = (availStartDateTime.getMonth()+1) + '-' + availStartDateTime.getDate() + '-' + availStartDateTime.getFullYear();
-    this.params.UTCendDate = (availEndDateTime.getMonth()+1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
+      this.params.UTCstartDate = (availStartDateTime.getMonth()+1) + '-' + availStartDateTime.getDate() + '-' + availStartDateTime.getFullYear();
+      this.params.UTCendDate = (availEndDateTime.getMonth()+1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
+    }
 
     if (this.params.fromWhere && this.params.fromWhere == 'requestSentJobs') {
       this.congrats = true;
@@ -66,6 +69,7 @@ export class JobRequestPage {
 
       if(this.userRole !== 'teacher' && this.params.fromWhere == 'acceptedJobs'){
         // this.scheduleJob();
+        console.log(this.params);
         let alert = this.alertCtrl.create({
           title: 'Time to schedule!',
           subTitle: `You must now schedule your session! Tap OK to visit your Schedule page!`,
@@ -82,10 +86,10 @@ export class JobRequestPage {
                 role: this.params.role,
                 prefPayRate: this.params.prefPayRate,
                 prefLocation: this.params.prefLocation,
-                defaultStartDate: this.params.defaultStartDate,
-                defaultEndDate: this.params.defaultEndDate,
-                defaultStartTime: this.params.defaultStartTime,
-                defaultEndTime: this.params.defaultEndTime
+                UTCstartDate: this.params.UTCstartDate,
+                UTCendDate: this.params.UTCendDate,
+                UTCStartTime: this.params.UTCStartTime,
+                UTCEndTime: this.params.UTCEndTime
               }})
             }
           }]
@@ -185,6 +189,7 @@ export class JobRequestPage {
   }
 
   viewProfile(){
+    console.log(this.params);
     this.navCtrl.push("ViewProfilePage", { params: this.params });
   }
 

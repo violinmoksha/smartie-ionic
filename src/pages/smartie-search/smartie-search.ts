@@ -528,7 +528,6 @@ export class SmartieSearch {
   }
 
   initJobRequestPopUp(locationData){
-    console.log(locationData);
     let params;
       if (this.role !== 'teacher') {
         params = {
@@ -544,10 +543,6 @@ export class SmartieSearch {
           phone: locationData.teacherProfile.phone,
           teacherProfileId: locationData.teacherProfile.objectId,
           loggedRole: this.role,
-          defaultStartDate: locationData.teacher.defaultStartDate,
-          defaultEndDate: locationData.teacher.defaultEndDate,
-          defaultStartTime: locationData.teacher.defaultStartTime,
-          defaultEndTime: locationData.teacher.defaultEndTime,
           hasUpcomings: this.hasUpcomings,
           defaultStartDateTime: locationData.teacher.defaultStartDateTime,
           defaultEndDateTime: locationData.teacher.defaultEndDateTime,

@@ -24,6 +24,7 @@ export class TimeSelectorMultiPage {
   private readyToPay: boolean = false;
   grossAmount: number = 0;
   grossHours: number = 0;
+  timeZone: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage) {
     this.selectedDates = this.navParams.get("selectedDates");
@@ -31,6 +32,8 @@ export class TimeSelectorMultiPage {
     this.loggedRole = this.navParams.get("loggedRole"); 
 
     console.log(this.selectedDates);
+
+    this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
     this.storage.get("utcOffset").then(utcOffset => {
       // console.log(utcOffset);
@@ -64,17 +67,19 @@ export class TimeSelectorMultiPage {
     }else if((date.months + '-' + date.date + '-' + date.years) && (this.params.defaultStartTime > date.startTime || this.params.defaultEndTime < date.endTime) ){
       this.timeScheduleError(date.months + '-' + date.date + '-' + date.years, 2);
     }else{
+
       let timeStarts_ms = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.startTime.split(':')[0]), parseInt(date.startTime.split(':')[1])).getTime();
 
-      let UTCstartTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.startTime.split(':')[0]), parseInt(date.startTime.split(':')[1]));
+      date.UTCstartTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.startTime.split(':')[0]), parseInt(date.startTime.split(':')[1]));
 
-      date.UTCstartTime = UTCstartTime;
+      // date.UTCstartTime = UTCstartTime;
 
       let timeEnds_ms = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1])).getTime();
 
-      let UTCendTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1]));
+      date.UTCendTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1]));
 
-      date.UTCendTime = UTCendTime;
+
+      // date.UTCendTime = UTCendTime;
 
       date.diffMs = timeEnds_ms - timeStarts_ms;
       date.diffHrs = Math.floor((date.diffMs % 86400000) / 3600000) * 60;

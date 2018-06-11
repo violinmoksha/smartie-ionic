@@ -19,6 +19,7 @@ export class SchedulePage {
 
   private params: any;
   private userRole: string;
+  timeZone: any;
 
   private genericAvatar: string;
 
@@ -27,14 +28,16 @@ export class SchedulePage {
     console.log('Schedule Page');
     console.log(this.params);
 
-    let UTCStartTime = new Date(Date.UTC(this.params.defaultStartDate.split('-')[2], this.params.defaultStartDate.split('-')[0], this.params.defaultStartDate.split('-')[1], this.params.defaultStartTime.split(':')[0], this.params.defaultStartTime.split(':')[1]));
+    this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
+
+    /* let UTCStartTime = new Date(Date.UTC(this.params.defaultStartDate.split('-')[2], this.params.defaultStartDate.split('-')[0], this.params.defaultStartDate.split('-')[1], this.params.defaultStartTime.split(':')[0], this.params.defaultStartTime.split(':')[1]));
 
     let UTCEndTime = new Date(Date.UTC(this.params.defaultEndDate.split('-')[2], this.params.defaultEndDate.split('-')[0], this.params.defaultEndDate.split('-')[1], this.params.defaultEndTime.split(':')[0], this.params.defaultEndTime.split(':')[1]));
       // let zone = userTimeZone;
       // let GMT = zone.substring(4);
 
     this.params.UTCStartTime = UTCStartTime.getHours() + ':' + UTCStartTime.getMinutes();
-    this.params.UTCEndTime = UTCEndTime.getHours() + ':' + UTCEndTime.getMinutes();
+    this.params.UTCEndTime = UTCEndTime.getHours() + ':' + UTCEndTime.getMinutes(); */
     
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
@@ -61,7 +64,7 @@ export class SchedulePage {
   }
 
   pickDateCalendar() {
-    let endDateComponents = this.params.defaultEndDate.split('-');
+    let endDateComponents = this.params.UTCendDate.split('-');
     let defaultEndMonth = endDateComponents[0];
     let defaultEndDate = endDateComponents[1];
     let defaultEndYear = endDateComponents[2];
