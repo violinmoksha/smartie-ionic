@@ -47,26 +47,26 @@ export class EditProfileStep3Page {
   public partOfSchool: boolean;
   public prefLocation: string;
   public hourRates = [
-    { "value": '5', "text": '5' },
-    { "value": '10', "text": '10' },
-    { "value": '15', "text": '15' },
-    { "value": '20', "text": '20' },
-    { "value": '25', "text": '25' },
-    { "value": '30', "text": '30' },
-    { "value": '35', "text": '35' },
-    { "value": '40', "text": '40' },
-    { "value": '45', "text": '45' },
-    { "value": '50', "text": '50' },
-    { "value": '55', "text": '55' },
-    { "value": '60', "text": '60' },
-    { "value": '65', "text": '65' },
-    { "value": '70', "text": '70' },
-    { "value": '75', "text": '75' },
-    { "value": '80', "text": '80' },
-    { "value": '85', "text": '85' },
-    { "value": '90', "text": '90' },
-    { "value": '95', "text": '95' },
-    { "value": '100', "text": '100' }
+    { "value": 5, "text": '5' },
+    { "value": 10, "text": '10' },
+    { "value": 15, "text": '15' },
+    { "value": 20, "text": '20' },
+    { "value": 25, "text": '25' },
+    { "value": 30, "text": '30' },
+    { "value": 35, "text": '35' },
+    { "value": 40, "text": '40' },
+    { "value": 45, "text": '45' },
+    { "value": 50, "text": '50' },
+    { "value": 55, "text": '55' },
+    { "value": 60, "text": '60' },
+    { "value": 65, "text": '65' },
+    { "value": 70, "text": '70' },
+    { "value": 75, "text": '75' },
+    { "value": 80, "text": '80' },
+    { "value": 85, "text": '85' },
+    { "value": 90, "text": '90' },
+    { "value": 95, "text": '95' },
+    { "value": 100, "text": '100' }
   ];
 
   public years = [
@@ -294,9 +294,9 @@ export class EditProfileStep3Page {
               phone: this.form2Values.phone,
               fullname: this.form2Values.name,
               preflocation: form3Values.prefLocation,
-            },
-            specificUser: {
               schoolname: this.form2Values.othersSchoolName,
+            },
+            specificUser: {              
               partofschool:
                 (this.form2Values.othersSchoolName ? true : false)
             }
@@ -314,7 +314,8 @@ export class EditProfileStep3Page {
             username: this.form2Values.username.toLowerCase(),
             email: this.form2Values.email.toLowerCase(),
             profile: {
-              profileabout: this.form2Values.profileMessage,
+              profileabout: this.form2Values.profileAbout,
+              profiletitle: this.form2Values.profileTitle,
               prefpayrate: this.hourlyRate,
               phone: this.form2Values.phone,
               fullname: this.form2Values.name,
@@ -334,8 +335,8 @@ export class EditProfileStep3Page {
       interface Response {
         result: any
       }
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
-        res => {
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(res => {
+          console.log(res);
           // TODO: save new mega teacherUserProfile object to localstorage
           localStorage.setItem(`${this.userRole}UserProfile`, Object.keys(res)['result']);
 
@@ -381,7 +382,7 @@ export class EditProfileStep3Page {
             })
           }else{
             this.setProfilePic().then((pictureResolve) => {
-              this.navCtrl.push("TotlesSearch", {role: this.userRole, fromwhere: 'editProfile'});
+              this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole, fromWhere: "editProfile" });
               this.loading.dismiss();
             }).catch((pictureReject) => {
               // TODO: do something in the UX here!!
@@ -482,6 +483,7 @@ export class EditProfileStep3Page {
   public filterRate(rate: number): void {
     // Handle what to do when a category is selected
     console.log(rate);
+    console.log(typeof rate);
     this.hourlyRate = rate;
   }
 
