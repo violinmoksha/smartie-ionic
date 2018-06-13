@@ -169,11 +169,11 @@ export class SmartieSearch {
     // send proper buttons into side-menu from here
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
-    console.log('test-enter');
     this.events.publish("buttonsLoad", this.role);
     // this.navCtrl.push('Test1Page');
     
     this.storage.get('UserProfile').then(profile => {
+      console.log(profile);
       this.role = profile.profileData.role;
 
         if(this.role == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '' )) {

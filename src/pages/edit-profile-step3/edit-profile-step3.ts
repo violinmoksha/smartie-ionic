@@ -43,6 +43,7 @@ export class EditProfileStep3Page {
   private startTime: any;
   private endTime: any;
   private userData: any;
+  private sessionToken: string;
 
   public partOfSchool: boolean;
   public prefLocation: string;
@@ -105,6 +106,7 @@ export class EditProfileStep3Page {
     this.form2Values = navParams.get("form2Value");
     this.partOfSchool = navParams.get("partOfSchool");
     this.userRole = navParams.get("userRole");
+    this.sessionToken = navParams.get("sessionToken");
 
     console.log(this.form1Values);
     console.log(this.form2Values);
@@ -257,6 +259,7 @@ export class EditProfileStep3Page {
           role: this.userRole,
           userData: this.userData,
           password: this.form1Values.password,
+          sessionToken: this.sessionToken,
           editables: {
             username: this.form2Values.username.toLowerCase(),
             email: this.form2Values.email.toLowerCase(),
@@ -285,6 +288,8 @@ export class EditProfileStep3Page {
           role: this.userRole,
           userData: this.userData,
           password: this.form1Values.password,
+
+          sessionToken: this.sessionToken,
           editables: {
             username: this.form2Values.username.toLowerCase(),
             email: this.form2Values.email.toLowerCase(),
@@ -310,6 +315,7 @@ export class EditProfileStep3Page {
           role: this.userRole,
           userData: this.userData,
           password: this.form1Values.password,
+          sessionToken: this.sessionToken,
           editables: {
             username: this.form2Values.username.toLowerCase(),
             email: this.form2Values.email.toLowerCase(),

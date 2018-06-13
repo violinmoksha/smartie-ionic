@@ -34,15 +34,18 @@ export class EditProfileStep2Page {
   email: string;
   fullName: string;
   schoolName: string;
+  othersSchoolName: string;
   contactName: string;
   contactPosition: string;
   phone: string;
   profileTitle: string;
   profileAbout: string;
+  sessionToken: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage) {
 
     this.userRole = navParams.get("userRole");
+    this.sessionToken = navParams.get("sessionToken");
 
     if(this.userRole == 'school'){
       this.EditProfilestep2Form = new FormGroup({
@@ -114,6 +117,7 @@ export class EditProfileStep2Page {
       } else {
         this.partOfSchool = roleProfile.specificUser.partOfSchool;
         this.fullName = roleProfile.profileData.fullname;
+        this.othersSchoolName = roleProfile.profileData.schoolName;
       }
 
       // and get the pageProfileSrc from localStorage???
@@ -200,7 +204,7 @@ export class EditProfileStep2Page {
   }
 
   next(form2Value){
-    this.navCtrl.push("EditProfileStep3Page", { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool, userRole: this.userRole });
+    this.navCtrl.push("EditProfileStep3Page", { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool, userRole: this.userRole, sessionToken: this.sessionToken });
   }
 
 }
