@@ -40,12 +40,10 @@ export class EditProfileStep2Page {
   phone: string;
   profileTitle: string;
   profileAbout: string;
-  sessionToken: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage) {
 
     this.userRole = navParams.get("userRole");
-    this.sessionToken = navParams.get("sessionToken");
 
     if(this.userRole == 'school'){
       this.EditProfilestep2Form = new FormGroup({
@@ -84,6 +82,7 @@ export class EditProfileStep2Page {
     }
 
     this.storage.get("UserProfile").then(roleProfile => {
+      console.log(roleProfile);
       if(roleProfile.profileData.schoolPhoto){
         this.schoolPicSrc = roleProfile.profileData.schoolPhoto.url;
       }
@@ -110,8 +109,8 @@ export class EditProfileStep2Page {
       this.profileAbout = roleProfile.profileData.profileAbout;
 
       if (this.userRole == 'school') {
-        this.schoolName = roleProfile.specificUser.schoolName;
-        this.contactName = roleProfile.specificUser.contactName;
+        this.schoolName = roleProfile.profileData.schoolName;
+        this.contactName = roleProfile.profileData.contactName;
         this.contactPosition = roleProfile.specificUser.contactPosition;
       } else if (this.userRole == 'teacher') {
       } else {
@@ -204,7 +203,7 @@ export class EditProfileStep2Page {
   }
 
   next(form2Value){
-    this.navCtrl.push("EditProfileStep3Page", { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool, userRole: this.userRole, sessionToken: this.sessionToken });
+    this.navCtrl.push("EditProfileStep3Page", { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool, userRole: this.userRole });
   }
 
 }
