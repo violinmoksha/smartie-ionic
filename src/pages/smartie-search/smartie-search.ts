@@ -73,6 +73,32 @@ export class SmartieSearch {
 
     this.accepteds = [];
     this.fromWhere = navParams.get('fromWhere');
+    console.log(this.fromWhere);
+
+    if(this.fromWhere == 'editProfile'){
+      console.log("Getting into editProfile");
+
+      this.storage.get('schoolPhotoDataUrl').then(schoolPhotoDataUrl => {
+        this.schoolPhotoDataUrl = schoolPhotoDataUrl;
+      });
+
+      this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
+        this.profilePhotoData = profilePhotoData;
+        console.log("Profile Photo Data");
+        let Profile = new Parse.Object.extend('Profile');
+        let profQuery = new Parse.Query(Profile);
+
+        console.log("Getting here");
+        console.log(Parse.User.current());
+
+        profQuery.equalTo('user', Parse.User.current());
+        profQuery.first({ useMasterKey:true }).then(profile => {
+          console.log("Getting Profile here");
+          console.log(profile);
+          this.addProfilePhoto(profile);
+        })
+      });
+    }
 
     // console.log(navParams.get('fromWhere'));
     // console.log(navParams.data.fromWhere);
@@ -113,7 +139,8 @@ export class SmartieSearch {
               profQuery.first({useMasterKey:true}).then(profile => {
                 console.log('Got the profile');
                 if(this.profilePhotoData){
-                  let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
+                  this.addProfilePhoto(profile);
+                  /* let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
                   console.log('trying to save the file');
                   parseFile.save({ useMasterKey: true }).then(file => {
                     console.log('Saved the file');
@@ -133,7 +160,7 @@ export class SmartieSearch {
                     })
                   }).catch(err => {
                     console.log(JSON.stringify(err));
-                  })
+                  }) */
                 }
                 //setting teacher Credentials
                 if(this.role == 'teacher'){
@@ -165,6 +192,30 @@ export class SmartieSearch {
     }
   }
 
+  addProfilePhoto(profile){
+    let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
+    console.log('trying to save the file');
+    parseFile.save({ useMasterKey: true }).then(file => {
+      console.log('Saved the file');
+      profile.set('profilePhoto', file);
+      profile.save({ useMasterKey:true }).then(profile => {
+        if(this.role == 'school'){
+          if(this.schoolPhotoDataUrl){
+            let parseSchoolFile = new Parse.File('school.jpg', { base64: this.schoolPhotoDataUrl });
+              parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
+                profile.set('schoolPhoto', schoolFile);
+                profile.save({ useMasterKey: true }).then(school => {
+                  // TODO: run fetchNotifications here for the new user, same as in login.ts
+                })
+              })
+          }
+        }
+      })
+    }).catch(err => {
+      console.log(JSON.stringify(err));
+    })
+  }
+
   ionViewDidEnter() {
     // send proper buttons into side-menu from here
     // since this is the first side-menu -loaded Page,
@@ -173,7 +224,6 @@ export class SmartieSearch {
     // this.navCtrl.push('Test1Page');
     
     this.storage.get('UserProfile').then(profile => {
-      console.log(profile);
       this.role = profile.profileData.role;
 
         if(this.role == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '' )) {

@@ -72,14 +72,18 @@ export class SmartieAPI {
     });
   }
 
-  updateUserProfileStorage(updatedProfile){
+  updateUserProfileStorage(updatedProfile, specificUserData = null){
    
       return new Promise(resolve => {
         this.storage.get("UserProfile").then(profile => {
-          console.log(profile);
-          delete profile['profileData'];
-          console.log(profile);
-          profile['profileData'] = updatedProfile;
+          if(updatedProfile){
+            delete profile['profileData'];
+            profile['profileData'] = updatedProfile;
+          }
+          if(specificUserData != null){
+            delete profile['specificUser'];
+            profile['specificUser'] = specificUserData;
+          }
           this.storage.set("UserProfile", profile).then(()=>{
             resolve(profile);
           })

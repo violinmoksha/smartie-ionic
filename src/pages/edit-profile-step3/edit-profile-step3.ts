@@ -43,6 +43,7 @@ export class EditProfileStep3Page {
   private startTime: any;
   private endTime: any;
   private userData: any;
+  private body: any;
 
   public partOfSchool: boolean;
   public prefLocation: string;
@@ -246,89 +247,96 @@ export class EditProfileStep3Page {
     this.submitInProgress = true;
     this.loading.present();
 
-    let API;
     if (this.userRole == 'teacher') {
-      API = this.smartieApi.getApi(
-        'editUser',
-        {
-          role: this.userRole,
-          userData: this.userData,
-          password: this.form1Values.password,
-          editables: {
-            username: this.form2Values.username.toLowerCase(),
-            email: this.form2Values.email.toLowerCase(),
-            profile: {
-              profileabout: this.form2Values.profileAbout,
-              prefpayrate: this.hourlyRate,
-              phone: this.form2Values.phone,
-              fullname: this.form2Values.name,
-              preflocation: form3Values.prefLocation,
-            },
-            specificUser: {
-              yrsexperience: this.yearExperience,
-              profiletitle: this.form2Values.profileTitle,
-              defstartdate: this.startDate,
-              defenddate: this.endDate,
-              defstarttime: form3Values.startTime,
-              defendtime: form3Values.endTime
-            }
+      this.body = {
+        role: this.userRole,
+        userData: this.userData,
+        password: this.form1Values.password,
+        editables: {
+          username: this.form2Values.username.toLowerCase(),
+          email: this.form2Values.email.toLowerCase(),
+          profile: {
+            profileabout: this.form2Values.profileAbout,
+            profiletitle: this.form2Values.profileTitle,
+            prefpayrate: this.hourlyRate,
+            phone: this.form2Values.phone,
+            fullname: this.form2Values.name,
+            preflocation: form3Values.prefLocation,
+          },
+          specificUser: {
+            yrsexperience: this.yearExperience,
+            profiletitle: this.form2Values.profileTitle,
+            defstartdate: this.startDate,
+            defenddate: this.endDate,
+            defstarttime: form3Values.startTime,
+            defendtime: form3Values.endTime
           }
         }
-      );
+      }
     } else if (this.userRole == 'student' || this.userRole == 'parent') {
-      API = this.smartieApi.getApi(
-        'editUser',
-        {
-          role: this.userRole,
-          userData: this.userData,
-          password: this.form1Values.password,
-          editables: {
-            username: this.form2Values.username.toLowerCase(),
-            email: this.form2Values.email.toLowerCase(),
-            profile: {
-              profileabout: this.form2Values.profileMessage,
-              prefpayrate: this.hourlyRate,
-              phone: this.form2Values.phone,
-              fullname: this.form2Values.name,
-              preflocation: form3Values.prefLocation,
-              schoolname: this.form2Values.othersSchoolName,
-            },
-            specificUser: {              
-              partofschool:
-                (this.form2Values.othersSchoolName ? true : false)
-            }
+      this.body = {
+        role: this.userRole,
+        userData: this.userData,
+        password: this.form1Values.password,
+        editables: {
+          username: this.form2Values.username.toLowerCase(),
+          email: this.form2Values.email.toLowerCase(),
+          profile: {
+            profileabout: this.form2Values.profileAbout,
+            profiletitle: this.form2Values.profileTitle,
+            prefpayrate: this.hourlyRate,
+            phone: this.form2Values.phone,
+            fullname: this.form2Values.name,
+            preflocation: form3Values.prefLocation,
+            schoolname: this.form2Values.othersSchoolName,
+          },
+          specificUser: {              
+            partofschool:
+              (this.form2Values.othersSchoolName ? true : false)
           }
         }
-      );
+      }
     } else { // school
-      API = this.smartieApi.getApi(
-        'editUser',
-        {
-          role: this.userRole,
-          userData: this.userData,
-          password: this.form1Values.password,
-          editables: {
-            username: this.form2Values.username.toLowerCase(),
-            email: this.form2Values.email.toLowerCase(),
-            profile: {
-              profileabout: this.form2Values.profileAbout,
-              profiletitle: this.form2Values.profileTitle,
-              prefpayrate: this.hourlyRate,
-              phone: this.form2Values.phone,
-              fullname: this.form2Values.name,
-              preflocation: form3Values.prefLocation,
-            },
-            specificUser: {
-              schoolname: this.form2Values.schoolName,
-              contactname: this.form2Values.contactName,
-              contactposition: this.form2Values.contactPosition
-            }
+      this.body = {
+        role: this.userRole,
+        userData: this.userData,
+        password: this.form1Values.password,
+        editables: {
+          username: this.form2Values.username.toLowerCase(),
+          email: this.form2Values.email.toLowerCase(),
+          profile: {
+            profileabout: this.form2Values.profileAbout,
+            profiletitle: this.form2Values.profileTitle,
+            prefpayrate: this.hourlyRate,
+            phone: this.form2Values.phone,
+            fullname: this.form2Values.name,
+            preflocation: form3Values.prefLocation,
+          },
+          specificUser: {
+            schoolname: this.form2Values.schoolName,
+            contactname: this.form2Values.contactName,
+            contactposition: this.form2Values.contactPosition
           }
         }
-      );
+      }
     }
 
-    return new Promise(resolve => {
+    let API = this.smartieApi.getApi(
+      'editUser',
+      this.body
+    );
+    interface Response {
+      result: any;
+    }
+    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+      console.log(response.result);
+      this.smartieApi.updateUserProfileStorage(response.result.profileData, response.result.specificUserData).then(profile => {
+        this.loading.dismiss();
+        this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole, fromWhere: "editProfile" });
+      });
+    })
+
+    /*return new Promise(resolve => {
       interface Response {
         result: any
       }
@@ -353,7 +361,7 @@ export class EditProfileStep3Page {
 
             }
           });
-          */
+          
 
           let cvPromises = [];
           // console.log(this.TeacherFiles);
@@ -408,7 +416,7 @@ export class EditProfileStep3Page {
           alert.present();
         }
       )
-    });
+    });*/
   }
 
   setProfilePic() {

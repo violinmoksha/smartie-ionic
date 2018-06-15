@@ -26,6 +26,10 @@ export class EditProfileStep2Page {
   cameraData: string;
   photoTaken: boolean;
   cameraUrl: string;
+  private schoolCameraData: string;
+  private schoolPhotoSelected: boolean; 
+  private schoolPhotoTaken: boolean;
+  private schoolCameraUrl:string;
   photoSelected: boolean;
   partOfSchool: string;
   @ViewChild(Slides) roleSchool: Slides;
@@ -126,7 +130,7 @@ export class EditProfileStep2Page {
     this.form1Values = navParams.data.form1Value;
   }
 
-  chooseUploadType(inputEvent){
+  chooseUploadType(inputEvent, photoFor){
     let actionSheet = this.actionSheetCtrl.create({
       title: 'How you like to upload your photos',
       buttons: [
@@ -137,13 +141,27 @@ export class EditProfileStep2Page {
           handler: () => {
             var options = {
               sourceType: this.camera.PictureSourceType.CAMERA,
-              destinationType: this.camera.DestinationType.DATA_URL
+              destinationType: this.camera.DestinationType.DATA_URL,
+              allowEdit: true,
+              targetWidth: 500,
+              targetHeight: 500,
+              quality: 100
             };
             this.camera.getPicture(options).then((imageData) => {
-              this.cameraData = 'data:image/jpeg;base64,' + imageData;
-              localStorage.setItem('profilePhotoDataUrl', this.cameraData);
-              this.photoTaken = true;
-              this.photoSelected = false;
+              if(photoFor == 'prof'){
+                // console.log(imageData);
+                this.cameraData = 'data:image/jpeg;base64,' + imageData;
+                // localStorage.setItem('profilePhotoDataUrl', this.profileCameraData);
+                this.storage.set('profilePhotoDataUrl', imageData);
+                this.photoTaken = true;
+                this.photoSelected = false;
+              }else if(photoFor == 'school'){
+                this.schoolCameraData = 'data:image/jpeg;base64,' + imageData;
+                // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraData);
+                this.storage.set('schoolPhotoDataUrl', imageData);
+                this.schoolPhotoTaken = true;
+                this.schoolPhotoSelected = false;
+              }
             }, (err) => {
             // Handle error
               console.log(err);
@@ -154,21 +172,30 @@ export class EditProfileStep2Page {
           role: 'openGallery',
           icon: 'image',
           handler: () => {
-            console.log('Gallery clicked');
             let options = {
               sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
               destinationType: this.camera.DestinationType.DATA_URL,
-              quality : 100
+              allowEdit: true,
+              targetWidth: 500,
+              targetHeight: 500,
+              quality: 75
             };
 
             this.camera.getPicture(options).then((imageData) => {
              // imageData is either a base64 encoded string or a file URI
              // If it's base64:
-              this.cameraUrl = "data:image/jpeg;base64," + imageData;
-              localStorage.setItem('profilePhotoDataUrl', this.cameraUrl);
-              // console.log(this.cameraUrl);
-              this.photoSelected = true;
-              this.photoTaken = false;
+              if(photoFor == 'prof'){
+                this.cameraUrl = "data:image/jpeg;base64," + imageData;
+                this.storage.set('profilePhotoDataUrl', imageData);
+                this.photoSelected = true;
+                this.photoTaken = false;
+              }else if(photoFor == 'school'){
+                this.schoolCameraUrl = "data:image/jpeg;base64," + imageData;
+                // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraUrl);
+                this.storage.set('schoolPhotoDataUrl', imageData);
+                this.schoolPhotoSelected = true;
+                this.schoolPhotoTaken = false;
+              }
             }, (err) => {
              // Handle error
              console.log(err);
