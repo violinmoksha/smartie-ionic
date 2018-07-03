@@ -99,6 +99,10 @@ export class LoginPage {
     this.navCtrl.push("RegisterPage");
   }
 
+  pushMobVerify(){
+    this.navCtrl.push("MobileVerificationPage");
+  }
+
   pushForgotPassword(){
     this.navCtrl.push("ForgotPassword");
   }
