@@ -1,0 +1,26 @@
+page-mobile-verification {
+  .country-img{
+    width: 40px;
+    height: 40px;
+    vertical-align: bottom;
+  }
+  .font-28{
+    font-size: 28px !important;
+  }
+  .coutry-code{
+    font-size: 28px;
+    margin-left: 10px;
+  }
+  .mob-input input[type=number]{
+    font-size: 28px;
+    color:#707070;
+  }
+  .verify-button{
+    height: 67px;
+    background-color: #F4741F;
+
+  }
+  .color-grey{
+    color:#707070;
+  }
+}
