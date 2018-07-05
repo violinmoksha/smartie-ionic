@@ -30,6 +30,7 @@
     "@ionic-native/camera": "^4.5.3",
     "@ionic-native/core": "4.4.0",
     "@ionic-native/crop": "^4.5.3",
+    "@ionic-native/device": "^4.9.0",
     "@ionic-native/file": "^4.6.0",
     "@ionic-native/geolocation": "^4.5.3",
     "@ionic-native/globalization": "^4.7.0",
