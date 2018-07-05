@@ -15,11 +15,18 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class MobileVerificationPage {
 
+  role: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.role = navParams.get('role');
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MobileVerificationPage');
+  }
+
+  pushSignUp(){
+    this.navCtrl.push("SignupPage", { role: this.role });
   }
 
 }
