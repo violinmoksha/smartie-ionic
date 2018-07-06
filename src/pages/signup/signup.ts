@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 declare var google;
@@ -17,7 +17,7 @@ declare var google;
 })
 export class SignupPage {
 
-  @ViewChild('locationSearch') locationSearchElement: ElementRef;
+  // @ViewChild('locationSearch') locationSearchElement: ElementRef;
   role: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
@@ -27,14 +27,13 @@ export class SignupPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SignupPage');
-  }
-
-  searchLocation(){
-    console.log(this.locationSearchElement.nativeElement);
+    let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
     let options = {componentRestrictions: {country: 'us'}};
 
-    let autocomplete = new google.maps.places.Autocomplete(this.locationSearchElement.nativeElement, options);
+    let autocomplete = new google.maps.places.Autocomplete(input, options);
     
+    console.log(autocomplete);
+
   }
 
 }
