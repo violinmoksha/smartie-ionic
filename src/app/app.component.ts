@@ -22,8 +22,6 @@ export class SmartieApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider) {
 
     this.initializeApp();
-
-    firebase.initFCM();
     /*this.storage.get('sessionToken').then(val => {
       if (val !== 'undefined') {
         this.rootPage = "LoginPage";
@@ -67,6 +65,7 @@ export class SmartieApp {
       // Here you can do any higher level native things you might need.
       if (this.platform.is('cordova')) {
         this.initGeolocation();
+        this.firebase.initFCM();
         this.statusBar.styleDefault();
         this.splashScreen.hide();
        // this.initPushNotifications();
