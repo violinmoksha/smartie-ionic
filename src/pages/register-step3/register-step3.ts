@@ -5,6 +5,8 @@ import { SmartieAPI } from '../../providers/api/smartie';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { Storage } from '@ionic/storage';
 
+declare var google;
+
 /**
  * Generated class for the RegisterStep3Page page.
  *
@@ -396,6 +398,10 @@ export class RegisterStep3Page {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterStep3Page');
+    let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
+    let options = {componentRestrictions: {country: 'us'}};
+
+    let autocomplete = new google.maps.places.Autocomplete(input, options);
   }
 
 }

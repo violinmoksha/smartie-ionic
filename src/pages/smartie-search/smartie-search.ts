@@ -224,6 +224,7 @@ export class SmartieSearch {
     // this.navCtrl.push('Test1Page');
     
     this.storage.get('UserProfile').then(profile => {
+      console.log(profile);
       this.role = profile.profileData.role;
 
         if(this.role == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '' )) {
@@ -542,13 +543,15 @@ export class SmartieSearch {
       this.userIcon = './assets/imgs/teacher-map-icon30px.png';
     }
 
+    let randomLocation = this.randomGeo(locationData.otherProfile.latlng, 500);
+
     this.marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
-      position: latLng,
+      position: new google.maps.LatLng(randomLocation.latitude, randomLocation.longitude),
       icon: this.userIcon
     });
-    console.log(this.extendBound);
+    // console.log(this.extendBound);
     if(this.extendBound){
       this.bounds.extend(latLng);
     }
@@ -575,6 +578,27 @@ export class SmartieSearch {
       })
     });
 
+  }
+
+  randomGeo(center, radius){
+    var y0 = center.latitude;
+    var x0 = center.longitude;
+    var rd = radius / 111300;
+
+    var u = Math.random();
+    var v = Math.random();
+
+    var w = rd * Math.sqrt(u);
+    var t = 2 * Math.PI * v;
+    var x = w * Math.cos(t);
+    var y = w * Math.sin(t);
+
+    return {
+      'latitude': y + y0,
+      'longitude': x + x0
+    };  
+
+    // return new google.maps.LatLng(this.toDeg(y + y0), this.toDeg(x + x0));
   }
 
   initJobRequestPopUp(locationData){
@@ -671,7 +695,7 @@ export class SmartieSearch {
     // map always should cover 200km radius from Profile user
     // thus the actual applied trigonometry yaaaaaaay!!!!^$%^
     // let radiusInKm = 50;
-    console.log(this.radiusInKm);
+    // console.log(this.radiusInKm);
     if(extendBound){
       this.bounds = new google.maps.LatLngBounds();  
     }else{
@@ -686,12 +710,12 @@ export class SmartieSearch {
       this.createMarkerLocation(searchResult);
     }
 
-    console.log(this.markerCount.length);
+    // console.log(this.markerCount.length);
     if(this.markerCount.length < 5){
       this.extendBound = true;
       this.smartieSearchResult(latLng, searchRole, searchLoc, this.extendBound);
     }else{
-      console.log("test");
+      // console.log("test");
     }
 
     //let myPlace = new google.maps.LatLng(34.0522, -118.2437);
