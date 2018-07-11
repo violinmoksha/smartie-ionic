@@ -73,7 +73,7 @@
       <ion-item>
         <ion-label *ngIf="role == 'teacher'" fixed>Preferred Teaching Location</ion-label>
         <ion-label *ngIf="role != 'teacher'" fixed>Preferred Learning Location</ion-label>
-        <ion-input placeholder="Location Name" type="text" formControlName="prefLocation"></ion-input>
+        <ion-input placeholder="Location Name" id="locationSearch" type="text" formControlName="prefLocation"></ion-input>
       </ion-item>
 
       <div *ngIf="!Step3Form.controls['prefLocation'].valid && Step3Form.controls['prefLocation'].touched" class="item item-message">

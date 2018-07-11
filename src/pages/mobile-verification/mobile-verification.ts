@@ -26,7 +26,7 @@ export class MobileVerificationPage {
   }
 
   pushSignUp(){
-    this.navCtrl.push("SignupPage", { role: this.role });
+    this.navCtrl.push("RegisterStep1Page", { role: this.role });
   }
 
 }

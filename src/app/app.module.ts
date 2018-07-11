@@ -9,8 +9,8 @@ import { SmartieApp } from './app.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-//import { Push } from '@ionic-native/push';
-
+import { Push } from '@ionic-native/push';
+import { Firebase } from '@ionic-native/firebase';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
 import { Camera } from '@ionic-native/camera';
@@ -25,6 +25,7 @@ import { IonicImageLoader } from 'ionic-image-loader';
 import { Globalization } from '@ionic-native/globalization';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ThemeableBrowser } from '@ionic-native/themeable-browser';
+import { FirebaseProvider } from '../providers/firebase/firebase';
 
 @NgModule({
   declarations: [
@@ -52,12 +53,14 @@ import { ThemeableBrowser } from '@ionic-native/themeable-browser';
     Camera,
     ParseProvider,
     SmartieAPI,
-    //Push,
+    Push,
     IonicErrorHandler,
     Globalization,
     InAppBrowser,
     ThemeableBrowser,
-    [{provide: ErrorHandler, useClass: SmartieErrorHandler}]
+    [{provide: ErrorHandler, useClass: SmartieErrorHandler}],
+    Firebase,
+    FirebaseProvider
   ]
 })
 export class AppModule {}

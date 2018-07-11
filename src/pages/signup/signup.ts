@@ -17,12 +17,10 @@ declare var google;
 })
 export class SignupPage {
 
-  // @ViewChild('locationSearch') locationSearchElement: ElementRef;
   role: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.role = navParams.get('role');
-    console.log(this.role);
   }
 
   ionViewDidLoad() {
@@ -31,9 +29,6 @@ export class SignupPage {
     let options = {componentRestrictions: {country: 'us'}};
 
     let autocomplete = new google.maps.places.Autocomplete(input, options);
-    
-    console.log(autocomplete);
-
   }
 
 }

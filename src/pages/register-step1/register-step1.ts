@@ -24,9 +24,9 @@ export class RegisterStep1Page {
 
     this.Step1Form = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')]),
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
+      // username: new FormControl('', Validators.required),
+      // password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      // confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
     });
   }
 

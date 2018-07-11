@@ -151,10 +151,13 @@ page-login {
     }
   }
   .bg-login {
-    background: url(../assets/imgs/login/login-back.png) no-repeat !important;
-    background-size: cover;
-    background-position: center;
-    text-align: center;
+    // background: url(../assets/imgs/login/login-back.png) center center no-repeat !important;
+    // background-size: cover;
+    // background-position: center;
+    // text-align: center;
+    background-image: url(../assets/imgs/login/login-back.png);
+    background-size: auto 100%;
+    background-repeat: no-repeat;
   }
   .logo-text {
     font-size: 55px !important;
@@ -196,8 +199,8 @@ page-login {
     height: 40%;
   }
   .logo-img {
-    width: 80%;
-    height: 80%;
+    // width: 80%;
+    // height: 80%;
     object-fit: contain;
   }
 }
