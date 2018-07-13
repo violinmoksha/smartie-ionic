@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
+import { SmartieAPI } from '../../providers/api/smartie';
 
 /**
  * Generated class for the RegisterStep1Page page.
@@ -18,8 +19,9 @@ export class RegisterStep1Page {
 
   private role: any;
   private Step1Form: FormGroup;
+  private notNewEmail: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI) {
     this.role = navParams.data.role;
 
     this.Step1Form = new FormGroup({
@@ -45,7 +47,26 @@ export class RegisterStep1Page {
   }
 
   next(form1Value){
-    this.navCtrl.push("RegisterStep2Page", { form1Value : form1Value, role: this.role });
+    let API = this.smartieApi.getApi(
+      'isNewEmail',
+      {email: form1Value.email}
+    );
+
+    return new Promise(resolve => {
+      interface Response {
+        result: any
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
+        isNewEmail => {
+          if (isNewEmail.result == true) {
+            this.navCtrl.push("RegisterStep2Page", { form1Value : form1Value, role: this.role });
+          } else {
+            this.notNewEmail = true;
+          }
+        }
+      );
+    });
+
   }
 
   ionViewDidLoad() {
