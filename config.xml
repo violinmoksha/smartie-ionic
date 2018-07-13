@@ -23,7 +23,7 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
-    <hook src="scripts/versionConfig.js" type="after_prepare" />
+    <hook src="hooks/versionConfig.js" type="after_prepare" />
     <platform name="android">
         <resource-file src="google-services.json" target="app/google-services.json" />
         <allow-intent href="market:*" />
