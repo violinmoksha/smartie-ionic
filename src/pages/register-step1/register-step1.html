@@ -6,9 +6,9 @@
 -->
 <ion-header class="{{ role }}">
   <ion-navbar>
-    <button ion-button menuToggle>
+    <!--<button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-    </button>
+    </button>-->
     <ion-title class="{{ role }}">Account Information</ion-title>
   </ion-navbar>
 </ion-header>
@@ -31,13 +31,16 @@
 
       <ion-item>
         <ion-label fixed>Email </ion-label>
-        <ion-input placeholder="yourmail@mail.com" type="text" formControlName="email"></ion-input>
+        <ion-input placeholder="yourmail@mail.com" type="text" formControlName="email" (ionChange)="this.notNewEmail = false"></ion-input>
       </ion-item>
 
       <div *ngIf="Step1Form.controls['email'].invalid && Step1Form.controls['email'].touched" class="item item-message">
         Email is required
       </div>
 
+      <div *ngIf="notNewEmail" class="item item-message">
+        This email appears to already be in our system!
+      </div>
       <!-- <ion-item>
         <ion-label fixed>User Name</ion-label>
         <ion-input placeholder="johndoe" type="text" formControlName="username"></ion-input>
