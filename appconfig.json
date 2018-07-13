@@ -1,0 +1,9 @@
+{
+  "android":{
+      "gradlePluginVersion":"3.0.0",
+      "gradleVersion":"4.1"
+  },
+  "iOS":{
+
+  }
+}
