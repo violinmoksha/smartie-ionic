@@ -48,7 +48,6 @@ export class RegisterStep2Page {
       this.messagePlaceHolder = "We looking for Market Research Analyst, who have hands of experience in CMRA for our school";
       this.Step2Form = new FormGroup({
         name: new FormControl('', Validators.required),
-        phone: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
         profileAbout: new FormControl('', Validators.required),
         schoolName: new FormControl('', Validators.required),
@@ -65,7 +64,6 @@ export class RegisterStep2Page {
       }
       this.Step2Form = new FormGroup({
         name: new FormControl('', Validators.required),
-        phone: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
         profileAbout: new FormControl('', Validators.required),
         associateSchoolName: new FormControl('')
@@ -75,7 +73,6 @@ export class RegisterStep2Page {
       this.messagePlaceHolder = "Although I am certified in TOEFL I also have a passion for teaching Korean. Please book a session with me, you'll be amazed at the quick learning results!";
       this.Step2Form = new FormGroup({
         name: new FormControl('', Validators.required),
-        phone: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
         profileAbout: new FormControl('', Validators.required)
       })

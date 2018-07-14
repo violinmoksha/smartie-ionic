@@ -26,7 +26,7 @@ page-mobile-verification {
   .margin-btm-0{
     margin-bottom: 0px !important;
   }
-  .mob-input input[type=phone]{
+  .mob-input input[type=tel]{
     font-size: 18px;
     color:#707070;
     margin-bottom: 0px;
@@ -36,7 +36,7 @@ page-mobile-verification {
   .verify-button{
     height: 67px;
     background-color: #F4741F;
-
+    margin: 0;
   }
   .color-grey{
     color:#707070;

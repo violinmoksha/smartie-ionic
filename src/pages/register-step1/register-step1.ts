@@ -18,6 +18,7 @@ import { SmartieAPI } from '../../providers/api/smartie';
 export class RegisterStep1Page {
 
   private role: any;
+  private phone: any;
   private Step1Form: FormGroup;
   private notNewEmail: boolean;
 
@@ -26,9 +27,8 @@ export class RegisterStep1Page {
 
     this.Step1Form = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')]),
-      // username: new FormControl('', Validators.required),
-      // password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      // confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
     });
   }
 
@@ -47,6 +47,9 @@ export class RegisterStep1Page {
   }
 
   next(form1Value){
+    // pick this up from otp flow now
+    form1Value.phone = this.navParams.data.phone;
+
     let API = this.smartieApi.getApi(
       'isNewEmail',
       {email: form1Value.email}

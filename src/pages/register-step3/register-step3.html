@@ -29,7 +29,7 @@
     <div class="list list-inset registration teacher step3">
 
       <div *ngIf="role == 'teacher'">
-        <h3>Years of Experience</h3>
+        <h3 padding>Years of Experience</h3>
 
         <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
           <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">

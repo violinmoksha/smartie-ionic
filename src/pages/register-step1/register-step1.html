@@ -5,10 +5,7 @@
   Ionic pages and navigation.
 -->
 <ion-header class="{{ role }}">
-  <ion-navbar>
-    <!--<button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>-->
+  <ion-navbar hideBackButton="true">
     <ion-title class="{{ role }}">Account Information</ion-title>
   </ion-navbar>
 </ion-header>
@@ -50,7 +47,7 @@
         User name is required
       </div> -->
 
-      <!-- <ion-item>
+      <ion-item>
         <ion-label fixed> Password</ion-label>
         <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
       </ion-item>
@@ -66,7 +63,7 @@
 
       <div class="item item-message" *ngIf="Step1Form.get('confPassword').invalid && Step1Form.get('confPassword').touched">
         Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
-      </div> -->
+      </div>
 
 
     </div>

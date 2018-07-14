@@ -77,26 +77,12 @@
 
       </div>
       <ion-item>
-        <ion-label fixed>Name</ion-label>
+        <ion-label fixed>Full Name</ion-label>
         <ion-input placeholder="i.e. John Smith" type="text" formControlName="name"></ion-input>
       </ion-item>
 
       <div *ngIf="!Step2Form.controls['name'].valid && Step2Form.controls['name'].touched" class="item item-message">
         Name is required
-      </div>
-
-      <!-- Phone -->
-      <!-- <label class="item item-input">
-        <span class="input-label">Phone Number</span>
-        <ion-input placeholder="510-555-0162" type="tel" formControlName="phone"></ion-input>
-      </label> -->
-      <ion-item>
-        <ion-label fixed>Phone Number</ion-label>
-        <ion-input placeholder="510-555-0162" type="tel" formControlName="phone"></ion-input>
-      </ion-item>
-
-      <div *ngIf="!Step2Form.controls['phone'].valid && Step2Form.controls['phone'].touched" class="item item-message">
-        Phone number is required
       </div>
 
       <!-- Profile Title -->

@@ -16,7 +16,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class MobileVerificationPage {
 
   role: string;
-  usPhoneNumber = '';
+  phoneNumber = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.role = navParams.get('role');
@@ -27,13 +27,13 @@ export class MobileVerificationPage {
   }
 
   pushSignUp(){
-    this.navCtrl.push("RegisterStep1Page", { role: this.role });
+    this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
   }
 
-  maskUSPhone(usPhoneNumber) {
-    let x = usPhoneNumber.replace(/[^0-9]/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-    usPhoneNumber = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+  maskUSPhone(txt) {
+    let x = txt.replace(/[^0-9]/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+    txt = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
 
-    return usPhoneNumber;
+    return txt;
   }
 }

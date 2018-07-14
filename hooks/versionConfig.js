@@ -16,13 +16,13 @@ var ANDROID_DIR = 'platforms/android';
 
 if(fileExists('appconfig.json')){
   configValues = require('../appconfig.json');
-  console.log("======Reading config json======");
+  console.log("======Reading config json from after_prepare======");
   //updating gradle version
   updateGradlePluginVersion(configValues.android.gradlePluginVersion,configValues.android.gradleVersion);
   //updating project propeties, used to update dependencies version
   updateProjectProperties();
 }else{
-  console.log("***** config file not found ******");
+  console.log("***** config file not found from after_prepare ******");
 }
 
 function updateGradlePluginVersion (version, gVersion){
