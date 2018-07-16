@@ -1,3 +1,4 @@
+import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
@@ -22,7 +23,7 @@ export class LoginPage {
 
   private LoginForm: FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private firebase:FirebaseProvider) {
 
    this.LoginForm = new FormGroup({
       username: new FormControl(''),
@@ -66,6 +67,9 @@ export class LoginPage {
               });
             });*/
           });
+          if(data){
+            this.firebase.updateFcmToken(null, true);
+          }
         },
         (err) => {
           Pro.monitoring.exception(err);
