@@ -123,70 +123,66 @@ export class SmartieSearch {
         this.role = UserProfile.profileData.role;
 
         // this.storage.get('registeredWithStripe').then(regdWithStripe => {
-          if(this.role == 'teacher' && (UserProfile.profileData.stripeCustomer == undefined || UserProfile.profileData.stripeCustomer == '' )) {
-            this.checkStripeAccount(UserProfile);
-          } else {
-            let Profile = new Parse.Object.extend('Profile');
-            let Teacher = new Parse.Object.extend('Teacher');
-            let profQuery = new Parse.Query(Profile);
-            let userQuery = new Parse.Query(Parse.User);
-            let teacherQuery = new Parse.Query(Teacher);
+          let Profile = new Parse.Object.extend('Profile');
+          let Teacher = new Parse.Object.extend('Teacher');
+          let profQuery = new Parse.Query(Profile);
+          let userQuery = new Parse.Query(Parse.User);
+          let teacherQuery = new Parse.Query(Teacher);
 
-            userQuery.equalTo('username', UserProfile.userData.username);
-            userQuery.first({useMasterKey:true}).then(user => {
-              console.log('Got the user');
-              profQuery.equalTo('user', user);
-              profQuery.first({useMasterKey:true}).then(profile => {
-                console.log('Got the profile');
-                if(this.profilePhotoData){
-                  this.addProfilePhoto(profile);
-                  /* let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
-                  console.log('trying to save the file');
-                  parseFile.save({ useMasterKey: true }).then(file => {
-                    console.log('Saved the file');
-                    profile.set('profilePhoto', file);
-                    profile.save({ useMasterKey:true }).then(profile => {
-                      if(this.role == 'school'){
-                        if(this.schoolPhotoDataUrl){
-                          let parseSchoolFile = new Parse.File('school.jpg', { base64: this.schoolPhotoDataUrl });
-                            parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
-                              profile.set('schoolPhoto', schoolFile);
-                              profile.save({ useMasterKey: true }).then(school => {
-                                // TODO: run fetchNotifications here for the new user, same as in login.ts
-                              })
+          userQuery.equalTo('username', UserProfile.userData.username);
+          userQuery.first({useMasterKey:true}).then(user => {
+            console.log('Got the user');
+            profQuery.equalTo('user', user);
+            profQuery.first({useMasterKey:true}).then(profile => {
+              console.log('Got the profile');
+              if(this.profilePhotoData){
+                this.addProfilePhoto(profile);
+                /* let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
+                console.log('trying to save the file');
+                parseFile.save({ useMasterKey: true }).then(file => {
+                  console.log('Saved the file');
+                  profile.set('profilePhoto', file);
+                  profile.save({ useMasterKey:true }).then(profile => {
+                    if(this.role == 'school'){
+                      if(this.schoolPhotoDataUrl){
+                        let parseSchoolFile = new Parse.File('school.jpg', { base64: this.schoolPhotoDataUrl });
+                          parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
+                            profile.set('schoolPhoto', schoolFile);
+                            profile.save({ useMasterKey: true }).then(school => {
+                              // TODO: run fetchNotifications here for the new user, same as in login.ts
                             })
-                        }
+                          })
                       }
-                    })
-                  }).catch(err => {
-                    console.log(JSON.stringify(err));
-                  }) */
+                    }
+                  })
+                }).catch(err => {
+                  console.log(JSON.stringify(err));
+                }) */
+              }
+              //setting teacher Credentials
+              if(this.role == 'teacher'){
+                if(this.teacherCv){
+                  console.log("Getting into teacher credentials save");
+                  teacherQuery.equalTo('profile', profile);
+                  teacherQuery.first({ useMasterKey: true }).then(teacher => {
+                    for(let teacherCv of this.teacherCv){
+                      var parseCvFile = new Parse.File(teacherCv.name, {base64: teacherCv.data});
+                      parseCvFile.save({ useMasterKey: true }).then(parseFile => {
+                        let Credential = new Parse.Object.extend('Credential');
+                        let cred = new Credential();
+                        cred.set('profile', profile);
+                        cred.set('file', parseFile);
+                        cred.save({ useMasterKey: true }).then(credential => {
+                          console.log(credential);
+                          console.log("Credentials saved successfully..!");
+                        });
+                      })
+                    }
+                  })
                 }
-                //setting teacher Credentials
-                if(this.role == 'teacher'){
-                  if(this.teacherCv){
-                    console.log("Getting into teacher credentials save");
-                    teacherQuery.equalTo('profile', profile);
-                    teacherQuery.first({ useMasterKey: true }).then(teacher => {
-                      for(let teacherCv of this.teacherCv){
-                        var parseCvFile = new Parse.File(teacherCv.name, {base64: teacherCv.data});
-                        parseCvFile.save({ useMasterKey: true }).then(parseFile => {
-                          let Credential = new Parse.Object.extend('Credential');
-                          let cred = new Credential();
-                          cred.set('profile', profile);
-                          cred.set('file', parseFile);
-                          cred.save({ useMasterKey: true }).then(credential => {
-                            console.log(credential);
-                            console.log("Credentials saved successfully..!");
-                          });
-                        })
-                      }
-                    })
-                  }
-                }
-              })
-            });
-          }
+              }
+            })
+          });
         // })
       });
     }
@@ -227,94 +223,90 @@ export class SmartieSearch {
       console.log(profile);
       this.role = profile.profileData.role;
 
-        if(this.role == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '' )) {
-          this.checkStripeAccount(profile);
+        if (profile == null) {
+          this.navCtrl.setRoot("LoginPage");
         } else {
-          if (profile == null) {
-            this.navCtrl.setRoot("LoginPage");
-          } else {
-            let API = this.smartieApi.getApi(
-              'fetchNotifications',
-              { profileId: profile.profileData.objectId, role: profile.profileData.role }
-            );
+          let API = this.smartieApi.getApi(
+            'fetchNotifications',
+            { profileId: profile.profileData.objectId, role: profile.profileData.role }
+          );
 
-            return new Promise(resolve => {
-              interface Response {
-                result: any
-              };
-              this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
-                this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
-                  this.notifications = notifications;
-                  this.storage.get('phoneLatLng').then(phoneLatLng => {
-                    //console.log(phoneLatLng);
-                    if (phoneLatLng !== undefined && phoneLatLng !== null) {
-                      this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
-                    } else {
-                      this.latLngUser = profile.profileData.latlng;
-                      this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, this.extendBound);
-                    }
+          return new Promise(resolve => {
+            interface Response {
+              result: any
+            };
+            this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
+              this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
+                this.notifications = notifications;
+                this.storage.get('phoneLatLng').then(phoneLatLng => {
+                  //console.log(phoneLatLng);
+                  if (phoneLatLng !== undefined && phoneLatLng !== null) {
+                    this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
+                  } else {
+                    this.latLngUser = profile.profileData.latlng;
+                    this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, this.extendBound);
+                  }
 
-                    //get all requested's
-                    this.body = {
-                      profileId: profile.profileData.objectId,
-                      role: profile.profileData.role
-                    };
+                  //get all requested's
+                  this.body = {
+                    profileId: profile.profileData.objectId,
+                    role: profile.profileData.role
+                  };
 
-                    //resolve all promises and if notifyCount > 0 make alert present and push to notification page
-                    Promise.all([
-                      this.getAllRequesteds(),
-                      this.getAllAccepteds(),
-                      this.getAllUpcomings()
-                    ]).then(value => {
-                      if(this.hasUpcomings == true) {
-                        let title, subTitle;
-                        if (this.upcomingsCount == 1) {
-                          title = "You have an upcoming appointment!";
-                          subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
-                        } else {
-                          title = "You have upcoming appointments";
-                          subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
-                        }
-                        let alert = this.alertCtrl.create({
-                          title: title,
-                          subTitle: subTitle,
-                          buttons: [{
-                            text: 'OK',
-                            handler: () => {
-                              if(this.role !== 'teacher'){
-                                this.navCtrl.parent.select(2);
-                              }else{
-                                this.navCtrl.parent.select(3);
-                              }
-                            }
-                          }]
-                        });
-                        alert.present();
-                      } else if(this.notifyCount > 0) {
-                        let alert = this.alertCtrl.create({
-                          title: 'Wow, check it out!',
-                          subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
-                          buttons: [{
-                            text: 'OK',
-                            handler: () => {
-                              if(this.role !== 'teacher'){
-                                this.navCtrl.parent.select(2);
-                              }else{
-                                this.navCtrl.parent.select(3);
-                              }
-                            }
-                          }]
-                        });
-                        alert.present();
+                  //resolve all promises and if notifyCount > 0 make alert present and push to notification page
+                  Promise.all([
+                    this.getAllRequesteds(),
+                    this.getAllAccepteds(),
+                    this.getAllUpcomings()
+                  ]).then(value => {
+                    if(this.hasUpcomings == true) {
+                      let title, subTitle;
+                      if (this.upcomingsCount == 1) {
+                        title = "You have an upcoming appointment!";
+                        subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
+                      } else {
+                        title = "You have upcoming appointments";
+                        subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
                       }
-                    })
-                  });
-                })
-              }, err => {
-                console.log(err);
-              });
+                      let alert = this.alertCtrl.create({
+                        title: title,
+                        subTitle: subTitle,
+                        buttons: [{
+                          text: 'OK',
+                          handler: () => {
+                            if(this.role !== 'teacher'){
+                              this.navCtrl.parent.select(2);
+                            }else{
+                              this.navCtrl.parent.select(3);
+                            }
+                          }
+                        }]
+                      });
+                      alert.present();
+                    } else if(this.notifyCount > 0) {
+                      let alert = this.alertCtrl.create({
+                        title: 'Wow, check it out!',
+                        subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
+                        buttons: [{
+                          text: 'OK',
+                          handler: () => {
+                            if(this.role !== 'teacher'){
+                              this.navCtrl.parent.select(2);
+                            }else{
+                              this.navCtrl.parent.select(3);
+                            }
+                          }
+                        }]
+                      });
+                      alert.present();
+                    }
+                  })
+                });
+              })
+            }, err => {
+              console.log(err);
             });
-          }
+          });
         }
     });
   }
@@ -734,21 +726,5 @@ export class SmartieSearch {
     }else{
       this.navCtrl.parent.select(3);
     }
-  }
-
-  checkStripeAccount(profile){
-      let alert = this.alertCtrl.create({
-        title: 'Time to add your Stripe Account!',
-        subTitle: `You must add a Stripe Account in order to receive payments from students! We will send you to Payment Details now in order to gather your information.`,
-        enableBackdropDismiss: false,
-        buttons: [{
-          text: 'OK',
-          handler: () => {
-            // this.navCtrl.push('NotificationFeedPage');
-            this.navCtrl.parent.select(1);
-          }
-        }]
-      });
-      alert.present();
   }
 }
