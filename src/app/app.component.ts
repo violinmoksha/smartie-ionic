@@ -150,6 +150,7 @@ export class SmartieApp {
     if (page.iconName == 'log-out') { // logout -->
       this.storage.clear(); // dump ephemeral session
       this.nav.setRoot("LoginPage"); // send to Login
+      this.firebase.updateFcmToken(null, false);
     }else if(page.text == 'Wallet'){
       this.nav.push("WalletPage");
     }else{
