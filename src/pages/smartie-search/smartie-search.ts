@@ -44,6 +44,7 @@ export class SmartieSearch {
   private markerCount: Array<number> = []
   private radiusInKm: number = 50;
   private extendBound: boolean = false;
+  private randomLocation: any;
   //private searchData: any;
   //private alertOpts: any;
   // private infoWindow: any;
@@ -217,8 +218,12 @@ export class SmartieSearch {
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
     this.events.publish("buttonsLoad", this.role);
-    // this.navCtrl.push('Test1Page');
-    
+  }
+
+  ionViewDidLoad(){
+    console.log('test-load');
+    this.events.publish("buttonsLoad", this.role);
+
     this.storage.get('UserProfile').then(profile => {
       console.log(profile);
       this.role = profile.profileData.role;
@@ -309,104 +314,6 @@ export class SmartieSearch {
           });
         }
     });
-  }
-
-  ionViewDidLoad(){
-    console.log('test-load');
-    this.events.publish("buttonsLoad", this.role);
-    /* this.storage.get('UserProfile').then(profile => {
-      this.role = profile.profileData.role;
-
-        if(this.role == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '' )) {
-          this.checkStripeAccount(profile);
-        } else {
-          if (profile == null) {
-            this.navCtrl.setRoot("LoginPage");
-          } else {
-            let API = this.smartieApi.getApi(
-              'fetchNotifications',
-              { profileId: profile.profileData.objectId, role: profile.profileData.role }
-            );
-
-            return new Promise(resolve => {
-              interface Response {
-                result: any
-              };
-              this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
-                this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
-                  this.notifications = notifications;
-                  this.storage.get('phoneLatLng').then(phoneLatLng => {
-                    //console.log(phoneLatLng);
-                    if (phoneLatLng !== undefined && phoneLatLng !== null) {
-                      this.smartieSearchResult(phoneLatLng, profile.profileData.role, null);
-                    } else {
-                      this.latLngUser = profile.profileData.latlng;
-                      this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
-                    }
-
-                    //get all requested's
-                    this.body = {
-                      profileId: profile.profileData.objectId,
-                      role: profile.profileData.role
-                    };
-
-                    //resolve all promises and if notifyCount > 0 make alert present and push to notification page
-                    Promise.all([
-                      this.getAllRequesteds(),
-                      this.getAllAccepteds(),
-                      this.getAllUpcomings()
-                    ]).then(value => {
-                      if(this.hasUpcomings == true) {
-                        let title, subTitle;
-                        if (this.upcomingsCount == 1) {
-                          title = "You have an upcoming appointment!";
-                          subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
-                        } else {
-                          title = "You have upcoming appointments";
-                          subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
-                        }
-                        let alert = this.alertCtrl.create({
-                          title: title,
-                          subTitle: subTitle,
-                          buttons: [{
-                            text: 'OK',
-                            handler: () => {
-                              if(this.role !== 'teacher'){
-                                this.navCtrl.parent.select(2);
-                              }else{
-                                this.navCtrl.parent.select(3);
-                              }
-                            }
-                          }]
-                        });
-                        alert.present();
-                      } else if(this.notifyCount > 0) {
-                        let alert = this.alertCtrl.create({
-                          title: 'Wow, check it out!',
-                          subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
-                          buttons: [{
-                            text: 'OK',
-                            handler: () => {
-                              if(this.role !== 'teacher'){
-                                this.navCtrl.parent.select(2);
-                              }else{
-                                this.navCtrl.parent.select(3);
-                              }
-                            }
-                          }]
-                        });
-                        alert.present();
-                      }
-                    })
-                  });
-                })
-              }, err => {
-                console.log(err);
-              });
-            });
-          }
-        }
-    }); */
   }
 
   getAllRequesteds(){
@@ -517,8 +424,12 @@ export class SmartieSearch {
     let latLng;
     if (this.role == 'teacher') {
       latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
+
+      this.randomLocation = this.randomGeo(locationData.otherProfile.latlng, 500);
     } else {
       latLng = new google.maps.LatLng(locationData.teacherProfile.latlng.latitude, locationData.teacherProfile.latlng.longitude);
+
+      this.randomLocation = this.randomGeo(locationData.teacherProfile.latlng, 500);
     }
 
     if (this.role == 'teacher') {
@@ -535,12 +446,10 @@ export class SmartieSearch {
       this.userIcon = './assets/imgs/teacher-map-icon30px.png';
     }
 
-    let randomLocation = this.randomGeo(locationData.otherProfile.latlng, 500);
-
     this.marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
-      position: new google.maps.LatLng(randomLocation.latitude, randomLocation.longitude),
+      position: new google.maps.LatLng(this.randomLocation.latitude, this.randomLocation.longitude),
       icon: this.userIcon
     });
     // console.log(this.extendBound);
