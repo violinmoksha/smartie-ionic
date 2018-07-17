@@ -1,3 +1,4 @@
+import { Device } from '@ionic-native/device';
 // TODO: uncomment in prod with appropriate modification
 import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from '../providers/err';
 
@@ -60,7 +61,8 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
     ThemeableBrowser,
     [{provide: ErrorHandler, useClass: SmartieErrorHandler}],
     Firebase,
-    FirebaseProvider
+    FirebaseProvider,
+    Device
   ]
 })
 export class AppModule {}
