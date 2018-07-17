@@ -1,3 +1,5 @@
+import { HttpClient } from '@angular/common/http';
+import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -8,6 +10,7 @@ import { SmartieAPI } from '../providers/api/smartie';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ParseProvider } from '../providers/parse';
 import {FirebaseProvider} from '../providers/firebase/firebase';
+import {getProvision} from '../providers/data-model/data-model';
 
 @Component({
   templateUrl: 'app.html'
@@ -19,7 +22,7 @@ export class SmartieApp {
 
   buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider, private device:Device, private http:HttpClient) {
 
     this.initializeApp();
     /*this.storage.get('sessionToken').then(val => {
@@ -31,7 +34,7 @@ export class SmartieApp {
     });
     this.rootPage = "EditUserComponent";*/
     this.storage.clear(); // dump ephemeral session
-    this.rootPage = "LoginPage"; // send to Login
+    //this.rootPage = "LoginPage"; // send to Login
 
     this.events.subscribe("buttonsLoad", eventData => {
       console.log(eventData);
@@ -69,7 +72,30 @@ export class SmartieApp {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
        // this.initPushNotifications();
+       this.rootPage = 'LauncherPage';
+       let params={
+        "uuid":this.device.uuid,
       }
+      let API = this.smartieApi.getApi(
+        'getUserProvision',
+        params
+      );
+
+      this.smartieApi.http.post<getProvision>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe((result) => {
+
+        this.storage.get('UserProfile').then((data)=>{
+          if(data!=null){
+            this.rootPage = 'SmartieSearch';
+          }else{
+            this.rootPage = 'LoginPage';
+          }
+        })
+      }, (err)=>{
+        this.splashScreen.hide();
+        this.rootPage = 'LandingPage';
+      })
+      }
+
       this.parseProvider.parseInitialize();
     });
   }

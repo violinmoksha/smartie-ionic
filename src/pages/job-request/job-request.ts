@@ -146,47 +146,67 @@ export class JobRequestPage {
     this.loading.present();
 
     this.storage.get("UserProfile").then(profile => {
-      if (profile.profileData.role == 'teacher') {
-        this.body = {
-          teacherProfileId: profile.profileData.objectId,
-          otherProfileId: this.params.otherProfileId,
-          jobDescription: this.params.profileAbout,
-          prefLocation: this.params.prefLocation,
-          requestSent: true,
-          acceptState: false,
-          paidAndUpcoming: false,
-          role: 'teacher'
-        };
-      } else {
-        this.body = {
-          teacherProfileId: this.params.teacherProfileId,
-          otherProfileId: profile.profileData.objectId,
-          jobDescription: this.params.profileAbout,
-          prefLocation: this.params.prefLocation,
-          requestSent: true,
-          acceptState: false,
-          paidAndUpcoming: false,
-          role: profile.profileData.role
-        };
+      if(this.userRole == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '' )) {
+        this.checkStripeAccount(profile);
+      }else{
+        if (profile.profileData.role == 'teacher') {
+          this.body = {
+            teacherProfileId: profile.profileData.objectId,
+            otherProfileId: this.params.otherProfileId,
+            jobDescription: this.params.profileAbout,
+            prefLocation: this.params.prefLocation,
+            requestSent: true,
+            acceptState: false,
+            paidAndUpcoming: false,
+            role: 'teacher'
+          };
+        } else {
+          this.body = {
+            teacherProfileId: this.params.teacherProfileId,
+            otherProfileId: profile.profileData.objectId,
+            jobDescription: this.params.profileAbout,
+            prefLocation: this.params.prefLocation,
+            requestSent: true,
+            acceptState: false,
+            paidAndUpcoming: false,
+            role: profile.profileData.role
+          };
+        }
+  
+        let API = this.smartieApi.getApi(
+          'setJobRequest',
+          this.body
+        );
+        return new Promise(resolve => {
+          interface Response {
+            result: any
+          };
+          this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+            this.requestSent = true;
+            this.viewCtrl.dismiss();
+            this.loading.dismiss();
+            this.submitInProgress = false;
+          });
+        })
       }
-
-      let API = this.smartieApi.getApi(
-        'setJobRequest',
-        this.body
-      );
-      return new Promise(resolve => {
-        interface Response {
-          result: any
-        };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-          this.requestSent = true;
-          this.viewCtrl.dismiss();
-          this.loading.dismiss();
-          this.submitInProgress = false;
-        });
-      })
     })
   }
+
+  checkStripeAccount(profile){
+    let alert = this.alertCtrl.create({
+      title: 'Time to add your Stripe Account!',
+      subTitle: `You must add a Stripe Account in order to receive payments from students! We will send you to Payment Details now in order to gather your information.`,
+      enableBackdropDismiss: false,
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          // this.navCtrl.push('NotificationFeedPage');
+          this.navCtrl.parent.select(1);
+        }
+      }]
+    });
+    alert.present();
+}
 
   viewProfile(){
     console.log(this.params);

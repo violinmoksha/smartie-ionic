@@ -43,6 +43,7 @@ export class LoginPage {
           result: any
         }
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data => {
+          console.log(data);
           this.storage.set('UserProfile', data.result).then(UserProfile => {
             this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: UserProfile.profileData.role, fromWhere: "login" });
             /*console.log(UserProfile);
