@@ -4,41 +4,34 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+<ion-header>
+  <ion-navbar [hidden]="true">
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header>
 
-<ion-content class="bg-login">
-  <div>
-    <ion-grid class="logo-layout">
-      <ion-row>
-        <ion-col col-2></ion-col>
-        <ion-col col-8>
-          <img src="./assets/imgs/login/logo.png" class="logo-img" />
-          <!-- <h4 class="logo-text">Smartie</h4> -->
-        </ion-col>
-        <ion-col col-2></ion-col>
-      </ion-row>
-    </ion-grid>
+<ion-content padding>
+  <div class="logo-icon">
+    <img src="./assets/imgs/logo-icon.png" />
   </div>
 
-  <div class="login-button-layout">
-    <div>
-      <div class="blur-bg special-blur-button learn-bg-color">
-      </div>
-      <div class="">
-        <button class="button border-none remove-shadow" ion-button full (click)="pushMobVerify('student')">
-          <p>I want to learn</p>
-        </button>
-      </div>
+  <form [formGroup]="LoginForm" name="LoginForm" (ngSubmit)="login(LoginForm.value)" novalidate>
+    <div class="list list-inset">
+      <ion-input placeholder="Username" type="text" formControlName="username"></ion-input>
+      <ion-input placeholder="Password" type="password" formControlName="password"></ion-input>
     </div>
-    <div>
-      <div class="blur-bg special-blur-button teach-bg-color">
-      </div>
-      <div class="">
-        <button class="button border-none remove-shadow" ion-button full (click)="pushMobVerify('teacher')">
-          <p>I want to teach</p>
 
-        </button>
-      </div>
-    </div>
+    <button class="button button-positive" ion-button full>Login</button>
+  </form>
+
+  <!-- TODO: uncomment in v2 for Facebook login -->
+  <!--<span>-or-</span>
+  <a class="button fb-login" ng-href="/#/">
+    <img src="./assets/img/facebook-icon.png" width="12px"> Login using Facebook
+  </a>-->
+
+  <div class="register-block">
+    Don't have an account yet? <a (click)="pushRegister()">Sign Up</a><br/>
+    <br /><a (click)="pushForgotPassword()">Forgot your password?</a>
   </div>
-
 </ion-content>

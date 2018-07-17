@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { IonicPage, NavController, NavParams,LoadingController } from 'ionic-angular';
+import { SmartieAPI } from '../../providers/api/smartie';
+import { Device } from '@ionic-native/device';
 /**
  * Generated class for the MobileVerificationPage page.
  *
@@ -18,7 +19,8 @@ export class MobileVerificationPage {
   role: string;
   phoneNumber = '';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private device:Device, private smartieApi:SmartieAPI,
+  private loadingCtrl:LoadingController) {
     this.role = navParams.get('role');
   }
 
@@ -27,7 +29,25 @@ export class MobileVerificationPage {
   }
 
   pushSignUp(){
-    this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
+    let params={
+      "uuid":this.device.uuid,
+      "device":this.device,
+      "role":this.role,
+    }
+    let API = this.smartieApi.getApi(
+      'setUserProvision',
+      params
+    );
+
+    let loading = this.loadingCtrl.create({
+      content: 'provisioning....'
+    });
+    loading.present();
+
+    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data=>{
+      loading.dismiss();
+      this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
+    })
   }
 
   maskUSPhone(txt) {
