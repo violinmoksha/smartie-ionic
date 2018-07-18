@@ -1,3 +1,3 @@
-export interface getProvision {
+export interface GetProvision {
   uuid: string;
 }

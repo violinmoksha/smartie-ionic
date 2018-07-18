@@ -9,8 +9,8 @@ import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../providers/api/smartie';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ParseProvider } from '../providers/parse';
-import {FirebaseProvider} from '../providers/firebase/firebase';
-import {getProvision} from '../providers/data-model/data-model';
+import { FirebaseProvider } from '../providers/firebase/firebase';
+import { GetProvision } from '../providers/data-model/data-model';
 
 @Component({
   templateUrl: 'app.html'
@@ -81,7 +81,7 @@ export class SmartieApp {
         params
       );
 
-      this.smartieApi.http.post<getProvision>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe((result) => {
+      this.smartieApi.http.post<GetProvision>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe((result) => {
 
         this.storage.get('UserProfile').then((data)=>{
           if(data!=null){
