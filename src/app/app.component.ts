@@ -94,6 +94,8 @@ export class SmartieApp {
         this.splashScreen.hide();
         this.rootPage = 'LandingPage';
       })
+      }else{
+        this.rootPage = 'LoginPage';
       }
 
       this.parseProvider.parseInitialize();
