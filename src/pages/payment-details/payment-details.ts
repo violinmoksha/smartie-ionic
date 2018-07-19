@@ -50,38 +50,41 @@ export class PaymentDetailsPage {
     });
     loading.present();
 
-    let API = this.smartieApi.getApi(
-      'createStripeLoginLink',
-      { stripeAccountId: this.stripeCustomerId }
-    );
-    interface Response {
-      result: any;
-    };
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
-      if(response.result.url){
-        loading.dismiss();
-        const options: ThemeableBrowserOptions = {
-          toolbar: {
-            height: 44,
-            color: '#00BA63'
-          },
-          title: {
-            color: '#ffffff',
-            showPageTitle: true,
-            staticText: "Payment Details"
-          },
-          backButtonCanClose: true
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'createStripeLoginLink',
+        { stripeAccountId: this.stripeCustomerId }
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+        if(response.result.url){
+          loading.dismiss();
+          const options: ThemeableBrowserOptions = {
+            toolbar: {
+              height: 44,
+              color: '#00BA63'
+            },
+            title: {
+              color: '#ffffff',
+              showPageTitle: true,
+              staticText: "Payment Details"
+            },
+            backButtonCanClose: true
+          }
+          // const browser = this.iab.create(response.result.url, '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
+          const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_self', options);
+  
+          /* browser.on('loadstop').subscribe(event => {
+            console.log(event);
+          }); */
         }
-        // const browser = this.iab.create(response.result.url, '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
-        const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_self', options);
+      }, err => {
+        console.log(err);
+      });
+    })
 
-        /* browser.on('loadstop').subscribe(event => {
-          console.log(event);
-        }); */
-      }
-    }, err => {
-      console.log(err);
-    });
   }
 
 }

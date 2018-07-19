@@ -70,6 +70,9 @@
       <span *ngIf="params.hasUpcomings">
         <button class="button button-positive" [disabled]="!params.hasUpcomings" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
       </span>
+      <!-- <span>
+        <button class="button button-positive" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
+      </span> -->
     </div>
   </div>
   <div class="alert-button-group" *ngIf="!congrats && params.fromWhere != 'acceptedJobs'">

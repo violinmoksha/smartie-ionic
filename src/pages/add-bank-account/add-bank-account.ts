@@ -67,21 +67,24 @@ export class AddBankAccountPage {
         profileId: this.profileId,
         bankToken: bankToken
       };
-      let API = this.smartieApi.getApi(
-        'addBankAccount',
-        this.body
-      );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
-          loading.dismiss();
-          this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
-        });
-      }, err => {
-        console.log(err.error.message);
-        this.addBankAccountError(err.error.message);
+
+      return new Promise(async (resolve) => {
+        let API = await this.smartieApi.getApi(
+          'addBankAccount',
+          this.body
+        );
+        interface Response {
+          result: any;
+        };
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+          this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
+            loading.dismiss();
+            this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
+          });
+        }, err => {
+          console.log(err.error.message);
+          this.addBankAccountError(err.error.message);
+        })
       })
     }, err => {
       console.log(err);

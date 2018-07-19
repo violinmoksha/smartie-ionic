@@ -32,17 +32,19 @@ export class FirebaseProvider {
 
     let params={
       "deviceId":this.device.uuid,
-      "platform":this.device.platform.toLowerCase(),
+      // "platform":this.device.platform.toLowerCase(),
       "fcmToken":token,
       "isActive":isActive
     }
-    let API = this.smartieApi.getApi(
-      'updateFcmToken',
-      params
-    );
-
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data=>{
-      console.log(data);
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'updateFcmToken',
+        params
+      );
+  
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data=>{
+        console.log(data);
+      })
     })
   }
 

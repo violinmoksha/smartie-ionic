@@ -76,23 +76,25 @@ export class SmartieApp {
        let params={
         "uuid":this.device.uuid,
       }
-      let API = this.smartieApi.getApi(
-        'getUserProvision',
-        params
-      );
-
-      this.smartieApi.http.post<GetProvision>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe((result) => {
-
-        this.storage.get('UserProfile').then((data)=>{
-          if(data!=null){
-            this.rootPage = 'SmartieSearch';
-          }else{
-            this.rootPage = 'LoginPage';
-          }
+      return new Promise(async (resolve) => {
+        let API = await this.smartieApi.getApi(
+          'getUserProvision',
+          params
+        );
+  
+        this.smartieApi.http.post<GetProvision>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe((result) => {
+  
+          this.storage.get('UserProfile').then((data)=>{
+            if(data!=null){
+              this.rootPage = 'SmartieSearch';
+            }else{
+              this.rootPage = 'LoginPage';
+            }
+          })
+        }, (err)=>{
+          this.splashScreen.hide();
+          this.rootPage = 'LandingPage';
         })
-      }, (err)=>{
-        this.splashScreen.hide();
-        this.rootPage = 'LandingPage';
       })
       }else{
         this.rootPage = 'LoginPage';

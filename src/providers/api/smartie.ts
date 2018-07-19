@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Constants } from './constants';
+import { DbserviceProvider } from '../dbservice/dbservice';
 import { Storage } from '@ionic/storage';
+import { AlertController } from 'ionic-angular';
 
 /*
   Generated class for the SmartieAPI provider.
@@ -15,10 +17,13 @@ export class SmartieAPI {
   private applicationId: string;
   private contentType: string;
 
-  constructor(public http: HttpClient, public storage: Storage) {
+  constructor(public http: HttpClient, public storage: Storage, public dbService: DbserviceProvider, private alertCtrl: AlertController) {
   }
 
-  getApi(endPoint, body){
+ async getApi(endPoint, body){
+    let userData = await this.dbService.getUser();
+    console.log(userData);
+    
     const ourBaseUrls = Constants.API_ENDPOINTS.baseUrls;
     const ourHeaders = Constants.API_ENDPOINTS.headers;
     const ourEnv = Constants.API_ENDPOINTS.env;
@@ -37,7 +42,8 @@ export class SmartieAPI {
     const httpOptions = {
       headers: new HttpHeaders({
         'X-Parse-Application-Id': this.applicationId,
-        'Content-Type': this.contentType
+        'Content-Type': this.contentType,
+        'x-bouncy-token':userData? userData.jwtToken : ''
       })
     };
 
@@ -100,5 +106,18 @@ export class SmartieAPI {
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
+  showErrors(err){
+    let alert;
+    if (err.error.error.name == 'JsonWebTokenError') {
+      alert = this.alertCtrl.create({
+        title: 'Authentication Error',
+        subTitle: 'You are not authorized to use this service',
+        buttons: ['OK']
+      });
+
+      alert.present();
+    }
   }
 }

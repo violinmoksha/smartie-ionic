@@ -33,12 +33,13 @@ export class LoginPage {
 
   login(data){
     if(data.username !== '' && data.password !==''){
-      let API = this.smartieApi.getApi(
-        'loginUser',
-        {username: data.username.toLowerCase(), password: data.password}
-      );
+      
+      return new Promise(async (resolve) => {
+        let API = await this.smartieApi.getApi(
+          'loginUser',
+          {username: data.username.toLowerCase(), password: data.password}
+        );
 
-      return new Promise(resolve => {
         interface Response {
           result: any
         }
@@ -74,6 +75,7 @@ export class LoginPage {
         },
         (err) => {
           Pro.monitoring.exception(err);
+          console.log(err);
           this.loginFailed(err);
         });
       });

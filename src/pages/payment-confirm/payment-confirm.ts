@@ -60,17 +60,20 @@ export class PaymentConfirmPage {
       customerId: this.stripeCustomer,
       teacherAccountId: this.params.profileStripeAccount.id
     };
-    let API = this.smartieApi.getApi(
-      'createTransaction',
-      this.body
-    );
-    interface Response {
-      result: any;
-    };
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
-    }, err => {
-      console.log(err);
+
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'createTransaction',
+        this.body
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
+      }, err => {
+        console.log(err);
+      })
     })
     // this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
   }

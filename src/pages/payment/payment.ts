@@ -99,18 +99,21 @@ export class PaymentPage {
 
     if(this.stripeCustomerCard == undefined){
       console.log(cardValue);
-      let API = this.smartieApi.getApi(
-        'createCardToken',
-        { cardValue: cardValue, customerId: this.stripeCustomer, otherProfileId: this.otherProfileId }
-      );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        this.createTransaction(amount);
-      }, err => {
-        console.log(err);
-      })
+
+      return new Promise(async (resolve) => {
+        let API = await this.smartieApi.getApi(
+          'createCardToken',
+          { cardValue: cardValue, customerId: this.stripeCustomer, otherProfileId: this.otherProfileId }
+        );
+        interface Response {
+          result: any;
+        };
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+          this.createTransaction(amount);
+        }, err => {
+          console.log(err);
+        })
+      })      
     }else{
       this.createTransaction(amount);
     }
@@ -135,19 +138,21 @@ export class PaymentPage {
       // startTime: this.apptStartTime,
       // endTime: this.apptEndTime
     };
-    let API = this.smartieApi.getApi(
-      'createTransaction',
-      this.body
-    );
-    interface Response {
-      result: any;
-    };
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      this.loading.dismiss();
-      this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});      
-    }, err => {
-      console.log(err);
-    })
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'createTransaction',
+        this.body
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.loading.dismiss();
+        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});      
+      }, err => {
+        console.log(err);
+      })
+    })    
   }
 
 }

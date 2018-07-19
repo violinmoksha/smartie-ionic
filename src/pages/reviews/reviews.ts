@@ -43,8 +43,8 @@ export class ReviewsPage {
   ionViewDidLoad() {
     console.log(this.reviewedProfileId);
 
-    return new Promise(resolve => {
-      let API = this.smartieApi.getApi(
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
         'getReviews',
         { reviewedProfileId: this.reviewedProfileId }
       );
@@ -66,8 +66,8 @@ export class ReviewsPage {
   }
 
   getReviewingProfileData(review){
-    return new Promise(resolve => {
-      let API = this.smartieApi.getApi(
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
         'getReviewingProfile',
         { reviewingProfileId: review.reviewingProfileId}
       );

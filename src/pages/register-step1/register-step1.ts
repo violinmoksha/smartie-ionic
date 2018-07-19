@@ -49,16 +49,16 @@ export class RegisterStep1Page {
   next(form1Value){
     // pick this up from otp flow now
     form1Value.phone = this.navParams.data.phone;
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'isNewEmail',
+        {email: form1Value.email}
+      );
 
-    let API = this.smartieApi.getApi(
-      'isNewEmail',
-      {email: form1Value.email}
-    );
-
-    return new Promise(resolve => {
       interface Response {
         result: any
       };
+      
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         isNewEmail => {
           if (isNewEmail.result == true) {
