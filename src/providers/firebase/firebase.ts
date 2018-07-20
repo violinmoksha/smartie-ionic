@@ -22,18 +22,18 @@ export class FirebaseProvider {
   }
 
 
-  initFCM = () => {
+  initFCM() {
     this.firebase.getToken()
       .then(token => {
         console.log(`The token is ${token}`);
         this.updateFcmToken(token);
       }).catch(error => console.error('Error getting token', error));
 
-    this.firebase.onTokenRefresh()
+    /* this.firebase.onTokenRefresh()
       .subscribe((token: string) => {
         console.log(`Got a new token ${token}`);
         this.updateFcmToken(token);
-      });
+      }); */
   }
 
   notificationListener = ()=>{
@@ -63,7 +63,7 @@ export class FirebaseProvider {
 
     let params={
       "deviceId":this.device.uuid,
-      // "platform":this.device.platform.toLowerCase(),
+      "platform":this.device.platform.toLowerCase(),
       "fcmToken":token,
       "isActive":isActive
     }
