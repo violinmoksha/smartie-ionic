@@ -69,6 +69,7 @@ export class SmartieApp {
       if (this.platform.is('cordova')) {
         this.initGeolocation();
         this.firebase.initFCM();
+        this.firebase.notificationListener();
         this.statusBar.styleDefault();
         this.splashScreen.hide();
         // this.initPushNotifications();
