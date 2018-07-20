@@ -231,12 +231,13 @@ export class SmartieSearch {
         if (profile == null) {
           this.navCtrl.setRoot("LoginPage");
         } else {
-          let API = this.smartieApi.getApi(
-            'fetchNotifications',
-            { profileId: profile.profileData.objectId, role: profile.profileData.role }
-          );
+          
+          return new Promise(async (resolve) => {
+            let API = await this.smartieApi.getApi(
+              'fetchNotifications',
+              { profileId: profile.profileData.objectId, role: profile.profileData.role }
+            );
 
-          return new Promise(resolve => {
             interface Response {
               result: any
             };
@@ -309,7 +310,8 @@ export class SmartieSearch {
                 });
               })
             }, err => {
-              console.log(err);
+              console.log(err.error.error);
+              this.smartieApi.showErrors(err);
             });
           });
         }
@@ -317,8 +319,8 @@ export class SmartieSearch {
   }
 
   getAllRequesteds(){
-    return new Promise(resolve => {
-      let API = this.smartieApi.getApi(
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
         'getAllRequesteds',
         this.body
       );
@@ -339,8 +341,8 @@ export class SmartieSearch {
   }
 
   getAllAccepteds(){
-    return new Promise(resolve => {
-      let API = this.smartieApi.getApi(
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
         'getAllAccepteds',
         this.body
       );
@@ -358,8 +360,8 @@ export class SmartieSearch {
   }
 
   getAllUpcomings(){
-    return new Promise(resolve => {
-      let API = this.smartieApi.getApi(
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
         'getAllUpcomings',
         this.body
       );
@@ -542,6 +544,11 @@ export class SmartieSearch {
       }
       let popover = this.popoverCtrl.create("JobRequestPage", { params: params });
       popover.present();
+      popover.onDidDismiss(() => {
+        // Popover should be gone at this point completely.          
+        console.log("Popover completely removed");
+        this.ionViewDidLoad();
+      });
       //this.navCtrl.push("JobRequestPage", { params: params });
   }
 

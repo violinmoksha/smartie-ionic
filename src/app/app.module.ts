@@ -27,6 +27,7 @@ import { Globalization } from '@ionic-native/globalization';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import { FirebaseProvider } from '../providers/firebase/firebase';
+import { DbserviceProvider } from '../providers/dbservice/dbservice';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
     [{provide: ErrorHandler, useClass: SmartieErrorHandler}],
     Firebase,
     FirebaseProvider,
-    Device
+    Device,
+    DbserviceProvider
   ]
 })
 export class AppModule {}

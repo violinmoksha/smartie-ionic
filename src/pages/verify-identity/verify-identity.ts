@@ -71,23 +71,25 @@ export class VerifyIdentityPage {
       legalEntityValues: legalEntityValues
     };
 
-    let API = this.smartieApi.getApi(
-      'verifyTeacherIdentity',
-      this.body
-    );
-    interface Response {
-      result: any;
-    };
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'verifyTeacherIdentity',
+        this.body
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
+          loading.dismiss();
+          this.navCtrl.push("AddBankAccountPage", { stripeAccount: response.result });
+        });
+      }, err => {
         loading.dismiss();
-        this.navCtrl.push("AddBankAccountPage", { stripeAccount: response.result });
-      });
-    }, err => {
-      loading.dismiss();
-      console.log(err.error.error.message);
-      this.verifyIdentityError(err.error.error.message);
-    })
+        console.log(err.error.error.message);
+        this.verifyIdentityError(err.error.error.message);
+      })
+    });    
   }
 
   verifyIdentityError(errorMessage){

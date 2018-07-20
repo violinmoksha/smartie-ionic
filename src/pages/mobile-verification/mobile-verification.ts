@@ -34,19 +34,21 @@ export class MobileVerificationPage {
       "device":this.device,
       "role":this.role,
     }
-    let API = this.smartieApi.getApi(
-      'setUserProvision',
-      params
-    );
-
     let loading = this.loadingCtrl.create({
       content: 'provisioning....'
     });
-    loading.present();
 
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data=>{
-      loading.dismiss();
-      this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'setUserProvision',
+        params
+      );
+      loading.present();
+  
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data=>{
+        loading.dismiss();
+        this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
+      })
     })
   }
 

@@ -33,23 +33,25 @@ export class WalletPage {
         content: 'You available balance is coming...'
       });
       loading.present();
-  
-      let API = this.smartieApi.getApi(
-        'getTeacherAvailableBalance',
-        { stripeAccountId: this.stripeCustomer.stripe_user_id, profileId: profile.profileData.objectId }
-      );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        loading.dismiss();
-        console.log(response.result);
-        this.availableBalance = response.result.available[0].amount / 100;
-        this.pendingBalance = response.result.pending[0].amount / 100;
-      }, err => {
-        loading.dismiss();
-        console.log(err.error.error.message);
-      })
+
+      return new Promise(async (resolve) => {
+        let API = await this.smartieApi.getApi(
+          'getTeacherAvailableBalance',
+          { stripeAccountId: this.stripeCustomer.stripe_user_id, profileId: profile.profileData.objectId }
+        );
+        interface Response {
+          result: any;
+        };
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+          loading.dismiss();
+          console.log(response.result);
+          this.availableBalance = response.result.available[0].amount / 100;
+          this.pendingBalance = response.result.pending[0].amount / 100;
+        }, err => {
+          loading.dismiss();
+          console.log(err.error.error.message);
+        })
+      });
     })
   }
 
@@ -63,20 +65,21 @@ export class WalletPage {
     });
     loading.present();
 
-    let API = this.smartieApi.getApi(
-      'createInstantPayouts',
-      { stripeAccountId: this.stripeCustomer.stripe_user_id, amount: this.availableBalance * 100, profileId: this.profileData.objectId }
-    );
-    interface Response {
-      result: any;
-    };
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      loading.dismiss();
-        console.log(response.result);
-    }, err => {
-      loading.dismiss();
-      console.log(err.error.error);
-    })
-
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'createInstantPayouts',
+        { stripeAccountId: this.stripeCustomer.stripe_user_id, amount: this.availableBalance * 100, profileId: this.profileData.objectId }
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        loading.dismiss();
+          console.log(response.result);
+      }, err => {
+        loading.dismiss();
+        console.log(err.error.error);
+      })
+    });
   }
 }

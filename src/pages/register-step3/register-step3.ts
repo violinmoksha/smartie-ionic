@@ -293,24 +293,26 @@ export class RegisterStep3Page {
       // form3Values.defaultUTCEndTime = UTCendTime.getUTCHours()+':'+UTCendTime.getUTCMinutes();
     }
 
-    let API = this.smartieApi.getApi(
-      'signUpRole',
-      {role: this.role, accountInfo: this.form1Values, profileInfo: this.form2Values, userInfo: form3Values}
-    );
+    
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'signUpRole',
+        {role: this.role, accountInfo: this.form1Values, profileInfo: this.form2Values, userInfo: form3Values}
+      );
 
-    return new Promise(resolve => {
       interface Response {
         result: any
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         signupResult => {
           this.storage.set("UserProfile", signupResult.result);
-          let API = this.smartieApi.getApi(
-            'fetchNotifications',
-            { profileId: signupResult.result.profileData.objectId, role: this.role }
-          );
+          
+          return new Promise(async (resolve) => {
+            let API = await this.smartieApi.getApi(
+              'fetchNotifications',
+              { profileId: signupResult.result.profileData.objectId, role: this.role }
+            );
 
-          return new Promise(resolve => {
             interface Response {
               result: any
             };

@@ -61,7 +61,7 @@ export class AddPaymentPage {
     })
   }
 
-  updateStripeAccount() {
+  /* updateStripeAccount() {
     //console.log(this.stripeAccountId);
     this.body = {
       // stripeAccountId: this.stripeAccountId,
@@ -80,7 +80,7 @@ export class AddPaymentPage {
     }, err => {
       console.log(err);
     })
-  }
+  } */
 
   addStripeAccount(data) {
 
@@ -140,21 +140,23 @@ export class AddPaymentPage {
     });
     loading.present();
 
-    let API = this.smartieApi.getApi(
-      endPoint,
-      body
-    );
-    interface Response {
-      result: any;
-    };
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
-      console.log(response.result);
-      this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
-        loading.dismiss();
-        this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.result });
-      })
-    }, err => {
-      console.log(err);
-    });
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        endPoint,
+        body
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+        console.log(response.result);
+        this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
+          loading.dismiss();
+          this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.result });
+        })
+      }, err => {
+        console.log(err);
+      });
+    })
   }
 }

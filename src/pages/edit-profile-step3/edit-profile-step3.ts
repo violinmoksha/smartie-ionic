@@ -321,19 +321,21 @@ export class EditProfileStep3Page {
       }
     }
 
-    let API = this.smartieApi.getApi(
-      'editUser',
-      this.body
-    );
-    interface Response {
-      result: any;
-    }
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
-      console.log(response.result);
-      this.smartieApi.updateUserProfileStorage(response.result.profileData, response.result.specificUserData).then(profile => {
-        this.loading.dismiss();
-        this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole, fromWhere: "editProfile" });
-      });
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'editUser',
+        this.body
+      );
+      interface Response {
+        result: any;
+      }
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+        console.log(response.result);
+        this.smartieApi.updateUserProfileStorage(response.result.profileData, response.result.specificUserData).then(profile => {
+          this.loading.dismiss();
+          this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole, fromWhere: "editProfile" });
+        });
+      })
     })
 
     /*return new Promise(resolve => {

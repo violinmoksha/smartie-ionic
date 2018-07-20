@@ -52,19 +52,22 @@ export class SendEmailPage {
   }
 
   sendEmail(){
-    let API = this.smartieApi.getApi(
-      'sendEmail',
-      { recipientProfileId: this.recipientProfileId, senderRole: this.role, senderName: this.senderName, recipientName: this.recipientName, subject: this.subject, message: this.message }
-    );
 
-    interface Response {
-      result: any;
-    };
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      this.navCtrl.parent.select(0);
-    }, err => {
-      console.log(err);
-    })
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'sendEmail',
+        { recipientProfileId: this.recipientProfileId, senderRole: this.role, senderName: this.senderName, recipientName: this.recipientName, subject: this.subject, message: this.message }
+      );
+  
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.navCtrl.parent.select(0);
+      }, err => {
+        console.log(err);
+      })
+    });    
   }
 
 }

@@ -115,8 +115,9 @@ export class JobRequestPage {
       } else if (otherRole == 'school') {
         this.genericAvatar = '/assets/imgs/user-img-school.png';
       }
-      return new Promise(resolve => {
-        let API = this.smartieApi.getApi(
+
+      return new Promise(async (resolve) => {
+        let API = await this.smartieApi.getApi(
           'getRequestedJobRequest',
           this.body
         );
@@ -173,11 +174,12 @@ export class JobRequestPage {
           };
         }
   
-        let API = this.smartieApi.getApi(
-          'setJobRequest',
-          this.body
-        );
-        return new Promise(resolve => {
+        return new Promise(async (resolve) => {
+          let API = await this.smartieApi.getApi(
+            'setJobRequest',
+            this.body
+          );
+        
           interface Response {
             result: any
           };
@@ -226,11 +228,13 @@ export class JobRequestPage {
       }
 
       console.log('sending '+JSON.stringify(this.body));
-      let API = this.smartieApi.getApi(
-        'setJobRequest',
-        this.body
-      );
-      return new Promise(resolve => {
+
+      return new Promise(async (resolve) => {
+        let API = await this.smartieApi.getApi(
+          'setJobRequest',
+          this.body
+        );
+      
         interface Response {
           result: any
         };
@@ -262,11 +266,12 @@ export class JobRequestPage {
         this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.params.teacherProfileId, requestSent: false, acceptState: false, paidAndUpcoming: false };
       }
 
-      let API = this.smartieApi.getApi(
-        'setJobRequest',
-        this.body
-      );
-      return new Promise(resolve => {
+      return new Promise(async (resolve) => {
+        let API = await this.smartieApi.getApi(
+          'setJobRequest',
+          this.body
+        );
+
         interface Response {
           result: any
         };
