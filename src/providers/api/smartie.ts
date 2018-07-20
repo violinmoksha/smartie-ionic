@@ -22,8 +22,10 @@ export class SmartieAPI {
 
  async getApi(endPoint, body){
     let userData = await this.dbService.getUser();
+    let provisionData = await this.dbService.getProvision();
+
     console.log(userData);
-    
+
     const ourBaseUrls = Constants.API_ENDPOINTS.baseUrls;
     const ourHeaders = Constants.API_ENDPOINTS.headers;
     const ourEnv = Constants.API_ENDPOINTS.env;
@@ -42,8 +44,9 @@ export class SmartieAPI {
     const httpOptions = {
       headers: new HttpHeaders({
         'X-Parse-Application-Id': this.applicationId,
-        'Content-Type': this.contentType,
-        'x-bouncy-token':userData? userData.jwtToken : ''
+        'X-Hullo-Token': provisionData ? provisionData.pToken : '',
+        'X-Bouncy-Token': userData ? userData.jwtToken : '',
+        'Content-Type': this.contentType
       })
     };
 
@@ -79,7 +82,7 @@ export class SmartieAPI {
   }
 
   updateUserProfileStorage(updatedProfile, specificUserData = null){
-   
+
       return new Promise(resolve => {
         this.storage.get("UserProfile").then(profile => {
           if(updatedProfile){
@@ -95,7 +98,7 @@ export class SmartieAPI {
           })
         })
       });
-    
+
   }
 
   getParameterByName(name, url) {

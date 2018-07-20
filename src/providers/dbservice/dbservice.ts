@@ -17,7 +17,7 @@ export class DbserviceProvider {
   }
 
   async getUser(){
-    return await this.storage.get("UserProfile").then((user)=>{
+    return await this.storage.get("UserProfile").then(user=>{
       if(user){
         return user;
       }else{
@@ -26,4 +26,13 @@ export class DbserviceProvider {
     });
   }
 
+  async getProvision(){
+    return await this.storage.get("Provision").then(provision => {
+      if (provision) {
+        return provision;
+      } else {
+        return false;
+      }
+    });
+  }
 }

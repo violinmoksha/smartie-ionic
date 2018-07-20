@@ -35,7 +35,7 @@ export class MobileVerificationPage {
       "role":this.role,
     }
     let loading = this.loadingCtrl.create({
-      content: 'provisioning....'
+      content: 'Provisioning....'
     });
 
     return new Promise(async (resolve) => {
@@ -44,7 +44,7 @@ export class MobileVerificationPage {
         params
       );
       loading.present();
-  
+
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data=>{
         loading.dismiss();
         this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });

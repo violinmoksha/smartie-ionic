@@ -21,6 +21,7 @@ export class LandingPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad LandingPage');
   }
+
   pushRegister(){
     this.navCtrl.push("RegisterPage");
   }
