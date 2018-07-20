@@ -3,6 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
 import { SmartieAPI } from '../api/smartie';
+// import { App } from "ionic-angular";
+import {NavController, App} from "ionic-angular/index";
+// import { NavController, NavParams } from 'ionic-angular';
+
 /*
   Generated class for the FirebaseProvider provider.
 
@@ -11,20 +15,47 @@ import { SmartieAPI } from '../api/smartie';
 */
 @Injectable()
 export class FirebaseProvider {
-
-  constructor(public http: HttpClient,private firebase: Firebase,private device: Device,private smartieApi: SmartieAPI) {
+  private navCtrl: NavController;
+  constructor(public http: HttpClient,private firebase: Firebase,private device: Device,private smartieApi: SmartieAPI, private app:App) {
+    this.navCtrl = app.getActiveNav();
     console.log('Hello FirebaseProvider Provider');
   }
 
 
-  initFCM=()=>{
+  initFCM = () => {
     this.firebase.getToken()
-  .then(token => {
-    console.log(`The token is ${token}`);
-    this.updateFcmToken(token);
-}
-) // save the token server-side and use it to push notifications to this device
-  .catch(error => console.error('Error getting token', error));
+      .then(token => {
+        console.log(`The token is ${token}`);
+        this.updateFcmToken(token);
+      }).catch(error => console.error('Error getting token', error));
+
+    this.firebase.onTokenRefresh()
+      .subscribe((token: string) => {
+        console.log(`Got a new token ${token}`);
+        this.updateFcmToken(token);
+      });
+  }
+
+  notificationListener = ()=>{
+    this.firebase.onNotificationOpen().subscribe((notification:any)=>{
+      console.log(notification);
+      this.notificationHandler(notification);
+    })
+
+  }
+
+  notificationHandler = (notificaitonData)=>{
+
+    //perform action based notification's action
+    switch (notificaitonData.eventAction) {
+      case "PaymentReminder":
+        alert("setup payment");
+        this.navCtrl.push("AddPaymentPage");
+        break;
+
+      default:
+        break;
+    }
   }
 
 

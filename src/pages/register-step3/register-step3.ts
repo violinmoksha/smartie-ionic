@@ -1,10 +1,11 @@
+import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Slides, ModalController, LoadingController  } from 'ionic-angular';
 import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { Storage } from '@ionic/storage';
-
+import {Response} from '../../providers/data-model/data-model';
 declare var google;
 
 /**
@@ -89,8 +90,7 @@ export class RegisterStep3Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage) {
-    // this.submitInProgress = false;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device) {    // this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
       content: 'Creating Account...'
     });
@@ -270,14 +270,30 @@ export class RegisterStep3Page {
     this.addTeacherCvCert(this.TeacherFilesView);
   }
 
+
+  updateUserToProvision = async (userId, userProfileId) => {
+
+    let API = await this.smartieApi.getApi(
+      'addUserToProvision',
+      { uuid: this.device.uuid, user: userId, profile: userProfileId}
+    );
+
+
+    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+      console.log(response);
+    }, err => {
+      console.log(err);
+    });
+  }
+
   finalRegisterSubmit(form3Values){
     // this.submitInProgress = true;
     this.loading.present();
 
     form3Values.prefPayRate = this.hourlyRate;
     if(this.role == 'teacher'){
-      form3Values.yrseExperience = this.yearExperience; 
-      
+      form3Values.yrseExperience = this.yearExperience;
+
       let UTCstartTime = new Date(this.startDate.split('-')[2], (this.startDate.split('-')[0] - 1), this.startDate.split('-')[1], parseInt(form3Values.startTime.split(':')[0]), parseInt(form3Values.startTime.split(':')[1]));
 
       form3Values.defaultStartDateTime = UTCstartTime;
@@ -293,7 +309,7 @@ export class RegisterStep3Page {
       // form3Values.defaultUTCEndTime = UTCendTime.getUTCHours()+':'+UTCendTime.getUTCMinutes();
     }
 
-    
+
     return new Promise(async (resolve) => {
       let API = await this.smartieApi.getApi(
         'signUpRole',
@@ -305,8 +321,11 @@ export class RegisterStep3Page {
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         signupResult => {
+          console.log(signupResult);
+          this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
+
           this.storage.set("UserProfile", signupResult.result);
-          
+
           return new Promise(async (resolve) => {
             let API = await this.smartieApi.getApi(
               'fetchNotifications',
@@ -326,6 +345,7 @@ export class RegisterStep3Page {
               console.log(err);
             });
           });
+
         },
         err => {
           let alert = this.alertCtrl.create({
@@ -339,6 +359,8 @@ export class RegisterStep3Page {
       )
     });
   }
+
+
 
   /*setProfilePic() {
     return new Promise(function(resolve, reject){
