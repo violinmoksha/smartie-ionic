@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController } from 'ionic-angular';
+import { IonicPage,Platform, NavController, NavParams,LoadingController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
@@ -22,7 +22,7 @@ export class MobileVerificationPage {
   role: string;
   phoneNumber = '';
   mobileVerification: FormGroup;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private device: Device, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private storage: Storage,private formBuilder: FormBuilder) {
+  constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, private device: Device, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private storage: Storage,private formBuilder: FormBuilder) {
     this.role = navParams.get('role');
     this.mobileVerification = this.formBuilder.group({
      mobileNumber:['',Validators.compose([
@@ -38,7 +38,7 @@ export class MobileVerificationPage {
   pushSignUp(){
     console.log(this.mobileVerification.valid);
     let params={
-      "uuid": this.device.uuid,
+      "uuid": (this.platform.is('cordova')) ? this.device.uuid :123456,
       "device": this.device,
       "role": this.role,
     }
