@@ -38,6 +38,7 @@ export class RegisterStep3Page {
   private endDate: any;
   private role: any;
   private today: any;
+  public userLocation: any;
 
   public event = {
     timeStarts: '10:00',
@@ -103,11 +104,17 @@ export class RegisterStep3Page {
     var defEndDate = new Date(this.today.setDate(this.today.getDate() + 365));
     this.endDate = defEndDate.getMonth()+1 +'-'+defEndDate.getDate()+'-'+defEndDate.getFullYear();
 
-    let timeZoneStartTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), 10);
+    /* let timeZoneStartTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), 10, 0, 0);
+    console.log(timeZoneStartTime);
     this.event.timeStarts = timeZoneStartTime.toLocaleTimeString();
 
-    let timeZoneEndTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), 23);
+    console.log(this.event.timeStarts);
+
+    let timeZoneEndTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), 23, 0, 0);
+    console.log(timeZoneEndTime);
     this.event.timeEnds = timeZoneEndTime.toLocaleTimeString();
+
+    console.log(this.event.timeEnds); */
 
     //profilePhoto
     this.storage.get('profilePhotoDataUrl').then(profilePhoto => {
@@ -304,6 +311,9 @@ export class RegisterStep3Page {
 
       form3Values.defaultEndDateTime = UTCendTime;
 
+      //Setting prefLocation from google autocomplete places
+      form3Values.prefLocation = this.userLocation;
+
       console.log(form3Values);
 
       // form3Values.defaultUTCEndTime = UTCendTime.getUTCHours()+':'+UTCendTime.getUTCMinutes();
@@ -422,9 +432,14 @@ export class RegisterStep3Page {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterStep3Page');
     let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
-    let options = {componentRestrictions: {country: 'us'}};
+    let options = { componentRestrictions: {country: 'us'} };
 
     let autocomplete = new google.maps.places.Autocomplete(input, options);
+    autocomplete.addListener("place_changed", () => {
+      let place = autocomplete.getPlace();
+      console.log(place.formatted_address);
+      this.userLocation = place.formatted_address;
+    })
   }
 
 }

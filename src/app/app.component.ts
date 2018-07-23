@@ -33,7 +33,7 @@ export class SmartieApp {
       }
     });
     this.rootPage = "EditUserComponent";*/
-    this.storage.clear(); // dump ephemeral session
+    // this.storage.clear(); // dump ephemeral session
     //this.rootPage = "LoginPage"; // send to Login
 
     this.events.subscribe("buttonsLoad", eventData => {
@@ -99,7 +99,7 @@ export class SmartieApp {
           })
         })
       }else{
-        this.rootPage = 'LoginPage';
+        this.rootPage = 'LandingPage';
       }
 
       this.parseProvider.parseInitialize();

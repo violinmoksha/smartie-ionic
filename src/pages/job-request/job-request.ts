@@ -202,8 +202,8 @@ export class JobRequestPage {
       buttons: [{
         text: 'OK',
         handler: () => {
-          // this.navCtrl.push('NotificationFeedPage');
-          this.navCtrl.parent.select(1);
+          this.navCtrl.push('PaymentDetailsPage');
+          // this.navCtrl.parent.select(1);
         }
       }]
     });

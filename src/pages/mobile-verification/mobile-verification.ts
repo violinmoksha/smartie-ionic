@@ -20,6 +20,7 @@ export class MobileVerificationPage {
 
   role: string;
   phoneNumber = '';
+  deviceInfo: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private device: Device, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private storage: Storage) {
     this.role = navParams.get('role');
@@ -33,10 +34,11 @@ export class MobileVerificationPage {
     let params={
       "uuid": this.device.uuid,
       "device": this.device,
-      "role": this.role,
+      "role": this.role
     }
 
     console.log(params);
+
     let loading = this.loadingCtrl.create({
       content: 'Provisioning....'
     });
@@ -62,4 +64,5 @@ export class MobileVerificationPage {
 
     return txt;
   }
+
 }

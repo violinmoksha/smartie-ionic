@@ -24,6 +24,10 @@
     <pre>Form StartDate Status : {{Step3Form.get('dates.endDate').value }}</pre>
   </div> -->
 
+  <div>
+    <pre>Events: {{ event | json }}</pre>
+  </div>
+
   <form [formGroup]="Step3Form" name="Step3Form" (ngSubmit)="finalRegisterSubmit(Step3Form.value)" novalidate>
 
     <div class="list list-inset registration teacher step3">
@@ -73,7 +77,7 @@
       <ion-item>
         <ion-label *ngIf="role == 'teacher'" fixed>Preferred Teaching Location</ion-label>
         <ion-label *ngIf="role != 'teacher'" fixed>Preferred Learning Location</ion-label>
-        <ion-input placeholder="Location Name" id="locationSearch" type="text" formControlName="prefLocation"></ion-input>
+        <ion-input placeholder="Location Name" [(ngModel)]="userLocation" id="locationSearch" type="text" formControlName="prefLocation"></ion-input>
       </ion-item>
 
       <div *ngIf="!Step3Form.controls['prefLocation'].valid && Step3Form.controls['prefLocation'].touched" class="item item-message">
