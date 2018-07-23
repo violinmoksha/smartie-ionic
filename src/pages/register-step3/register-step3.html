@@ -24,10 +24,6 @@
     <pre>Form StartDate Status : {{Step3Form.get('dates.endDate').value }}</pre>
   </div> -->
 
-  <div>
-    <pre>Events: {{ event | json }}</pre>
-  </div>
-
   <form [formGroup]="Step3Form" name="Step3Form" (ngSubmit)="finalRegisterSubmit(Step3Form.value)" novalidate>
 
     <div class="list list-inset registration teacher step3">
