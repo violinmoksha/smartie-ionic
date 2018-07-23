@@ -23,7 +23,7 @@ export class RegisterStep1Page {
   private notNewEmail: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI) {
-    this.role = navParams.data.role;
+    this.role = navParams.get('role');
 
     this.Step1Form = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')]),

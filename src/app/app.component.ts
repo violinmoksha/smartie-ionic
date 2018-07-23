@@ -1,3 +1,4 @@
+import { DbserviceProvider } from './../providers/dbservice/dbservice';
 import { HttpClient } from '@angular/common/http';
 import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
@@ -22,7 +23,7 @@ export class SmartieApp {
 
   buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider, private device:Device, private http:HttpClient) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider, private device:Device, private http:HttpClient, private dbservice:DbserviceProvider) {
 
     this.initializeApp();
     /*this.storage.get('sessionToken').then(val => {
@@ -33,7 +34,6 @@ export class SmartieApp {
       }
     });
     this.rootPage = "EditUserComponent";*/
-    this.storage.clear(); // dump ephemeral session
     //this.rootPage = "LoginPage"; // send to Login
 
     this.events.subscribe("buttonsLoad", eventData => {
@@ -67,6 +67,8 @@ export class SmartieApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       if (this.platform.is('cordova')) {
+        console.log("device id");
+        console.log(this.device.uuid);
         this.initGeolocation();
         this.firebase.initFCM();
         this.firebase.notificationListener();
@@ -99,7 +101,7 @@ export class SmartieApp {
           })
         })
       }else{
-        this.rootPage = 'LoginPage';
+        this.rootPage = 'LandingPage';
       }
 
       this.parseProvider.parseInitialize();
@@ -180,7 +182,7 @@ export class SmartieApp {
 
   pushPage(event, page) {
     if (page.iconName == 'log-out') { // logout -->
-      this.storage.clear(); // dump ephemeral session
+       this.dbservice.deleteUser();
       this.nav.setRoot("LoginPage"); // send to Login
       this.firebase.updateFcmToken(null, false);
     }else if(page.text == 'Wallet'){

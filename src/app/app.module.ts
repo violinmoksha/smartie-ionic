@@ -37,7 +37,10 @@ import { DbserviceProvider } from '../providers/dbservice/dbservice';
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(SmartieApp),
-    IonicStorageModule.forRoot(),
+    IonicStorageModule.forRoot({
+      name: 'smartiedb',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }),
     CalendarModule,
     BrowserAnimationsModule,
     TooltipsModule,

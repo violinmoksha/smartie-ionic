@@ -14,6 +14,7 @@ export class DbserviceProvider {
 
   constructor(public http: HttpClient, public storage: Storage) {
     console.log('Hello DbserviceProvider Provider');
+
   }
 
   async getUser(){
@@ -24,6 +25,10 @@ export class DbserviceProvider {
         return false;
       }
     });
+  }
+
+  deleteUser(){
+    this.storage.remove("UserProfile");
   }
 
   async getProvision(){
