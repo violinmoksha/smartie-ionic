@@ -24,8 +24,6 @@ export class SmartieAPI {
     let userData = await this.dbService.getUser();
     let provisionData = await this.dbService.getProvision();
 
-    console.log(userData);
-
     const ourBaseUrls = Constants.API_ENDPOINTS.baseUrls;
     const ourHeaders = Constants.API_ENDPOINTS.headers;
     const ourEnv = Constants.API_ENDPOINTS.env;

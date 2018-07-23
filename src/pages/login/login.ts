@@ -1,7 +1,7 @@
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController,LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
@@ -23,7 +23,7 @@ export class LoginPage {
 
   private LoginForm: FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private firebase:FirebaseProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private firebase:FirebaseProvider,private loadingCtrl :LoadingController) {
 
    this.LoginForm = new FormGroup({
       username: new FormControl(''),
@@ -33,7 +33,7 @@ export class LoginPage {
 
   login(data){
     if(data.username !== '' && data.password !==''){
-      
+
       return new Promise(async (resolve) => {
         let API = await this.smartieApi.getApi(
           'loginUser',
@@ -43,8 +43,13 @@ export class LoginPage {
         interface Response {
           result: any
         }
+        let loading = this.loadingCtrl.create({
+          content: 'Signing In....'
+        });
+        loading.present();
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data => {
           console.log(data);
+          loading.dismiss();
           this.storage.set('UserProfile', data.result).then(UserProfile => {
             this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: UserProfile.profileData.role, fromWhere: "login" });
             /*console.log(UserProfile);
@@ -74,6 +79,7 @@ export class LoginPage {
           }
         },
         (err) => {
+          loading.dismiss();
           Pro.monitoring.exception(err);
           console.log(err);
           this.loginFailed(err);

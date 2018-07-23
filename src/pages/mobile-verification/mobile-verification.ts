@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController } from 'ionic-angular';
+import { IonicPage,Platform, NavController, NavParams,LoadingController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
 import { Response } from '../../providers/data-model/data-model';
+import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 /**
  * Generated class for the MobileVerificationPage page.
  *
@@ -20,10 +21,14 @@ export class MobileVerificationPage {
 
   role: string;
   phoneNumber = '';
-  deviceInfo: any;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, private device: Device, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private storage: Storage) {
+  mobileVerification: FormGroup;
+  constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, private device: Device, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private storage: Storage,private formBuilder: FormBuilder) {
     this.role = navParams.get('role');
+    this.mobileVerification = this.formBuilder.group({
+     mobileNumber:['',Validators.compose([
+        Validators.required
+    ])]
+    });
   }
 
   ionViewDidLoad() {
@@ -31,13 +36,12 @@ export class MobileVerificationPage {
   }
 
   pushSignUp(){
+    console.log(this.mobileVerification.valid);
     let params={
-      "uuid": this.device.uuid,
+      "uuid": (this.platform.is('cordova')) ? this.device.uuid :123456,
       "device": this.device,
       "role": this.role
     }
-
-    console.log(params);
 
     let loading = this.loadingCtrl.create({
       content: 'Provisioning....'
@@ -54,6 +58,9 @@ export class MobileVerificationPage {
         loading.dismiss();
         this.storage.set("Provision", data.result);
         this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
+      },e=>{
+        loading.dismiss();
+        console.log(e);
       })
     })
   }
