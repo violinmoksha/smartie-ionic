@@ -139,27 +139,6 @@ export class SmartieSearch {
               console.log('Got the profile');
               if(this.profilePhotoData){
                 this.addProfilePhoto(profile);
-                /* let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
-                console.log('trying to save the file');
-                parseFile.save({ useMasterKey: true }).then(file => {
-                  console.log('Saved the file');
-                  profile.set('profilePhoto', file);
-                  profile.save({ useMasterKey:true }).then(profile => {
-                    if(this.role == 'school'){
-                      if(this.schoolPhotoDataUrl){
-                        let parseSchoolFile = new Parse.File('school.jpg', { base64: this.schoolPhotoDataUrl });
-                          parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
-                            profile.set('schoolPhoto', schoolFile);
-                            profile.save({ useMasterKey: true }).then(school => {
-                              // TODO: run fetchNotifications here for the new user, same as in login.ts
-                            })
-                          })
-                      }
-                    }
-                  })
-                }).catch(err => {
-                  console.log(JSON.stringify(err));
-                }) */
               }
               //setting teacher Credentials
               if(this.role == 'teacher'){
@@ -219,6 +198,16 @@ export class SmartieSearch {
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
     this.events.publish("buttonsLoad", this.role);
+    if(this.fromWhere == 'signUp'){
+      let alert = this.alertCtrl.create({
+        title: 'One more step to go !',
+        subTitle: `Please check your email and verify.`,
+        buttons: [{
+          text: 'OK',
+        }]
+      });
+      alert.present();
+    }
   }
 
   ionViewDidLoad(){

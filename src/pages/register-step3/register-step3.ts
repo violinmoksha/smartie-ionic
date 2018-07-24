@@ -65,7 +65,7 @@ export class RegisterStep3Page {
     { "value": 17, "text": '17' },
     { "value": 18, "text": '18' },
     { "value": 19, "text": '19' },
-    { "value": 20, "text": 'More than 20' }
+    { "value": 20, "text": '20 +' }
   ];
 
   public hourRates = [

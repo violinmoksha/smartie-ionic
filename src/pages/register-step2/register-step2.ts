@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, Slides } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, Slides, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 // import { Crop } from '@ionic-native/crop';
@@ -37,7 +37,7 @@ export class RegisterStep2Page {
   private messagePlaceHolder: string;
   @ViewChild(Slides) studentSchool: Slides;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController) {
     this.form1Values = navParams.data.form1Value;
     this.role = navParams.data.role;
     this.profilePicSrc = './assets/img/user-img-'+this.role+'.png';
@@ -195,6 +195,12 @@ export class RegisterStep2Page {
   }
 
   next(form2Values){
+    let loading = this.loadingCtrl.create({
+      content: 'Loading...',
+      dismissOnPageChange: true
+    });
+    loading.present();
+
     if(this.role == 'student' || this.role == 'parent'){
       form2Values.partOfSchool = this.partOfSchool;
     }
