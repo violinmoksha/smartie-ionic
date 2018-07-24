@@ -211,7 +211,6 @@ export class SmartieSearch {
   }
 
   ionViewDidLoad(){
-    console.log('test-load');
     this.events.publish("buttonsLoad", this.role);
 
     this.storage.get('UserProfile').then(profile => {
@@ -233,7 +232,7 @@ export class SmartieSearch {
             };
             this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
               this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
-                this.notifications = notifications;
+                console.log(notifications);
                 this.storage.get('phoneLatLng').then(phoneLatLng => {
                   //console.log(phoneLatLng);
                   if (phoneLatLng !== undefined && phoneLatLng !== null) {
@@ -408,69 +407,65 @@ export class SmartieSearch {
     });
   }
 
-  createMarkerLocation(locationData){
+  createMarkerLocation(locationData) {
     // TODO: there shud be a way to wrap this
     // so we don't need to include the frontend
     // SDK directly in our index.html
-    // console.log(locationData);
-    let latLng;
-    if (this.role == 'teacher') {
-      latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
+    try {
+      let latLng;
+      if (this.role == 'teacher') {
+        if (locationData.otherProfile) {
+          latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
 
-      this.randomLocation = this.randomGeo(locationData.otherProfile.latlng, 500);
-    } else {
-      latLng = new google.maps.LatLng(locationData.teacherProfile.latlng.latitude, locationData.teacherProfile.latlng.longitude);
+          this.randomLocation = this.randomGeo(locationData.otherProfile.latlng, 500);
 
-      this.randomLocation = this.randomGeo(locationData.teacherProfile.latlng, 500);
-    }
+          if (locationData.otherProfile.role == 'teacher') {
+            this.userIcon = './assets/imgs/teacher-map-icon30px.png'
+          } else if (locationData.otherProfile.role == 'parent') {
+            this.userIcon = './assets/imgs/parent-map-icon30px.png'
+          } else if (locationData.otherProfile.role == 'school') {
+            this.userIcon = './assets/imgs/school-map-icon30px.png'
+          } else if (locationData.otherProfile.role == 'student') {
+            this.userIcon = './assets/imgs/student-map-icon30px.png'
+          }
+        }
+      } else {
+        latLng = new google.maps.LatLng(locationData.teacherProfile.latlng.latitude, locationData.teacherProfile.latlng.longitude);
 
-    if (this.role == 'teacher') {
-      if(locationData.otherProfile.role == 'teacher'){
-        this.userIcon = './assets/imgs/teacher-map-icon30px.png'
-      }else if(locationData.otherProfile.role == 'parent'){
-        this.userIcon = './assets/imgs/parent-map-icon30px.png'
-      }else if(locationData.otherProfile.role == 'school'){
-        this.userIcon = './assets/imgs/school-map-icon30px.png'
-      }else if(locationData.otherProfile.role == 'student'){
-        this.userIcon = './assets/imgs/student-map-icon30px.png'
+        this.randomLocation = this.randomGeo(locationData.teacherProfile.latlng, 500);
+        this.userIcon = './assets/imgs/teacher-map-icon30px.png';
       }
-    } else {
-      this.userIcon = './assets/imgs/teacher-map-icon30px.png';
+      this.marker = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: new google.maps.LatLng(this.randomLocation.latitude, this.randomLocation.longitude),
+        icon: this.userIcon
+      });
+      if (this.extendBound) {
+        this.bounds.extend(latLng);
+      }
+
+      if (this.bounds.contains(new google.maps.LatLng(this.marker.position.lat(), this.marker.position.lng()))) {
+        this.markerCount.push(this.marker);
+      } else {
+        // console.log("Yes without bounds");
+      }
+
+      if (locationData.profilePhoto) {
+        this.profilePhoto = locationData.profilePhoto.url;
+      } else {
+        this.profilePhoto = './assets/imgs/user-round-icon.png';
+      }
+
+      this.marker.addListener('click', () => {
+
+        this.ngZone.run(() => {
+          this.initJobRequestPopUp(locationData);
+        })
+      });
+    } catch (e) {
+      console.log(e);
     }
-
-    this.marker = new google.maps.Marker({
-      map: this.map,
-      animation: google.maps.Animation.DROP,
-      position: new google.maps.LatLng(this.randomLocation.latitude, this.randomLocation.longitude),
-      icon: this.userIcon
-    });
-    // console.log(this.extendBound);
-    if(this.extendBound){
-      this.bounds.extend(latLng);
-    }
-    // this.bounds.extend(latLng);
-
-    // console.log(this.bounds);
-    if(this.bounds.contains(new google.maps.LatLng(this.marker.position.lat(), this.marker.position.lng()))){
-      // console.log("Yes within bounds");
-      this.markerCount.push(this.marker);
-    }else{
-      // console.log("Yes without bounds");
-    }
-
-    if(locationData.profilePhoto){
-      this.profilePhoto = locationData.profilePhoto.url;
-    }else{
-      this.profilePhoto = './assets/imgs/user-round-icon.png';
-    }
-
-    this.marker.addListener('click', ()=> {
-
-      this.ngZone.run(() => {
-        this.initJobRequestPopUp(locationData);
-      })
-    });
-
   }
 
   randomGeo(center, radius){
@@ -605,6 +600,7 @@ export class SmartieSearch {
     
 
     for(let searchResult of this.notifications){
+      console.log(searchResult);
       this.createMarkerLocation(searchResult);
     }
 
