@@ -24,9 +24,14 @@ export class MobileVerificationPage {
   mobileVerification: FormGroup;
   constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, private device: Device, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private storage: Storage,private formBuilder: FormBuilder) {
     this.role = navParams.get('role');
+
+    console.log(this.device);
+
     this.mobileVerification = this.formBuilder.group({
-     mobileNumber:['',Validators.compose([
-        Validators.required
+     mobileNumber:['', Validators.compose([
+        Validators.required,
+        Validators.maxLength(14),
+        Validators.minLength(14)
     ])]
     });
   }
@@ -38,10 +43,12 @@ export class MobileVerificationPage {
   pushSignUp(){
     console.log(this.mobileVerification.valid);
     let params={
-      "uuid": (this.platform.is('cordova')) ? this.device.uuid :123456,
+      "uuid": (this.platform.is('cordova')) ? this.device.uuid :'123456',
       "device": this.device,
       "role": this.role
     }
+
+    console.log(params);
 
     let loading = this.loadingCtrl.create({
       content: 'Provisioning....'

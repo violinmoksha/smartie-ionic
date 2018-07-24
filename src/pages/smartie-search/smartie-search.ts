@@ -545,11 +545,11 @@ export class SmartieSearch {
       }
       let popover = this.popoverCtrl.create("JobRequestPage", { params: params });
       popover.present();
-      popover.onDidDismiss(() => {
+      /* popover.onDidDismiss(() => {
         // Popover should be gone at this point completely.          
         console.log("Popover completely removed");
         this.ionViewDidLoad();
-      });
+      }); */
       //this.navCtrl.push("JobRequestPage", { params: params });
   }
 
