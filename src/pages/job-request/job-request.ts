@@ -202,7 +202,7 @@ export class JobRequestPage {
       buttons: [{
         text: 'OK',
         handler: () => {
-          this.navCtrl.push('PaymentDetailsPage');
+          this.navCtrl.push("TabsPage", { tabIndex: 1, tabTitle: 'PaymentDetailsPage', role: this.userRole });
           // this.navCtrl.parent.select(1);
         }
       }]

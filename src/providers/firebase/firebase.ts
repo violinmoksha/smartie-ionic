@@ -16,9 +16,17 @@ import {NavController, App} from "ionic-angular/index";
 @Injectable()
 export class FirebaseProvider {
   private navCtrl: NavController;
+  private notificationActions:any;
+
   constructor(public http: HttpClient,private firebase: Firebase,private device: Device,private smartieApi: SmartieAPI, private app:App) {
     this.navCtrl = app.getActiveNav();
+
     console.log('Hello FirebaseProvider Provider');
+
+    this.notificationActions = {
+      PaymentReminder: "PaymentReminder",
+      JobRequest: "JobRequest"
+    };
   }
 
 
@@ -48,10 +56,13 @@ export class FirebaseProvider {
 
     //perform action based notification's action
     switch (notificaitonData.eventAction) {
-      case "PaymentReminder":
+      case this.notificationActions.PaymentReminder:
         alert("setup payment");
         this.navCtrl.push("AddPaymentPage");
         break;
+      case this.notificationActions.JobRequest:
+      this.navCtrl.push("NotificationFeedPage");
+      break
 
       default:
         break;
@@ -72,7 +83,7 @@ export class FirebaseProvider {
         'updateFcmToken',
         params
       );
-  
+
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data=>{
         console.log(data);
       })

@@ -167,17 +167,7 @@ page-register-step3 {
     font-weight:500;
   }
   #year-teaching {
-    margin-bottom: 0;
-      .swiper-slide{
-        &:last-child{
-          width: 120px!important;
-        }
-      }
-      .swiper-slide.active{
-        &:last-child{
-          width: 160px!important;
-        }
-      }
+    margin-bottom: 0;      
   }
 
   .slides-0{

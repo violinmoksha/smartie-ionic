@@ -12,6 +12,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { ParseProvider } from '../providers/parse';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { GetProvision } from '../providers/data-model/data-model';
+import { SmartieSearch } from '../pages/smartie-search/smartie-search';
 
 @Component({
   templateUrl: 'app.html'
@@ -90,7 +91,7 @@ export class SmartieApp {
 
             this.storage.get('UserProfile').then((data)=>{
               if(data!=null){
-                this.rootPage = 'SmartieSearch';
+                this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: data.profileData.role });
               }else{
                 this.rootPage = 'LoginPage';
               }

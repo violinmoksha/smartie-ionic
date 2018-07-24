@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
 
@@ -22,7 +22,7 @@ export class RegisterStep1Page {
   private Step1Form: FormGroup;
   private notNewEmail: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
     this.role = navParams.get('role');
 
     this.Step1Form = new FormGroup({
@@ -47,6 +47,12 @@ export class RegisterStep1Page {
   }
 
   next(form1Value){
+    let loading = this.loadingCtrl.create({
+      content: 'Loading...',
+      dismissOnPageChange: true
+    });
+    loading.present();
+
     // pick this up from otp flow now
     form1Value.phone = this.navParams.data.phone;
     return new Promise(async (resolve) => {
