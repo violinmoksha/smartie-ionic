@@ -46,16 +46,16 @@ export class FeedbackPage {
   }
 
   submitFeedback(){
-    let API = this.smartieApi.getApi(
-      'setFeedback',
-      { feedback: this.feedback, profileId: this.profileData.objectId }
-    );
-    interface Response {
-      result: any
-    }
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      console.log(response.result);
-    })*/
+    // let API = this.smartieApi.getApi(
+    //   'setFeedback',
+    //   { feedback: this.feedback, profileId: this.profileData.objectId }
+    // );
+    // interface Response {
+    //   result: any
+    // }
+    // this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+    //   console.log(response.result);
+    // })
 
   }
 

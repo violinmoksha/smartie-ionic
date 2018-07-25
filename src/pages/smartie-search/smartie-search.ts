@@ -211,100 +211,105 @@ export class SmartieSearch {
   }
 
   ionViewDidLoad(){
-    this.events.publish("buttonsLoad", this.role);
+    try{
+      this.events.publish("buttonsLoad", this.role);
 
-    this.storage.get('UserProfile').then(profile => {
-      console.log(profile);
-      this.role = profile.profileData.role;
+      this.storage.get('UserProfile').then(profile => {
+        console.log(profile);
+        this.role = profile.profileData.role;
 
-        if (profile == null) {
-          this.navCtrl.setRoot("LoginPage");
-        } else {
-          
-          return new Promise(async (resolve) => {
-            let API = await this.smartieApi.getApi(
-              'fetchNotifications',
-              { profileId: profile.profileData.objectId, role: profile.profileData.role }
-            );
+          if (profile == null) {
+            this.navCtrl.setRoot("LoginPage");
+          } else {
+            
+            return new Promise(async (resolve) => {
+              let API = await this.smartieApi.getApi(
+                'fetchNotifications',
+                { profileId: profile.profileData.objectId, role: profile.profileData.role }
+              );
 
-            interface Response {
-              result: any
-            };
-            this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
-              this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
-                console.log(notifications);
-                this.storage.get('phoneLatLng').then(phoneLatLng => {
-                  //console.log(phoneLatLng);
-                  if (phoneLatLng !== undefined && phoneLatLng !== null) {
-                    this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
-                  } else {
-                    this.latLngUser = profile.profileData.latlng;
-                    this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, this.extendBound);
-                  }
-
-                  //get all requested's
-                  this.body = {
-                    profileId: profile.profileData.objectId,
-                    role: profile.profileData.role
-                  };
-
-                  //resolve all promises and if notifyCount > 0 make alert present and push to notification page
-                  Promise.all([
-                    this.getAllRequesteds(),
-                    this.getAllAccepteds(),
-                    this.getAllUpcomings()
-                  ]).then(value => {
-                    if(this.hasUpcomings == true) {
-                      let title, subTitle;
-                      if (this.upcomingsCount == 1) {
-                        title = "You have an upcoming appointment!";
-                        subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
-                      } else {
-                        title = "You have upcoming appointments";
-                        subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
-                      }
-                      let alert = this.alertCtrl.create({
-                        title: title,
-                        subTitle: subTitle,
-                        buttons: [{
-                          text: 'OK',
-                          handler: () => {
-                            if(this.role !== 'teacher'){
-                              this.navCtrl.parent.select(2);
-                            }else{
-                              this.navCtrl.parent.select(3);
-                            }
-                          }
-                        }]
-                      });
-                      alert.present();
-                    } else if(this.notifyCount > 0) {
-                      let alert = this.alertCtrl.create({
-                        title: 'Wow, check it out!',
-                        subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
-                        buttons: [{
-                          text: 'OK',
-                          handler: () => {
-                            if(this.role !== 'teacher'){
-                              this.navCtrl.parent.select(2);
-                            }else{
-                              this.navCtrl.parent.select(3);
-                            }
-                          }
-                        }]
-                      });
-                      alert.present();
+              interface Response {
+                result: any
+              };
+              this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
+                this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
+                  this.notifications = notifications;
+                  this.storage.get('phoneLatLng').then(phoneLatLng => {
+                    //console.log(phoneLatLng);
+                    if (phoneLatLng !== undefined && phoneLatLng !== null) {
+                      this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
+                    } else {
+                      this.latLngUser = profile.profileData.latlng;
+                      this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, this.extendBound);
                     }
-                  })
-                });
-              })
-            }, err => {
-              console.log(err.error.error);
-              this.smartieApi.showErrors(err);
+
+                    //get all requested's
+                    this.body = {
+                      profileId: profile.profileData.objectId,
+                      role: profile.profileData.role
+                    };
+
+                    //resolve all promises and if notifyCount > 0 make alert present and push to notification page
+                    Promise.all([
+                      this.getAllRequesteds(),
+                      this.getAllAccepteds(),
+                      this.getAllUpcomings()
+                    ]).then(value => {
+                      if(this.hasUpcomings == true) {
+                        let title, subTitle;
+                        if (this.upcomingsCount == 1) {
+                          title = "You have an upcoming appointment!";
+                          subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
+                        } else {
+                          title = "You have upcoming appointments";
+                          subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
+                        }
+                        let alert = this.alertCtrl.create({
+                          title: title,
+                          subTitle: subTitle,
+                          buttons: [{
+                            text: 'OK',
+                            handler: () => {
+                              if(this.role !== 'teacher'){
+                                this.navCtrl.parent.select(2);
+                              }else{
+                                this.navCtrl.parent.select(3);
+                              }
+                            }
+                          }]
+                        });
+                        alert.present();
+                      } else if(this.notifyCount > 0) {
+                        let alert = this.alertCtrl.create({
+                          title: 'Wow, check it out!',
+                          subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
+                          buttons: [{
+                            text: 'OK',
+                            handler: () => {
+                              if(this.role !== 'teacher'){
+                                this.navCtrl.parent.select(2);
+                              }else{
+                                this.navCtrl.parent.select(3);
+                              }
+                            }
+                          }]
+                        });
+                        alert.present();
+                      }
+                    })
+                  });
+                })
+              }, err => {
+                console.log(err.error.error);
+                this.smartieApi.showErrors(err);
+              });
             });
-          });
-        }
-    });
+          }
+      });
+    }catch(e){
+      console.log(e);
+    }
+    
   }
 
   getAllRequesteds(){
@@ -598,20 +603,18 @@ export class SmartieSearch {
       this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
     }
     
-
     for(let searchResult of this.notifications){
-      console.log(searchResult);
       this.createMarkerLocation(searchResult);
     }
 
-    // console.log(this.markerCount.length);
-    if(this.markerCount.length < 5){
-      this.extendBound = true;
-      this.smartieSearchResult(latLng, searchRole, searchLoc, this.extendBound);
-    }else{
-      // console.log("test");
+    if(this.markerCount){
+      if(this.markerCount.length < 5){
+        this.extendBound = true;
+        this.smartieSearchResult(latLng, searchRole, searchLoc, this.extendBound);
+      }else{
+        // console.log("test");
+      }
     }
-
     //let myPlace = new google.maps.LatLng(34.0522, -118.2437);
     //this.bounds.extend(myPlace);
 

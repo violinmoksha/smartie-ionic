@@ -38,7 +38,6 @@ export class SmartieApp {
     //this.rootPage = "LoginPage"; // send to Login
 
     this.events.subscribe("buttonsLoad", eventData => {
-      console.log(eventData);
       //Tabs index 0 is always set to search
       if (eventData !== 'teacher') {
         this.buttons = [
@@ -77,6 +76,7 @@ export class SmartieApp {
         this.splashScreen.hide();
         // this.initPushNotifications();
         this.rootPage = 'LauncherPage';
+
         let params = {
           "uuid":this.device.uuid,
         }
@@ -88,7 +88,7 @@ export class SmartieApp {
           );
 
           this.smartieApi.http.post<GetProvision>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe((result) => {
-
+            this.storage.set("Provision", result.result);
             this.storage.get('UserProfile').then((data)=>{
               if(data!=null){
                 this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: data.profileData.role });

@@ -7,6 +7,7 @@
  * Credits: https://github.com/arnesson.
  */
 var fse = require('fs-extra');
+var utils = require('./utils.js');
 var config = fse.readFileSync('config.xml').toString();
 var name = getValue(config, 'name');
 var configValues;
@@ -14,7 +15,7 @@ var configValues;
 var IOS_DIR = 'platforms/ios';
 var ANDROID_DIR = 'platforms/android';
 
-if(fileExists('appconfig.json')){
+if(utils.fileExists('appconfig.json')){
   configValues = require('../appconfig.json');
   console.log("======Reading config json from after_prepare======");
   //updating gradle version
@@ -28,7 +29,7 @@ if(fileExists('appconfig.json')){
 function updateGradlePluginVersion (version, gVersion){
   try{
     //updating gradle builder 1st
-    if(fileExists(ANDROID_DIR+'/cordova/lib/builders/GradleBuilder.js')){
+    if(utils.fileExists(ANDROID_DIR+'/cordova/lib/builders/GradleBuilder.js')){
 
       var gradleBuilder = fse.readFileSync(ANDROID_DIR+'/cordova/lib/builders/GradleBuilder.js').toString();
       var versionUrl = gradleBuilder.substr(gradleBuilder.search("'CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL'"), gradleBuilder.search("all.zip';"));
@@ -36,7 +37,7 @@ function updateGradlePluginVersion (version, gVersion){
       gradleBuilder = gradleBuilder.replace(gradleBuilder.substr(gradleBuilder.search("'CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL'"), gradleBuilder.search("all.zip';")), versionUrl);
       fse.writeFileSync(ANDROID_DIR+'/cordova/lib/builders/GradleBuilder.js', gradleBuilder);
 
-      if(fileExists(ANDROID_DIR+'/build.gradle') && fileExists(ANDROID_DIR+'/gradle/wrapper/gradle-wrapper.properties')){
+      if(utils.fileExists(ANDROID_DIR+'/build.gradle') && utils.fileExists(ANDROID_DIR+'/gradle/wrapper/gradle-wrapper.properties')){
         var strings = fse.readFileSync(ANDROID_DIR+'/build.gradle').toString();
 
         var gradleWrapperString = fse.readFileSync(ANDROID_DIR+'/gradle/wrapper/gradle-wrapper.properties').toString();
@@ -52,10 +53,7 @@ function updateGradlePluginVersion (version, gVersion){
         }else{
           console.log("gradle file not found");
         }
-
     }
-
-
     }catch(e){
       console.log(e);
   }
@@ -63,13 +61,14 @@ function updateGradlePluginVersion (version, gVersion){
 
 function updateProjectProperties(){
   try{
-    if(fileExists('build-config/android/project.properties')){
+    if(utils.fileExists('build-config/android/project.properties')){
       var properties = fse.readFileSync('build-config/android/project.properties').toString();
-      if(fileExists(ANDROID_DIR+'/project.properties')){
-        fse.writeFileSync(ANDROID_DIR+'/project.properties', properties);
-      }else{
-        fse.writeFileSync(ANDROID_DIR+'/project.properties', properties)
-      }
+      fse.writeFileSync(ANDROID_DIR+'/project.properties', properties);
+      // if(utils.fileExists(ANDROID_DIR+'/project.properties')){
+      //   fse.writeFileSync(ANDROID_DIR+'/project.properties', properties);
+      // }else{
+      //   fse.writeFileSync(ANDROID_DIR+'/project.properties', properties)
+      // }
     }
   }catch(e){
     console.log(e);
@@ -85,18 +84,3 @@ function getValue(config, name) {
     }
 }
 
-function fileExists(path) {
-    try {
-        return fse.statSync(path).isFile();
-    } catch (e) {
-        return false;
-    }
-}
-
-function directoryExists(path) {
-    try {
-        return fse.statSync(path).isDirectory();
-    } catch (e) {
-        return false;
-    }
-}

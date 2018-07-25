@@ -7,47 +7,38 @@
  * Credits: https://github.com/arnesson.
  */
 var fse = require('fs-extra');
+var utils = require('./utils.js');
 
 var IOS_DIR = 'platforms/ios';
 var ANDROID_DIR = 'platforms/android';
 let configValues;
 
-
-
-
 function updateBundleUrl (url){
-  console.log("url changes");
-  console.log(url);
-  if(fileExists(ANDROID_DIR+'/app/src/main/java/com/smartie/app/MainActivity.java')){
+  if(utils.fileExists(ANDROID_DIR+'/app/src/main/java/com/smartie/app/MainActivity.java')){
     var bundleUrlChanger = fse.readFileSync(ANDROID_DIR+'/app/src/main/java/com/smartie/app/MainActivity.java').toString();
-    bundleUrlChanger = bundleUrlChanger.replace('loadUrl(launchUrl);' , 'loadUrl("'+url+'");');
-    console.log(bundleUrlChanger);
+    //bundleUrlChanger = bundleUrlChanger.replace('loadUrl(launchUrl);', 'loadUrl("'+url+'");');
+    if(bundleUrlChanger.indexOf("loadUrl(launchUrl);") !=-1){
+      console.log("launchUrl matches");
+      bundleUrlChanger = bundleUrlChanger.replace('loadUrl(launchUrl);', 'loadUrl("'+url+'");');
+    }else{
+      var start = bundleUrlChanger.indexOf('loadUrl("');
+      var temp = bundleUrlChanger.substr(start);
+      var end = temp.lastIndexOf('");');
+      temp = temp.substr(0, end);
+      console.log("cut TExt =====")
+      console.log(temp);
+
+      bundleUrlChanger = bundleUrlChanger.replace(temp, 'loadUrl("'+url);
+      console.log(bundleUrlChanger);
+    }
     fse.writeFileSync(ANDROID_DIR+'/app/src/main/java/com/smartie/app/MainActivity.java', bundleUrlChanger);
 
   }
 }
-if(fileExists('appconfig.json')){
+if(utils.fileExists('appconfig.json')){
   configValues = require('../appconfig.json');
-  console.log("config values");
-  console.log(configValues);
   if(configValues.android.bundleUrl){
     updateBundleUrl(configValues.android.bundleUrl);
   }
 }
 
-
-function fileExists(path) {
-  try {
-      return fse.statSync(path).isFile();
-  } catch (e) {
-      return false;
-  }
-}
-
-function directoryExists(path) {
-  try {
-      return fse.statSync(path).isDirectory();
-  } catch (e) {
-      return false;
-  }
-}

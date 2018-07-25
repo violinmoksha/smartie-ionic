@@ -28,6 +28,7 @@
     <preference name="loadUrlTimeoutValue" value="70000" />
     <hook src="hooks/versionConfig.js" type="after_prepare" />
     <hook src="hooks/bundleConfig.js" type="after_prepare" />
+    <hook src="hooks/releaseSetup.js" type="after_prepare" />
     <platform name="android">
         <resource-file src="google-services.json" target="app/google-services.json" />
         <allow-intent href="market:*" />
