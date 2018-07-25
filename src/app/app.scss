@@ -43,6 +43,12 @@
   text-align: center;
 }
 
+.toolbar-content-md, .toolbar-content-ios{
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+}
+
 h4 {
   font-size:1.2em!important;
 }
