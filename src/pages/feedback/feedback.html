@@ -1,0 +1,24 @@
+<!--
+  Generated template for the Feedback page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="{{ role }}">
+  <ion-navbar>
+    <ion-title>Feedback</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="profile-column">
+    <div class="feedback-top">
+      <label for="">Your Feedback</label>
+      <ion-textarea [(ngModel)]="feedback" placeholder="Please leave your feedback here..."></ion-textarea>
+    </div>
+    <div class="feedback-bottom">
+      <!-- TODO: Add a screenshot html goes here -->
+    </div>
+    <button class="button button-positive" [disabled]="feedback == ''" (click)="submitFeedback()" ion-button full>Submit Your Feedback</button>
+  </div>
+</ion-content>
