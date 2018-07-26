@@ -2,13 +2,14 @@ page-mobile-verification {
   .country-img{
     width: 40px;
     height: 35px;
-    vertical-align: middle;
+    float: left;
+    
   }
   .height-44{
-    height: 44px;
+    height: 30px;
   }
   .margin-top-8{
-    margin-top: 8px !important;
+    margin-top: 0px !important;
   }
   .margin-top-0{
     margin-top: 0px !important;
@@ -22,6 +23,7 @@ page-mobile-verification {
   .coutry-code{
     font-size: 18px;
     margin-left: 10px;
+    line-height: 37px;
   }
   .margin-btm-0{
     margin-bottom: 0px !important;
@@ -31,7 +33,7 @@ page-mobile-verification {
     color:#707070;
     margin-bottom: 0px;
     margin-top: 0px;
-    height: 44px;
+    height: 35px;
   }
   .verify-button{
     height: 67px;
