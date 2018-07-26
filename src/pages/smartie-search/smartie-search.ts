@@ -45,7 +45,6 @@ export class SmartieSearch {
   private radiusInKm: number = 50;
   private extendBound: boolean = false;
   private randomLocation: any;
-  private provisionToken: boolean = false;
   //private searchData: any;
   //private alertOpts: any;
   // private infoWindow: any;
@@ -497,6 +496,7 @@ export class SmartieSearch {
   initJobRequestPopUp(locationData){
     let params;
       if (this.role !== 'teacher') {
+
         params = {
           profilePhoto: locationData.teacherProfile.profilePhoto,
           profileStripeAccount: locationData.teacherProfile.stripeCustomer,
