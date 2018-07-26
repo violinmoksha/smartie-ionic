@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
 import { SmartieAPI } from '../api/smartie';
 // import { App } from "ionic-angular";
-import {NavController, App} from "ionic-angular/index";
+import {NavController, App} from "ionic-angular";
 // import { NavController, NavParams } from 'ionic-angular';
 
 /*
@@ -15,11 +15,11 @@ import {NavController, App} from "ionic-angular/index";
 */
 @Injectable()
 export class FirebaseProvider {
-  private navCtrl: NavController;
+  private navCtrl: any;
   private notificationActions:any;
 
   constructor(public http: HttpClient,private firebase: Firebase,private device: Device,private smartieApi: SmartieAPI, private app:App) {
-    this.navCtrl = app.getActiveNav();
+
 
     console.log('Hello FirebaseProvider Provider');
 
@@ -53,15 +53,14 @@ export class FirebaseProvider {
   }
 
   notificationHandler = (notificaitonData)=>{
-
+    let navCtrl = this.app.getActiveNav();
     //perform action based notification's action
     switch (notificaitonData.eventAction) {
       case this.notificationActions.PaymentReminder:
-        alert("setup payment");
-        this.navCtrl.push("AddPaymentPage");
+        navCtrl.push("AddPaymentPage");
         break;
       case this.notificationActions.JobRequest:
-      this.navCtrl.push("NotificationFeedPage");
+      navCtrl.push("NotificationFeedPage");
       break
 
       default:

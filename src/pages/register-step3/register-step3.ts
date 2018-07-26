@@ -6,6 +6,8 @@ import { SmartieAPI } from '../../providers/api/smartie';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { Storage } from '@ionic/storage';
 import {Response} from '../../providers/data-model/data-model';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
+
 declare var google;
 
 /**
@@ -91,7 +93,11 @@ export class RegisterStep3Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device) {    // this.submitInProgress = false;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device,private analytics : AnalyticsProvider) {    // this.submitInProgress = false;
+
+    this.analytics.setScreenName("Register-step3");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step3", "View"));
+
     this.loading = this.loadingCtrl.create({
       content: 'Creating Account...'
     });
@@ -340,7 +346,7 @@ export class RegisterStep3Page {
                 'fetchNotifications',
                 { profileId: signupResult.result.profileData.objectId, role: this.role }
               );
-  
+
               interface Response {
                 result: any
               };

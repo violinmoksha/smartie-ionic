@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the RegisterStep1Page page.
  *
@@ -22,7 +22,7 @@ export class RegisterStep1Page {
   private Step1Form: FormGroup;
   private notNewEmail: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController,private analytics : AnalyticsProvider ) {
     this.role = navParams.get('role');
 
     this.Step1Form = new FormGroup({
@@ -30,6 +30,8 @@ export class RegisterStep1Page {
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
     });
+    this.analytics.setScreenName("Register-step1");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step1", "View"));
   }
 
   equalTo(equalControlName): ValidatorFn {
@@ -55,7 +57,9 @@ export class RegisterStep1Page {
 
     // pick this up from otp flow now
     form1Value.phone = this.navParams.data.phone;
-    
+    let formParams = Object.assign({},...form1Value);
+    delete formParams.confPassword;
+
     return new Promise(async (resolve) => {
       let API = await this.smartieApi.getApi(
         'isNewEmail',
@@ -65,11 +69,12 @@ export class RegisterStep1Page {
       interface Response {
         result: any
       };
-      
+
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         isNewEmail => {
           if (isNewEmail.result == true) {
-            this.navCtrl.push("RegisterStep2Page", { form1Value : form1Value, role: this.role });
+
+            this.navCtrl.push("RegisterStep2Page", { form1Value : formParams, role: this.role });
           } else {
             this.notNewEmail = true;
           }

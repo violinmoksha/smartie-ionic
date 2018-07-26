@@ -6,6 +6,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Pro } from '@ionic/pro';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 // import { URLSearchParams } from '@angular/http';
 
 /**
@@ -23,12 +24,14 @@ export class LoginPage {
 
   private LoginForm: FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private firebase:FirebaseProvider,private loadingCtrl :LoadingController, private menu: MenuController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private firebase:FirebaseProvider,private loadingCtrl :LoadingController, private analytics : AnalyticsProvider,private menu: MenuController) {
 
    this.LoginForm = new FormGroup({
       username: new FormControl(''),
       password: new FormControl('')
     });
+    this.analytics.setScreenName("Login");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Login", "View"));
   }
 
   login(data){
@@ -88,6 +91,7 @@ export class LoginPage {
     }else{
       this.loginFailed(null);
     }
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Login", "Login_Btn_Clicked"));
   }
 
   loginFailed(err){

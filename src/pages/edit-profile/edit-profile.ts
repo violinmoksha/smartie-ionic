@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 const Parse = require('parse');
 // import * as Parse from 'parse';
 import { Storage } from '@ionic/storage';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 
 /**
  * Generated class for the EditProfile page.
@@ -27,7 +28,10 @@ export class EditProfilePage {
 
   private EditProfileForm : FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("EditProfile");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile", "View"));
+
     this.EditProfileForm = new FormGroup({
       password: new FormControl('', [Validators.required])
     });

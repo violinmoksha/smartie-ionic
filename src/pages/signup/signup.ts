@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 declare var google;
 
 /**
@@ -19,8 +19,10 @@ export class SignupPage {
 
   role: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider) {
     this.role = navParams.get('role');
+    this.analytics.setScreenName("Signup");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Signup", "View"));
   }
 
   ionViewDidLoad() {

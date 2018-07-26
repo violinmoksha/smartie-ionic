@@ -4,6 +4,7 @@ import { NavController, NavParams, AlertController, ModalController } from 'ioni
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 // import { ParseProvider } from '../../providers/parse';
 // import { Parse } from 'parse';
 const Parse = require('parse');
@@ -56,10 +57,12 @@ export class SmartieSearch {
   // TODO: autopopulate input with user's location
   // private reverseGeocodedLocation: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("Smartie-search");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Smartie-search", "View"));
 
     this.role = navParams.get('role');
-    
+
     let options = {
       formatLength:'short',
       selector:'date and time'
@@ -220,7 +223,7 @@ export class SmartieSearch {
           if (profile == null) {
             this.navCtrl.setRoot("LoginPage");
           } else {
-            
+
             return new Promise(async (resolve) => {
               let API = await this.smartieApi.getApi(
                 'fetchNotifications',
@@ -308,7 +311,7 @@ export class SmartieSearch {
     }catch(e){
       console.log(e);
     }
-    
+
   }
 
   getAllRequesteds(){
@@ -488,7 +491,7 @@ export class SmartieSearch {
     return {
       'latitude': y + y0,
       'longitude': x + x0
-    };  
+    };
 
     // return new google.maps.LatLng(this.toDeg(y + y0), this.toDeg(x + x0));
   }
@@ -535,7 +538,7 @@ export class SmartieSearch {
       let popover = this.popoverCtrl.create("JobRequestPage", { params: params });
       popover.present();
       /* popover.onDidDismiss(() => {
-        // Popover should be gone at this point completely.          
+        // Popover should be gone at this point completely.
         console.log("Popover completely removed");
         this.ionViewDidLoad();
       }); */
@@ -595,14 +598,14 @@ export class SmartieSearch {
     // let radiusInKm = 50;
     // console.log(this.radiusInKm);
     if(extendBound){
-      this.bounds = new google.maps.LatLngBounds();  
+      this.bounds = new google.maps.LatLngBounds();
     }else{
       this.markerCount = [];
       let pointSouthwest = this.destinationPoint(220, this.radiusInKm / 2, mapCenter);
       let pointNortheast = this.destinationPoint(45, this.radiusInKm / 2, mapCenter);
       this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
     }
-    
+
     for(let searchResult of this.notifications){
       this.createMarkerLocation(searchResult);
     }

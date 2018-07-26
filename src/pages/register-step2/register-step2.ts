@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 // import { Crop } from '@ionic-native/crop';
 import { Storage } from '@ionic/storage';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the RegisterStep2Page page.
  *
@@ -37,7 +37,10 @@ export class RegisterStep2Page {
   private messagePlaceHolder: string;
   @ViewChild(Slides) studentSchool: Slides;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("Register-step2");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
+
     this.form1Values = navParams.data.form1Value;
     this.role = navParams.data.role;
     this.profilePicSrc = './assets/img/user-img-'+this.role+'.png';

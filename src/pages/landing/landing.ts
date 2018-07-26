@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the LandingPage page.
  *
@@ -15,7 +15,10 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LandingPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("Landing");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Landing", "View"));
+
   }
 
   ionViewDidLoad() {
@@ -28,6 +31,7 @@ export class LandingPage {
 
   pushMobVerify(role){
     this.navCtrl.push("MobileVerificationPage", { role: role });
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Landing", role+"_selected"));
   }
 
   pushForgotPassword(){
