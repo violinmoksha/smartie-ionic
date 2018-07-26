@@ -1,6 +1,6 @@
 import { IonicPage } from 'ionic-angular';
-import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
+import { Component, NgZone } from '@angular/core';
+import { App, NavController, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
 
@@ -27,10 +27,14 @@ export class JobRequestPage {
   private genericAvatar: string;
   private loaded: any = false;
   timeZone: any;
+  private appNavCtrl: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController, private ngZone: NgZone, public app: App) {
     this.params = navParams.get('params');
+    console.log("Job Request page");
     console.log(this.params);
+
+    this.appNavCtrl = app.getActiveNav();
 
     if(this.params.role == 'teacher'){
       // Converting defaultStartDateTime and defaultEndDateTime to current device TimeZone
@@ -106,14 +110,16 @@ export class JobRequestPage {
         otherRole = 'teacher';
       }
 
+      console.log(otherRole);
+
       if (otherRole == 'teacher') {
-        this.genericAvatar = '/assets/imgs/user-img-teacher.png';
+        this.genericAvatar = './assets/imgs/user-img-teacher.png';
       } else if (otherRole == 'student') {
-        this.genericAvatar = '/assets/imgs/user-img-student.png';
+        this.genericAvatar = './assets/imgs/user-img-student.png';
       } else if (otherRole == 'parent') {
-        this.genericAvatar = '/assets/imgs/user-img-parent.png';
+        this.genericAvatar = './assets/imgs/user-img-parent.png';
       } else if (otherRole == 'school') {
-        this.genericAvatar = '/assets/imgs/user-img-school.png';
+        this.genericAvatar = './assets/imgs/user-img-school.png';
       }
 
       return new Promise(async (resolve) => {
@@ -142,7 +148,7 @@ export class JobRequestPage {
   sendRequest(){
     this.submitInProgress = true;
     this.loading = this.loadingCtrl.create({
-      content: 'Loading...'
+      content: 'Loading...',
     });
     this.loading.present();
 
@@ -195,6 +201,8 @@ export class JobRequestPage {
   }
 
   checkStripeAccount(profile){
+    this.loading.dismiss();
+    this.viewCtrl.dismiss();
     let alert = this.alertCtrl.create({
       title: 'Time to add your Stripe Account!',
       subTitle: `You must add a Stripe Account in order to receive payments from students! We will send you to Payment Details now in order to gather your information.`,
@@ -202,8 +210,7 @@ export class JobRequestPage {
       buttons: [{
         text: 'OK',
         handler: () => {
-          this.navCtrl.push("TabsPage", { tabIndex: 1, tabTitle: 'PaymentDetailsPage', role: this.userRole });
-          // this.navCtrl.parent.select(1);
+          this.appNavCtrl.parent.select(1);
         }
       }]
     });
@@ -211,7 +218,6 @@ export class JobRequestPage {
 }
 
   viewProfile(){
-    console.log(this.params);
     this.navCtrl.push("ViewProfilePage", { params: this.params });
   }
 

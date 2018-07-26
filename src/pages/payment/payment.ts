@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, LoadingController
 import { Storage } from '@ionic/storage';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the PaymentPage page.
  *
@@ -34,7 +34,9 @@ export class PaymentPage {
   // private apptEndTime: any;
   private loading: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("Payment");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Payment", "View"));
 
     this.totalHours = navParams.get('totalHours');
     this.totalAmount = navParams.get('totalAmount');
@@ -113,7 +115,7 @@ export class PaymentPage {
         }, err => {
           console.log(err);
         })
-      })      
+      })
     }else{
       this.createTransaction(amount);
     }
@@ -148,11 +150,11 @@ export class PaymentPage {
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
         this.loading.dismiss();
-        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});      
+        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
       }, err => {
         console.log(err);
       })
-    })    
+    })
   }
 
 }

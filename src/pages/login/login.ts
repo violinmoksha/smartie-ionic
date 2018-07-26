@@ -1,11 +1,12 @@
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController,LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, MenuController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Pro } from '@ionic/pro';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 // import { URLSearchParams } from '@angular/http';
 
 /**
@@ -23,12 +24,14 @@ export class LoginPage {
 
   private LoginForm: FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private firebase:FirebaseProvider,private loadingCtrl :LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private firebase:FirebaseProvider,private loadingCtrl :LoadingController, private analytics : AnalyticsProvider,private menu: MenuController) {
 
    this.LoginForm = new FormGroup({
       username: new FormControl(''),
       password: new FormControl('')
     });
+    this.analytics.setScreenName("Login");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Login", "View"));
   }
 
   login(data){
@@ -88,6 +91,7 @@ export class LoginPage {
     }else{
       this.loginFailed(null);
     }
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Login", "Login_Btn_Clicked"));
   }
 
   loginFailed(err){
@@ -119,4 +123,13 @@ export class LoginPage {
   pushForgotPassword(){
     this.navCtrl.push("ForgotPassword");
   }
+
+  ionViewDidEnter() {
+    this.menu.swipeEnable(false);
+  }
+
+  ionViewWillLeave() {
+    this.menu.swipeEnable(true);
+  }
+
 }

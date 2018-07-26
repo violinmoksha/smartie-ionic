@@ -2,6 +2,8 @@ import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
+
 
 /**
  * Generated class for the AllAcceptedsPage page.
@@ -19,7 +21,9 @@ export class NotificationFeedPage {
   private allUpcomings: any;
   private userRole: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("NotificationFeed");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("NotificationFeed", "View"));
   }
 
   ionViewDidLoad() {

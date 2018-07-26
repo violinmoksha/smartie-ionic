@@ -5,6 +5,7 @@ import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
 import { Response } from '../../providers/data-model/data-model';
 import { FormBuilder, FormGroup,Validators } from '@angular/forms';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the MobileVerificationPage page.
  *
@@ -22,7 +23,7 @@ export class MobileVerificationPage {
   role: string;
   phoneNumber = '';
   mobileVerification: FormGroup;
-  constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, private device: Device, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private storage: Storage,private formBuilder: FormBuilder) {
+  constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, private device: Device, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private storage: Storage,private formBuilder: FormBuilder,private analytics : AnalyticsProvider) {
     this.role = navParams.get('role');
 
     console.log(this.device);
@@ -34,6 +35,8 @@ export class MobileVerificationPage {
         Validators.minLength(14)
     ])]
     });
+    this.analytics.setScreenName("MobileVerification");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("MobileVerification", "View"));
   }
 
   ionViewDidLoad() {
@@ -41,14 +44,12 @@ export class MobileVerificationPage {
   }
 
   pushSignUp(){
-    console.log(this.mobileVerification.valid);
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("MobileVerification", "Clicked_MobileVerifyButton"));
     let params={
       "uuid": (this.platform.is('cordova')) ? this.device.uuid :'123456',
       "device": this.device,
       "role": this.role
     }
-
-    console.log(params);
 
     let loading = this.loadingCtrl.create({
       content: 'Provisioning....'
@@ -69,7 +70,7 @@ export class MobileVerificationPage {
         loading.dismiss();
         console.log(e);
       })
-    })
+    });
   }
 
   maskUSPhone(txt) {

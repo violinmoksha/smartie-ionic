@@ -28,6 +28,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { DbserviceProvider } from '../providers/dbservice/dbservice';
+import { AnalyticsProvider } from '../providers/analytics/analytics';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { DbserviceProvider } from '../providers/dbservice/dbservice';
     Firebase,
     FirebaseProvider,
     Device,
-    DbserviceProvider
+    DbserviceProvider,
+    AnalyticsProvider
   ]
 })
 export class AppModule {}
