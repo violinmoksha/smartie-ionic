@@ -29,7 +29,7 @@
       <a href="javascript:" (click)="showUpcomingAlert()">{{ upcoming.otherProfile.fullname }} made payment and booked appointment for {{ [toTimeZone(upcoming.apptDate.iso)] }} from {{ upcoming.startTime }} to {{ upcoming.endTime }}!</a>
     </li>
 
-    <li class="requested" *ngIf="allAccepteds == undefined && allRequesteds == undefined && allUpcomings == undefined">
+    <li class="requested" *ngIf="allAccepteds.length == 0 && allRequesteds.length == 0 && allUpcomings.length == 0">
       <a href="javascript:">Your job notifications will appear here.</a>
     </li>
   </ul>

@@ -58,9 +58,9 @@ export class FirebaseProvider {
     switch (notificaitonData.eventAction) {
       case this.notificationActions.PaymentReminder:
         navCtrl.push("AddPaymentPage");
-        break;
+      break;
       case this.notificationActions.JobRequest:
-      navCtrl.push("NotificationFeedPage");
+      navCtrl.push("NotificationFeedPage", notificaitonData.extraData);
       break
       default:
         break;
