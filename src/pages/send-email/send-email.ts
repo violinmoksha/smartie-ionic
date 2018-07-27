@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the SendEmailPage page.
  *
@@ -26,9 +26,12 @@ export class SendEmailPage {
   messageIsValid: boolean = false;
   private senderName: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,public storage: Storage, public smartieApi: SmartieAPI) {
+    this.analytics.setScreenName("SendEmail");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("SendEmail", "View"));
+
     this.params = navParams.data.params;
-    
+
     this.storage.get('UserProfile').then(UserProfile => {
       this.role = UserProfile.profileData.role;
       this.recipientName = this.params.fullname;
@@ -58,7 +61,7 @@ export class SendEmailPage {
         'sendEmail',
         { recipientProfileId: this.recipientProfileId, senderRole: this.role, senderName: this.senderName, recipientName: this.recipientName, subject: this.subject, message: this.message }
       );
-  
+
       interface Response {
         result: any;
       };
@@ -67,7 +70,7 @@ export class SendEmailPage {
       }, err => {
         console.log(err);
       })
-    });    
+    });
   }
 
 }

@@ -62,7 +62,6 @@ export class FirebaseProvider {
       case this.notificationActions.JobRequest:
       navCtrl.push("NotificationFeedPage");
       break
-
       default:
         break;
     }

@@ -4,7 +4,7 @@ import { NavController, NavParams, ActionSheetController, Slides } from 'ionic-a
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the EditProfileStep2Page page.
  *
@@ -27,7 +27,7 @@ export class EditProfileStep2Page {
   photoTaken: boolean;
   cameraUrl: string;
   private schoolCameraData: string;
-  private schoolPhotoSelected: boolean; 
+  private schoolPhotoSelected: boolean;
   private schoolPhotoTaken: boolean;
   private schoolCameraUrl:string;
   photoSelected: boolean;
@@ -45,8 +45,9 @@ export class EditProfileStep2Page {
   profileTitle: string;
   profileAbout: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage) {
-
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("EditProfile_step2");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
     this.userRole = navParams.get("userRole");
 
     if(this.userRole == 'school'){

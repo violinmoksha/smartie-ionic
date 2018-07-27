@@ -6,7 +6,7 @@ import { SmartieAPI } from '../../providers/api/smartie';
 // import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 // import { Response } from '@angular/http';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the AddPaymentPage page.
  *
@@ -32,7 +32,9 @@ export class AddPaymentPage {
   private fromWhere: any;
   private authenticationCode: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("AddPayment");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("AddPayment", "View"));
 
     this.fromWhere = navParams.data.fromWhere;
     this.PaymentForm = new FormGroup({
@@ -56,7 +58,7 @@ export class AddPaymentPage {
       }else{
         this.profilePhoto = './assets/imgs/user-img-teacher.png';
       }
-      
+
       // this.stripeAccountId = UserProfile.profileData.stripeCustomer.id;
     })
   }

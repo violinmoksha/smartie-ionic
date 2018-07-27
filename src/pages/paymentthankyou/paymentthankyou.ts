@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the PaymentthankyouPage page.
  *
@@ -20,7 +20,10 @@ export class PaymentthankyouPage {
   private pageContent: any;
   private fromWhere: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("Paymentthankyou");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Paymentthankyou", "View"));
+
     this.fromWhere = navParams.data.fromWhere;
     this.storage.get("UserProfile").then(roleProfile => {
       this.role = roleProfile.profileData.role;

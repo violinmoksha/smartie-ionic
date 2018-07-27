@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 // import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the PaymentDetailsPage page.
  *
@@ -24,15 +24,16 @@ export class PaymentDetailsPage {
   private registeredWithStripe: boolean = false;
   private stripeCustomerId: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser) {
-
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("PaymentDetails");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("PaymentDetails", "View"));
   }
 
   ionViewDidLoad() {
     //this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
-      this.fullName = UserProfile.profileData.fullname;      
+      this.fullName = UserProfile.profileData.fullname;
       if(UserProfile.profileData.stripeCustomer !== undefined){
         this.registeredWithStripe = true;
         this.stripeCustomerId = UserProfile.profileData.stripeCustomer.stripe_user_id;
@@ -75,7 +76,7 @@ export class PaymentDetailsPage {
           }
           // const browser = this.iab.create(response.result.url, '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
           const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_self', options);
-  
+
           /* browser.on('loadstop').subscribe(event => {
             console.log(event);
           }); */

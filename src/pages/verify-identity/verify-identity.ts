@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { Storage } from '@ionic/storage';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the VerifyIdentityPage page.
  *
@@ -27,7 +27,10 @@ export class VerifyIdentityPage {
   private profileId: any;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+    this.analytics.setScreenName("VerifyIdentity");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("VerifyIdentity", "View"));
+
     this.params = navParams.data;
     console.log(this.params.stripeAccount.stripeCustomer.id);
 
@@ -89,7 +92,7 @@ export class VerifyIdentityPage {
         console.log(err.error.error.message);
         this.verifyIdentityError(err.error.error.message);
       })
-    });    
+    });
   }
 
   verifyIdentityError(errorMessage){

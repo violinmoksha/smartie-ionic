@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Stripe } from '@ionic-native/stripe';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the AddBankAccountPage page.
  *
@@ -27,7 +27,10 @@ export class AddBankAccountPage {
   private body: any;
   private profilePhoto: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+    this.analytics.setScreenName("AddBankAccount");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("AddBankAccount", "View"));
+
     this.params = navParams.data;
 
     this.BankAccountForm = new FormGroup({

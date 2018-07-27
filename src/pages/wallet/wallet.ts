@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the WalletPage page.
  *
@@ -23,7 +23,10 @@ export class WalletPage {
   pendingBalance: any = 0;
   profileData: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private analytics : AnalyticsProvider, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
+    this.analytics.setScreenName("Wallet");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Wallet", "View"));
+
     this.storage.get("UserProfile").then(profile => {
       this.role = profile.profileData.role;
       this.stripeCustomer = profile.profileData.stripeCustomer;

@@ -3,7 +3,7 @@ import { Component, NgZone } from '@angular/core';
 import { App, NavController, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the JobRequestsPage page.
  *
@@ -29,7 +29,10 @@ export class JobRequestPage {
   timeZone: any;
   private appNavCtrl: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController, private ngZone: NgZone, public app: App) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController, private ngZone: NgZone, public app: App,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("JobRequest");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("JobRequest", "View"));
+
     this.params = navParams.get('params');
     console.log("Job Request page");
     console.log(this.params);
@@ -179,13 +182,13 @@ export class JobRequestPage {
             role: profile.profileData.role
           };
         }
-  
+
         return new Promise(async (resolve) => {
           let API = await this.smartieApi.getApi(
             'setJobRequest',
             this.body
           );
-        
+
           interface Response {
             result: any
           };
@@ -240,7 +243,7 @@ export class JobRequestPage {
           'setJobRequest',
           this.body
         );
-      
+
         interface Response {
           result: any
         };
