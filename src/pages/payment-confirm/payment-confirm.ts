@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the PaymentConfirmPage page.
  *
@@ -29,7 +29,10 @@ export class PaymentConfirmPage {
   showArrow: boolean = true;
   duration: number = 3000;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("PaymentConfirm");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("PaymentConfirm", "View"));
+
     this.params = navParams.data.params
     console.log("Payment Confirm Page");
     console.log(this.params);

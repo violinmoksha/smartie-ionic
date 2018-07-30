@@ -12,7 +12,6 @@ export class AnalyticsProvider {
 
   constructor(public http: HttpClient, public firebase:Firebase) {
     console.log('Hello AnalyticsProvider Provider');
-    this.firebase.setUserProperty("role", "test");
   }
 
   setScreenName = (name)=>{

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the ReviewsPage page.
  *
@@ -25,7 +25,10 @@ export class ReviewsPage {
   profilePhoto: any;
   reviews: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("Reviews");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Reviews", "View"));
+
     this.params = navParams.data.params;
     console.log(this.params);
 

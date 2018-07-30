@@ -7,7 +7,7 @@ import { SmartieAPI } from '../../providers/api/smartie';
 const Parse = require('parse');
 import { Storage } from '@ionic/storage';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the EditProfileStep3Page page.
  *
@@ -96,7 +96,10 @@ export class EditProfileStep3Page {
   //TODO post-<snip><snip> RE registration is: add back currency
   //In V2, but it must be done correctly next time with calculated pre-conversions
   //or maybe even plugged into an AI bot that knows the forex
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("EditProfile_step2");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
+
     this.submitInProgress = false;
     this.loading = this.loadingCtrl.create({
       content: 'Editing Account...'
@@ -290,7 +293,7 @@ export class EditProfileStep3Page {
             preflocation: form3Values.prefLocation,
             schoolname: this.form2Values.othersSchoolName,
           },
-          specificUser: {              
+          specificUser: {
             partofschool:
               (this.form2Values.othersSchoolName ? true : false)
           }
@@ -363,7 +366,7 @@ export class EditProfileStep3Page {
 
             }
           });
-          
+
 
           let cvPromises = [];
           // console.log(this.TeacherFiles);

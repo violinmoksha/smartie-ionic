@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the ViewProfilePage page.
  *
@@ -21,7 +21,10 @@ export class ViewProfilePage {
   genericAvatar: any;
   timeZone: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,public storage: Storage) {
+    this.analytics.setScreenName("ViewProfile");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("ViewProfile", "View"));
+
     this.params = navParams.get("params");
     console.log(this.params);
 

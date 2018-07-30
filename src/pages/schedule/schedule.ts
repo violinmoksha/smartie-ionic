@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, PopoverController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 /**
  * Generated class for the SchedulePage page.
  *
@@ -23,7 +23,10 @@ export class SchedulePage {
 
   private genericAvatar: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public modalCtrl: ModalController, public popoverCtrl: PopoverController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public modalCtrl: ModalController, public popoverCtrl: PopoverController,private analytics : AnalyticsProvider) {
+    this.analytics.setScreenName("Schedule");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("Schedule", "View"));
+
     this.params = this.navParams.get("params");
     console.log('Schedule Page');
     console.log(this.params);
@@ -38,7 +41,7 @@ export class SchedulePage {
 
     this.params.UTCStartTime = UTCStartTime.getHours() + ':' + UTCStartTime.getMinutes();
     this.params.UTCEndTime = UTCEndTime.getHours() + ':' + UTCEndTime.getMinutes(); */
-    
+
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
     })

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 // import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
-
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 
 /**
  * Generated class for the SetReviewPage page.
@@ -26,8 +26,11 @@ export class SetReviewPage {
   private reviewingProfileId: any;
   genericAvatar: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
-    this.profileData = navParams.get("profileData");    
+  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,public storage: Storage) {
+    this.analytics.setScreenName("SetReview");
+    this.analytics.addEvent(this.analytics.getAnalyticEvent("SetReview", "View"));
+
+    this.profileData = navParams.get("profileData");
     this.reviewedProfileId = this.profileData.objectId;
 
     if (this.profileData.role == 'teacher') {
