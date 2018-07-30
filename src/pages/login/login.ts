@@ -23,24 +23,37 @@ import { AnalyticsProvider } from '../../providers/analytics/analytics';
 export class LoginPage {
 
   private LoginForm: FormGroup;
+  public provisionData: any = {
+    profile: { fullname: '' }
+  };
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private firebase:FirebaseProvider,private loadingCtrl :LoadingController, private analytics : AnalyticsProvider,private menu: MenuController) {
 
-   this.LoginForm = new FormGroup({
-      username: new FormControl(''),
+    
+    console.log("Login Page");
+
+    this.storage.get('Provision').then(provision => {
+      console.log(provision);
+      this.provisionData = provision.provision;
+
+    })
+
+    this.LoginForm = new FormGroup({
+      // username: new FormControl(''),
       password: new FormControl('')
     });
+
     this.analytics.setScreenName("Login");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Login", "View"));
   }
 
   login(data){
-    if(data.username !== '' && data.password !==''){
+    if(data.password !==''){
 
       return new Promise(async (resolve) => {
         let API = await this.smartieApi.getApi(
           'loginUser',
-          {username: data.username.toLowerCase(), password: data.password}
+          {username: this.provisionData.user.username, password: data.password}
         );
 
         interface Response {

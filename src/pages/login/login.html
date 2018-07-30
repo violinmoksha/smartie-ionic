@@ -17,7 +17,10 @@
 
   <form [formGroup]="LoginForm" name="LoginForm" (ngSubmit)="login(LoginForm.value)" novalidate>
     <div class="list list-inset">
-      <ion-input placeholder="Username" type="text" formControlName="username"></ion-input>
+      <span class="user-name"> Hello, {{ provisionData.profile.fullname }}</span>
+
+      <!-- <ion-input placeholder="Username" type="text" formControlName="username"></ion-input> -->
+
       <ion-input placeholder="Password" type="password" formControlName="password"></ion-input>
     </div>
 
