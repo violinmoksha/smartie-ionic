@@ -305,7 +305,7 @@ export class RegisterStep3Page {
 
     form3Values.prefPayRate = this.hourlyRate;
     if(this.role == 'teacher'){
-      form3Values.yrseExperience = this.yearExperience;
+      form3Values.yrsExperience = this.yearExperience;
 
       let UTCstartTime = new Date(this.startDate.split('-')[2], (this.startDate.split('-')[0] - 1), this.startDate.split('-')[1], parseInt(form3Values.startTime.split(':')[0]), parseInt(form3Values.startTime.split(':')[1]));
 
