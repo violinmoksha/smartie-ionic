@@ -226,7 +226,7 @@ export class SmartieSearch {
 
             return new Promise(async (resolve) => {
               let API = await this.smartieApi.getApi(
-                'fetchNotifications',
+                'fetchMarkers',
                 { profileId: profile.profileData.objectId, role: profile.profileData.role }
               );
 
