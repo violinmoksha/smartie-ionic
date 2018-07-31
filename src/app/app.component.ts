@@ -88,6 +88,7 @@ export class SmartieApp {
           );
 
           this.smartieApi.http.post<GetProvision>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe((result) => {
+            console.log(result);
             this.storage.set("Provision", result.result);
             this.storage.get('UserProfile').then((data)=>{
               if(data!=null){

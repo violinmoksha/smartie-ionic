@@ -23,6 +23,7 @@ export class SmartieAPI {
  async getApi(endPoint, body){
     let userData = await this.dbService.getUser();
     let provisionData = await this.dbService.getProvision();
+    console.log(provisionData);
 
     const ourBaseUrls = Constants.API_ENDPOINTS.baseUrls;
     const ourHeaders = Constants.API_ENDPOINTS.headers;
@@ -43,7 +44,9 @@ export class SmartieAPI {
       headers: new HttpHeaders({
         'X-Parse-Application-Id': this.applicationId,
         'X-Hullo-Token': provisionData ? provisionData.pToken : '',
+        'x-device-uuid': provisionData ? provisionData.provision.uuid : '',
         'X-Bouncy-Token': userData ? userData.jwtToken : '',
+        'x-user-id': userData ? userData.userData.objectId : '',
         'Content-Type': this.contentType
       })
     };
