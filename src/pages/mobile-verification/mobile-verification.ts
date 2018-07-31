@@ -47,7 +47,7 @@ export class MobileVerificationPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("MobileVerification", "Clicked_MobileVerifyButton"));
     let params={
       "uuid": (this.platform.is('cordova')) ? this.device.uuid :'123456',
-      "device": this.device,
+      "device": { 'cordova': this.device.cordova, 'isVirtual': this.device.isVirtual, 'manufacturer': this.device.manufacturer, 'model': this.device.model, 'platform': this.device.platform, 'serial': this.device.serial, 'uuid': this.device.uuid, 'version': this.device.version },
       "role": this.role
     }
 

@@ -8,7 +8,7 @@ import { Storage } from '@ionic/storage';
 import {Response} from '../../providers/data-model/data-model';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 
-declare var google;
+declare let google;
 
 /**
  * Generated class for the RegisterStep3Page page.
@@ -288,11 +288,12 @@ export class RegisterStep3Page {
 
     let API = await this.smartieApi.getApi(
       'addUserToProvision',
-      { uuid: this.device.uuid, user: userId, profile: userProfileId}
+      { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
     );
 
 
     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+      console.log("Getting updated provision");
       console.log(response);
     }, err => {
       console.log(err);
@@ -329,7 +330,7 @@ export class RegisterStep3Page {
     return new Promise(async (resolve) => {
       let API = await this.smartieApi.getApi(
         'signUpRole',
-        {role: this.role, accountInfo: this.form1Values, profileInfo: this.form2Values, userInfo: form3Values}
+        {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(this.form2Values), userInfo: JSON.stringify(form3Values)}
       );
 
       interface Response {
@@ -343,7 +344,7 @@ export class RegisterStep3Page {
           this.storage.set("UserProfile", signupResult.result).then(() => {
             return new Promise(async (resolve) => {
               let API = await this.smartieApi.getApi(
-                'fetchNotifications',
+                'fetchMarkers',
                 { profileId: signupResult.result.profileData.objectId, role: this.role }
               );
 

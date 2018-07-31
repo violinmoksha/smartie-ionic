@@ -72,6 +72,7 @@ export class RegisterStep1Page {
 
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
         isNewEmail => {
+          loading.dismiss();
           if (isNewEmail.result == true) {
 
             this.navCtrl.push("RegisterStep2Page", { form1Value : formParams, role: this.role });
