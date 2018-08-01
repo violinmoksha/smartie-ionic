@@ -11,24 +11,24 @@
 </ion-header>
 
 <ion-content class="cl-{{userRole}}" padding>
-  <h4 *ngIf="params.fromWhere == 'requestSentJobs'" style="color:red">Congratulations, You Have Received a <span *ngIf="userRole == 'teacher'">Job</span><span *ngIf="userRole !== 'teacher'">Teaching</span> Request!</h4>
-  <h4 *ngIf="params.fromWhere == 'acceptedJobs'" style="color:red">Congratulations, Your Job Request Has Been ACCEPTED!</h4>
+  <h4 *ngIf="jobObject.fromWhere == 'requestSentJobs'" style="color:red">Congratulations, You Have Received a <span *ngIf="userRole == 'teacher'">Job</span><span *ngIf="userRole !== 'teacher'">Teaching</span> Request!</h4>
+  <h4 *ngIf="jobObject.fromWhere == 'acceptedJobs'" style="color:red">Congratulations, Your Job Request Has Been ACCEPTED!</h4>
 
   <div class="notification-wrapper totles-pop-search" id="profile-info">
     <div class="notification">
       <div class="left">
         <div class="avatar">
-          <img *ngIf="params.profilePhoto !== undefined" (load)="loadImage()" src="{{ params.profilePhoto.url }}">
-          <img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}"/>
+          <img *ngIf="jobObject.profilePhoto !== undefined" (load)="loadImage()" src="{{ jobObject.profilePhoto.url }}">
+          <img *ngIf="jobObject.profilePhoto == undefined" src="{{ genericAvatar }}"/>
         </div>
         <div class="u-detail">
-          <div *ngIf="params.role !== 'school'" class="name">{{ params.fullname }}</div>
-          <div *ngIf="params.role == 'school'" class="name">{{ params.schoolName }}</div>
-          <div class="profile-type">{{ params.role }}</div>
+          <div *ngIf="jobObject.role !== 'school'" class="name">{{ jobObject.fullname }}</div>
+          <div *ngIf="jobObject.role == 'school'" class="name">{{ jobObject.schoolName }}</div>
+          <div class="profile-type">{{ jobObject.role }}</div>
         </div>
       </div>
-      <div class="right" *ngIf="params.prefPayRate">
-        <div class="price">{{ params.prefPayRate }}</div>
+      <div class="right" *ngIf="jobObject.prefPayRate">
+        <div class="price">{{ jobObject.prefPayRate }}</div>
         <div class="hour-rate">Per Hour</div>
       </div>
       <div class="clear"></div>
@@ -36,53 +36,53 @@
   </div>
 
   <div class="jobprofile-content">
-    <h2 *ngIf="params.profileTitle">{{ params.profileTitle }}</h2>
-    <h2 *ngIf="params.yrsExperience">I have {{ params.yrsExperience }} years of teaching experience.</h2>
-    <div *ngIf="params.profileAbout" class="jobprofile-details">
+    <h2 *ngIf="jobObject.profileTitle">{{ jobObject.profileTitle }}</h2>
+    <h2 *ngIf="jobObject.yrsExperience">I have {{ jobObject.yrsExperience }} years of teaching experience.</h2>
+    <div *ngIf="jobObject.profileAbout" class="jobprofile-details">
       <h3>About:</h3>
-      <p>{{ params.profileAbout }}</p>
+      <p>{{ jobObject.profileAbout }}</p>
     </div>
     <div class="clear"></div>
     <div class="jobprofile-details">
       <h3>Preferred Location</h3>
-      <p>{{ params.prefLocation }}</p>
+      <p>{{ jobObject.prefLocation }}</p>
       <div class="clear"></div>
     </div>
 
-    <div *ngIf="params.role == 'school'" class="jobprofile-details">
+    <div *ngIf="jobObject.role == 'school'" class="jobprofile-details">
       <h3>Contact Person</h3>
-      <p>{{ params.contactName }}</p>
+      <p>{{ jobObject.contactName }}</p>
       <div class="clear"></div>
     </div>
 
-    <div *ngIf="params.defaultStartDateTime" class="job-availablity-details">
+    <div *ngIf="jobObject.defaultStartDateTime" class="job-availablity-details">
       <h3>Available Timings</h3>
-      <p>{{ params.UTCStartTime }} to {{ params.UTCEndTime}} ({{ timeZone }}) on {{ params.UTCstartDate }} to {{ params.UTCendDate }}</p>
+      <p>{{ jobObject.UTCStartTime }} to {{ jobObject.UTCEndTime}} ({{ timeZone }}) on {{ jobObject.UTCstartDate }} to {{ jobObject.UTCendDate }}</p>
     </div>
     <div class="jobprofile-buttons">
-      <span *ngIf="!params.hasUpcomings">
+      <span *ngIf="!jobObject.hasUpcomings">
         <button style="width:100%" class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
       </span>
-      <span *ngIf="params.hasUpcomings">
+      <span *ngIf="jobObject.hasUpcomings">
         <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
       </span>
       <!-- TODO: this button should "send a mail" from within the app -->
-      <span *ngIf="params.hasUpcomings">
-        <button class="button button-positive" [disabled]="!params.hasUpcomings" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
+      <span *ngIf="jobObject.hasUpcomings">
+        <button class="button button-positive" [disabled]="!jobObject.hasUpcomings" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
       </span>
       <!-- <span>
         <button class="button button-positive" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
       </span> -->
     </div>
   </div>
-  <div class="alert-button-group" *ngIf="!congrats && params.fromWhere != 'acceptedJobs'">
+  <div class="alert-button-group" *ngIf="!congrats && jobObject.fromWhere != 'acceptedJobs'">
     <button ion-button="alert-button" class="alert-button alert-button-md alert-button-default alert-button-default-md" (click)="dismiss()"><span class="button-inner">Close</span><div class="button-effect"></div></button>
     <button ion-button="alert-button" [disabled]="requestSent || submitInProgress" (click)="sendRequest()" class="alert-button alert-button-md alert-button-default alert-button-default-md">
       <span class="button-inner" *ngIf="!requestSent">Send Request</span>
       <span class="button-inner" *ngIf="requestSent">Invite Sent</span>
     <div class="button-effect"></div></button>
   </div>
-    <!--<div class="alert-button-group" *ngIf="userRole != 'teacher' && params.fromWhere == 'acceptedJobs'">
+    <!--<div class="alert-button-group" *ngIf="userRole != 'teacher' && jobObject.fromWhere == 'acceptedJobs'">
       <button ion-button full (click)="scheduleJob()"><span class="button-inner">Schedule Job</span></button>
     </div>-->
   <div *ngIf="congrats">
