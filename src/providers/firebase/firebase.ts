@@ -1,3 +1,4 @@
+import { Response } from './../data-model/data-model';
 import { Firebase } from '@ionic-native/firebase';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -60,11 +61,30 @@ export class FirebaseProvider {
         navCtrl.push("AddPaymentPage");
       break;
       case this.notificationActions.JobRequest:
-      navCtrl.push("NotificationFeedPage", notificaitonData.extraData);
+      let job = JSON.parse(notificaitonData.extraData);
+      this.openJobReq(job.jobId);
+      // navCtrl.push("NotificationFeedPage", notificaitonData.extraData);
       break
       default:
         break;
     }
+  }
+
+  openJobReq = async (id)=>{
+    let navCtrl = this.app.getActiveNav();
+    let params={
+      "jobRequestId":id
+    }
+      let API = await this.smartieApi.getApi(
+        'getJobRequestById',
+        params
+      );
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data=>{
+        navCtrl.push("JobRequestPage", data);
+      },err=>{
+        console.log(err);
+      })
+
   }
 
 

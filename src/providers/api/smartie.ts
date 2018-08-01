@@ -4,6 +4,7 @@ import { Constants } from './constants';
 import { DbserviceProvider } from '../dbservice/dbservice';
 import { Storage } from '@ionic/storage';
 import { AlertController } from 'ionic-angular';
+import { resolve } from 'dns';
 
 /*
   Generated class for the SmartieAPI provider.
@@ -23,7 +24,6 @@ export class SmartieAPI {
  async getApi(endPoint, body){
     let userData = await this.dbService.getUser();
     let provisionData = await this.dbService.getProvision();
-    console.log(provisionData);
 
     const ourBaseUrls = Constants.API_ENDPOINTS.baseUrls;
     const ourHeaders = Constants.API_ENDPOINTS.headers;
@@ -82,24 +82,37 @@ export class SmartieAPI {
     });
   }
 
-  updateUserProfileStorage(updatedProfile, specificUserData = null){
-
-      return new Promise(resolve => {
-        this.storage.get("UserProfile").then(profile => {
-          if(updatedProfile){
-            delete profile['profileData'];
-            profile['profileData'] = updatedProfile;
-          }
-          if(specificUserData != null){
-            delete profile['specificUser'];
-            profile['specificUser'] = specificUserData;
-          }
-          this.storage.set("UserProfile", profile).then(()=>{
-            resolve(profile);
-          })
+  updateUserProfileStorage(updatedProfile, specificUserData = null) {
+    return new Promise(resolve => {
+      this.storage.get("UserProfile").then(profile => {
+        if (updatedProfile) {
+          delete profile['profileData'];
+          profile['profileData'] = updatedProfile;
+        }
+        if (specificUserData != null) {
+          delete profile['specificUser'];
+          profile['specificUser'] = specificUserData;
+        }
+        this.storage.set("UserProfile", profile).then(() => {
+          resolve(profile);
         })
-      });
+      })
+    });
+  }
 
+  updateProvisionStorage(updatedProvision){
+    return new Promise(resolve => {
+      this.storage.get("Provision").then(provision => {
+        if(updatedProvision){
+          delete provision['provision'];
+          provision['provision'] = updatedProvision;
+
+          this.storage.set("Provision", provision).then(() => {
+            resolve(provision);
+          })
+        }
+      })
+    })
   }
 
   getParameterByName(name, url) {

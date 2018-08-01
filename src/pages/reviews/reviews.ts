@@ -33,9 +33,9 @@ export class ReviewsPage {
     console.log(this.params);
 
     if(this.params.role != 'teacher'){
-      this.reviewedProfileId = this.params.otherProfileId;
+      this.reviewedProfileId = this.params.otherProfile.objectId;
     }else{
-      this.reviewedProfileId = this.params.teacherProfileId;
+      this.reviewedProfileId = this.params.teacherProfile.objectId;
     }
 
     this.storage.get("UserProfile").then(profile => {
