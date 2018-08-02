@@ -13,6 +13,9 @@ import { ParseProvider } from '../providers/parse';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { GetProvision } from '../providers/data-model/data-model';
 import { SmartieSearch } from '../pages/smartie-search/smartie-search';
+// NB: leaving here for demo in constructor
+// TODO: put this in a proper Unit Test since it doesnt belong in app.component.ts
+import { ContactPatterns } from '../providers/contact-patterns';
 
 @Component({
   templateUrl: 'app.html'
@@ -24,9 +27,15 @@ export class SmartieApp {
 
   buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar,  private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider, private device:Device, private http:HttpClient, private dbservice:DbserviceProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar,  private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider, private device:Device, private http:HttpClient, private dbservice:DbserviceProvider, public contactPatterns:ContactPatterns) {
 
     this.initializeApp();
+
+    // NB: Demo for catching PMs attempting to transmit contact info
+    this.contactPatterns.allowedInput("my email at gmail dot com or on facebook").then(yesNo => {
+      console.log('ContactPatterns: '+yesNo);
+    });
+
     /*this.storage.get('sessionToken').then(val => {
       if (val !== 'undefined') {
         this.rootPage = "LoginPage";
