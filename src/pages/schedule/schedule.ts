@@ -23,7 +23,7 @@ export class SchedulePage {
 
   private genericAvatar: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public modalCtrl: ModalController, public popoverCtrl: PopoverController,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public modalCtrl: ModalController, public popoverCtrl: PopoverController, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("Schedule");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Schedule", "View"));
 
@@ -75,17 +75,17 @@ export class SchedulePage {
     const options: CalendarModalOptions = {
       pickMode: 'multi',
       from: new Date(),
-      to: new Date(defaultEndYear, defaultEndMonth-1, defaultEndDate),
+      to: new Date(defaultEndYear, defaultEndMonth - 1, defaultEndDate),
       cssClass: this.userRole
     };
-    let myCalendar =  this.modalCtrl.create(CalendarModal, {
+    let myCalendar = this.modalCtrl.create(CalendarModal, {
       options: options
     });
 
     myCalendar.present();
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
-      if(date){
+      if (date) {
         this.navCtrl.push("TimeSelectorMultiPage", { selectedDates: date, params: this.params, loggedRole: this.userRole });
         /* let popover = this.popoverCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years, params: this.params, loggedRole: this.userRole });
         popover.present();

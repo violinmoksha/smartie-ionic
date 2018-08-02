@@ -11,19 +11,14 @@ var ANDROID_DIR = 'platforms/android';
 
 copyReleaseSigning();
 
-function copyReleaseSigning(){
-  if(utils.directoryExists('build-config')){
-    if(utils.fileExists('build-config/android/release-signing.properties')){
+function copyReleaseSigning() {
+  if (utils.directoryExists('build-config')) {
+    if (utils.fileExists('build-config/android/release-signing.properties')) {
       console.log("found release-signing.properties");
       var signingProperties = fse.readFileSync('build-config/android/release-signing.properties').toString();
-      fse.writeFileSync(ANDROID_DIR+'/release-signing.properties', signingProperties);
-      // if(utils.fileExists(ANDROID_DIR+'/release-signing.properties')){
-
-      // }else{
-
-      // }
+      fse.writeFileSync(ANDROID_DIR + '/release-signing.properties', signingProperties);
     }
-  }else{
+  } else {
     console.log("build directory not found");
   }
 }

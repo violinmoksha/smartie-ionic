@@ -25,16 +25,16 @@ export class ReviewsPage {
   profilePhoto: any;
   reviews: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("Reviews");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Reviews", "View"));
 
     this.params = navParams.data.params;
     console.log(this.params);
 
-    if(this.params.role != 'teacher'){
+    if (this.params.role != 'teacher') {
       this.reviewedProfileId = this.params.otherProfile.objectId;
-    }else{
+    } else {
       this.reviewedProfileId = this.params.teacherProfile.objectId;
     }
 
@@ -54,13 +54,13 @@ export class ReviewsPage {
       interface Response {
         result: any
       }
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
         console.log(response.result);
         let userReviews = response.result;
         this.reviewCount = userReviews.reviews.length;
         this.profileData = userReviews.reviewedProfile;
 
-        for(let review of userReviews.reviews){
+        for (let review of userReviews.reviews) {
           this.getReviewingProfileData(review);
         }
 
@@ -68,28 +68,28 @@ export class ReviewsPage {
     })
   }
 
-  getReviewingProfileData(review){
+  getReviewingProfileData(review) {
     return new Promise(async (resolve) => {
       let API = await this.smartieApi.getApi(
         'getReviewingProfile',
-        { reviewingProfileId: review.reviewingProfileId}
+        { reviewingProfileId: review.reviewingProfileId }
       );
       interface Response {
         result: any
       }
       return this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
-        if(response.result.reviewingProfile.profilePhoto){
+        if (response.result.reviewingProfile.profilePhoto) {
           this.profilePhoto = response.result.reviewingProfile.profilePhoto.url;
-        }else{
+        } else {
           this.profilePhoto = "./assets/img/user-round-icon.png";
         }
-        this.reviews.push({ 'fullname': response.result.reviewingProfile.fullname, 'role':  response.result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
+        this.reviews.push({ 'fullname': response.result.reviewingProfile.fullname, 'role': response.result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
       })
 
     })
   }
 
-  addReview(){
+  addReview() {
     this.navCtrl.push("SetReviewPage", { profileData: this.profileData });
   }
 
