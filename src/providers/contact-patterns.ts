@@ -73,7 +73,7 @@ export class ContactPatterns {
         if (txt.match(key)) resolve(false);
       }).concat(
         this.usPhoneNumsClever.map(key => {
-          if (txt.indexOf(key) !== -1) cleverness++;
+          if (txt.toLowerCase().indexOf(key) !== -1) cleverness++;
           if (cleverness >= 3) {
             cleverness = 0;
             resolve(false);
@@ -83,14 +83,14 @@ export class ContactPatterns {
           if (txt.match(key)) resolve(false);
         }),
         this.emailAddrsClever.map(key => {
-          if (txt.indexOf(key) !== -1) cleverness++;
+          if (txt.toLowerCase().indexOf(key) !== -1) cleverness++;
           if (cleverness >= 2) {
             cleverness = 0;
             resolve(false);
           }
         }),
         this.msgrsClever.map(key => {
-          if (txt.indexOf(key) !== -1) resolve(false);
+          if (txt.toLowerCase().indexOf(key) !== -1) resolve(false);
         })
       );
 

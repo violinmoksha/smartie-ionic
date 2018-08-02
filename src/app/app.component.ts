@@ -32,7 +32,7 @@ export class SmartieApp {
     this.initializeApp();
 
     // NB: Demo for catching PMs attempting to transmit contact info
-    this.contactPatterns.allowedInput("my email at ").then(yesNo => {
+    this.contactPatterns.allowedInput("my email at Dot COM").then(yesNo => {
       console.log('ContactPatterns: '+yesNo);
     });
 
