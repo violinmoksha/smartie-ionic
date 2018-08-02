@@ -4,7 +4,7 @@ import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+// import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 // import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { SmartieAPI } from '../providers/api/smartie';
@@ -24,7 +24,7 @@ export class SmartieApp {
 
   buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider, private device:Device, private http:HttpClient, private dbservice:DbserviceProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar,  private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider, private device:Device, private http:HttpClient, private dbservice:DbserviceProvider) {
 
     this.initializeApp();
     /*this.storage.get('sessionToken').then(val => {
@@ -73,9 +73,8 @@ export class SmartieApp {
         this.firebase.initFCM();
         this.firebase.notificationListener();
         this.statusBar.styleDefault();
-        this.splashScreen.hide();
         // this.initPushNotifications();
-        this.rootPage = 'LauncherPage';
+       // this.rootPage = 'LauncherPage';
 
         let params = {
           "uuid":this.device.uuid,
@@ -96,9 +95,10 @@ export class SmartieApp {
               }else{
                 this.rootPage = 'LoginPage';
               }
+             // this.splashScreen.hide();
             })
           }, (err)=>{
-            this.splashScreen.hide();
+            //this.splashScreen.hide();
             this.rootPage = 'LandingPage';
           })
         })

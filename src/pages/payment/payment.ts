@@ -24,7 +24,7 @@ export class PaymentPage {
   private totalAmount: number;
   private params: any;
   private CardForm: FormGroup;
-  private stripeCustomerCard: any = { "last4": '', "exp_month": '', "exp_year": ''};
+  private stripeCustomerCard: any = { "last4": '', "exp_month": '', "exp_year": '' };
   private stripeCustomer: any;
   private body: any;
   private otherProfileId: any;
@@ -34,7 +34,7 @@ export class PaymentPage {
   // private apptEndTime: any;
   private loading: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("Payment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Payment", "View"));
 
@@ -56,13 +56,13 @@ export class PaymentPage {
       this.otherProfileId = UserProfile.profileData.objectId;
 
       //Check for user register with stripe as a customer for non-teacher profile
-      if(UserProfile.profileData.stripeCustomer != undefined){
+      if (UserProfile.profileData.stripeCustomer != undefined) {
         this.stripeCustomer = UserProfile.profileData.stripeCustomer.id;
         this.stripeCustomerCard = UserProfile.profileData.stripeCustomer.sources.data[0];
-        if(this.stripeCustomerCard != undefined){
+        if (this.stripeCustomerCard != undefined) {
           this.stripeCustomerCard.last4 = '**** **** **** ' + this.stripeCustomerCard.last4;
         }
-      }else{
+      } else {
         let alert = this.alertCtrl.create({
           title: 'Please register with Stripe...',
           subTitle: 'You must register with stripe account to make a payment ;-)',
@@ -89,17 +89,17 @@ export class PaymentPage {
     console.log('ionViewDidLoad PaymentPage');
   }
 
-  paymentConfirm(){
+  paymentConfirm() {
     this.navCtrl.push("PaymentConfirmPage", { totalAmount: this.totalAmount, params: this.params });
     // this.navCtrl.push("PaymentPage");
   }
 
-  pay(amount, cardValue){
+  pay(amount, cardValue) {
     console.log(amount);
     console.log(this.stripeCustomer);
     console.log(this.stripeCustomerCard);
 
-    if(this.stripeCustomerCard == undefined){
+    if (this.stripeCustomerCard == undefined) {
       console.log(cardValue);
 
       return new Promise(async (resolve) => {
@@ -110,18 +110,18 @@ export class PaymentPage {
         interface Response {
           result: any;
         };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
           this.createTransaction(amount);
         }, err => {
           console.log(err);
         })
       })
-    }else{
+    } else {
       this.createTransaction(amount);
     }
   }
 
-  createTransaction(amount){
+  createTransaction(amount) {
     this.loading = this.loadingCtrl.create({
       content: 'Loading...'
     });
@@ -148,9 +148,9 @@ export class PaymentPage {
       interface Response {
         result: any;
       };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
         this.loading.dismiss();
-        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
+        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment' });
       }, err => {
         console.log(err);
       })

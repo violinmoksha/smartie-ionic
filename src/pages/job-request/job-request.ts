@@ -10,16 +10,16 @@ import { AnalyticsProvider } from '../../providers/analytics/analytics';
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@IonicPage()@Component({
+@IonicPage() @Component({
   selector: 'page-job-request',
   templateUrl: 'job-request.html',
 })
 export class JobRequestPage {
 
   private params: any;
-  private jobObject:any;
-  private teacherObj:any;
-  private otherObj:any;
+  private jobObject: any;
+  private teacherObj: any;
+  private otherObj: any;
   private requestSent: boolean;
   private acceptState: boolean;
   private body: any;
@@ -32,7 +32,7 @@ export class JobRequestPage {
   timeZone: any;
   private appNavCtrl: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController, private ngZone: NgZone, public app: App,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController, private ngZone: NgZone, public app: App, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("JobRequest");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("JobRequest", "View"));
 
@@ -46,7 +46,7 @@ export class JobRequestPage {
 
     this.appNavCtrl = app.getActiveNav();
 
-    if(this.params.role == 'teacher'){
+    if (this.params.role == 'teacher') {
       // Converting defaultStartDateTime and defaultEndDateTime to current device TimeZone
       var availStartDateTime = new Date(this.jobObject.teacher.defaultStartDateTime.iso);
       var availEndDateTime = new Date(this.jobObject.teacher.defaultEndDateTime.iso);
@@ -56,12 +56,12 @@ export class JobRequestPage {
       this.jobObject.UTCStartTime = this.formatTime(availStartDateTime);
       this.jobObject.UTCEndTime = this.formatTime(availEndDateTime);
 
-      this.jobObject.UTCstartDate = (availStartDateTime.getMonth()+1) + '-' + availStartDateTime.getDate() + '-' + availStartDateTime.getFullYear();
-      this.jobObject.UTCendDate = (availEndDateTime.getMonth()+1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
+      this.jobObject.UTCstartDate = (availStartDateTime.getMonth() + 1) + '-' + availStartDateTime.getDate() + '-' + availStartDateTime.getFullYear();
+      this.jobObject.UTCendDate = (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
 
-      this.jobObject = Object.assign(this.jobObject, {...this.teacherObj});
-    }else{
-      this.jobObject = Object.assign(this.jobObject, {...this.otherObj});
+      this.jobObject = Object.assign(this.jobObject, { ...this.teacherObj });
+    } else {
+      this.jobObject = Object.assign(this.jobObject, { ...this.otherObj });
     }
 
     if (this.jobObject.fromWhere && this.jobObject.fromWhere == 'requestSentJobs') {
@@ -73,11 +73,11 @@ export class JobRequestPage {
   }
 
   // This function used to convert Time into US format with AM/PM
-  formatTime(dateTime){
+  formatTime(dateTime) {
     return dateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
   }
 
-  loadImage(){
+  loadImage() {
     this.loaded = true;
   }
 
@@ -85,7 +85,7 @@ export class JobRequestPage {
     this.storage.get("UserProfile").then(roleProfile => {
       this.userRole = roleProfile.profileData.role;
 
-      if(this.userRole !== 'teacher' && this.params.fromWhere == 'acceptedJobs'){
+      if (this.userRole !== 'teacher' && this.params.fromWhere == 'acceptedJobs') {
         // this.scheduleJob();
         console.log(this.jobObject);
         let alert = this.alertCtrl.create({
@@ -95,20 +95,22 @@ export class JobRequestPage {
             text: 'OK',
             handler: () => {
               // this.navCtrl.push('NotificationFeedPage');
-              this.navCtrl.push('SchedulePage', { params: {
-                jobRequestId: this.jobObject.jobRequestId,
-                profilePhoto: this.jobObject.profilePhoto,
-                profileStripeAccount: this.jobObject.profileStripeAccount,
-                fullname: this.jobObject.fullname,
-                teacherProfileId: this.jobObject.teacherProfileId,
-                role: this.jobObject.role,
-                prefPayRate: this.jobObject.prefPayRate,
-                prefLocation: this.jobObject.prefLocation,
-                UTCstartDate: this.jobObject.UTCstartDate,
-                UTCendDate: this.jobObject.UTCendDate,
-                UTCStartTime: this.jobObject.UTCStartTime,
-                UTCEndTime: this.jobObject.UTCEndTime
-              }})
+              this.navCtrl.push('SchedulePage', {
+                params: {
+                  jobRequestId: this.jobObject.jobRequestId,
+                  profilePhoto: this.jobObject.profilePhoto,
+                  profileStripeAccount: this.jobObject.profileStripeAccount,
+                  fullname: this.jobObject.fullname,
+                  teacherProfileId: this.jobObject.teacherProfileId,
+                  role: this.jobObject.role,
+                  prefPayRate: this.jobObject.prefPayRate,
+                  prefLocation: this.jobObject.prefLocation,
+                  UTCstartDate: this.jobObject.UTCstartDate,
+                  UTCendDate: this.jobObject.UTCendDate,
+                  UTCStartTime: this.jobObject.UTCStartTime,
+                  UTCEndTime: this.jobObject.UTCEndTime
+                }
+              })
             }
           }]
         });
@@ -116,10 +118,10 @@ export class JobRequestPage {
       }
 
       let otherRole;
-      if(this.userRole === 'teacher'){
+      if (this.userRole === 'teacher') {
         this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.otherObj.objectId };
         otherRole = this.params.role;
-      }else{
+      } else {
         this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.teacherObj.objectId };
         otherRole = 'teacher';
       }
@@ -141,11 +143,11 @@ export class JobRequestPage {
           'getRequestedJobRequest',
           this.body
         );
-        interface Response {};
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-          if(Object.keys(response).length > 0){
+        interface Response { };
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+          if (Object.keys(response).length > 0) {
             this.requestSent = true;
-          }else{
+          } else {
             this.requestSent = false;
           }
         }, err => {
@@ -155,11 +157,11 @@ export class JobRequestPage {
     })
   }
 
-  dismiss(){
+  dismiss() {
     this.viewCtrl.dismiss();
   }
 
-  sendRequest(){
+  sendRequest() {
     this.submitInProgress = true;
     this.loading = this.loadingCtrl.create({
       content: 'Loading...',
@@ -167,10 +169,10 @@ export class JobRequestPage {
     this.loading.present();
 
     this.storage.get("UserProfile").then(profile => {
-      if(this.userRole == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '' )) {
+      if (this.userRole == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '')) {
         console.log("checking stripe");
         this.checkStripeAccount(profile);
-      }else{
+      } else {
         console.log("request job");
         if (profile.profileData.role == 'teacher') {
           this.body = {
@@ -207,7 +209,7 @@ export class JobRequestPage {
           interface Response {
             result: any
           };
-          this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+          this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
             this.requestSent = true;
             this.viewCtrl.dismiss();
             this.loading.dismiss();
@@ -218,7 +220,7 @@ export class JobRequestPage {
     })
   }
 
-  checkStripeAccount(profile){
+  checkStripeAccount(profile) {
     this.loading.dismiss();
     this.viewCtrl.dismiss();
     let alert = this.alertCtrl.create({
@@ -233,25 +235,25 @@ export class JobRequestPage {
       }]
     });
     alert.present();
-}
+  }
 
-  viewProfile(){
+  viewProfile() {
     this.navCtrl.push("ViewProfilePage", { params: this.jobObject });
   }
 
-  accept(){
+  accept() {
     this.loading = this.loadingCtrl.create({
       content: 'Loading...'
     });
     this.loading.present();
     this.storage.get("UserProfile").then(roleProfile => {
-      if(this.userRole === 'teacher'){
+      if (this.userRole === 'teacher') {
         this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.otherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole };
-      }else{
+      } else {
         this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.teacherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole };
       }
 
-      console.log('sending '+JSON.stringify(this.body));
+      console.log('sending ' + JSON.stringify(this.body));
 
       return new Promise(async (resolve) => {
         let API = await this.smartieApi.getApi(
@@ -262,7 +264,7 @@ export class JobRequestPage {
         interface Response {
           result: any
         };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
           this.acceptState = true;
           this.viewCtrl.dismiss();
           this.loading.dismiss();
@@ -277,16 +279,16 @@ export class JobRequestPage {
     });
   }
 
-  reject(){
+  reject() {
     // requestSent = false & acceptState=false
     this.loading = this.loadingCtrl.create({
       content: 'Loading...'
     });
     this.loading.present();
     this.storage.get("UserProfile").then(roleProfile => {
-      if(this.userRole === 'teacher'){
+      if (this.userRole === 'teacher') {
         this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.otherObj.objectId, requestSent: false, acceptState: false, paidAndUpcoming: false };
-      }else{
+      } else {
         this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.teacherObj.objectId, requestSent: false, acceptState: false, paidAndUpcoming: false };
       }
 
@@ -299,7 +301,7 @@ export class JobRequestPage {
         interface Response {
           result: any
         };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
           this.viewCtrl.dismiss();
           this.loading.dismiss();
           this.submitInProgress = false;
@@ -309,24 +311,26 @@ export class JobRequestPage {
     });
   }
 
-  scheduleJob(){
-    this.navCtrl.push('SchedulePage', { params: {
-      profilePhoto: this.teacherObj.profilePhoto,
-      fullname: this.teacherObj.fullname,
-      teacherProfileId: this.teacherObj.teacherProfileId,
-      role: this.teacherObj.role,
-      prefPayRate: this.teacherObj.prefPayRate,
-      prefLocation: this.teacherObj.prefLocation,
-      defaultStartDate: this.teacherObj.defaultStartDate,
-      defaultEndDate: this.teacherObj.defaultEndDate,
-      defaultStartTime: this.teacherObj.defaultStartTime,
-      defaultEndTime: this.teacherObj.defaultEndTime,
-      profileStripeAccount: this.teacherObj.profileStripeAccount,
-      jobRequestId: this.jobObject.jobRequestId
-    }})
+  scheduleJob() {
+    this.navCtrl.push('SchedulePage', {
+      params: {
+        profilePhoto: this.teacherObj.profilePhoto,
+        fullname: this.teacherObj.fullname,
+        teacherProfileId: this.teacherObj.teacherProfileId,
+        role: this.teacherObj.role,
+        prefPayRate: this.teacherObj.prefPayRate,
+        prefLocation: this.teacherObj.prefLocation,
+        defaultStartDate: this.teacherObj.defaultStartDate,
+        defaultEndDate: this.teacherObj.defaultEndDate,
+        defaultStartTime: this.teacherObj.defaultStartTime,
+        defaultEndTime: this.teacherObj.defaultEndTime,
+        profileStripeAccount: this.teacherObj.profileStripeAccount,
+        jobRequestId: this.jobObject.jobRequestId
+      }
+    })
   }
 
-  initSendEmail(){
+  initSendEmail() {
     this.navCtrl.push("SendEmailPage", { params: this.jobObject });
   }
 }
