@@ -44,9 +44,9 @@ export class SmartieAPI {
       headers: new HttpHeaders({
         'X-Parse-Application-Id': this.applicationId,
         'X-Hullo-Token': provisionData ? provisionData.pToken : '',
-        'x-device-uuid': provisionData ? provisionData.provision.uuid : '',
+        'x-Device-UUID': provisionData ? provisionData.provision.uuid : '',
         'X-Bouncy-Token': userData ? userData.jwtToken : '',
-        'x-user-id': userData ? userData.userData.objectId : '',
+        'X-User-Id': userData ? userData.userData.objectId : '',
         'Content-Type': this.contentType
       })
     };
