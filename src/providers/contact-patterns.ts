@@ -69,31 +69,32 @@ export class ContactPatterns {
     let cleverness = 0;
 
     return new Promise(resolve => {
-      let usPhoneNumsRERet = this.usPhoneNumsRE.map(key => {
+      let myMaps = this.usPhoneNumsRE.map(key => {
         if (txt.match(key)) resolve(false);
-      });
-      let usPhoneNumsCleverRet = this.usPhoneNumsClever.map(key => {
-        if (txt.indexOf(key) !== -1) cleverness++;
-        if (cleverness >= 3) {
-          cleverness = 0;
-          resolve(false);
-        }
-      });
-      let emailAddrsRERet = this.emailAddrsRE.map(key => {
-        if (txt.match(key)) resolve(false);
-      });
-      let emailAddrsCleverRet = this.emailAddrsClever.map(key => {
-        if (txt.indexOf(key) !== -1) cleverness++;
-        if (cleverness >= 2) {
-          cleverness = 0;
-          resolve(false);
-        }
-      });
-      let msgrsCleverRet = this.msgrsClever.map(key => {
-        if (txt.indexOf(key) !== -1) resolve(false);
-      });
+      }).concat(
+        this.usPhoneNumsClever.map(key => {
+          if (txt.indexOf(key) !== -1) cleverness++;
+          if (cleverness >= 3) {
+            cleverness = 0;
+            resolve(false);
+          }
+        }),
+        this.emailAddrsRE.map(key => {
+          if (txt.match(key)) resolve(false);
+        }),
+        this.emailAddrsClever.map(key => {
+          if (txt.indexOf(key) !== -1) cleverness++;
+          if (cleverness >= 2) {
+            cleverness = 0;
+            resolve(false);
+          }
+        }),
+        this.msgrsClever.map(key => {
+          if (txt.indexOf(key) !== -1) resolve(false);
+        })
+      );
 
-      Promise.all(usPhoneNumsRERet.concat(usPhoneNumsCleverRet, emailAddrsRERet, emailAddrsCleverRet, msgrsCleverRet)).then(() => {
+      Promise.all(myMaps).then(() => {
         resolve(true);
       });
     });
