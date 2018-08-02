@@ -202,8 +202,8 @@ export class SmartieSearch {
     this.events.publish("buttonsLoad", this.role);
     if(this.fromWhere == 'signUp'){
       let alert = this.alertCtrl.create({
-        title: 'One more step to go !',
-        subTitle: `Please check your email and verify.`,
+        title: 'One more step to go!',
+        subTitle: `Please check your email and click the verification link.`,
         buttons: [{
           text: 'OK',
         }]
