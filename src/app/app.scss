@@ -14,7 +14,9 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-
+html, body, ion-app {
+  background-color: transparent !important;
+}
 .menu-inner .scroll-content {
   overflow: hidden;
   padding: 0 !important;
@@ -148,7 +150,7 @@ h4 {
     .toolbar-background{
       background-color: #00BC5B!important;
     }
-  } 
+  }
   .job-availablity-details{
     background-color: #00BC5B!important;
   }
@@ -199,7 +201,7 @@ h4 {
    .bar-button-default{
      color: #0096D7!important;
    }
-   .date-title{    
+   .date-title{
         h2{
             background-color: #0096D7!important;
         }
@@ -208,7 +210,7 @@ h4 {
       .toolbar-background{
         background-color: #0096D7!important;
       }
-    } 
+    }
     .job-availablity-details{
       background-color: #0096D7!important;
     }
@@ -261,7 +263,7 @@ h4 {
    .bar-button-default{
      color: #F97533!important;
    }
-   .date-title{    
+   .date-title{
       h2{
           background-color: #F97533!important;
       }
@@ -270,7 +272,7 @@ h4 {
     .toolbar-background{
       background-color: #F97533!important;
     }
-  } 
+  }
   .job-availablity-details{
     background-color: #F97533!important;
   }
@@ -319,7 +321,7 @@ h4 {
       color: #F31C62!important;
     }
 }
-.date-title{    
+.date-title{
   h2{
       background-color: #F31C62!important;
   }
@@ -328,7 +330,7 @@ h4 {
   .toolbar-background{
     background-color: #F31C62!important;
   }
-} 
+}
 .job-availablity-details{
   background-color: #F31C62!important;
 }

@@ -2,7 +2,8 @@
   "android":{
       "gradlePluginVersion":"3.0.0",
       "gradleVersion":"4.1",
-      "bundleUrl":"file:///android_asset/www/index.html"
+      "bundleUrl":"file:///android_asset/www/index.html",
+      "theme":"@style/AppTheme"
   },
   "iOS":{
 
