@@ -11,6 +11,16 @@ var ANDROID_DIR = 'platforms/android';
 var configValues = {};
 
 createDrawable();
+// removeCordovaSplash();
+
+// function removeCordovaSplash(){
+//   let config = fse.readFileSync('config.xml').toString();
+//   config = config.replace('<preference name="SplashScreen" value="screen" />', '<preference name="SplashScreen" value="none" />');
+//   fse.writeFile('config.xml', config, function(err){
+//     console.log("*** write file***");
+//     console.log(err);
+//   });
+// }
 
 function createDrawable() {
   fse.ensureDir(ANDROID_DIR + "/app/src/main/res/drawable", err => {

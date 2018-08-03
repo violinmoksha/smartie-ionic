@@ -19,13 +19,19 @@
     <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="Orientation" value="portrait" />
+    <preference name="SplashMaintainAspectRatio" value="true" />
+    <preference name="FadeSplashScreenDuration" value="300" />
+    <preference name="SplashShowOnlyFirstTime" value="false" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="SplashScreenDelay" value="5000" />
     <preference name="loadUrlTimeoutValue" value="70000" />
     <preference name="backgroundColor" value="0x00000000" />
-    <hook src="hooks/versionConfig.js" type="after_prepare" />
-    <hook src="hooks/bundleConfig.js" type="after_prepare" />
-    <hook src="hooks/releaseSetup.js" type="after_prepare" />
-    <hook src="hooks/splashSetup.js" type="after_prepare" />
     <platform name="android">
+        <preference name="SplashScreen" value="none" />
+        <hook src="hooks/versionConfig.js" type="after_prepare" />
+        <hook src="hooks/bundleConfig.js" type="after_prepare" />
+        <hook src="hooks/releaseSetup.js" type="after_prepare" />
+        <hook src="hooks/splashSetup.js" type="before_build" />
         <resource-file src="google-services.json" target="app/google-services.json" />
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -48,6 +54,7 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
+        <preference name="SplashScreen" value="screen" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
@@ -109,4 +116,5 @@
     <allow-navigation href="http://172.16.4.159:8100" />
     <engine name="ios" spec="4.5.4" />
     <engine name="android" spec="7.0.0" />
+    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
 </widget>
