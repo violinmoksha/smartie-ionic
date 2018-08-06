@@ -21,7 +21,7 @@ export class SmartieAPI {
   constructor(public http: HttpClient, public storage: Storage, public dbService: DbserviceProvider, private alertCtrl: AlertController) {
   }
 
- async getApi(endPoint, body){
+  async getApi(endPoint, body){
     let userData = await this.dbService.getUser();
     let provisionData = await this.dbService.getProvision();
 

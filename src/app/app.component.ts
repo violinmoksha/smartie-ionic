@@ -53,7 +53,7 @@ export class SmartieApp {
           { iconName: 'book', text: 'Manage Orders', pageName: '' },
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
-          { iconName: 'paper', text: 'Give Feedback', pageName: '' },
+          { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage' },
           { iconName: 'add-circle', text: 'Create a Job', pageName: '' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
@@ -64,7 +64,7 @@ export class SmartieApp {
           { iconName: 'book', text: 'Manage Orders', pageName: '' },
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 2, pageTitle: 'Edit User' },
-          { iconName: 'paper', text: 'Give Feedback', pageName: '' },
+          { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
       }
@@ -111,7 +111,7 @@ export class SmartieApp {
             this.rootPage = 'LandingPage';
           })
         })
-      }else{
+      } else {
         this.rootPage = 'LandingPage';
       }
 

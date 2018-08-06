@@ -114,7 +114,7 @@
     <plugin name="cordova-plugin-firebase" spec="1.0.5" />
     <plugin name="cordova-sqlite-storage" spec="^2.3.3" />
     <allow-navigation href="http://172.16.4.159:8100" />
-    <engine name="ios" spec="4.5.4" />
-    <engine name="android" spec="7.0.0" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
+    <engine name="android" spec="7.0.0" />
+    <engine name="ios" spec="4.5.4" />
 </widget>

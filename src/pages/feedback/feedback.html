@@ -11,14 +11,18 @@
 </ion-header>
 
 <ion-content padding>
-  <div class="profile-column">
-    <div class="feedback-top">
-      <label for="">Your Feedback</label>
-      <ion-textarea [(ngModel)]="feedback" placeholder="Please leave your feedback here..."></ion-textarea>
+  <form [formGroup]="FeedbackForm" name="FeedbackForm" (ngSubmit)="feedbackSubmit(FeedbackForm.value)" novalidate>
+    <div class="profile-column">
+      <div class="feedback-top">
+        <ion-textarea formControlName="feedback" placeholder="Please leave your feedback here..."></ion-textarea>
+      </div>
+      <div *ngIf="FeedbackForm.get('feedback').invalid && FeedbackForm.get('feedback').touched" class="item item-message">
+        Feedback is required.
+      </div>
+      <div class="feedback-bottom">
+        <span><ion-icon name="add-circle"></ion-icon><input type="file" formControlName="userScreenshot" (change)="addUserScreenshot($event.srcElement.files)" id="userScreenshot" /></span>
+      </div>
+      <button class="button button-positive" [disabled]="!FeedbackForm.valid" ion-button full>Submit Your Feedback</button>
     </div>
-    <div class="feedback-bottom">
-      <!-- TODO: Add a screenshot html goes here -->
-    </div>
-    <button class="button button-positive" [disabled]="feedback == ''" (click)="submitFeedback()" ion-button full>Submit Your Feedback</button>
-  </div>
+  </form>
 </ion-content>
