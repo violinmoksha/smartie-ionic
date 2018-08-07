@@ -15,6 +15,7 @@ import { Firebase } from '@ionic-native/firebase';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
 import { Camera } from '@ionic-native/camera';
+import { ImagePicker } from '@ionic-native/image-picker';
 import { CalendarModule } from "ion2-calendar";
 import { Stripe } from '@ionic-native/stripe';
 import { ParseProvider } from '../providers/parse';
@@ -30,6 +31,7 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 import { DbserviceProvider } from '../providers/dbservice/dbservice';
 import { AnalyticsProvider } from '../providers/analytics/analytics';
 import { ContactPatterns } from '../providers/contact-patterns';
+import { CameraServiceProvider } from '../providers/camera-service/camera-service';
 
 @NgModule({
   declarations: [
@@ -58,6 +60,7 @@ import { ContactPatterns } from '../providers/contact-patterns';
     Geolocation,
     Stripe,
     Camera,
+    ImagePicker,
     ParseProvider,
     SmartieAPI,
     Push,
@@ -71,7 +74,8 @@ import { ContactPatterns } from '../providers/contact-patterns';
     Device,
     DbserviceProvider,
     AnalyticsProvider,
-    ContactPatterns
+    ContactPatterns,
+    CameraServiceProvider
   ]
 })
 export class AppModule {}

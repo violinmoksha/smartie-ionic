@@ -1,3 +1,5 @@
+import { DbserviceProvider } from './../../providers/dbservice/dbservice';
+import { CameraServiceProvider } from './../../providers/camera-service/camera-service';
 import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Slides, ModalController, LoadingController  } from 'ionic-angular';
@@ -7,7 +9,6 @@ import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calend
 import { Storage } from '@ionic/storage';
 import {Response} from '../../providers/data-model/data-model';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
-
 declare let google;
 
 /**
@@ -41,6 +42,7 @@ export class RegisterStep3Page {
   private role: any;
   private today: any;
   public userLocation: any;
+  public cvFiles:Array<any>=[]
 
   public event = {
     timeStarts: '10:00',
@@ -93,7 +95,7 @@ export class RegisterStep3Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device,private analytics : AnalyticsProvider) {    // this.submitInProgress = false;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device,private analytics : AnalyticsProvider,private cameraService : CameraServiceProvider, private dbService:DbserviceProvider ) {    // this.submitInProgress = false;
 
     this.analytics.setScreenName("Register-step3");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step3", "View"));
@@ -101,6 +103,8 @@ export class RegisterStep3Page {
     this.loading = this.loadingCtrl.create({
       content: 'Creating Account...'
     });
+    console.log("*** nav params reg 3***")
+    console.log(navParams);
     this.form1Values = navParams.data.form1Values;
     this.form2Values = navParams.data.form2Values;
     this.role = navParams.data.role;
@@ -304,6 +308,9 @@ export class RegisterStep3Page {
     // this.submitInProgress = true;
     this.loading.present();
 
+    if(this.cvFiles.length>0)
+    this.storage.set('teacherCreds', this.cvFiles);
+
     form3Values.prefPayRate = this.hourlyRate;
     if(this.role == 'teacher'){
       form3Values.yrsExperience = this.yearExperience;
@@ -356,6 +363,7 @@ export class RegisterStep3Page {
                 this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
                   this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
                   //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
+                  this.dbService.setRegistrationData({step:3, role: this.role, form3: form3Values})
                 })
               }, err => {
                 console.log(err);
@@ -374,6 +382,7 @@ export class RegisterStep3Page {
         }
       )
     });
+
   }
 
 
@@ -446,6 +455,23 @@ export class RegisterStep3Page {
       let place = autocomplete.getPlace();
       console.log(place.formatted_address);
       this.userLocation = place.formatted_address;
+    })
+  }
+
+  uploadCv(){
+    this.cameraService.getImage().then((files)=>{
+      console.log(files);
+      if(Array.isArray(files)){
+        for(let file of files){
+          this.getBase64(file).then((obj)=>{
+            this.cvFiles.push({'name':obj['name'], 'data':obj['data']});
+          })
+        }
+      }else{
+        this.getBase64(files).then((obj)=>{
+          this.cvFiles.push({'name':obj['name'], 'data':obj['data']});
+        })
+      }
     })
   }
 

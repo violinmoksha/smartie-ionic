@@ -107,7 +107,6 @@
     <plugin name="cordova-plugin-crop" spec="0.4.0" />
     <plugin name="cordova-plugin-file" spec="6.0.1" />
     <plugin name="cordova-plugin-stripe" spec="1.5.3" />
-    <plugin name="cordova-plugin-camera" spec="4.0.3" />
     <plugin name="cordova-plugin-globalization" spec="1.11.0" />
     <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
     <plugin name="cordova-plugin-themeablebrowser" spec="0.2.17" />
@@ -115,6 +114,10 @@
     <plugin name="cordova-sqlite-storage" spec="^2.3.3" />
     <allow-navigation href="http://172.16.4.159:8100" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
+    <plugin name="cordova-plugin-camera" spec="^4.0.3" />
+    <plugin name="cordova-plugin-telerik-imagepicker" spec="^2.2.2">
+        <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="Uploading user images" />
+    </plugin>
     <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.4" />
 </widget>
