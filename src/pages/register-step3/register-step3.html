@@ -23,7 +23,6 @@
     <pre>Form End Time Status : {{Step3Form.get('endTime').status }}</pre>
     <pre>Form StartDate Status : {{Step3Form.get('dates.endDate').value }}</pre>
   </div> -->
-
   <form [formGroup]="Step3Form" name="Step3Form" (ngSubmit)="finalRegisterSubmit(Step3Form.value)" novalidate>
 
     <div class="list list-inset registration teacher step3">
@@ -45,8 +44,8 @@
         </ion-list>
 
         <div class="teacher-cv">
-          <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="" />
-          <div class="button button-cv">Upload Your CV and Credentials</div>
+          <!-- <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="" /> -->
+          <button type="button" class="button button-cv" (click)=uploadCv()>Upload Your CV and Credentials</button>
           <span class="input-label">Credentials verifiable via phone camera</span>
         </div>
 

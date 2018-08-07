@@ -5,9 +5,9 @@ export class Constants {
       prod: 'https://smartieapp.com',
       test: 'https://test.t0tl3s.com',
       // local: 'http://76.170.58.147:1337'
-      //local: 'http://172.16.4.159:1337'
+      local: 'http://172.16.4.159:1337'
       // local: 'http://172.16.1.179:1337'
-      local: 'http://108.185.113.201'
+     // local: 'http://108.185.113.201'
     },
     paths: {
       fn: '/parse/functions',

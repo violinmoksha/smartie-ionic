@@ -5,6 +5,7 @@ import { Camera } from '@ionic-native/camera';
 // import { Crop } from '@ionic-native/crop';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { DbserviceProvider } from '../../providers/dbservice/dbservice';
 /**
  * Generated class for the RegisterStep2Page page.
  *
@@ -37,7 +38,7 @@ export class RegisterStep2Page {
   private messagePlaceHolder: string;
   @ViewChild(Slides) studentSchool: Slides;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics : AnalyticsProvider, private dbService:DbserviceProvider) {
     this.analytics.setScreenName("Register-step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
 
@@ -208,6 +209,15 @@ export class RegisterStep2Page {
       form2Values.partOfSchool = this.partOfSchool;
     }
     this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
+    this.dbService.getRegistrationData().then((res)=>{
+      if(res){
+        res.step = 2;
+        res.form2Values = form2Values;
+        this.dbService.setRegistrationData(res);
+      }else{
+        this.dbService.setRegistrationData({ form1Values : this.form1Values, form2Values : form2Values, role: this.role });
+      }
+    })
   }
 
   ionViewDidLoad() {

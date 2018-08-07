@@ -1,6 +1,8 @@
+import { DbserviceProvider } from './../../providers/dbservice/dbservice';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
+
 /**
  * Generated class for the LandingPage page.
  *
@@ -15,7 +17,7 @@ import { AnalyticsProvider } from '../../providers/analytics/analytics';
 })
 export class LandingPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private analytics : AnalyticsProvider, private dbService:DbserviceProvider) {
     this.analytics.setScreenName("Landing");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Landing", "View"));
 
@@ -31,6 +33,7 @@ export class LandingPage {
 
   pushMobVerify(role){
     this.navCtrl.push("MobileVerificationPage", { role: role });
+    this.dbService.setRegistrationData({ step:0, role:role})
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Landing", role+"_selected"));
   }
 

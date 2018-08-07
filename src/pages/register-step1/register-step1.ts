@@ -1,8 +1,10 @@
+import { DbserviceProvider } from './../../providers/dbservice/dbservice';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
+
 /**
  * Generated class for the RegisterStep1Page page.
  *
@@ -22,7 +24,7 @@ export class RegisterStep1Page {
   private Step1Form: FormGroup;
   private notNewEmail: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController,private analytics : AnalyticsProvider ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController,private analytics : AnalyticsProvider, private dbService:DbserviceProvider ) {
     this.role = navParams.get('role');
 
     this.Step1Form = new FormGroup({
@@ -76,6 +78,15 @@ export class RegisterStep1Page {
           if (isNewEmail.result == true) {
 
             this.navCtrl.push("RegisterStep2Page", { form1Value : formParams, role: this.role });
+            this.dbService.getRegistrationData().then((res)=>{
+              if(res){
+                res.step = 1;
+                res.form1Values = formParams;
+                this.dbService.setRegistrationData(res);
+              }else{
+                this.dbService.setRegistrationData({ form1Values : formParams, role: this.role });
+              }
+            })
           } else {
             this.notNewEmail = true;
           }

@@ -27,6 +27,21 @@ export class DbserviceProvider {
     });
   }
 
+  async getRegistrationData(){
+    return await this.storage.get("Registration").then(data=>{
+      if(data){
+        return data;
+      }else{
+        return false;
+      }
+    });
+  }
+
+  async setRegistrationData(data){
+    /** Data should be step:value(number), data:value(form data), role:userRole; step is registration steps value */
+     this.storage.set("Registration", data);
+  }
+
   deleteUser(){
     this.storage.remove("UserProfile");
   }
