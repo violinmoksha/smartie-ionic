@@ -115,6 +115,7 @@ export class SmartieApp {
                   }
                 })
               }
+              console.log("splash hide");
               this.splashScreen.hide();
             })
           }, (err)=>{
