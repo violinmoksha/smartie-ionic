@@ -30,7 +30,7 @@ export class CameraServiceProvider {
   getGalleryOptions() {
     const options: CameraOptions = {
       quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
       saveToPhotoAlbum: true,
       mediaType: this.camera.MediaType.PICTURE,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
@@ -41,7 +41,10 @@ export class CameraServiceProvider {
   choosePictures(){
     let options = {
       maximumImagesCount:1,
-      outputType:0
+      quality:100,
+      width:512,
+      height:512,
+      outputType:1
     }
     return new Promise((resolve, reject)=>{
       this.imagePicker.hasReadPermission().then((res)=>{
@@ -87,7 +90,11 @@ export class CameraServiceProvider {
             role: 'openGallery',
             icon: 'image',
             handler: () => {
-              this.choosePictures();
+              this.choosePictures().then((pics)=>{
+                resolve(pics);
+              },(err)=>{
+                reject(err);
+              });
             }
           },{
             text: 'Cancel',
@@ -103,5 +110,9 @@ export class CameraServiceProvider {
       });
       actionSheet.present();
     })
+  }
+
+  getFileName(){
+    return 'UserFile'+Math.floor( Math.random()*9999 ) + 1000;
   }
 }
