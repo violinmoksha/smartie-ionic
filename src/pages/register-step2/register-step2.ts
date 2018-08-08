@@ -1,11 +1,16 @@
+import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, Slides, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, Slides, LoadingController, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 // import { Crop } from '@ionic-native/crop';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { DbserviceProvider } from '../../providers/dbservice/dbservice';
+import { SmartieAPI } from '../../providers/api/smartie';
+import { Response } from '../../providers/data-model/data-model';
+
+declare let google;
 /**
  * Generated class for the RegisterStep2Page page.
  *
@@ -37,8 +42,36 @@ export class RegisterStep2Page {
   private titlePlaceHolder: string;
   private messagePlaceHolder: string;
   @ViewChild(Slides) studentSchool: Slides;
+  @ViewChild(Slides) hourRate: Slides;
+  private hourlyRate: any;
+  public userLocation: any;
+  public nextText: string = '';
+  private userInfo: any = { prefLocation: '', prefPayRate: ''};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics : AnalyticsProvider, private dbService:DbserviceProvider) {
+  public hourRates = [
+    { "text": '5', "value": 5 },
+    { "text": '10', "value": 10 },
+    { "text": '15', "value": 15 },
+    { "text": '20', "value": 20 },
+    { "text": '25', "value": 25 },
+    { "text": '30', "value": 30 },
+    { "text": '35', "value": 35 },
+    { "text": '40', "value": 40 },
+    { "text": '45', "value": 45 },
+    { "text": '50', "value": 50 },
+    { "text": '55', "value": 55 },
+    { "text": '60', "value": 60 },
+    { "text": '65', "value": 65 },
+    { "text": '70', "value": 70 },
+    { "text": '75', "value": 75 },
+    { "text": '80', "value": 80 },
+    { "text": '85', "value": 85 },
+    { "text": '90', "value": 90 },
+    { "text": '95', "value": 95 },
+    { "text": '100', "value": 100 }
+  ];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics : AnalyticsProvider, private smartieApi: SmartieAPI, private device: Device, private alertCtrl: AlertController,  private dbService:DbserviceProvider) {
     this.analytics.setScreenName("Register-step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
 
@@ -59,6 +92,7 @@ export class RegisterStep2Page {
         contactPosition: new FormControl('', Validators.required)
       })
     }else if(this.role == 'student' || this.role == 'parent'){
+      this.nextText = "Submit";
       if(this.role == 'parent'){
         this.titlePlaceHolder = "Parent seeking CMRA";
         this.messagePlaceHolder = "I'm a Parent looking for experienced Market Research Analyst for my child";
@@ -70,9 +104,11 @@ export class RegisterStep2Page {
         name: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
         profileAbout: new FormControl('', Validators.required),
-        associateSchoolName: new FormControl('')
+        prefLocation: new FormControl('', Validators.required),
+        // associateSchoolName: new FormControl('')
       })
     }else{
+      this.nextText = "Next";
       this.titlePlaceHolder = "I am a Certified TOEFL Instructor";
       this.messagePlaceHolder = "Although I am certified in TOEFL I also have a passion for teaching Korean. Please book a session with me, you'll be amazed at the quick learning results!";
       this.Step2Form = new FormGroup({
@@ -104,7 +140,7 @@ export class RegisterStep2Page {
     }*/
   }
 
-  public filterpartOfSchool(result: string): void {
+  /* public filterpartOfSchool(result: string): void {
     // Handle what to do when a category is selected
     if(result){
       this.Step2Form.get('associateSchoolName').setValidators([Validators.required]);
@@ -112,7 +148,7 @@ export class RegisterStep2Page {
       this.Step2Form.get('associateSchoolName').setValidators([]);
     }
     this.partOfSchool = result;
-  }
+  } */
 
   chooseUploadType(inputEvent, photoFor){
     let actionSheet = this.actionSheetCtrl.create({
@@ -198,6 +234,35 @@ export class RegisterStep2Page {
     actionSheet.present();
   }
 
+  // Method executed when the slides are changed
+  public rateChanged(): void {
+    let currentIndex = this.hourRate.getActiveIndex();
+    console.log(currentIndex);
+  }
+
+  public filterRate(rate: number): void {
+    // Handle what to do when a category is selected
+    console.log(typeof rate);
+    this.hourlyRate = rate;
+  }
+
+  updateUserToProvision = async (userId, userProfileId) => {
+
+    let API = await this.smartieApi.getApi(
+      'addUserToProvision',
+      { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
+    );
+
+
+    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+      console.log("Getting updated provision");
+      console.log(response);
+      this.smartieApi.updateProvisionStorage(response.result);
+    }, err => {
+      console.log(err);
+    });
+  }
+
   next(form2Values){
     let loading = this.loadingCtrl.create({
       content: 'Loading...',
@@ -206,7 +271,53 @@ export class RegisterStep2Page {
     loading.present();
 
     if(this.role == 'student' || this.role == 'parent'){
-      form2Values.partOfSchool = this.partOfSchool;
+      // TODO need to submit data here for students
+      console.log("Students registration comes here");
+      console.log(this.userLocation);
+      console.log(this.hourlyRate);
+      this.userInfo.prefLocation = this.userLocation;
+      this.userInfo.prefPayRate = this.hourlyRate;
+
+      return new Promise(async (resolve) => {
+        let API = await this.smartieApi.getApi(
+          'signUpRole',
+          {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo)}
+        );
+
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(signupResult => {
+          this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
+
+          this.storage.set("UserProfile", signupResult.result).then(() => {
+            return new Promise(async (resolve) => {
+              let API = await this.smartieApi.getApi(
+                'fetchMarkers',
+                { profileId: signupResult.result.profileData.objectId, role: this.role }
+              );
+
+              interface Response {
+                result: any
+              };
+              this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
+                this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
+                  this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
+                  //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
+                })
+              }, err => {
+                console.log(err);
+              });
+            });
+          })
+        }, err => {
+          let alert = this.alertCtrl.create({
+            title: 'Signup Failed!',
+            subTitle: JSON.stringify(err),
+            buttons: ['OK']
+          });
+          alert.present();
+        })
+      })
+    }else{
+      this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
     }
     this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
     this.dbService.getRegistrationData().then((res)=>{
@@ -221,7 +332,24 @@ export class RegisterStep2Page {
   }
 
   ionViewDidLoad() {
-    // console.log('ionViewDidLoad RegisterStep2Page');
+
+    this.storage.get('currentPosition').then(userCurrentLocation => {
+      console.log(userCurrentLocation);
+    });
+    if(this.role == 'student'){
+      // console.log('ionViewDidLoad RegisterStep2Page');
+      console.log('ionViewDidLoad RegisterStep3Page');
+      let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
+      let options = { componentRestrictions: {country: 'us'} };
+
+      let autocomplete = new google.maps.places.Autocomplete(input, options);
+      autocomplete.addListener("place_changed", () => {
+        let place = autocomplete.getPlace();
+        console.log(place.formatted_address);
+        console.log(place);
+        this.userLocation = place.formatted_address;
+      })
+    }
   }
 
 }

@@ -132,9 +132,12 @@ export class SmartieApp {
 
   initGeolocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
+      console.log("Getting geo location");
+      console.log(resp);
       let phoneLatLng = { latitude: resp.coords.latitude, longitude: resp.coords.longitude };
       console.log('phoneLatLng: '+JSON.stringify(phoneLatLng));
       this.storage.set('phoneLatLng', phoneLatLng);
+      this.storage.set('currentPosition', resp);
     }).catch((error) => {
       console.log('Error getting phone location', JSON.stringify(error));
     });

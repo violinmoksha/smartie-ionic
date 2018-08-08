@@ -69,6 +69,7 @@ export class MobileVerificationPage {
       },e=>{
         loading.dismiss();
         console.log(e);
+        console.log("coming here provision error");
       })
     });
   }

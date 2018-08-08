@@ -7,7 +7,7 @@ import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from
 import { SmartieAPI } from '../../providers/api/smartie';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { Storage } from '@ionic/storage';
-import {Response} from '../../providers/data-model/data-model';
+import { Response } from '../../providers/data-model/data-model';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 declare let google;
 
@@ -299,6 +299,7 @@ export class RegisterStep3Page {
     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
       console.log("Getting updated provision");
       console.log(response);
+      this.smartieApi.updateProvisionStorage(response.result);
     }, err => {
       console.log(err);
     });

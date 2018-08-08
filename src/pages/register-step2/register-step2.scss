@@ -1,4 +1,10 @@
 page-register-step2 {
+
+  .slides-0{
+    margin-bottom: 15px;
+  } 
+  
+
   background-color: #fff;
   .teacher{
     .toolbar-title{
@@ -62,12 +68,23 @@ page-register-step2 {
       margin: auto;
 
       .swiper-slide{
-        width: 100%!important;
-        border:2px solid transparent;
-        border-radius: 100px;
+        width:auto!important;
+        padding:13px 15px;
+        border:1px solid transparent;
+        margin-bottom: 15px;
         p{
-          margin:10px 0;
+          margin: 0;
+          line-height:15px;
+          font-size: 13px;
         }
+      }
+
+      .swiper-slide.active{
+        border:1px solid #0096D7!important;
+        padding:0 0;
+        border-radius: 200px;
+        padding:13px 15px;
+        width: auto!important;
       }
     }
     .school-information{
@@ -90,9 +107,6 @@ page-register-step2 {
        }
      }
     }
-    #student-school{
-
-    }
     .school-pic{
       .input-label{
         width: 100%;
@@ -103,4 +117,6 @@ page-register-step2 {
 
       }
     }
+
+    
 }
