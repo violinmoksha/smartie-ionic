@@ -77,14 +77,14 @@ export class RegisterStep1Page {
           loading.dismiss();
           if (isNewEmail.result == true) {
 
-            this.navCtrl.push("RegisterStep2Page", { form1Value : formParams, role: this.role });
+            this.navCtrl.push("RegisterStep2Page", { form1Values : formParams, role: this.role });
             this.dbService.getRegistrationData().then((res)=>{
               if(res){
                 res.step = 1;
                 res.form1Values = formParams;
                 this.dbService.setRegistrationData(res);
               }else{
-                this.dbService.setRegistrationData({ form1Values : formParams, role: this.role });
+                this.dbService.setRegistrationData({ step:1, form1Values : formParams, role: this.role });
               }
             })
           } else {

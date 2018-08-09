@@ -102,11 +102,11 @@ export class SmartieApp {
                 this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: data.profileData.role });
               }else{
                 this.dbservice.getRegistrationData().then((registration)=>{
-                  if(registration){
+                  if(registration && registration.step){
                     if(registration.step === 0){
                       this.nav.setRoot("RegisterStep1Page", { role: registration.role });
                     }else if(registration.step == 1){
-                      this.nav.setRoot("RegisterStep2Page", { role: registration.role });
+                      this.nav.setRoot("RegisterStep2Page", registration);
                     }else if(registration.step == 2){
                       this.nav.setRoot("RegisterStep3Page", registration);
                     }
@@ -136,7 +136,7 @@ export class SmartieApp {
       console.log("Getting geo location");
       console.log(resp);
       let phoneLatLng = { latitude: resp.coords.latitude, longitude: resp.coords.longitude };
-      console.log('phoneLatLng: '+JSON.stringify(phoneLatLng));
+     // console.log('phoneLatLng: '+JSON.stringify(phoneLatLng));
       this.storage.set('phoneLatLng', phoneLatLng);
       this.storage.set('currentPosition', resp);
     }).catch((error) => {
