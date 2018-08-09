@@ -1,3 +1,4 @@
+import { CameraServiceProvider } from './../../providers/camera-service/camera-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
@@ -26,9 +27,9 @@ export class FeedbackPage {
 
   private FeedbackForm : FormGroup;
 
-  public userScreenshotsView: any;
+  public userScreenshotsView:Array<any> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics : AnalyticsProvider, private cameraService : CameraServiceProvider) {
     this.analytics.setScreenName("Feedback");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Feedback", "View"));
     this.profileData = navParams.get("profileData");
@@ -58,38 +59,53 @@ export class FeedbackPage {
     console.log('ionViewDidLoad FeedbackPage');
   }
 
-  addUserScreenshot(files){
-    let userScreenshots = new Array();
-    let userScreenshotsView = new Array();
-    let requests = files.length;
+  // addUserScreenshot(files){
+  //   let userScreenshots = new Array();
+  //   let userScreenshotsView = new Array();
+  //   let requests = files.length;
 
-    for(let file of files){
-      userScreenshotsView.push(file);
-      this.getBase64(file).then((obj) => {
-        userScreenshots.push({name: obj['name'], data: obj['data']});
-        if(--requests == 0) {
-          this.storage.set('userScreenshots', userScreenshots);
+  //   for(let file of files){
+  //     userScreenshotsView.push(file);
+  //     this.getBase64(file).then((obj) => {
+  //       userScreenshots.push({name: obj['name'], data: obj['data']});
+  //       if(--requests == 0) {
+  //         this.storage.set('userScreenshots', userScreenshots);
+  //       }
+  //     });
+  //   }
+  //   this.userScreenshotsView = userScreenshotsView;
+  // }
+
+  // getBase64(file) {
+  //   return new Promise(function(resolve, reject){
+  //     var reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = function () {
+  //       // var toResolve: object;
+  //       let toResolve: any = {};
+  //       toResolve.name = file.name;
+  //       toResolve.data = this.result;
+  //       resolve(toResolve);
+  //     };
+  //     reader.onerror = function (error) {
+  //       //  console.log('Error: ', error);
+  //       reject(error);
+  //     };
+  //   })
+  // }
+
+  addUserScreenShot() {
+    this.cameraService.getImage().then((files) => {
+      console.log(files);
+      if (Array.isArray(files)) {
+        for (let file of files) {
+          this.userScreenshotsView.push({ 'name': this.cameraService.getFileName(), 'data': file });
         }
-      });
-    }
-    this.userScreenshotsView = userScreenshotsView;
-  }
-
-  getBase64(file) {
-    return new Promise(function(resolve, reject){
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        // var toResolve: object;
-        let toResolve: any = {};
-        toResolve.name = file.name;
-        toResolve.data = this.result;
-        resolve(toResolve);
-      };
-      reader.onerror = function (error) {
-        //  console.log('Error: ', error);
-        reject(error);
-      };
+      } else {
+        this.userScreenshotsView.push({ 'name': this.cameraService.getFileName(), 'data': files });
+      }
+    }, (err) => {
+      console.log(err);
     })
   }
 

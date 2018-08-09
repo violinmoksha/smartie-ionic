@@ -75,7 +75,7 @@ export class RegisterStep2Page {
     this.analytics.setScreenName("Register-step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
 
-    this.form1Values = navParams.data.form1Value;
+    this.form1Values = navParams.data.form1Values;
     this.role = navParams.data.role;
     this.profilePicSrc = './assets/img/user-img-'+this.role+'.png';
     this.partOfSchool = false;
@@ -283,7 +283,7 @@ export class RegisterStep2Page {
           'signUpRole',
           {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo)}
         );
-
+        console.log(API);
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(signupResult => {
           this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
 

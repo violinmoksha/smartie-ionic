@@ -460,7 +460,6 @@ export class RegisterStep3Page {
   }
 
   uploadCv(){
-    console.log(" === upload files ====")
     this.cameraService.getImage().then((files)=>{
       console.log(files);
       if(Array.isArray(files)){
@@ -471,7 +470,6 @@ export class RegisterStep3Page {
         this.cvFiles.push({'name':this.cameraService.getFileName(), 'data':files});
       }
     },(err)=>{
-      console.log(" === error upload ===");
       console.log(err);
     })
   }
