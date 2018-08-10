@@ -125,7 +125,7 @@ export class FeedbackPage {
 
   submitFeedback() {
     return new Promise((resolve) => {
-      let params = { feedback: this.feedback, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null };
+      let params = { feedBack: this.feedback, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null };
 
       if (this.userScreenshotsView.length > 0) {
         let filePromises = [];

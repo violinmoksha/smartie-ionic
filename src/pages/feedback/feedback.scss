@@ -1,8 +1,7 @@
 page-feedback {
     .feedback-bottom{
         width: 100%;
-        text-align: center;
-        padding: 30px 0;
+        padding: 16px 0;
         .reveiwer-image{
           width: 100px;
           height: 100px;
@@ -32,7 +31,7 @@ page-feedback {
         }
       }
       .button-cv{
-        color: #444;
+        color: #fff;
         position: relative;
         display: inline-block;
         margin: 0;
@@ -40,7 +39,6 @@ page-feedback {
         min-width: 52px;
         min-height:40px;
         height: 40px;
-        width:50%;
         line-height: 30px!important;
         border-width: 1px;
         border-style: solid;
@@ -51,9 +49,12 @@ page-feedback {
         font-size: 16px;
         line-height: 42px;
         cursor: pointer;
-        background: transparent !important;
+        background: #00BC5B !important;
         border-color: #00BC5B!important;
         padding: 0px 10px;
+      }
+      .width-50{
+        width:50%;
       }
       .feedback-middle{
         width: 100%;
@@ -84,7 +85,6 @@ page-feedback {
         }
       }
       .feedback-bottom{
-        padding: 0px 15px 20px;
         textarea{
           border:1px solid #cfcfcf;
           border-radius: 5px;
