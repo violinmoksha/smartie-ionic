@@ -33,6 +33,7 @@ import { AnalyticsProvider } from '../providers/analytics/analytics';
 import { ContactPatterns } from '../providers/contact-patterns';
 import { CameraServiceProvider } from '../providers/camera-service/camera-service';
 import { ChatProvider } from '../providers/chat/chat';
+import { FileUploaderProvider } from '../providers/file-uploader/file-uploader';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { ChatProvider } from '../providers/chat/chat';
     AnalyticsProvider,
     ContactPatterns,
     CameraServiceProvider,
-    ChatProvider
+    ChatProvider,
+    FileUploaderProvider
   ]
 })
 export class AppModule {}

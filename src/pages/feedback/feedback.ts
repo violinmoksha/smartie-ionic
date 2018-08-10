@@ -7,6 +7,8 @@ import { Storage } from '@ionic/storage';
 import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { DbserviceProvider } from '../../providers/dbservice/dbservice';
+import { FileUploaderProvider } from '../../providers/file-uploader/file-uploader';
+
 /**
  * Generated class for the SetReviewPage page.
  *
@@ -31,7 +33,7 @@ export class FeedbackPage {
 
   public userScreenshotsView: Array<any> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private dbService: DbserviceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private dbService: DbserviceProvider, private fileUploader : FileUploaderProvider) {
     this.analytics.setScreenName("Feedback");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Feedback", "View"));
     //this.profileData = navParams.get("profileData");
@@ -117,20 +119,37 @@ export class FeedbackPage {
     })
   }
 
+  removeFile(i) {
+    this.userScreenshotsView.splice(i, 1);
+  }
+
   submitFeedback() {
-    return new Promise(async (resolve) => {
+    return new Promise((resolve) => {
       let params = { feedback: this.feedback, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null };
 
-      if (this.userScreenshotsView.length > 0)
-        params.attachment = this.userScreenshotsView;
+      if (this.userScreenshotsView.length > 0) {
+        let filePromises = [];
+        for (let i=0; i<this.userScreenshotsView.length; i++) {
+          filePromises.push(this.fileUploader.uploadFile(this.userScreenshotsView[i]));
+        }
+        Promise.all(filePromises).then((results) => {
+          console.log(results);
+          params.attachment = results;
+          this.setFeedbackApi(params);
+        })
+      } else {
+        this.setFeedbackApi(params);
+      }
+    })
+  }
 
-      let API = await this.smartieApi.getApi(
-        'setFeedback',
-        params
-      );
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(res => {
-        console.log(res);
-      });
+  async setFeedbackApi(params) {
+    let API = await this.smartieApi.getApi(
+      'setFeedback',
+      params
+    );
+    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(res => {
+      console.log(res);
     });
   }
 
