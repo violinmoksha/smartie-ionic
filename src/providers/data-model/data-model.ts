@@ -6,3 +6,8 @@ export interface GetProvision {
 export interface Response {
   result: any
 };
+
+export interface Address {
+  country: string;
+  formattedAddress: string
+}

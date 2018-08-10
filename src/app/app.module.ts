@@ -32,6 +32,8 @@ import { DbserviceProvider } from '../providers/dbservice/dbservice';
 import { AnalyticsProvider } from '../providers/analytics/analytics';
 import { ContactPatterns } from '../providers/contact-patterns';
 import { CameraServiceProvider } from '../providers/camera-service/camera-service';
+import { ChatProvider } from '../providers/chat/chat';
+import { FileUploaderProvider } from '../providers/file-uploader/file-uploader';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,9 @@ import { CameraServiceProvider } from '../providers/camera-service/camera-servic
     DbserviceProvider,
     AnalyticsProvider,
     ContactPatterns,
-    CameraServiceProvider
+    CameraServiceProvider,
+    ChatProvider,
+    FileUploaderProvider
   ]
 })
 export class AppModule {}

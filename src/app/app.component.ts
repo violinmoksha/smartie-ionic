@@ -25,7 +25,7 @@ export class SmartieApp {
 
   rootPage: any;
 
-  buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string }>;
+  buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string, isTabs?: boolean }>;
 
   constructor(public platform: Platform, public statusBar: StatusBar,  private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider, private device:Device, private http:HttpClient, private dbservice:DbserviceProvider, public contactPatterns:ContactPatterns, public splashScreen : SplashScreen) {
 
@@ -50,10 +50,10 @@ export class SmartieApp {
       //Tabs index 0 is always set to search
       if (eventData !== 'teacher') {
         this.buttons = [
-          { iconName: 'book', text: 'Manage Orders', pageName: '' },
+          { iconName: 'book', text: 'Manage Orders', pageName: ''},
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
-          { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage' },
+          { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage', isTabs:false  },
           { iconName: 'add-circle', text: 'Create a Job', pageName: '' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
@@ -97,27 +97,32 @@ export class SmartieApp {
 
           this.smartieApi.http.post<GetProvision>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe((result) => {
             this.storage.set("Provision", result.result);
-            this.storage.get('UserProfile').then((data)=>{
-              if(data!=null){
-                this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: data.profileData.role });
-              }else{
-                this.dbservice.getRegistrationData().then((registration)=>{
-                  if(registration && registration.step){
-                    if(registration.step === 0){
-                      this.nav.setRoot("RegisterStep1Page", { role: registration.role });
-                    }else if(registration.step == 1){
-                      this.nav.setRoot("RegisterStep2Page", registration);
-                    }else if(registration.step == 2){
-                      this.nav.setRoot("RegisterStep3Page", registration);
-                    }
+              this.storage.get('UserProfile').then((data)=>{
+                if(data!=null){
+                  this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: data.profileData.role });
+                }else{
+                  if(result.result.provision.user && result.result.provision.profile){
+                    this.nav.setRoot("LoginPage", { role: result.result.provision.role });
                   }else{
-                    this.nav.setRoot("RegisterStep1Page", { role: result.result.provision.role });
-                  }
-                })
+                  this.dbservice.getRegistrationData().then((registration)=>{
+                    if(registration && registration.step){
+                      if(registration.step === 0){
+                        this.nav.setRoot("RegisterStep1Page", { role: registration.role });
+                      }else if(registration.step == 1){
+                        this.nav.setRoot("RegisterStep2Page", registration);
+                      }else if(registration.step == 2){
+                        this.nav.setRoot("RegisterStep3Page", registration);
+                      }
+                    }else{
+                      this.nav.setRoot("RegisterStep1Page", { role: result.result.provision.role });
+                    }
+                  })
+                }
               }
-              console.log("splash hide");
-              this.splashScreen.hide();
-            })
+                console.log("splash hide");
+                this.splashScreen.hide();
+              })
+
           }, (err)=>{
             this.splashScreen.hide();
             this.rootPage = 'LandingPage';
@@ -138,7 +143,7 @@ export class SmartieApp {
       let phoneLatLng = { latitude: resp.coords.latitude, longitude: resp.coords.longitude };
      // console.log('phoneLatLng: '+JSON.stringify(phoneLatLng));
       this.storage.set('phoneLatLng', phoneLatLng);
-      this.storage.set('currentPosition', resp);
+     // this.storage.set('currentPosition', resp);
     }).catch((error) => {
       console.log('Error getting phone location', JSON.stringify(error));
     });
@@ -214,7 +219,8 @@ export class SmartieApp {
     }else if(page.text == 'Wallet'){
       this.nav.push("WalletPage");
     }else{
-      console.log(page);
+      if(page.isTabs){
+        console.log(page);
       this.storage.get("UserProfile").then(userProfile => {
         let params = {};
 
@@ -226,6 +232,10 @@ export class SmartieApp {
         this.nav.setRoot("TabsPage", params);
         // this.nav.setRoot(page.pageName);
       })
+      }else{
+        this.nav.push(page.pageName);
+      }
+
     }
 
     /*if (button.iconName == 'paper')

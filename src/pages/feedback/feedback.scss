@@ -31,6 +31,30 @@ page-feedback {
           font-weight: normal;
         }
       }
+      .button-cv{
+        color: #444;
+        position: relative;
+        display: inline-block;
+        margin: 0;
+        padding: 0 7px;
+        min-width: 52px;
+        min-height:40px;
+        height: 40px;
+        width:50%;
+        line-height: 30px!important;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        vertical-align: top;
+        text-align: center;
+        text-overflow: ellipsis;
+        font-size: 16px;
+        line-height: 42px;
+        cursor: pointer;
+        background: transparent !important;
+        border-color: #00BC5B!important;
+        padding: 0px 10px;
+      }
       .feedback-middle{
         width: 100%;
         text-align: center;

@@ -11,19 +11,23 @@
 </ion-header>
 
 <ion-content padding>
-  <form [formGroup]="FeedbackForm" name="FeedbackForm" (ngSubmit)="feedbackSubmit(FeedbackForm.value)" novalidate>
+  <form [formGroup]="FeedbackForm" name="FeedbackForm" (ngSubmit)="submitFeedback(FeedbackForm.value)" novalidate>
     <div class="profile-column">
-      <div class="feedback-top">
+      <div class="feedback-bottom">
         <ion-textarea formControlName="feedback" placeholder="Please leave your feedback here..."></ion-textarea>
       </div>
       <div *ngIf="FeedbackForm.get('feedback').invalid && FeedbackForm.get('feedback').touched" class="item item-message">
         Feedback is required.
       </div>
       <div class="feedback-bottom">
-        <span><ion-icon name="add-circle"></ion-icon>
+
+        <ion-item *ngFor="let files of userScreenshotsView">
+          <h4 item-start>{{files.name}} </h4><span item-end><ion-icon name="close" (click)="removeFile($index)"></ion-icon></span>
+        </ion-item>
+          <button class="button button-positive button-cv" type="button" (click)="addUserScreenShot()">Upload file</button>
+        <!-- <span><ion-icon name="add-circle"></ion-icon> -->
           <!-- <input type="file" formControlName="userScreenshot" (change)="addUserScreenshot($event.srcElement.files)" id="userScreenshot" /> -->
-          <button class="button button-positive" type="button" (click)="addUserScreenShot()">Upload file</button>
-        </span>
+        <!-- </span> -->
       </div>
       <button type="submit" class="button button-positive" [disabled]="!FeedbackForm.valid" ion-button full>Submit Your Feedback</button>
     </div>
