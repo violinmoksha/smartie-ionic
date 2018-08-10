@@ -14,22 +14,25 @@
   <form [formGroup]="FeedbackForm" name="FeedbackForm" (ngSubmit)="submitFeedback(FeedbackForm.value)" novalidate>
     <div class="profile-column">
       <div class="feedback-bottom">
-        <ion-textarea formControlName="feedback" placeholder="Please leave your feedback here..."></ion-textarea>
+          <h5 class="font-14 font-regular">Your Feedback</h5>
+          <ion-textarea formControlName="feedback" placeholder="Please leave your feedback here..."></ion-textarea>
       </div>
       <div *ngIf="FeedbackForm.get('feedback').invalid && FeedbackForm.get('feedback').touched" class="item item-message">
         Feedback is required.
       </div>
-      <div class="feedback-bottom">
-
-        <ion-item *ngFor="let files of userScreenshotsView">
-          <h4 item-start>{{files.name}} </h4><span item-end><ion-icon name="close" (click)="removeFile($index)"></ion-icon></span>
-        </ion-item>
-          <button class="button button-positive button-cv" type="button" (click)="addUserScreenShot()">Upload file</button>
+      <div class="feedback-bottom text-center">
+          <button class="button button-positive button-cv width-50" type="button" (click)="addUserScreenShot()">Upload file</button>
         <!-- <span><ion-icon name="add-circle"></ion-icon> -->
           <!-- <input type="file" formControlName="userScreenshot" (change)="addUserScreenshot($event.srcElement.files)" id="userScreenshot" /> -->
         <!-- </span> -->
       </div>
-      <button type="submit" class="button button-positive" [disabled]="!FeedbackForm.valid" ion-button full>Submit Your Feedback</button>
+      <div *ngIf="userScreenshotsView.length > 0">
+          <h5 class="font-14 font-regular">Attached Files</h5>
+          <ion-item *ngFor="let files of userScreenshotsView">
+              <h4 item-start>{{files.name}} </h4><span item-end><ion-icon name="close" (click)="removeFile($index)"></ion-icon></span>
+            </ion-item>
+        </div>
+      <button type="submit" class="button button-positive button-cv" [disabled]="!FeedbackForm.valid" ion-button full>Submit Your Feedback</button>
     </div>
   </form>
 </ion-content>
