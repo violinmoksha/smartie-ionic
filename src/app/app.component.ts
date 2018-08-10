@@ -97,27 +97,31 @@ export class SmartieApp {
 
           this.smartieApi.http.post<GetProvision>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe((result) => {
             this.storage.set("Provision", result.result);
-            this.storage.get('UserProfile').then((data)=>{
-              if(data!=null){
-                this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: data.profileData.role });
-              }else{
-                this.dbservice.getRegistrationData().then((registration)=>{
-                  if(registration && registration.step){
-                    if(registration.step === 0){
-                      this.nav.setRoot("RegisterStep1Page", { role: registration.role });
-                    }else if(registration.step == 1){
-                      this.nav.setRoot("RegisterStep2Page", registration);
-                    }else if(registration.step == 2){
-                      this.nav.setRoot("RegisterStep3Page", registration);
+            if(result.result.provision.user && result.result.provision.profile){
+              this.nav.setRoot("LoginPage", { role: result.result.provision.role });
+            }else{
+              this.storage.get('UserProfile').then((data)=>{
+                if(data!=null){
+                  this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: data.profileData.role });
+                }else{
+                  this.dbservice.getRegistrationData().then((registration)=>{
+                    if(registration && registration.step){
+                      if(registration.step === 0){
+                        this.nav.setRoot("RegisterStep1Page", { role: registration.role });
+                      }else if(registration.step == 1){
+                        this.nav.setRoot("RegisterStep2Page", registration);
+                      }else if(registration.step == 2){
+                        this.nav.setRoot("RegisterStep3Page", registration);
+                      }
+                    }else{
+                      this.nav.setRoot("RegisterStep1Page", { role: result.result.provision.role });
                     }
-                  }else{
-                    this.nav.setRoot("RegisterStep1Page", { role: result.result.provision.role });
-                  }
-                })
-              }
-              console.log("splash hide");
-              this.splashScreen.hide();
-            })
+                  })
+                }
+                console.log("splash hide");
+                this.splashScreen.hide();
+              })
+            }
           }, (err)=>{
             this.splashScreen.hide();
             this.rootPage = 'LandingPage';

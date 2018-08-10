@@ -1,3 +1,4 @@
+import { Response } from './../../providers/data-model/data-model';
 import { CameraServiceProvider } from './../../providers/camera-service/camera-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -5,7 +6,7 @@ import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
 import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
-
+import { DbserviceProvider } from '../../providers/dbservice/dbservice';
 /**
  * Generated class for the SetReviewPage page.
  *
@@ -21,18 +22,25 @@ import { AnalyticsProvider } from '../../providers/analytics/analytics';
 export class FeedbackPage {
 
   private profileData: any;
+  private userData: any;
   private role: any;
   private feedback: any = '';
   private genericAvatar: any;
 
-  private FeedbackForm : FormGroup;
+  private FeedbackForm: FormGroup;
 
-  public userScreenshotsView:Array<any> = [];
+  public userScreenshotsView: Array<any> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics : AnalyticsProvider, private cameraService : CameraServiceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private dbService: DbserviceProvider) {
     this.analytics.setScreenName("Feedback");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Feedback", "View"));
-    this.profileData = navParams.get("profileData");
+    //this.profileData = navParams.get("profileData");
+    this.dbService.getUser().then((user) => {
+      if (user) {
+        this.profileData = user.profileData;
+        this.userData = user.userData;
+      }
+    })
 
     /*if (this.profileData.role == 'teacher') {
       this.genericAvatar = '/assets/imgs/user-img-teacher.png';
@@ -109,17 +117,19 @@ export class FeedbackPage {
     })
   }
 
-  submitFeedback(){
+  submitFeedback() {
     return new Promise(async (resolve) => {
+      let params = { feedback: this.feedback, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null };
+
+      if (this.userScreenshotsView.length > 0)
+        params.attachment = this.userScreenshotsView;
+
       let API = await this.smartieApi.getApi(
         'setFeedback',
-        { feedback: this.feedback, profileId: this.profileData.objectId }
+        params
       );
-      interface Response {
-        result: any
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(res => {
-
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(res => {
+        console.log(res);
       });
     });
   }
