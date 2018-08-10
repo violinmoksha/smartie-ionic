@@ -1,5 +1,5 @@
 import { Device } from '@ionic-native/device';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ResolvedReflectiveFactory } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, Slides, LoadingController, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
@@ -8,7 +8,7 @@ import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { DbserviceProvider } from '../../providers/dbservice/dbservice';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { Response } from '../../providers/data-model/data-model';
+import { Response, Address } from '../../providers/data-model/data-model';
 
 declare let google;
 /**
@@ -100,6 +100,17 @@ export class RegisterStep2Page {
         this.titlePlaceHolder = "Student seeking CMRA";
         this.messagePlaceHolder = "I'm a student interested in learning Market Research Analyst and looking for experienced instructor";
       }
+
+      //Checking Device location
+      this.storage.get('phoneLatLng').then(phoneLatLng => {
+        this.getGeoPlace(phoneLatLng).then((address: Address) => {
+          if(address.country == 'US'){
+            this.Step2Form.controls['prefLocation'].disable()
+            this.userLocation = address.formattedAddress;
+          }
+        })
+      })
+
       this.Step2Form = new FormGroup({
         name: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
@@ -237,12 +248,10 @@ export class RegisterStep2Page {
   // Method executed when the slides are changed
   public rateChanged(): void {
     let currentIndex = this.hourRate.getActiveIndex();
-    console.log(currentIndex);
   }
 
   public filterRate(rate: number): void {
     // Handle what to do when a category is selected
-    console.log(typeof rate);
     this.hourlyRate = rate;
   }
 
@@ -255,8 +264,6 @@ export class RegisterStep2Page {
 
 
     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
-      console.log("Getting updated provision");
-      console.log(response);
       this.smartieApi.updateProvisionStorage(response.result);
     }, err => {
       console.log(err);
@@ -272,9 +279,6 @@ export class RegisterStep2Page {
 
     if(this.role == 'student' || this.role == 'parent'){
       // TODO need to submit data here for students
-      console.log("Students registration comes here");
-      console.log(this.userLocation);
-      console.log(this.hourlyRate);
       this.userInfo.prefLocation = this.userLocation;
       this.userInfo.prefPayRate = this.hourlyRate;
 
@@ -283,7 +287,7 @@ export class RegisterStep2Page {
           'signUpRole',
           {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo)}
         );
-        console.log(API);
+
         this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(signupResult => {
           this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
 
@@ -332,24 +336,41 @@ export class RegisterStep2Page {
   }
 
   ionViewDidLoad() {
-
-    this.storage.get('currentPosition').then(userCurrentLocation => {
-      console.log(userCurrentLocation);
-    });
     if(this.role == 'student'){
-      // console.log('ionViewDidLoad RegisterStep2Page');
-      console.log('ionViewDidLoad RegisterStep3Page');
       let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
       let options = { componentRestrictions: {country: 'us'} };
 
       let autocomplete = new google.maps.places.Autocomplete(input, options);
       autocomplete.addListener("place_changed", () => {
         let place = autocomplete.getPlace();
-        console.log(place.formatted_address);
-        console.log(place);
         this.userLocation = place.formatted_address;
       })
     }
+  }
+
+  getGeoPlace(phoneLatLng) {
+
+    return new Promise(resolve => {
+      let latLng = new google.maps.LatLng(phoneLatLng.latitude, phoneLatLng.longitude);
+
+      let geocoder = new google.maps.Geocoder();
+
+      geocoder.geocode({ location: latLng }, function (results, status) {
+        console.log(results);
+        let address: Address;
+        for (let ac = 0; ac < results[0].address_components.length; ac++) {
+          let component = results[0].address_components[ac];
+
+          switch (component.types[0]) {
+            case 'country':
+              address.country = component.short_name;
+              address.formattedAddress = results[0].formatted_address;
+              resolve(address);
+              break;
+          }
+        };
+      })
+    })
   }
 
 }

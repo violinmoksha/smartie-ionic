@@ -1,0 +1,44 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ params.fullname }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content #content>
+  <div>
+    {{ allmessages | json }}
+  </div>
+<div class = "chatwindow">
+  <!-- <ion-list no-lines>
+    <ion-item *ngFor = "let item of allmessages; let i = index" text-wrap>
+      <ion-avatar item-left *ngIf="item.sender.objectId != senderProfileId">
+        <img src="{{photoURL}}">
+      </ion-avatar>
+      <div class="bubble me" *ngIf="item.sender.objectId != senderProfileId">
+        <h3>{{item.message}}</h3>
+        <!-- <img src="{{item.message}}" *ngIf="imgornot[i]"> 
+      </div>
+      <ion-avatar item-right *ngIf="item.sender.objectId === senderProfileId">
+        <img src="{{photoURL}}">
+      </ion-avatar>
+      <div class="bubble you" *ngIf="item.sender.objectId === senderProfileId">
+        <h3>{{item.message}}</h3>
+        <!-- <img src="{{item.message}}" *ngIf="imgornot[i]"> 
+      </div>
+    </ion-item>
+  </ion-list> -->
+</div>
+</ion-content>
+<ion-footer ion-fixed>
+  <ion-toolbar class="no-border" color="white">
+    <ion-input [(ngModel)]="newmessage" class="newmessage" placeholder="Write your message ..."></ion-input>
+    <ion-buttons end>
+      <button ion-button (click)="addmessage()">
+        <ion-icon name="send" color="primary"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

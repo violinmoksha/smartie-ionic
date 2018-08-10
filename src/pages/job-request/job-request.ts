@@ -333,4 +333,8 @@ export class JobRequestPage {
   initSendEmail() {
     this.navCtrl.push("SendEmailPage", { params: this.jobObject });
   }
+
+  initChat(){
+    this.navCtrl.push("ChatPage", { params: this.params });
+  }
 }
