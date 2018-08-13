@@ -1,10 +1,10 @@
 import { Response } from './../../providers/data-model/data-model';
 import { CameraServiceProvider } from './../../providers/camera-service/camera-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
-import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn, } from '@angular/forms';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { DbserviceProvider } from '../../providers/dbservice/dbservice';
 import { FileUploaderProvider } from '../../providers/file-uploader/file-uploader';
@@ -26,14 +26,16 @@ export class FeedbackPage {
   private profileData: any;
   private userData: any;
   private role: any;
-  private feedback: any = '';
+  public feedback: any;
+  public feedbackValue:any;
   private genericAvatar: any;
+  public loading:any;
 
-  private FeedbackForm: FormGroup;
+  public FeedbackForm: FormGroup;
 
   public userScreenshotsView: Array<any> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private dbService: DbserviceProvider, private fileUploader : FileUploaderProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private dbService: DbserviceProvider, private fileUploader : FileUploaderProvider, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
     this.analytics.setScreenName("Feedback");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Feedback", "View"));
     //this.profileData = navParams.get("profileData");
@@ -63,46 +65,15 @@ export class FeedbackPage {
       feedback: new FormControl('', Validators.required)
     });
 
+    this.loading = this.loadingCtrl.create({
+      content: 'Updating....'
+    });
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FeedbackPage');
   }
-
-  // addUserScreenshot(files){
-  //   let userScreenshots = new Array();
-  //   let userScreenshotsView = new Array();
-  //   let requests = files.length;
-
-  //   for(let file of files){
-  //     userScreenshotsView.push(file);
-  //     this.getBase64(file).then((obj) => {
-  //       userScreenshots.push({name: obj['name'], data: obj['data']});
-  //       if(--requests == 0) {
-  //         this.storage.set('userScreenshots', userScreenshots);
-  //       }
-  //     });
-  //   }
-  //   this.userScreenshotsView = userScreenshotsView;
-  // }
-
-  // getBase64(file) {
-  //   return new Promise(function(resolve, reject){
-  //     var reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = function () {
-  //       // var toResolve: object;
-  //       let toResolve: any = {};
-  //       toResolve.name = file.name;
-  //       toResolve.data = this.result;
-  //       resolve(toResolve);
-  //     };
-  //     reader.onerror = function (error) {
-  //       //  console.log('Error: ', error);
-  //       reject(error);
-  //     };
-  //   })
-  // }
 
   addUserScreenShot() {
     this.cameraService.getImage().then((files) => {
@@ -125,12 +96,14 @@ export class FeedbackPage {
 
   submitFeedback() {
     return new Promise((resolve) => {
-      let params = { feedBack: this.feedback, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null };
+      console.log(this.feedbackValue);
+      this.loading.present();
+      let params = { feedBack: this.feedbackValue, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null };
 
       if (this.userScreenshotsView.length > 0) {
         let filePromises = [];
         for (let i=0; i<this.userScreenshotsView.length; i++) {
-          filePromises.push(this.fileUploader.uploadFile(this.userScreenshotsView[i]));
+          filePromises.push(this.fileUploader.uploadFile(this.userScreenshotsView[i],'png'));
         }
         Promise.all(filePromises).then((results) => {
           console.log(results);
@@ -149,7 +122,20 @@ export class FeedbackPage {
       params
     );
     this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(res => {
-      console.log(res);
+      this.loading.dismiss();
+      let alert = this.alertCtrl.create({
+        title: 'Thanks!',
+        subTitle: `Successfully submitted your feedback.`,
+        buttons: [{
+          text: 'OK',
+          handler:()=>{
+            this.navCtrl.pop();
+          }
+        }]
+      });
+      alert.present();
+    },err=>{
+      this.loading.dismiss();
     });
   }
 

@@ -11,11 +11,11 @@
 </ion-header>
 
 <ion-content padding>
-  <form [formGroup]="FeedbackForm" name="FeedbackForm" (ngSubmit)="submitFeedback(FeedbackForm.value)" novalidate>
+  <form [formGroup]="FeedbackForm" name="FeedbackForm" novalidate>
     <div class="profile-column">
       <div class="feedback-bottom">
           <h5 class="font-14 font-regular">Your Feedback</h5>
-          <ion-textarea formControlName="feedback" placeholder="Please leave your feedback here..."></ion-textarea>
+          <ion-textarea formControlName="feedback" [(ngModel)]="feedbackValue" placeholder="Please leave your feedback here..."></ion-textarea>
       </div>
       <div *ngIf="FeedbackForm.get('feedback').invalid && FeedbackForm.get('feedback').touched" class="item item-message">
         Feedback is required.
@@ -32,7 +32,10 @@
               <h4 item-start>{{files.name}} </h4><span item-end><ion-icon name="close" (click)="removeFile($index)"></ion-icon></span>
             </ion-item>
         </div>
-      <button type="submit" class="button button-positive button-cv" [disabled]="!FeedbackForm.valid" ion-button full>Submit Your Feedback</button>
+      <!-- <button type="submit" class="button button-positive button-cv" [disabled]="!FeedbackForm.valid" ion-button full>Submit Your Feedback</button> -->
     </div>
   </form>
 </ion-content>
+<ion-footer transparent no-border>
+  <button type="submit" class="button button-positive button-cv" (click)="submitFeedback(FeedbackForm.value)" [disabled]="!FeedbackForm.valid" ion-button full>Submit Your Feedback</button>
+</ion-footer>

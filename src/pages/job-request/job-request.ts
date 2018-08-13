@@ -48,8 +48,8 @@ export class JobRequestPage {
 
     if (this.params.role == 'teacher') {
       // Converting defaultStartDateTime and defaultEndDateTime to current device TimeZone
-      var availStartDateTime = new Date(this.jobObject.teacher.defaultStartDateTime.iso);
-      var availEndDateTime = new Date(this.jobObject.teacher.defaultEndDateTime.iso);
+      var availStartDateTime = new Date(this.jobObject.defaultStartDateTime.iso);
+      var availEndDateTime = new Date(this.jobObject.defaultEndDateTime.iso);
 
       this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
