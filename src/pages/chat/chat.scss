@@ -54,5 +54,23 @@ page-chat {
     .chatwindow {
         padding-bottom: 70px;
     }
+    .chat-toolbar{
+        flex-direction: row-reverse!important;
+    }
+    .chat-warning{
+        padding: 15px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        background-color: #FFCCCB;
+        margin: 15px;
+        font-size: 15px;
+        color: #111111;
+        h2{
+            font-size: 14px;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+    }
   }
   

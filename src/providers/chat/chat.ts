@@ -24,17 +24,14 @@ export class ChatProvider {
     this.profile = profile;
 
     if(this.profile.role != 'teacher'){
-      this.receiverProfileId = this.profile.otherProfileId;
+      this.receiverProfileId = this.profile.otherProfile.objectId;
     }else{
-      this.receiverProfileId = this.profile.teacherProfileId;
+      this.receiverProfileId = this.profile.teacherProfile.objectId;
     }
   }
 
   addnewmessage(msg, senderProfileId) {
     if (this.profile) {
-      console.log(msg);
-      console.log("Sender ID : " + senderProfileId);
-      console.log("Receiver ID : " + this.receiverProfileId);
 
       return new Promise(async (resolve) => {
         let API = await this.smartieApi.getApi(
@@ -53,10 +50,6 @@ export class ChatProvider {
   }
 
   getAllMessages(senderProfileId) {
-    console.log("Getting all messages here...!");
-    console.log(senderProfileId);
-    console.log(this.receiverProfileId);
-
     return new Promise(async (resolve) => {
       let API = await this.smartieApi.getApi(
         'getAllMessages',
@@ -66,7 +59,6 @@ export class ChatProvider {
         result: any;
       };
       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        console.log(response);
         this.allMessages = [];
         for(let chat of response.result){
           this.allMessages.push(chat);

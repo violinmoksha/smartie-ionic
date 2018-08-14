@@ -24,15 +24,28 @@ export class ChatPage {
   private newmessage: any;
   private allmessages: any;
   private photoURL: string = './assets/imgs/user-img-teacher.png';
+  public chatAccess: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public chatService: ChatProvider, public events: Events) {
-    this.params = navParams.data.params;
-
+    this.params = navParams.get("params");
+    console.log(this.params);
+    if(this.params.role == 'teacher'){
+      console.log("Teacher");
+      if(!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined'){
+        this.chatAccess = false;
+      }
+    }else{
+      console.log("Student");
+      console.log(this.params.teacherProfile);
+      if(!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined'){
+        console.log("Debug ok");
+        this.chatAccess = false;
+      }
+    }
     // Initialize chat
     this.chatService.initializebuddy(this.params);
 
     this.storage.get("UserProfile").then(profile => {
-      console.log(profile);
       this.role = profile.profileData.role;
       this.senderProfileId = profile.profileData.objectId;
     })
@@ -40,19 +53,20 @@ export class ChatPage {
     this.scrollto();
     this.events.subscribe("newmessage", () => {
       this.allmessages = this.chatService.allMessages;
-      console.log("Getting all messages here");
       console.log(this.allmessages);
     })
+
 
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatPage');
-    this.chatService.getAllMessages(this.senderProfileId);
   }
 
   ionViewDidEnter() {
     console.log('ionViewDidEnter ChatPage');
+    console.log(this.chatAccess);
+    this.chatService.getAllMessages(this.senderProfileId);
   }
 
   addmessage() {
@@ -60,7 +74,8 @@ export class ChatPage {
       console.log('test');
       this.content.scrollToBottom();
       this.newmessage = '';
-      console.log(this.newmessage);
+      console.log(response);
+      this.chatService.getAllMessages(this.senderProfileId);
     })
   }
 

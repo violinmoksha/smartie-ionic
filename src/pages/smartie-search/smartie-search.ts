@@ -499,8 +499,9 @@ export class SmartieSearch {
   initJobRequestPopUp(locationData){
     let params;
       if (this.role !== 'teacher') {
+        locationData.role = locationData.teacherProfile.role;
 
-        params = {
+        /* params = {
           profilePhoto: locationData.teacherProfile.profilePhoto,
           profileStripeAccount: locationData.teacherProfile.stripeCustomer,
           fullname: locationData.teacherProfile.fullname,
@@ -516,9 +517,10 @@ export class SmartieSearch {
           hasUpcomings: this.hasUpcomings,
           defaultStartDateTime: locationData.teacher.defaultStartDateTime,
           defaultEndDateTime: locationData.teacher.defaultEndDateTime,
-        };
+        }; */
       } else {
-        params = {
+        locationData.role = locationData.otherProfile.role;
+        /* params = {
           profilePhoto: locationData.otherProfile.profilePhoto,
           profileStripeAccount: locationData.otherProfile.stripeCustomer,
           fullname: locationData.otherProfile.fullname,
@@ -533,9 +535,9 @@ export class SmartieSearch {
           hasUpcomings: this.hasUpcomings,
           schoolName: locationData.otherProfile.schoolName,
           contactName: locationData.otherProfile.contactName
-        }
+        } */
       }
-      let popover = this.popoverCtrl.create("JobRequestPage", { params: params });
+      let popover = this.popoverCtrl.create("JobRequestPage", { params: locationData });
       popover.present();
       /* popover.onDidDismiss(() => {
         // Popover should be gone at this point completely.
