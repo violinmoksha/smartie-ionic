@@ -38,8 +38,8 @@ export class JobRequestPage {
 
     this.params = navParams.get('params');
     console.log("Job Request page");
-    console.log(this.params);
     this.jobObject = Object.assign({}, this.params);
+    console.log(this.jobObject);
     this.teacherObj = this.params.teacherProfile;
     this.otherObj = this.params.otherProfile;
     // this.jobObject = this.jobObject.role =='teacher' ? (Object.assign({}, ...this.params)this.params.teacherProfile) : this.params.otherProfile;
@@ -48,8 +48,8 @@ export class JobRequestPage {
 
     if (this.params.role == 'teacher') {
       // Converting defaultStartDateTime and defaultEndDateTime to current device TimeZone
-      var availStartDateTime = new Date(this.jobObject.teacher.defaultStartDateTime.iso);
-      var availEndDateTime = new Date(this.jobObject.teacher.defaultEndDateTime.iso);
+      var availStartDateTime = new Date(this.jobObject.defaultStartDateTime.iso);
+      var availEndDateTime = new Date(this.jobObject.defaultEndDateTime.iso);
 
       this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
@@ -335,6 +335,6 @@ export class JobRequestPage {
   }
 
   initChat(){
-    this.navCtrl.push("ChatPage", { params: this.params });
+    this.navCtrl.push("ChatPage", { params: this.jobObject });
   }
 }

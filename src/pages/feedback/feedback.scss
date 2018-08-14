@@ -30,6 +30,14 @@ page-feedback {
           font-weight: normal;
         }
       }
+      .list-files{
+        .item-inner{
+          margin-left: 5px!important;
+        }
+      }
+      .file-name{
+        margin-top: 1px !important;
+      }
       .button-cv{
         color: #fff;
         position: relative;
@@ -37,9 +45,9 @@ page-feedback {
         margin: 0;
         padding: 0 7px;
         min-width: 52px;
-        min-height:40px;
-        height: 40px;
-        line-height: 30px!important;
+        min-height:44px;
+        height: 44px;
+        line-height: 44px!important;
         border-width: 1px;
         border-style: solid;
         border-radius: 4px;
@@ -47,7 +55,6 @@ page-feedback {
         text-align: center;
         text-overflow: ellipsis;
         font-size: 16px;
-        line-height: 42px;
         cursor: pointer;
         background: #00BC5B !important;
         border-color: #00BC5B!important;
