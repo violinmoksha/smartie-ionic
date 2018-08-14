@@ -17,7 +17,6 @@ export class FileUploaderProvider {
 
   uploadFile(file, format) {
     return new Promise((resolve, reject) => {
-      console.log(file);
       let parseFile = new Parse.File(file.name+'.'+format, { base64: file.data });
       parseFile.save().then((fileResult) => {
         resolve(fileResult);

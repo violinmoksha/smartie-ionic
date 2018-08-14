@@ -77,7 +77,6 @@ export class FeedbackPage {
 
   addUserScreenShot() {
     this.cameraService.getImage().then((files) => {
-      console.log(files);
       if (Array.isArray(files)) {
         for (let file of files) {
           this.userScreenshotsView.push({ 'name': this.cameraService.getFileName(), 'data': file });
@@ -96,7 +95,6 @@ export class FeedbackPage {
 
   submitFeedback() {
     return new Promise((resolve) => {
-      console.log(this.feedbackValue);
       this.loading.present();
       let params = { feedBack: this.feedbackValue, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null };
 

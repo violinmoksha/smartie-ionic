@@ -30,6 +30,14 @@ page-feedback {
           font-weight: normal;
         }
       }
+      .list-files{
+        .item-inner{
+          margin-left: 5px!important;
+        }
+      }
+      .file-name{
+        margin-top: 1px !important;
+      }
       .button-cv{
         color: #fff;
         position: relative;
@@ -38,8 +46,8 @@ page-feedback {
         padding: 0 7px;
         min-width: 52px;
         min-height:44px;
-        height: 56px;
-        line-height: 56px!important;
+        height: 44px;
+        line-height: 44px!important;
         border-width: 1px;
         border-style: solid;
         border-radius: 4px;
