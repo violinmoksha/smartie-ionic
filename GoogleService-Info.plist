@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>187672812179-sv4llnldv58g8ekdefhu38in22qp2vr9.apps.googleusercontent.com</string>
+	<string>500059309895-pp88l9se2nkt900gnbdum7u75qvviitf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.187672812179-sv4llnldv58g8ekdefhu38in22qp2vr9</string>
+	<string>com.googleusercontent.apps.500059309895-pp88l9se2nkt900gnbdum7u75qvviitf</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBMb2kRd21egwilFQWdeC0DhCIrutSeghc</string>
+	<string>AIzaSyAFDj7ucWGVD2HWy9CxxWYKD7cRjh1imWg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>187672812179</string>
+	<string>500059309895</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.smartie.app</string>
 	<key>PROJECT_ID</key>
-	<string>smartie-196804</string>
+	<string>smartie-212716</string>
 	<key>STORAGE_BUCKET</key>
-	<string>smartie-196804.appspot.com</string>
+	<string>smartie-212716.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:187672812179:ios:e2d686bf0f01b8e4</string>
+	<string>1:500059309895:ios:e2d686bf0f01b8e4</string>
 	<key>DATABASE_URL</key>
-	<string>https://smartie-196804.firebaseio.com</string>
+	<string>https://smartie-212716.firebaseio.com</string>
 </dict>
 </plist>

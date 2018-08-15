@@ -56,6 +56,15 @@ page-chat {
     }
     .chat-toolbar{
         flex-direction: row-reverse!important;
+        .toolbar-content-md{
+            left:0;
+            .newmessage{
+                margin-left: 15px;
+            }
+            .text-input-md{
+                margin: 3px;
+            }
+        }
     }
     .chat-warning{
         padding: 15px;

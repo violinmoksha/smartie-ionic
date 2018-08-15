@@ -120,4 +120,5 @@
     </plugin>
     <preference name="SplashScreen" value="screen" />
     <engine name="android" spec="7.0.0" />
+    <engine name="ios" spec="4.5.5" />
 </widget>
