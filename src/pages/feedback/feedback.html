@@ -28,7 +28,7 @@
 
         <ion-item *ngFor="let files of userScreenshotsView" class="list-files">
           <ion-icon name="image" class="" item-start></ion-icon>
-          <h4 class="file-name font-14">{{files.name}} </h4>
+          <h4 class="file-name font-14">{{files.displayName}} </h4>
           <span item-end>
             <ion-icon name="close" (click)="removeFile($index)"></ion-icon>
           </span>

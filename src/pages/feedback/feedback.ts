@@ -27,15 +27,15 @@ export class FeedbackPage {
   private userData: any;
   private role: any;
   public feedback: any;
-  public feedbackValue:any;
+  public feedbackValue: any;
   private genericAvatar: any;
-  public loading:any;
+  public loading: any;
 
   public FeedbackForm: FormGroup;
 
   public userScreenshotsView: Array<any> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private dbService: DbserviceProvider, private fileUploader : FileUploaderProvider, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private dbService: DbserviceProvider, private fileUploader: FileUploaderProvider, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
     this.analytics.setScreenName("Feedback");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Feedback", "View"));
     //this.profileData = navParams.get("profileData");
@@ -76,14 +76,17 @@ export class FeedbackPage {
   }
 
   addUserScreenShot() {
-    this.cameraService.getImage().then((files) => {
+    this.cameraService.getImage().then(async (files) => {
+      console.log('images from action');
+      console.log(files);
       if (Array.isArray(files)) {
-        for (let file of files) {
-          this.userScreenshotsView.push({ 'name': this.cameraService.getFileName(), 'data': file });
+        for (var i=0; i<files.length; i++) {
+          this.userScreenshotsView.push({ 'displayName':"file"+this.userScreenshotsView.length,'name': await this.cameraService.getFileName(), 'data': files[i] });
         }
-      } else {
-        this.userScreenshotsView.push({ 'name': this.cameraService.getFileName(), 'data': files });
       }
+      //  else {
+      //   this.userScreenshotsView.push({ 'name': this.cameraService.getFileName(), 'data': files });
+      // }
     }, (err) => {
       console.log(err);
     })
@@ -100,8 +103,8 @@ export class FeedbackPage {
 
       if (this.userScreenshotsView.length > 0) {
         let filePromises = [];
-        for (let i=0; i<this.userScreenshotsView.length; i++) {
-          filePromises.push(this.fileUploader.uploadFile(this.userScreenshotsView[i],'png'));
+        for (let i = 0; i < this.userScreenshotsView.length; i++) {
+          filePromises.push(this.fileUploader.uploadFile(this.userScreenshotsView[i], 'png'));
         }
         Promise.all(filePromises).then((results) => {
           console.log(results);
@@ -126,13 +129,13 @@ export class FeedbackPage {
         subTitle: `Successfully submitted your feedback.`,
         buttons: [{
           text: 'OK',
-          handler:()=>{
+          handler: () => {
             this.navCtrl.pop();
           }
         }]
       });
       alert.present();
-    },err=>{
+    }, err => {
       this.loading.dismiss();
     });
   }
