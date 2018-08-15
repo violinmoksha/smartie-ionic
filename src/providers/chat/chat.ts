@@ -13,7 +13,8 @@ import { SmartieAPI } from '../api/smartie';
 export class ChatProvider {
 
   profile: any;
-  receiverProfileId: any;
+  studentProfileId: any;
+  teacherProfileId: any;
   allMessages = [];
 
   constructor(public http: HttpClient, public smartieApi: SmartieAPI, public events: Events) {
@@ -24,19 +25,24 @@ export class ChatProvider {
     this.profile = profile;
 
     if(this.profile.role != 'teacher'){
-      this.receiverProfileId = this.profile.otherProfile.objectId;
+      this.studentProfileId = this.profile.objectId;
+      this.teacherProfileId = this.profile.teacherProfile.objectId;
     }else{
-      this.receiverProfileId = this.profile.teacherProfile.objectId;
+      this.teacherProfileId = this.profile.objectId;
+      this.studentProfileId = this.profile.otherProfile.objectId;
     }
   }
 
-  addnewmessage(msg, senderProfileId) {
+  addnewmessage(msg) {
     if (this.profile) {
+
+      console.log(this.studentProfileId);
+      console.log(this.teacherProfileId);
 
       return new Promise(async (resolve) => {
         let API = await this.smartieApi.getApi(
           'addChatMessage',
-          { sender: senderProfileId, receiver: this.receiverProfileId, message: msg, viewed: false }
+          { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId, message: msg, viewed: false, role: this.profile.role }
         );
 
         interface Response {};
@@ -49,11 +55,14 @@ export class ChatProvider {
     }
   }
 
-  getAllMessages(senderProfileId) {
+  getAllMessages() {
+    console.log(this.studentProfileId);
+    console.log(this.teacherProfileId);
+
     return new Promise(async (resolve) => {
       let API = await this.smartieApi.getApi(
         'getAllMessages',
-        { sender: senderProfileId, receiver: this.receiverProfileId }
+        { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId }
       );
       interface Response {
         result: any;
