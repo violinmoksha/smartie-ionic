@@ -11,7 +11,7 @@
 <div *ngIf="!chatAccess" class="chat-warning">
   <h2>You are not able to send message to this User</h2>
 </div>
-<div class="chatwindow">
+<div *ngIf="chatAccess" class="chatwindow">
   <ion-list no-lines>
     <ion-item *ngFor="let item of allmessages; let i = index" text-wrap>
       <ion-avatar item-left *ngIf="params.objectId != item.sentBy.objectId">
