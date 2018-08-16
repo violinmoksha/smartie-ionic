@@ -6,16 +6,12 @@ import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
-// import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { SmartieAPI } from '../providers/api/smartie';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ParseProvider } from '../providers/parse';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { GetProvision } from '../providers/data-model/data-model';
 import { SmartieSearch } from '../pages/smartie-search/smartie-search';
-// NB: leaving here for demo in constructor
-// TODO: put this in a proper Unit Test since it doesnt belong in app.component.ts
-import { ContactPatterns } from '../providers/contact-patterns';
 
 @Component({
   templateUrl: 'app.html'
@@ -27,24 +23,9 @@ export class SmartieApp {
 
   buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string, isTabs?: boolean }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar,  private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider, private device:Device, private http:HttpClient, private dbservice:DbserviceProvider, public contactPatterns:ContactPatterns, public splashScreen : SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar,  private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider, private device:Device, private http:HttpClient, private dbservice:DbserviceProvider, public splashScreen : SplashScreen) {
 
     this.initializeApp();
-
-    // NB: Demo for catching PMs attempting to transmit contact info
-    this.contactPatterns.allowedInput("my email at Dot COM").then(yesNo => {
-      console.log('ContactPatterns: '+yesNo);
-    });
-
-    /*this.storage.get('sessionToken').then(val => {
-      if (val !== 'undefined') {
-        this.rootPage = "LoginPage";
-      } else {
-        this.rootPage = "LoginPage";
-      }
-    });
-    this.rootPage = "EditUserComponent";*/
-    //this.rootPage = "LoginPage"; // send to Login
 
     this.events.subscribe("buttonsLoad", eventData => {
       //Tabs index 0 is always set to search
@@ -148,68 +129,6 @@ export class SmartieApp {
       console.log('Error getting phone location', JSON.stringify(error));
     });
   }
-  //senderID: '187672812179'
-
-  // initPushNotifications() {
-  //   const options: PushOptions = {
-  //     android: {
-  //     },
-  //     ios: {
-  //       alert: 'true',
-  //       badge: false,
-  //       sound: 'true'
-  //     },
-  //     windows: {}
-  //   };
-  //   const pushObject: PushObject = this.push.init(options);
-
-  //   pushObject.on('registration').subscribe((data: any) => {
-  //     console.log('device token -> ' + data.registrationId);
-  //     //TODO - send device token to server
-  //     return new Promise(resolve => {
-  //       let API = this.smartieApi.getApi(
-  //         'sendAndroidPush',
-  //         { deviceId: data.registrationId }
-  //       );
-  //       interface Response {};
-  //       this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-  //         console.log(JSON.stringify(response));
-  //       }, err => {
-  //         console.log(err);
-  //       })
-  //     })
-  //   });
-
-  //   pushObject.on('notification').subscribe((data: any) => {
-  //     console.log('message -> ' + data.message);
-  //     //if user using app and push notification comes
-  //     if (data.additionalData.foreground) {
-  //       // if application open, show popup
-  //       // let confirmAlert = this.alertCtrl.create({
-  //       //   title: 'New Notification',
-  //       //   message: data.message,
-  //       //   buttons: [{
-  //       //     text: 'Ignore',
-  //       //     role: 'cancel'
-  //       //   }, {
-  //       //     text: 'View',
-  //       //     handler: () => {
-  //       //       //TODO: Your logic here
-  //       //       this.nav.push("JobRequestPage", { message: data.message });
-  //       //     }
-  //       //   }]
-  //       // });
-  //       // confirmAlert.present();
-  //     } else {
-  //       //if user NOT using app and push notification comes
-  //       //TODO: Your logic on click of push notification directly
-  //       this.nav.push("JobRequestPage", { message: data.message });
-  //       console.log('Push notification clicked');
-  //     }
-  //   });
-
-  //   pushObject.on('error').subscribe(error => console.error('Error with Push plugin' + error));
-  // }
 
   pushPage(event, page) {
     if (page.iconName == 'log-out') { // logout -->

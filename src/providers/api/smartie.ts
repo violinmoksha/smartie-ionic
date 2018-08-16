@@ -54,6 +54,26 @@ export class SmartieAPI {
     return { apiUrl: this.baseUrl + Constants.API_ENDPOINTS.paths.fn + '/' + endPoint, apiBody: JSON.stringify(body), apiHeaders: httpOptions }
   }
 
+  async getBeyondGDPR(encryptOrDecrypt = true, body) {
+    if (Constants.API_ENDPOINTS.beyondGDPR.chickenSwitch == false) {
+      return false;
+    } else {
+      let userkey = await this.dbService.getUserkey();
+
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+
+      const endPoint = encryptOrDecrypt == true ?
+        Constants.API_ENDPOINTS.beyondGDPR.paths.encrypt :
+        Constants.API_ENDPOINTS.beyondGDPR.paths.decrypt;
+
+      return { apiUrl: Constants.API_ENDPOINTS.beyondGDPR.baseUrl + endPoint, apiBody: JSON.stringify(body), apiHeaders: httpOptions }
+    }
+  }
+
   sanitizeNotifications(notifications:any){
     // TODO: when these are more than just jobReqs
     return new Promise(resolve => {

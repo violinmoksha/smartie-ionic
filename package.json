@@ -66,6 +66,7 @@
     "cordova-plugin-whitelist": "^1.3.3",
     "cordova-sqlite-storage": "^2.3.3",
     "cordova-support-google-services": "^1.1.0",
+    "crypto": "^1.0.1",
     "ion2-calendar": "^2.1.5",
     "ionic-angular": "3.9.2",
     "ionic-image-loader": "^5.0.0",

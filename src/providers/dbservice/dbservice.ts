@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { resolve } from 'dns';
+import crypto from 'crypto';
 
 /*
   Generated class for the DbserviceProvider provider.
@@ -54,5 +55,18 @@ export class DbserviceProvider {
         return false;
       }
     });
+  }
+
+  async getUserkey(){
+    return await this.storage.get("userkey").then(userkey => {
+      if (userkey) {
+        return userkey;
+      } else {
+        // not there yet so gen and store it
+        this.storage.set("userkey", crypto.randomBytes(32).toString('base64')).then(userkey => {
+          return userkey;
+        });
+      }
+    })
   }
 }

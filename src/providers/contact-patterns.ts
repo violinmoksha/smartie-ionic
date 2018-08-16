@@ -61,8 +61,7 @@ export class ContactPatterns {
       /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/
     ];
     this.emailAddrsClever = ['dot', 'net', 'com', 'org', 'at', '@'];
-    // TODO: populate this further based on known messengers
-    this.msgrsClever = ['facebook', 'kik', 'messenger', 'twitter', 'whatsapp', 'irc'];
+    this.msgrsClever = ['facebook', 'kik', 'messenger', 'twitter', 'tweet', 'whatsapp', 'irc', 'snapchat', 'instagram', 'insta'];
   }
 
   async allowedInput(txt){
