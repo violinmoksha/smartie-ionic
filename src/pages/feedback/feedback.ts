@@ -99,7 +99,7 @@ export class FeedbackPage {
   submitFeedback() {
     return new Promise((resolve) => {
       this.loading.present();
-      let params = { feedBack: this.feedbackValue, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null };
+      let params = { feedBack: this.feedbackValue, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null, userName:this.profileData.fullname, email: this.userData.email };
 
       if (this.userScreenshotsView.length > 0) {
         let filePromises = [];
