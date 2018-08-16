@@ -58,7 +58,7 @@ export class SmartieAPI {
     if (Constants.API_ENDPOINTS.beyondGDPR.chickenSwitch == false) {
       return false;
     } else {
-      let userkey = await this.dbService.getUserkey();
+      body.userkey = await this.dbService.getUserkey();
 
       const httpOptions = {
         headers: new HttpHeaders({

@@ -11,20 +11,26 @@
 <div *ngIf="!chatAccess" class="chat-warning">
   <h2>You are not able to send message to this User</h2>
 </div>
-<div *ngIf="chatAccess" class = "chatwindow">
+<div *ngIf="chatAccess" class="chatwindow">
   <ion-list no-lines>
-    <ion-item *ngFor = "let item of allmessages; let i = index" text-wrap>
-      <ion-avatar item-left *ngIf="item.sender.objectId != senderProfileId">
-        <img src="{{photoURL}}">
+    <ion-item *ngFor="let item of allmessages; let i = index" text-wrap>
+      <ion-avatar item-left *ngIf="params.objectId != item.sentBy.objectId">
+        <img *ngIf="role=='student' && item.student.profilePhoto" src="{{item.student.profilePhoto.url}}">
+        <img *ngIf="role=='teacher' && item.teacher.profilePhoto" src="{{item.teacher.profilePhoto.url}}">
+        <img *ngIf="(role=='teacher' && !item.teacher.profilePhoto) || (role=='student' && !item.student.profilePhoto) "
+          src="{{ photoURL }}">
       </ion-avatar>
-      <div class="bubble me" *ngIf="item.sender.objectId != senderProfileId">
+      <div class="bubble me" *ngIf="params.objectId != item.sentBy.objectId">
         <h3>{{item.message}}</h3>
         <!-- <img src="{{item.message}}" *ngIf="imgornot[i]"> -->
       </div>
-      <ion-avatar item-right *ngIf="item.sender.objectId === senderProfileId">
-        <img src="{{photoURL}}">
+      <ion-avatar item-right *ngIf="params.objectId === item.sentBy.objectId">
+        <img *ngIf="role=='student' && item.student.profilePhoto" src="{{item.student.profilePhoto.url}}">
+        <img *ngIf="role=='teacher' && item.teacher.profilePhoto" src="{{item.teacher.profilePhoto.url}}">
+        <img *ngIf="(role=='teacher' && !item.teacher.profilePhoto) || (role=='student' && !item.student.profilePhoto) "
+          src="{{ photoURL }}">
       </ion-avatar>
-      <div class="bubble you" *ngIf="item.sender.objectId === senderProfileId">
+      <div class="bubble you" *ngIf="params.objectId === item.sentBy.objectId">
         <h3>{{item.message}}</h3>
         <!-- <img src="{{item.message}}" *ngIf="imgornot[i]"> -->
       </div>
@@ -34,12 +40,12 @@
 </ion-content>
 <ion-footer ion-fixed>
   <ion-toolbar class="no-border chat-toolbar" color="white">
-      <ion-buttons end>
-          <button ion-button (click)="addmessage()">
-            <ion-icon name="send" color="primary"></ion-icon>
-          </button>
-        </ion-buttons>
+    <ion-buttons end>
+      <button ion-button (click)="addmessage()">
+        <ion-icon name="send" color="primary"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-input [(ngModel)]="newmessage" class="newmessage" placeholder="Write your message ..."></ion-input>
-    
+
   </ion-toolbar>
 </ion-footer>

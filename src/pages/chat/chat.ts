@@ -29,7 +29,11 @@ export class ChatPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public chatService: ChatProvider, public events: Events) {
     this.params = navParams.get("params");
     console.log(this.params);
-    if(this.params.role == 'teacher'){
+
+    if(!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined'){
+      this.chatAccess = false;
+    }
+    /* if(this.params.role == 'teacher'){
       console.log("Teacher");
       if(!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined'){
         this.chatAccess = false;
@@ -41,7 +45,7 @@ export class ChatPage {
         console.log("Debug ok");
         this.chatAccess = false;
       }
-    }
+    } */
     // Initialize chat
     this.chatService.initializebuddy(this.params);
 
@@ -53,6 +57,7 @@ export class ChatPage {
     this.scrollto();
     this.events.subscribe("newmessage", () => {
       this.allmessages = this.chatService.allMessages;
+      console.log("Get all message here");
       console.log(this.allmessages);
     })
 
@@ -66,16 +71,16 @@ export class ChatPage {
   ionViewDidEnter() {
     console.log('ionViewDidEnter ChatPage');
     console.log(this.chatAccess);
-    this.chatService.getAllMessages(this.senderProfileId);
+    this.chatService.getAllMessages();
   }
 
   addmessage() {
-    this.chatService.addnewmessage(this.newmessage, this.senderProfileId).then((response) => {
+    this.chatService.addnewmessage(this.newmessage).then((response) => {
       console.log('test');
       this.content.scrollToBottom();
       this.newmessage = '';
       console.log(response);
-      this.chatService.getAllMessages(this.senderProfileId);
+      this.chatService.getAllMessages();
     })
   }
 
