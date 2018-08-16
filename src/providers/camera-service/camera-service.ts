@@ -3,7 +3,8 @@ import { Page } from './../../../e2e/app.po';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ImagePicker } from '@ionic-native/image-picker';/*
+import { ImagePicker } from '@ionic-native/image-picker';
+/*
   Generated class for the CameraServiceProvider provider.
 
   See https://angular.io/guide/dependency-injection for more info on providers

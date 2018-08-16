@@ -1,6 +1,14 @@
 export class Constants {
   public static API_ENDPOINTS = {
     env: 'local',
+    beyondGDPR: {
+      chickenSwitch: false,
+      baseUrl: "https://test.t0tl3s.com:3000",
+      paths: {
+        encrypt: "/encryptPlaintext",
+        decrypt: "/decryptCiphertext"
+      }
+    },
     baseUrls: {
       prod: 'https://smartieapp.com',
       test: 'https://test.t0tl3s.com',
