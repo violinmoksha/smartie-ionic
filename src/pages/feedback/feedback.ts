@@ -77,16 +77,14 @@ export class FeedbackPage {
 
   addUserScreenShot() {
     this.cameraService.getImage().then(async (files) => {
-      console.log('images from action');
-      console.log(files);
       if (Array.isArray(files)) {
         for (var i=0; i<files.length; i++) {
           this.userScreenshotsView.push({ 'displayName':"file"+this.userScreenshotsView.length,'name': await this.cameraService.getFileName(), 'data': files[i] });
         }
       }
-      //  else {
-      //   this.userScreenshotsView.push({ 'name': this.cameraService.getFileName(), 'data': files });
-      // }
+      /***testing file transfer */
+
+      // this.fileUploader.uploadFileToAWS(files[0]);
     }, (err) => {
       console.log(err);
     })
@@ -114,7 +112,9 @@ export class FeedbackPage {
       } else {
         this.setFeedbackApi(params);
       }
-    })
+    });
+
+
   }
 
   async setFeedbackApi(params) {

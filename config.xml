@@ -123,4 +123,5 @@
     <plugin name="cordova-plugin-secure-storage" spec="^2.6.8" />
     <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.5" />
+    <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
 </widget>
