@@ -1,3 +1,4 @@
+import { Constants } from './../providers/api/constants';
 import { Device } from '@ionic-native/device';
 // TODO: uncomment in prod with appropriate modification
 import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from '../providers/err';
@@ -34,6 +35,9 @@ import { ContactPatterns } from '../providers/contact-patterns';
 import { CameraServiceProvider } from '../providers/camera-service/camera-service';
 import { ChatProvider } from '../providers/chat/chat';
 import { FileUploaderProvider } from '../providers/file-uploader/file-uploader';
+import { FileTransfer } from '@ionic-native/file-transfer';
+
+
 
 import { SecureStorage } from '@ionic-native/secure-storage';
 
@@ -82,7 +86,9 @@ import { SecureStorage } from '@ionic-native/secure-storage';
     CameraServiceProvider,
     ChatProvider,
     FileUploaderProvider,
-    SecureStorage
+    SecureStorage,
+    FileTransfer,
+    Constants
   ]
 })
 export class AppModule {}
