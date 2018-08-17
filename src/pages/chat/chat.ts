@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { ChatProvider } from '../../providers/chat/chat';
+import { SmartieAPI } from '../../providers/api/smartie';
 
 /**
  * Generated class for the ChatPage page.
@@ -19,16 +20,18 @@ export class ChatPage {
 
   @ViewChild('content') content: Content;
   private params: any;
-  private role: any;
-  private senderProfileId: any;
+  public role: any;
   private newmessage: any;
-  private allmessages: any;
+  private allmessages: any = [];
   private photoURL: string = './assets/imgs/user-img-teacher.png';
   public chatAccess: boolean = true;
+  private infiniteEvent: any;
+  studentProfileId: any;
+  teacherProfileId: any;
+  chatMessages = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public chatService: ChatProvider, public events: Events) {
-    this.params = navParams.get("params");
-    console.log(this.params);
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public chatService: ChatProvider, public events: Events, private smartieApi: SmartieAPI) {
+    this.params = navParams.get("params");    
 
     if(!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined'){
       this.chatAccess = false;
@@ -48,30 +51,56 @@ export class ChatPage {
     } */
     // Initialize chat
     this.chatService.initializebuddy(this.params);
+    if(this.params.role != 'teacher'){
+      this.studentProfileId = this.params.objectId;
+      this.teacherProfileId = this.params.teacherProfile.objectId;
+    }else{
+      this.teacherProfileId = this.params.objectId;
+      this.studentProfileId = this.params.otherProfile.objectId;
+    }
 
     this.storage.get("UserProfile").then(profile => {
       this.role = profile.profileData.role;
-      this.senderProfileId = profile.profileData.objectId;
     })
 
     this.scrollto();
-    this.events.subscribe("newmessage", () => {
-      this.allmessages = this.chatService.allMessages;
-      console.log("Get all message here");
-      console.log(this.allmessages);
+
+    /* this.events.subscribe("newMessage", (messages) => {
+      console.log(messages);
+      console.log("Test subscribe");
+      this.allmessages = messages;
+      // this.allmessages.reverse();
     })
 
+    this.events.subscribe("loadOldMessage", (messages) => {
+      console.log("loadOldMessage");
+      let oldMessages = messages;
+      // oldMessages.reverse();
+      // this.allmessages.reverse();
+      console.log(oldMessages);
+      if(oldMessages.length > 0 ){
+        this.allmessages.push(...oldMessages);
+        // this.allmessages = this.allmessages.concat(oldMessages);
+        console.log(this.allmessages);
+      }      
+    }) */
 
+  }
+
+  onScroll(scrollEvent){
+    if(scrollEvent.scrollTop == 0){
+      console.log(this.allmessages.length);
+      console.log("Almost reach top");
+      this.getAllMessages(this.allmessages.length);
+    }
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ChatPage');
   }
 
   ionViewDidEnter() {
-    console.log('ionViewDidEnter ChatPage');
     console.log(this.chatAccess);
-    this.chatService.getAllMessages();
+    this.getAllMessages();
   }
 
   addmessage() {
@@ -80,15 +109,49 @@ export class ChatPage {
       this.content.scrollToBottom();
       this.newmessage = '';
       console.log(response);
-      this.chatService.getAllMessages();
+      this.getAllMessages();
     })
   }
 
   scrollto() {
     setTimeout(() => {
+      console.log("Scroll to bottom");
       this.content.scrollToBottom();
     }, 1000);
   }
 
+  getAllMessages(skip = null) {
+    console.log(this.studentProfileId);
+    console.log(this.teacherProfileId);
+
+    return new Promise(async (resolve) => {
+      let API = await this.smartieApi.getApi(
+        'getAllMessages',
+        { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId, skip: skip }
+      );
+      interface Response {
+        result: any;
+      };
+      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.chatMessages = [];
+        for(let chat of response.result){
+          this.chatMessages.push(chat);
+        }
+        
+        if(skip){
+          console.log("append chat");
+          this.allmessages.concat(this.chatMessages);
+          console.log(this.allmessages);
+        }else{
+          console.log('new message');
+          this.allmessages = this.chatMessages;
+          console.log(this.allmessages);
+        }
+        
+      }, err => {
+        console.log(err);
+      })
+    })
+  }
 }
 

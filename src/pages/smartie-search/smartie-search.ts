@@ -104,11 +104,6 @@ export class SmartieSearch {
       });
     }
 
-    // console.log(navParams.get('fromWhere'));
-    // console.log(navParams.data.fromWhere);
-    // console.log(navParams.get('payment'));
-    // console.log(navParams.data.payment);
-
     if (this.fromWhere == 'signUp') {
       // TODO: retrieve the profilePhoto and CVs from
       // this.storage HERE if we came from signUp,
