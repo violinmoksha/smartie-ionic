@@ -35,6 +35,8 @@ import { CameraServiceProvider } from '../providers/camera-service/camera-servic
 import { ChatProvider } from '../providers/chat/chat';
 import { FileUploaderProvider } from '../providers/file-uploader/file-uploader';
 
+import { SecureStorage } from '@ionic-native/secure-storage';
+
 @NgModule({
   declarations: [
     SmartieApp
@@ -79,7 +81,8 @@ import { FileUploaderProvider } from '../providers/file-uploader/file-uploader';
     ContactPatterns,
     CameraServiceProvider,
     ChatProvider,
-    FileUploaderProvider
+    FileUploaderProvider,
+    SecureStorage
   ]
 })
 export class AppModule {}

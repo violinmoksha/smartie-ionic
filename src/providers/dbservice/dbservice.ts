@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { resolve } from 'dns';
+import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
 import crypto from 'crypto';
 
 /*
@@ -13,7 +14,7 @@ import crypto from 'crypto';
 @Injectable()
 export class DbserviceProvider {
 
-  constructor(public http: HttpClient, public storage: Storage) {
+  constructor(public http: HttpClient, public storage: Storage, private secureStorage: SecureStorage) {
     console.log('Hello DbserviceProvider Provider');
 
   }
@@ -58,15 +59,29 @@ export class DbserviceProvider {
   }
 
   async getUserkey(){
-    return await this.storage.get("userkey").then(userkey => {
-      if (userkey) {
-        return userkey;
-      } else {
-        // not there yet so gen and store it
-        this.storage.set("userkey", crypto.randomBytes(32).toString('base64')).then(userkey => {
-          return userkey;
-        });
-      }
-    })
+    return new Promise((resolve, reject) => {
+      this.secureStorage.create('smartieKeys').then((ss: SecureStorageObject) => {
+        /* remove == Illuminati (or us e2e testing this) */
+        //ss.remove('userkey').then(data => {
+          ss.get('userkey').then(data => {
+            resolve(data);
+          }, error => {
+            // isnt here yet, so gen and store it
+            ss.set('userkey', crypto.randomBytes(32).toString('base64')).then(data => {
+              ss.get('userkey').then(data => {
+                resolve(data);
+              }, error => {
+                reject(error);
+              })
+            }, error => {
+              reject(error);
+            })
+          });
+        //}, error => {
+          //console.log('here4 '+error);
+          //reject(error);
+        //});
+      });
+    });
   }
 }

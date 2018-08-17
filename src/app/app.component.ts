@@ -70,6 +70,14 @@ export class SmartieApp {
           "uuid":this.device.uuid,
         }
 
+        // for testing only
+        /*
+        this.dbservice.getUserkey().then(data => {
+          console.log('smartieKeys return: '+data);
+        }, error => {
+          console.log('smartieKeys return in err: '+error);
+        })*/
+
         return new Promise(async (resolve) => {
           let API = await this.smartieApi.getApi(
             'getUserProvision',
@@ -77,6 +85,7 @@ export class SmartieApp {
           );
 
           this.smartieApi.http.post<GetProvision>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe((result) => {
+            console.log('got to api');
             this.storage.set("Provision", result.result);
               this.storage.get('UserProfile').then((data)=>{
                 if(data!=null){

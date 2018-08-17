@@ -55,23 +55,30 @@ export class SmartieAPI {
   }
 
   async getBeyondGDPR(encryptOrDecrypt = true, body) {
-    if (Constants.API_ENDPOINTS.beyondGDPR.chickenSwitch == false) {
-      return false;
-    } else {
-      body.userkey = await this.dbService.getUserkey();
+    return new Promise((resolve, reject) =>  {
+      if (Constants.API_ENDPOINTS.beyondGDPR.chickenSwitch == false) {
+        resolve(false); // NB: resolve so as not to interrupt exec flow (true chickenSwitch)
+      } else {
+        this.dbService.getUserkey().then(userkey => {
+          body.userkey = userkey;
 
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      };
+          const httpOptions = {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json'
+            })
+          };
 
-      const endPoint = encryptOrDecrypt == true ?
-        Constants.API_ENDPOINTS.beyondGDPR.paths.encrypt :
-        Constants.API_ENDPOINTS.beyondGDPR.paths.decrypt;
+          const endPoint = encryptOrDecrypt == true ?
+            Constants.API_ENDPOINTS.beyondGDPR.paths.encrypt :
+            Constants.API_ENDPOINTS.beyondGDPR.paths.decrypt;
 
-      return { apiUrl: Constants.API_ENDPOINTS.beyondGDPR.baseUrl + endPoint, apiBody: JSON.stringify(body), apiHeaders: httpOptions }
-    }
+          resolve({ apiUrl: Constants.API_ENDPOINTS.beyondGDPR.baseUrl + endPoint, apiBody: JSON.stringify(body), apiHeaders: httpOptions });
+        }, error => {
+          // rejecting this inner error so that outer UI has access for ionic alertCtrl
+          reject(error);
+        });
+      }
+    });
   }
 
   sanitizeNotifications(notifications:any){

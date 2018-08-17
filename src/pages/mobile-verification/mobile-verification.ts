@@ -45,32 +45,43 @@ export class MobileVerificationPage {
 
   pushSignUp(){
     this.analytics.addEvent(this.analytics.getAnalyticEvent("MobileVerification", "Clicked_MobileVerifyButton"));
-    let params={
-      "uuid": (this.platform.is('cordova')) ? this.device.uuid :'123456',
-      "device": { 'cordova': this.device.cordova, 'isVirtual': this.device.isVirtual, 'manufacturer': this.device.manufacturer, 'model': this.device.model, 'platform': this.device.platform, 'serial': this.device.serial, 'uuid': this.device.uuid, 'version': this.device.version },
-      "role": this.role
-    }
 
-    let loading = this.loadingCtrl.create({
-      content: 'Provisioning....'
-    });
+    // encrypt UUID
+    this.smartieApi.getBeyondGDPR(true, {"plaintext":this.device.uuid}).then(cryptUUID => {
+      let deviceUUID;
+      if (cryptUUID) {
+        deviceUUID = cryptUUID;
+      } else { // chickenSwitch == false
+        deviceUUID = this.device.uuid;
+      }
 
-    return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
-        'setUserProvision',
-        params
-      );
-      loading.present();
+      let params={
+        "uuid": (this.platform.is('cordova')) ? deviceUUID :'123456',
+        "device": { 'cordova': this.device.cordova, 'isVirtual': this.device.isVirtual, 'manufacturer': this.device.manufacturer, 'model': this.device.model, 'platform': this.device.platform, 'serial': this.device.serial, 'uuid': deviceUUID, 'version': this.device.version },
+        "role": this.role
+      }
 
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data=>{
-        loading.dismiss();
-        this.storage.set("Provision", data.result);
-        this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
-      },e=>{
-        loading.dismiss();
-        console.log(e);
-        console.log("coming here provision error");
-      })
+      let loading = this.loadingCtrl.create({
+        content: 'Provisioning....'
+      });
+
+      return new Promise(async (resolve) => {
+        let API = await this.smartieApi.getApi(
+          'setUserProvision',
+          params
+        );
+        loading.present();
+
+        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data=>{
+          loading.dismiss();
+          this.storage.set("Provision", data.result);
+          this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
+        },e=>{
+          loading.dismiss();
+          console.log(e);
+          console.log("coming here provision error");
+        })
+      });
     });
   }
 

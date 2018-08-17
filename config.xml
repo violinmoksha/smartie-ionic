@@ -55,6 +55,7 @@
     </platform>
     <platform name="ios">
         <preference name="SplashScreen" value="screen" />
+        <preference name="KeychainAccessibility" value="WhenUnlocked" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
@@ -119,6 +120,7 @@
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="Uploading user images" />
     </plugin>
     <preference name="SplashScreen" value="screen" />
+    <plugin name="cordova-plugin-secure-storage" spec="^2.6.8" />
     <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.5" />
 </widget>
