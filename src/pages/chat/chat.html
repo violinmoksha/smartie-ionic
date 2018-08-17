@@ -7,36 +7,38 @@
 </ion-header>
 
 
-<ion-content #content>
-<div *ngIf="!chatAccess" class="chat-warning">
-  <h2>You are not able to send message to this User</h2>
-</div>
-<div *ngIf="chatAccess" class="chatwindow">
-  <ion-list no-lines>
-    <ion-item *ngFor="let item of allmessages; let i = index" text-wrap>
-      <ion-avatar item-left *ngIf="params.objectId != item.sentBy.objectId">
-        <img *ngIf="role=='student' && item.student.profilePhoto" src="{{item.student.profilePhoto.url}}">
-        <img *ngIf="role=='teacher' && item.teacher.profilePhoto" src="{{item.teacher.profilePhoto.url}}">
-        <img *ngIf="(role=='teacher' && !item.teacher.profilePhoto) || (role=='student' && !item.student.profilePhoto) "
-          src="{{ photoURL }}">
-      </ion-avatar>
-      <div class="bubble me" *ngIf="params.objectId != item.sentBy.objectId">
-        <h3>{{item.message}}</h3>
-        <!-- <img src="{{item.message}}" *ngIf="imgornot[i]"> -->
-      </div>
-      <ion-avatar item-right *ngIf="params.objectId === item.sentBy.objectId">
-        <img *ngIf="role=='student' && item.student.profilePhoto" src="{{item.student.profilePhoto.url}}">
-        <img *ngIf="role=='teacher' && item.teacher.profilePhoto" src="{{item.teacher.profilePhoto.url}}">
-        <img *ngIf="(role=='teacher' && !item.teacher.profilePhoto) || (role=='student' && !item.student.profilePhoto) "
-          src="{{ photoURL }}">
-      </ion-avatar>
-      <div class="bubble you" *ngIf="params.objectId === item.sentBy.objectId">
-        <h3>{{item.message}}</h3>
-        <!-- <img src="{{item.message}}" *ngIf="imgornot[i]"> -->
-      </div>
-    </ion-item>
-  </ion-list>
-</div>
+<ion-content #content (ionScroll)="onScroll($event)">
+  <!-- <ion-infinite-scroll (ionInfinite)="fetchMore($event)" position="top" threshold="10px">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
+
+  <div *ngIf="!chatAccess" class="chat-warning">
+    <h2>You are not able to send message to this User</h2>
+  </div>
+  <div *ngIf="chatAccess" class="chatwindow">
+    <ion-list no-lines>
+      <ion-item *ngFor="let item of allmessages;" text-wrap>
+        <ion-avatar item-left *ngIf="params.objectId != item.sentBy.objectId">
+          <img *ngIf="role=='student' && item.student.profilePhoto" src="{{item.student.profilePhoto.url}}">
+          <img *ngIf="role=='teacher' && item.teacher.profilePhoto" src="{{item.teacher.profilePhoto.url}}">
+          <img *ngIf="(role=='teacher' && !item.teacher.profilePhoto) || (role=='student' && !item.student.profilePhoto) " src="{{ photoURL }}">
+        </ion-avatar>
+        <div class="bubble me" *ngIf="params.objectId != item.sentBy.objectId">
+          <h3>{{item.message}}</h3>
+          <!-- <img src="{{item.message}}" *ngIf="imgornot[i]"> -->
+        </div>
+        <ion-avatar item-right *ngIf="params.objectId === item.sentBy.objectId">
+          <img *ngIf="role=='student' && item.student.profilePhoto" src="{{item.student.profilePhoto.url}}">
+          <img *ngIf="role=='teacher' && item.teacher.profilePhoto" src="{{item.teacher.profilePhoto.url}}">
+          <img *ngIf="(role=='teacher' && !item.teacher.profilePhoto) || (role=='student' && !item.student.profilePhoto) " src="{{ photoURL }}">
+        </ion-avatar>
+        <div class="bubble you" *ngIf="params.objectId === item.sentBy.objectId">
+          <h3>{{item.message}}</h3>
+          <!-- <img src="{{item.message}}" *ngIf="imgornot[i]"> -->
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
 <ion-footer ion-fixed>
   <ion-toolbar class="no-border chat-toolbar" color="white">

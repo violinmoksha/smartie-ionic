@@ -55,14 +55,14 @@ export class ChatProvider {
     }
   }
 
-  getAllMessages() {
+  getAllMessages(skip = null) {
     console.log(this.studentProfileId);
     console.log(this.teacherProfileId);
 
     return new Promise(async (resolve) => {
       let API = await this.smartieApi.getApi(
         'getAllMessages',
-        { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId }
+        { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId, skip: skip }
       );
       interface Response {
         result: any;
@@ -72,8 +72,13 @@ export class ChatProvider {
         for(let chat of response.result){
           this.allMessages.push(chat);
         }
-        // this.allMessages = response.result;
-        this.events.publish('newmessage');
+        
+        if(skip){
+          this.events.publish('loadOldMessage', this.allMessages);  
+        }else{
+          this.events.publish('newMessage', this.allMessages);
+        }
+        
       }, err => {
         console.log(err);
       })
