@@ -6,7 +6,7 @@ import { SmartieAPI } from '../../providers/api/smartie';
 // import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 // import { Response } from '@angular/http';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the AddPaymentPage page.
  *
@@ -41,8 +41,8 @@ export class AddPaymentPage {
       emailPayment: new FormControl('', Validators.required),
       emailConfirm: new FormControl('yes'),
     });
-    this.smartieApi.http.get('https://icanhazip.com', { responseType: 'text' }).subscribe(res => {
-      this.userIP = res.replace(/\s/g, "");
+    this.smartieApi.http.get('https://icanhazip.com', { responseType: 'text' }, {}).then(res => {
+      this.userIP = res.data.replace(/\s/g, "");
       console.log(`IP ADDRESS: ${this.userIP}`);
     })
   }
@@ -147,14 +147,11 @@ export class AddPaymentPage {
         endPoint,
         body
       );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
-        console.log(response.result);
-        this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+        console.log(response[0].result);
+        this.smartieApi.updateUserProfileStorage(response[0].result).then(profile => {
           loading.dismiss();
-          this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.result });
+          this.navCtrl.push('NotificationFeedPage', { stripeAccount: response[0].result });
         })
       }, err => {
         console.log(err);

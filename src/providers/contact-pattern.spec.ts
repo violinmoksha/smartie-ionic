@@ -1,5 +1,4 @@
-
-import { ComponentFixture, async } from '@angular/core/testing';
+/*import { ComponentFixture, async } from '@angular/core/testing';
 import { ContactPatterns } from './contact-patterns';
 let contactPattern: ContactPatterns;
 let instance: any = null;
@@ -32,4 +31,4 @@ describe('personal info breacher in PM!', function () {
   for (var x = 0; x < cases.length; x++) {
     testMyInputs(cases[x], outputValues[x]);
   }
-});
+});*/

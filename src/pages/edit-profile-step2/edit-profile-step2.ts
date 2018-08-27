@@ -4,7 +4,7 @@ import { NavController, NavParams, ActionSheetController, Slides } from 'ionic-a
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the EditProfileStep2Page page.
  *

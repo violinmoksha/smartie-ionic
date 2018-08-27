@@ -5,10 +5,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 // import { Crop } from '@ionic-native/crop';
 import { Storage } from '@ionic/storage';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
-import { DbserviceProvider } from '../../providers/dbservice/dbservice';
+import { AnalyticsProvider } from '../../providers/analytics';
+import { DbserviceProvider } from '../../providers/dbservice';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { Response, Address } from '../../providers/data-model/data-model';
+import { Address } from '../../providers/data-model';
 
 declare let google;
 /**
@@ -102,8 +102,8 @@ export class RegisterStep2Page {
       }
 
       //Checking Device location
-      this.storage.get('phoneLatLng').then(phoneLatLng => {
-        this.getGeoPlace(phoneLatLng).then((address: Address) => {
+      this.storage.get('phoneGeoposition').then(phoneGeoposition => {
+        this.getGeoPlace(phoneGeoposition).then((address: Address) => {
           if(address.country == 'US'){
             this.Step2Form.controls['prefLocation'].disable()
             this.userLocation = address.formattedAddress;
@@ -256,15 +256,12 @@ export class RegisterStep2Page {
   }
 
   updateUserToProvision = async (userId, userProfileId) => {
-
     let API = await this.smartieApi.getApi(
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
     );
-
-
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
-      this.smartieApi.updateProvisionStorage(response.result);
+    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+      this.smartieApi.updateProvisionStorage(response[0].result);
     }, err => {
       console.log(err);
     });
@@ -287,22 +284,21 @@ export class RegisterStep2Page {
           'signUpRole',
           {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo)}
         );
+        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(signupResult => {
+          this.updateUserToProvision(signupResult[0].result.userData.objectId, signupResult[0].result.profileData.objectId);
 
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(signupResult => {
-          this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
-
-          this.storage.set("UserProfile", signupResult.result).then(() => {
+          this.storage.set("UserProfile", signupResult[0].result).then(() => {
             return new Promise(async (resolve) => {
               let API = await this.smartieApi.getApi(
                 'fetchMarkers',
-                { profileId: signupResult.result.profileData.objectId, role: this.role }
+                { profileId: signupResult[0].result.profileData.objectId, role: this.role }
               );
 
               interface Response {
                 result: any
               };
-              this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
-                this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
+              this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(Notifications => {
+                this.smartieApi.sanitizeNotifications(Notifications[0].result).then(notifications => {
                   this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
                   //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
                 })
@@ -326,8 +322,8 @@ export class RegisterStep2Page {
     this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
     this.dbService.getRegistrationData().then((res)=>{
       if(res){
-        res.step = 2;
-        res.form2Values = form2Values;
+        res[0].step = 2;
+        res[0].form2Values = form2Values;
         this.dbService.setRegistrationData(res);
       }else{
         this.dbService.setRegistrationData({ form1Values : this.form1Values, form2Values : form2Values, role: this.role });
@@ -348,10 +344,10 @@ export class RegisterStep2Page {
     }
   }
 
-  getGeoPlace(phoneLatLng) {
+  getGeoPlace(phoneGeoposition) {
 
     return new Promise(resolve => {
-      let latLng = new google.maps.LatLng(phoneLatLng.latitude, phoneLatLng.longitude);
+      let latLng = new google.maps.LatLng(phoneGeoposition.coords.latitude, phoneGeoposition.coords.longitude);
 
       let geocoder = new google.maps.Geocoder();
 

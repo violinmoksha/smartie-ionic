@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the PaymentthankyouPage page.
  *

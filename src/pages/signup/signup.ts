@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 declare var google;
 
 /**

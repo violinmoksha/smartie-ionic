@@ -3,7 +3,7 @@ import { Component, NgZone } from '@angular/core';
 import { App, NavController, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the JobRequestsPage page.
  *
@@ -143,8 +143,7 @@ export class JobRequestPage {
           'getRequestedJobRequest',
           this.body
         );
-        interface Response { };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
           if (Object.keys(response).length > 0) {
             this.requestSent = true;
           } else {
@@ -205,11 +204,7 @@ export class JobRequestPage {
             'setJobRequest',
             this.body
           );
-
-          interface Response {
-            result: any
-          };
-          this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+          this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
             this.requestSent = true;
             this.viewCtrl.dismiss();
             this.loading.dismiss();
@@ -260,11 +255,7 @@ export class JobRequestPage {
           'setJobRequest',
           this.body
         );
-
-        interface Response {
-          result: any
-        };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
           this.acceptState = true;
           this.viewCtrl.dismiss();
           this.loading.dismiss();
@@ -297,11 +288,7 @@ export class JobRequestPage {
           'setJobRequest',
           this.body
         );
-
-        interface Response {
-          result: any
-        };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
           this.viewCtrl.dismiss();
           this.loading.dismiss();
           this.submitInProgress = false;

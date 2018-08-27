@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the SendEmailPage page.
  *
@@ -61,11 +61,7 @@ export class SendEmailPage {
         'sendEmail',
         { recipientProfileId: this.recipientProfileId, senderRole: this.role, senderName: this.senderName, recipientName: this.recipientName, subject: this.subject, message: this.message }
       );
-
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
         this.navCtrl.parent.select(0);
       }, err => {
         console.log(err);

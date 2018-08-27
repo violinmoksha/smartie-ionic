@@ -1,5 +1,5 @@
-import { DbserviceProvider } from './../../providers/dbservice/dbservice';
-import { CameraServiceProvider } from './../../providers/camera-service/camera-service';
+import { DbserviceProvider } from './../../providers/dbservice';
+import { CameraServiceProvider } from './../../providers/camera-service';
 import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Slides, ModalController, LoadingController  } from 'ionic-angular';
@@ -7,8 +7,7 @@ import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from
 import { SmartieAPI } from '../../providers/api/smartie';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { Storage } from '@ionic/storage';
-import { Response } from '../../providers/data-model/data-model';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 declare let google;
 
 /**
@@ -296,10 +295,10 @@ export class RegisterStep3Page {
     );
 
 
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
       console.log("Getting updated provision");
       console.log(response);
-      this.smartieApi.updateProvisionStorage(response.result);
+      this.smartieApi.updateProvisionStorage(response[0].result);
     }, err => {
       console.log(err);
     });
@@ -340,28 +339,20 @@ export class RegisterStep3Page {
         'signUpRole',
         {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(this.form2Values), userInfo: JSON.stringify(form3Values)}
       );
-
-      interface Response {
-        result: any
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(
         signupResult => {
           console.log(signupResult);
-          this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
+          this.updateUserToProvision(signupResult[0].result.userData.objectId, signupResult[0].result.profileData.objectId);
 
-          this.storage.set("UserProfile", signupResult.result).then(() => {
+          this.storage.set("UserProfile", signupResult[0].result).then(() => {
             return new Promise(async (resolve) => {
               let API = await this.smartieApi.getApi(
                 'fetchMarkers',
-                { profileId: signupResult.result.profileData.objectId, role: this.role }
+                { profileId: signupResult[0].result.profileData.objectId, role: this.role }
               );
-
-              interface Response {
-                result: any
-              };
-              this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
+              this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(Notifications => {
                 this.loading.dismiss();
-                this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
+                this.smartieApi.sanitizeNotifications(Notifications[0].result).then(notifications => {
                   this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
                   //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
                   this.dbService.setRegistrationData({step:3, role: this.role, form3: form3Values})

@@ -3,8 +3,8 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { Storage } from '@ionic/storage';
 import { Stripe } from '@ionic-native/stripe';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { SmartieAPI } from '../../providers/api/smartie';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { DataService } from '../../app/app.data';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the AddBankAccountPage page.
  *
@@ -27,7 +27,7 @@ export class AddBankAccountPage {
   private body: any;
   private profilePhoto: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,public storage: Storage, private stripe: Stripe, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,public storage: Storage, private stripe: Stripe, private dataService: DataService, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.analytics.setScreenName("AddBankAccount");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("AddBankAccount", "View"));
 
@@ -72,22 +72,21 @@ export class AddBankAccountPage {
       };
 
       return new Promise(async (resolve) => {
-        let API = await this.smartieApi.getApi(
+        return await this.dataService.getApi(
           'addBankAccount',
           this.body
-        );
-        interface Response {
-          result: any;
-        };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-          this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
-            loading.dismiss();
-            this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
-          });
-        }, err => {
-          console.log(err.error.message);
-          this.addBankAccountError(err.error.message);
-        })
+        ).then(async API => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(async response => {
+            // TODO: just use storage for this!! no more useless wrappers like this
+            //return await this.dataService.updateUserProfileStorage(response[0].result).then(profile => {
+              //loading.dismiss();
+              this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
+            //});
+          }, err => {
+            console.log(err.error.message);
+            this.addBankAccountError(err.error.message);
+          })
+        });
       })
     }, err => {
       console.log(err);

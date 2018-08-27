@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, PopoverController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the SchedulePage page.
  *

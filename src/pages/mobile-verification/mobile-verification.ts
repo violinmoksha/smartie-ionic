@@ -3,9 +3,8 @@ import { IonicPage,Platform, NavController, NavParams,LoadingController } from '
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
-import { Response } from '../../providers/data-model/data-model';
 import { FormBuilder, FormGroup,Validators } from '@angular/forms';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the MobileVerificationPage page.
  *
@@ -66,15 +65,14 @@ export class MobileVerificationPage {
       });
 
       return new Promise(async (resolve) => {
+        loading.present();
         let API = await this.smartieApi.getApi(
           'setUserProvision',
           params
         );
-        loading.present();
-
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data=>{
+        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(data=>{
           loading.dismiss();
-          this.storage.set("Provision", data.result);
+          this.storage.set("Provision", data[0].result);
           this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
         },e=>{
           loading.dismiss();

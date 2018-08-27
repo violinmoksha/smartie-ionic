@@ -7,7 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 const Parse = require('parse');
 // import * as Parse from 'parse';
 import { Storage } from '@ionic/storage';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 
 /**
  * Generated class for the EditProfile page.

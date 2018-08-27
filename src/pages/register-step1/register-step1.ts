@@ -1,9 +1,9 @@
-import { DbserviceProvider } from './../../providers/dbservice/dbservice';
+import { DbserviceProvider } from './../../providers/dbservice';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 
 /**
  * Generated class for the RegisterStep1Page page.
@@ -67,21 +67,16 @@ export class RegisterStep1Page {
         'isNewEmail',
         { email: form1Value.email }
       );
-
-      interface Response {
-        result: any
-      };
-
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(
         isNewEmail => {
           loading.dismiss();
-          if (isNewEmail.result == true) {
+          if (isNewEmail[0].result == true) {
 
             this.navCtrl.push("RegisterStep2Page", { form1Values : formParams, role: this.role });
             this.dbService.getRegistrationData().then((res)=>{
               if(res){
-                res.step = 1;
-                res.form1Values = formParams;
+                res[0].step = 1;
+                res[0].form1Values = formParams;
                 this.dbService.setRegistrationData(res);
               }else{
                 this.dbService.setRegistrationData({ step:1, form1Values : formParams, role: this.role });

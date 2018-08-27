@@ -3,6 +3,7 @@ import { browser, by, element } from 'protractor';
 export class Page {
 
   navigateTo(destination) {
+    browser.ignoreSynchronization = true;
     return browser.get(destination);
   }
 
@@ -10,7 +11,7 @@ export class Page {
     return browser.getTitle();
   }
 
-  getPageOneTitleText() {
-    return element(by.tagName('page-page1')).element(by.tagName('ion-title')).element(by.css('.toolbar-title')).getText();
+  getFirstButtonText() {
+    return element(by.tagName('page-landing')).element(by.tagName('p')).getText();
   }
 }

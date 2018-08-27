@@ -1,11 +1,9 @@
-import { Response } from './../../providers/data-model/data-model';
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 import { SmartieAPI } from '../../providers/api/smartie';
-
 
 /**
  * Generated class for the AllAcceptedsPage page.
@@ -56,9 +54,9 @@ export class NotificationFeedPage {
       'getAllAccepteds',
       { profileId: profileId, role: role }
     );
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(jobReq => {
+    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(jobReq => {
       if (jobReq)
-        this.allAccepteds = jobReq.result;
+        this.allAccepteds = jobReq[0].result;
 
       console.log(jobReq);
     }, (err) => {
@@ -71,9 +69,9 @@ export class NotificationFeedPage {
       'getAllRequesteds',
       { profileId: profileId, role: role }
     );
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(jobReq => {
+    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(jobReq => {
       if (jobReq)
-        this.allRequesteds = jobReq.result;
+        this.allRequesteds = jobReq[0].result;
       console.log(jobReq);
     }, (err) => {
       console.log(err);
@@ -85,9 +83,9 @@ export class NotificationFeedPage {
       'getAllUpcomings',
       { profileId: profileId, role: role }
     );
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(jobReq => {
+    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(jobReq => {
       if (jobReq)
-        this.allUpcomings = jobReq.result;
+        this.allUpcomings = jobReq[0].result;
 
       console.log(jobReq);
     }, (err) => {

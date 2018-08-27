@@ -1,4 +1,4 @@
-import { FirebaseProvider } from './../../providers/firebase/firebase';
+import { FirebaseProvider } from './../../providers/firebase';
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController, MenuController } from 'ionic-angular';
@@ -6,7 +6,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Pro } from '@ionic/pro';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 // import { URLSearchParams } from '@angular/http';
 
 /**
@@ -29,7 +29,7 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private firebase:FirebaseProvider,private loadingCtrl :LoadingController, private analytics : AnalyticsProvider,private menu: MenuController) {
 
-    
+
     console.log("Login Page");
 
     this.storage.get('Provision').then(provision => {
@@ -56,17 +56,14 @@ export class LoginPage {
           {username: this.provisionData.user.username, password: data.password}
         );
 
-        interface Response {
-          result: any
-        }
         let loading = this.loadingCtrl.create({
           content: 'Signing In....'
         });
         loading.present();
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(data => {
+        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(data => {
           console.log(data);
           loading.dismiss();
-          this.storage.set('UserProfile', data.result).then(UserProfile => {
+          this.storage.set('UserProfile', data.data).then(UserProfile => {
             this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: UserProfile.profileData.role, fromWhere: "login" });
             /*console.log(UserProfile);
             // TODO server-side fetchNotifications endpoint

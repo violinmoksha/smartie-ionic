@@ -1,3 +1,4 @@
+import {} from 'jasmine';
 import { Page } from './app.po';
 
 describe('App', () => {
@@ -7,14 +8,14 @@ describe('App', () => {
     page = new Page();
   });
 
-  describe('default screen', () => {
+  describe('landing page', () => {
     beforeEach(() => {
       page.navigateTo('/');
     });
 
-    it('should have a title saying Page One', () => {
-      page.getPageOneTitleText().then(title => {
-        expect(title).toEqual('Page One');
+    it('should have a first button saying I WANT TO LEARN', () => {
+      page.getFirstButtonText().then(text => {
+        expect(text).toEqual('I WANT TO LEARN');
       });
     });
   })

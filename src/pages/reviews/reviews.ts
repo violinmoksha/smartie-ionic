@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the ReviewsPage page.
  *
@@ -54,9 +54,9 @@ export class ReviewsPage {
       interface Response {
         result: any
       }
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
-        console.log(response.result);
-        let userReviews = response.result;
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+        console.log(response[0].result);
+        let userReviews = response[0].result;
         this.reviewCount = userReviews.reviews.length;
         this.profileData = userReviews.reviewedProfile;
 
@@ -74,16 +74,13 @@ export class ReviewsPage {
         'getReviewingProfile',
         { reviewingProfileId: review.reviewingProfileId }
       );
-      interface Response {
-        result: any
-      }
-      return this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
-        if (response.result.reviewingProfile.profilePhoto) {
-          this.profilePhoto = response.result.reviewingProfile.profilePhoto.url;
+      return this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+        if (response[0].result.reviewingProfile.profilePhoto) {
+          this.profilePhoto = response[0].result.reviewingProfile.profilePhoto.url;
         } else {
           this.profilePhoto = "./assets/img/user-round-icon.png";
         }
-        this.reviews.push({ 'fullname': response.result.reviewingProfile.fullname, 'role': response.result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
+        this.reviews.push({ 'fullname': response[0].result.reviewingProfile.fullname, 'role': response[0].result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
       })
 
     })

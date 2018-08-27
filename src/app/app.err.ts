@@ -33,6 +33,7 @@ export class SmartieErrorHandler implements ErrorHandler {
     //IonicPro.monitoring.handleNewError(err);
     // Remove this if you want to disable Ionic's auto exception handling
     // in development mode.
+    console.info('App handleError() triggered.');
     this.ionicErrorHandler && this.ionicErrorHandler.handleError(err);
   }
 }

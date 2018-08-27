@@ -1,17 +1,17 @@
-import { DbserviceProvider } from './../providers/dbservice/dbservice';
-import { HttpClient } from '@angular/common/http';
-import { Device } from '@ionic-native/device';
+//import { DbserviceProvider } from './../providers/dbservice';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Storage } from '@ionic/storage';
-import { SmartieAPI } from '../providers/api/smartie';
 import { Geolocation } from '@ionic-native/geolocation';
-import { ParseProvider } from '../providers/parse';
-import { FirebaseProvider } from '../providers/firebase/firebase';
-import { GetProvision } from '../providers/data-model/data-model';
-import { SmartieSearch } from '../pages/smartie-search/smartie-search';
+import { Firebase } from '@ionic-native/firebase';
+import { Device } from '@ionic-native/device';
+
+import { DataService } from './app.data';
+
+import Parse from 'parse';
 
 @Component({
   templateUrl: 'app.html'
@@ -23,7 +23,24 @@ export class SmartieApp {
 
   buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string, isTabs?: boolean }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar,  private storage: Storage, public events: Events, public smartieApi: SmartieAPI, private geolocation: Geolocation, private parseProvider: ParseProvider,private firebase:FirebaseProvider, private device:Device, private http:HttpClient, private dbservice:DbserviceProvider, public splashScreen : SplashScreen) {
+  //private parseAppId: string = "80f6c155-d26e-4c23-a96b-007cb4cba8e1";
+  private parseAppId: string = "948b9456-8c0a-4755-9e84-71be3723d338";
+  private parseMasterKey: string = "49bc1a33-dfe7-4a32-bdcc-ee30b7ed8447"; // local and test
+  //private parseServerUrl: string = "https://smartieapp.com/parse";
+  private parseServerUrl: string = "https://test.t0tl3s.com/parse";
+  // private parseServerUrl: string = "http://172.16.1.179:1337/parse";
+  // private parseServerUrl: string = "http://76.170.58.147:1337/parse";
+
+  constructor(
+    public platform: Platform,
+    public events: Events,
+    public storage: Storage,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public geolocation: Geolocation,
+    public firebase: Firebase,
+    public device: Device,
+    public dataService: DataService) {
 
     this.initializeApp();
 
@@ -52,94 +69,128 @@ export class SmartieApp {
     });
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
+  async initializeApp() { // async for testing-purposes
+    return await this.platform.ready().then(async () => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       if (this.platform.is('cordova')) {
-        console.log("device id");
-        console.log(this.device.uuid);
-        this.initGeolocation();
-        this.firebase.initFCM();
-        this.firebase.notificationListener();
         this.statusBar.styleDefault();
-        // this.initPushNotifications();
-       // this.rootPage = 'LauncherPage';
+        this.initGeolocation();
+        this.initFirebase(); // NB: calls sync/non-returning notificationHandler
 
-        let params = {
-          "uuid":this.device.uuid,
-        }
+        Parse.initialize(this.parseAppId, null, this.parseMasterKey);
+        Parse.serverURL = this.parseServerUrl;
 
-        // for testing only
-        /*
-        this.dbservice.getUserkey().then(data => {
-          console.log('smartieKeys return: '+data);
-        }, error => {
-          console.log('smartieKeys return in err: '+error);
-        })*/
-
-        return new Promise(async (resolve) => {
-          let API = await this.smartieApi.getApi(
-            'getUserProvision',
-            params
-          );
-
-          this.smartieApi.http.post<GetProvision>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe((result) => {
-            console.log('got to api');
-            this.storage.set("Provision", result.result);
-              this.storage.get('UserProfile').then((data)=>{
-                if(data!=null){
-                  this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: data.profileData.role });
-                }else{
-                  if(result.result.provision.user && result.result.provision.profile){
-                    this.nav.setRoot("LoginPage", { role: result.result.provision.role });
-                  }else{
-                  this.dbservice.getRegistrationData().then((registration)=>{
-                    if(registration && registration.step){
-                      if(registration.step === 0){
-                        this.nav.setRoot("RegisterStep1Page", { role: registration.role });
-                      }else if(registration.step == 1){
+        return await this.dataService.getApi(
+          'getUserProvision',
+          { "uuid": this.device.uuid }
+        ).then(async API => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+            return await this.storage.get('UserProfile').then(async user => {
+              if (user != null) {
+                this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
+                this.splashScreen.hide();
+                return await true;
+              } else {
+                if (response.data.result.provision.user && response.data.result.profile){
+                  this.nav.setRoot("LoginPage", { role: response.data.result.provision.role });
+                  this.splashScreen.hide();
+                  return await true;
+                } else {
+                  return await this.storage.get("Registration").then(async registration => {
+                    if(registration && registration[0].step){
+                      if(registration[0].step === 0){
+                        this.nav.setRoot("RegisterStep1Page", { role: registration[0].role });
+                      }else if(registration[0].step == 1){
                         this.nav.setRoot("RegisterStep2Page", registration);
-                      }else if(registration.step == 2){
+                      }else if(registration[0].step == 2){
                         this.nav.setRoot("RegisterStep3Page", registration);
                       }
                     }else{
-                      this.nav.setRoot("RegisterStep1Page", { role: result.result.provision.role });
+                      this.nav.setRoot("RegisterStep1Page", { role: response.data.result.provision.role });
                     }
+                    this.splashScreen.hide();
+                    return await true;
+                  }, async error => {
+                    // TODO: alertCtrl UI from err handler
+                    return await false;
                   })
                 }
               }
-                console.log("splash hide");
-                this.splashScreen.hide();
-              })
-
-          }, (err)=>{
+            })
+          }, async err => {
             this.splashScreen.hide();
             this.rootPage = 'LandingPage';
+            return await false;
           })
-        })
+        });
       } else {
+        this.splashScreen.hide();
         this.rootPage = 'LandingPage';
+        return await false;
       }
-
-      this.parseProvider.parseInitialize();
     });
   }
 
-  initGeolocation() {
-    this.geolocation.getCurrentPosition().then((resp) => {
-      console.log("Getting geo location");
-      console.log(resp);
-      let phoneLatLng = { latitude: resp.coords.latitude, longitude: resp.coords.longitude };
-     // console.log('phoneLatLng: '+JSON.stringify(phoneLatLng));
-      this.storage.set('phoneLatLng', phoneLatLng);
-     // this.storage.set('currentPosition', resp);
-    }).catch((error) => {
-      console.log('Error getting phone location', JSON.stringify(error));
+  async initGeolocation() {
+    return await this.geolocation.getCurrentPosition().then(async resp => {
+      this.storage.set('phoneGeoposition', resp);
+      return await resp;
+    }, async error => {
+      console.info('Error setting phoneGeoposition: ', JSON.stringify(error));
+      return await error;
     });
   }
 
-  pushPage(event, page) {
+  async initFirebase() {
+    return await this.firebase.getToken().then(async token => {
+      //console.log(`Firebase token is: ${token}`);
+      return await this.dataService.getApi(
+        'updateFcmToken',
+        { "device": this.device, "token": token }
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async data => {
+          this.notificationHandler();
+          return token;
+        }, async error => {
+          console.info('Error in updateFcmToken endpoint: ', error);
+          return await error;
+        });
+      });
+    }, async error => {
+      console.info('Error in Firebase getToken: ', JSON.stringify(error));
+      return await error;
+    });
+  }
+
+  notificationHandler() : void {
+    this.firebase.onNotificationOpen().subscribe((notification: any) => {
+      //perform action based notification's action
+      if (notification.eventAction == "PaymentReminder") {
+        this.nav.push("AddPaymentPage");
+      } else if (notification.eventAction == "JobRequest") {
+        let job = JSON.parse(notification.extraData);
+        this.dataService.getApi(
+          'getJobRequestById',
+          { "jobRequestId": job.jobId }
+        ).then(API => {
+          this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+            this.nav.push("JobRequestPage", { params: response.data.result });
+          }, err => {
+            // TODO: handle this in UI
+            console.info('0: '+err);
+          })
+        }, err => {
+          console.info('sub-0: '+err);
+        });
+      }
+    }, err => {
+      // TODO: ditto
+      console.info('1: '+err);
+    });
+  }
+
+  /*pushPage(event, page) {
     if (page.iconName == 'log-out') { // logout -->
        this.dbservice.deleteUser();
       this.nav.setRoot("LoginPage"); // send to Login
@@ -178,5 +229,5 @@ export class SmartieApp {
       this.storage.clear(); // dump ephemeral session
       this.nav.setRoot("LoginPage"); // send to Login
     }*/
-  }
+  //}
 }

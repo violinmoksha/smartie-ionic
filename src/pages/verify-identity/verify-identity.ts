@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { Storage } from '@ionic/storage';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the VerifyIdentityPage page.
  *
@@ -25,7 +25,6 @@ export class VerifyIdentityPage {
   private body: any;
   private profilePhoto: any;
   private profileId: any;
-
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.analytics.setScreenName("VerifyIdentity");
@@ -82,10 +81,10 @@ export class VerifyIdentityPage {
       interface Response {
         result: any;
       };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        this.smartieApi.updateUserProfileStorage(response.result).then(profile => {
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+        this.smartieApi.updateUserProfileStorage(response[0].result).then(profile => {
           loading.dismiss();
-          this.navCtrl.push("AddBankAccountPage", { stripeAccount: response.result });
+          this.navCtrl.push("AddBankAccountPage", { stripeAccount: response[0].result });
         });
       }, err => {
         loading.dismiss();

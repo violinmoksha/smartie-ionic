@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, LoadingController
 import { Storage } from '@ionic/storage';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the PaymentPage page.
  *
@@ -110,7 +110,7 @@ export class PaymentPage {
         interface Response {
           result: any;
         };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
           this.createTransaction(amount);
         }, err => {
           console.log(err);
@@ -145,10 +145,7 @@ export class PaymentPage {
         'createTransaction',
         this.body
       );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
         this.loading.dismiss();
         this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment' });
       }, err => {

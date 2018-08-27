@@ -1,13 +1,12 @@
-import { Response } from './../../providers/data-model/data-model';
-import { CameraServiceProvider } from './../../providers/camera-service/camera-service';
+import { CameraServiceProvider } from './../../providers/camera-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { SmartieAPI } from '../../providers/api/smartie';
 import { Storage } from '@ionic/storage';
 import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn, } from '@angular/forms';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
-import { DbserviceProvider } from '../../providers/dbservice/dbservice';
-import { FileUploaderProvider } from '../../providers/file-uploader/file-uploader';
+import { AnalyticsProvider } from '../../providers/analytics';
+import { DbserviceProvider } from '../../providers/dbservice';
+import { FileUploaderProvider } from '../../providers/file-uploader';
 
 /**
  * Generated class for the SetReviewPage page.
@@ -39,11 +38,15 @@ export class FeedbackPage {
     this.analytics.setScreenName("Feedback");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Feedback", "View"));
     //this.profileData = navParams.get("profileData");
-    this.dbService.getUser().then((user) => {
+    this.dbService.getUser().then(user => {
       if (user) {
         this.profileData = user.profileData;
         this.userData = user.userData;
+      } else {
+        // TODO: alertCtrl, we resolve(false)'d
       }
+    }, error => {
+      // TODO: alertCtrl, we reject(error)'d
     })
 
     /*if (this.profileData.role == 'teacher') {
@@ -122,7 +125,7 @@ export class FeedbackPage {
       'setFeedback',
       params
     );
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(res => {
+    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(res => {
       this.loading.dismiss();
       let alert = this.alertCtrl.create({
         title: 'Thanks!',

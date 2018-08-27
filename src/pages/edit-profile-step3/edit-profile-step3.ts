@@ -7,7 +7,7 @@ import { SmartieAPI } from '../../providers/api/smartie';
 const Parse = require('parse');
 import { Storage } from '@ionic/storage';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the EditProfileStep3Page page.
  *
@@ -329,12 +329,9 @@ export class EditProfileStep3Page {
         'editUser',
         this.body
       );
-      interface Response {
-        result: any;
-      }
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
-        console.log(response.result);
-        this.smartieApi.updateUserProfileStorage(response.result.profileData, response.result.specificUserData).then(profile => {
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+        console.log(response[0].result);
+        this.smartieApi.updateUserProfileStorage(response[0].result.profileData, response[0].result.specificUserData).then(profile => {
           this.loading.dismiss();
           this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole, fromWhere: "editProfile" });
         });
@@ -342,10 +339,7 @@ export class EditProfileStep3Page {
     })
 
     /*return new Promise(resolve => {
-      interface Response {
-        result: any
-      }
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(res => {
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(res => {
           console.log(res);
           // TODO: save new mega teacherUserProfile object to localstorage
           localStorage.setItem(`${this.userRole}UserProfile`, Object.keys(res)['result']);

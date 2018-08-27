@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the WalletPage page.
  *
@@ -45,11 +45,11 @@ export class WalletPage {
         interface Response {
           result: any;
         };
-        this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
           loading.dismiss();
-          console.log(response.result);
-          this.availableBalance = response.result.available[0].amount / 100;
-          this.pendingBalance = response.result.pending[0].amount / 100;
+          console.log(response[0].result);
+          this.availableBalance = response[0].result.available[0].amount / 100;
+          this.pendingBalance = response[0].result.pending[0].amount / 100;
         }, err => {
           loading.dismiss();
           console.log(err.error.error.message);
@@ -73,12 +73,9 @@ export class WalletPage {
         'createInstantPayouts',
         { stripeAccountId: this.stripeCustomer.stripe_user_id, amount: this.availableBalance * 100, profileId: this.profileData.objectId }
       );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
         loading.dismiss();
-          console.log(response.result);
+          console.log(response[0].result);
       }, err => {
         loading.dismiss();
         console.log(err.error.error);

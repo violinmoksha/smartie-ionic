@@ -4,7 +4,7 @@ import { NavController, NavParams, AlertController, ModalController } from 'ioni
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
 import { SmartieAPI } from '../../providers/api/smartie';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { AnalyticsProvider } from '../../providers/analytics';
 // import { ParseProvider } from '../../providers/parse';
 // import { Parse } from 'parse';
 const Parse = require('parse');
@@ -229,12 +229,8 @@ export class SmartieSearch {
                 'fetchMarkers',
                 { profileId: profile.profileData.objectId, role: profile.profileData.role }
               );
-
-              interface Response {
-                result: any
-              };
-              this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
-                this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
+              this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(Notifications => {
+                this.smartieApi.sanitizeNotifications(Notifications[0].result).then(notifications => {
                   this.notifications = notifications;
                   this.storage.get('phoneLatLng').then(phoneLatLng => {
                     //console.log(phoneLatLng);
@@ -320,14 +316,11 @@ export class SmartieSearch {
         'getAllRequesteds',
         this.body
       );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
         this.notifyCount = '';
-        if(response.result.length > 0){
-          this.notifyCount = response.result.length;
-          this.storage.set("userAllRequesteds", response.result);
+        if(response[0].result.length > 0){
+          this.notifyCount = response[0].result.length;
+          this.storage.set("userAllRequesteds", response[0].result);
         }
         resolve('success');
       }, err => {
@@ -342,13 +335,10 @@ export class SmartieSearch {
         'getAllAccepteds',
         this.body
       );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        if(response.result.length > 0){
-          this.notifyCount = this.notifyCount + response.result.length;
-          this.storage.set("userAllAccepteds", response.result);
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+        if(response[0].result.length > 0){
+          this.notifyCount = this.notifyCount + response[0].result.length;
+          this.storage.set("userAllAccepteds", response[0].result);
         }
         resolve('success');
       })
@@ -361,15 +351,12 @@ export class SmartieSearch {
         'getAllUpcomings',
         this.body
       );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-        if(response.result.length > 0){
+      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+        if(response[0].result.length > 0){
           this.hasUpcomings = true;
-          this.upcomingsCount = response.result.length;
-          this.notifyCount = this.notifyCount + response.result.length;
-          this.storage.set("userAllUpcomings", response.result);
+          this.upcomingsCount = response[0].result.length;
+          this.notifyCount = this.notifyCount + response[0].result.length;
+          this.storage.set("userAllUpcomings", response[0].result);
         }
         resolve('success');
       }, err => {
