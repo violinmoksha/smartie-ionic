@@ -3,7 +3,8 @@ import { Component, ViewChild, NgZone } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
+import { SmartieErrorHandler } from '../../app/app.err';
 import { AnalyticsProvider } from '../../providers/analytics';
 // import { ParseProvider } from '../../providers/parse';
 // import { Parse } from 'parse';
@@ -57,7 +58,7 @@ export class SmartieSearch {
   // TODO: autopopulate input with user's location
   // private reverseGeocodedLocation: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private smartieApi: SmartieAPI, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private dataService: DataService, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone,private analytics : AnalyticsProvider, public smartieErrHandler: SmartieErrorHandler) {
     this.analytics.setScreenName("Smartie-search");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Smartie-search", "View"));
 
@@ -103,11 +104,6 @@ export class SmartieSearch {
         })
       });
     }
-
-    // console.log(navParams.get('fromWhere'));
-    // console.log(navParams.data.fromWhere);
-    // console.log(navParams.get('payment'));
-    // console.log(navParams.data.payment);
 
     if (this.fromWhere == 'signUp') {
       // TODO: retrieve the profilePhoto and CVs from
@@ -225,82 +221,84 @@ export class SmartieSearch {
           } else {
 
             return new Promise(async (resolve) => {
-              let API = await this.smartieApi.getApi(
+              return await this.dataService.getApi(
                 'fetchMarkers',
                 { profileId: profile.profileData.objectId, role: profile.profileData.role }
-              );
-              this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(Notifications => {
-                this.smartieApi.sanitizeNotifications(Notifications[0].result).then(notifications => {
-                  this.notifications = notifications;
-                  this.storage.get('phoneLatLng').then(phoneLatLng => {
-                    //console.log(phoneLatLng);
-                    if (phoneLatLng !== undefined && phoneLatLng !== null) {
-                      this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
-                    } else {
-                      this.latLngUser = profile.profileData.latlng;
-                      this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, this.extendBound);
-                    }
-
-                    //get all requested's
-                    this.body = {
-                      profileId: profile.profileData.objectId,
-                      role: profile.profileData.role
-                    };
-
-                    //resolve all promises and if notifyCount > 0 make alert present and push to notification page
-                    Promise.all([
-                      this.getAllRequesteds(),
-                      this.getAllAccepteds(),
-                      this.getAllUpcomings()
-                    ]).then(value => {
-                      if(this.hasUpcomings == true) {
-                        let title, subTitle;
-                        if (this.upcomingsCount == 1) {
-                          title = "You have an upcoming appointment!";
-                          subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
-                        } else {
-                          title = "You have upcoming appointments";
-                          subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
-                        }
-                        let alert = this.alertCtrl.create({
-                          title: title,
-                          subTitle: subTitle,
-                          buttons: [{
-                            text: 'OK',
-                            handler: () => {
-                              if(this.role !== 'teacher'){
-                                this.navCtrl.parent.select(2);
-                              }else{
-                                this.navCtrl.parent.select(3);
-                              }
-                            }
-                          }]
-                        });
-                        alert.present();
-                      } else if(this.notifyCount > 0) {
-                        let alert = this.alertCtrl.create({
-                          title: 'Wow, check it out!',
-                          subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
-                          buttons: [{
-                            text: 'OK',
-                            handler: () => {
-                              if(this.role !== 'teacher'){
-                                this.navCtrl.parent.select(2);
-                              }else{
-                                this.navCtrl.parent.select(3);
-                              }
-                            }
-                          }]
-                        });
-                        alert.present();
+              ).then(async API => {
+                return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
+                  return await this.dataService.sanitizeNotifications(Notifications[0].result).then(async notifications => {
+                    this.notifications = notifications;
+                    return await this.storage.get('phoneLatLng').then(async phoneLatLng => {
+                      //console.log(phoneLatLng);
+                      if (phoneLatLng !== undefined && phoneLatLng !== null) {
+                        this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
+                      } else {
+                        this.latLngUser = profile.profileData.latlng;
+                        this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, this.extendBound);
                       }
-                    })
-                  });
-                })
-              }, err => {
-                console.log(err.error.error);
-                this.smartieApi.showErrors(err);
+
+                      //get all requested's
+                      this.body = {
+                        profileId: profile.profileData.objectId,
+                        role: profile.profileData.role
+                      };
+
+                      //resolve all promises and if notifyCount > 0 make alert present and push to notification page
+                      Promise.all([
+                        this.getAllRequesteds(),
+                        this.getAllAccepteds(),
+                        this.getAllUpcomings()
+                      ]).then(value => {
+                        if(this.hasUpcomings == true) {
+                          let title, subTitle;
+                          if (this.upcomingsCount == 1) {
+                            title = "You have an upcoming appointment!";
+                            subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
+                          } else {
+                            title = "You have upcoming appointments";
+                            subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
+                          }
+                          let alert = this.alertCtrl.create({
+                            title: title,
+                            subTitle: subTitle,
+                            buttons: [{
+                              text: 'OK',
+                              handler: () => {
+                                if(this.role !== 'teacher'){
+                                  this.navCtrl.parent.select(2);
+                                }else{
+                                  this.navCtrl.parent.select(3);
+                                }
+                              }
+                            }]
+                          });
+                          alert.present();
+                        } else if(this.notifyCount > 0) {
+                          let alert = this.alertCtrl.create({
+                            title: 'Wow, check it out!',
+                            subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
+                            buttons: [{
+                              text: 'OK',
+                              handler: () => {
+                                if(this.role !== 'teacher'){
+                                  this.navCtrl.parent.select(2);
+                                }else{
+                                  this.navCtrl.parent.select(3);
+                                }
+                              }
+                            }]
+                          });
+                          alert.present();
+                        }
+                      })
+                    });
+                  })
+                }, err => {
+                  console.log(err.error.error);
+                  this.smartieErrHandler.showErrors(err);
+                });
               });
+
             });
           }
       });
@@ -312,56 +310,59 @@ export class SmartieSearch {
 
   getAllRequesteds(){
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'getAllRequesteds',
         this.body
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
-        this.notifyCount = '';
-        if(response[0].result.length > 0){
-          this.notifyCount = response[0].result.length;
-          this.storage.set("userAllRequesteds", response[0].result);
-        }
-        resolve('success');
-      }, err => {
-        console.log(err);
-      })
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
+          this.notifyCount = '';
+          if(response[0].result.length > 0){
+            this.notifyCount = response[0].result.length;
+            this.storage.set("userAllRequesteds", response[0].result);
+          }
+          resolve('success');
+        }, err => {
+          console.log(err);
+        })
+      });
     })
   }
 
   getAllAccepteds(){
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'getAllAccepteds',
         this.body
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-        if(response[0].result.length > 0){
-          this.notifyCount = this.notifyCount + response[0].result.length;
-          this.storage.set("userAllAccepteds", response[0].result);
-        }
-        resolve('success');
-      })
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          if(response[0].result.length > 0){
+            this.notifyCount = this.notifyCount + response[0].result.length;
+            this.storage.set("userAllAccepteds", response[0].result);
+          }
+          resolve('success');
+        })
+      });
     })
   }
 
   getAllUpcomings(){
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'getAllUpcomings',
         this.body
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-        if(response[0].result.length > 0){
-          this.hasUpcomings = true;
-          this.upcomingsCount = response[0].result.length;
-          this.notifyCount = this.notifyCount + response[0].result.length;
-          this.storage.set("userAllUpcomings", response[0].result);
-        }
-        resolve('success');
-      }, err => {
-        console.log(err);
-      })
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          if(response[0].result.length > 0){
+            this.hasUpcomings = true;
+            this.upcomingsCount = response[0].result.length;
+            this.notifyCount = this.notifyCount + response[0].result.length;
+            this.storage.set("userAllUpcomings", response[0].result);
+          }
+          resolve('success');
+        }, err => {
+          console.log(err);
+        })
+      });
     })
   }
 

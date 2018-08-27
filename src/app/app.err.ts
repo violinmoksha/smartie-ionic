@@ -1,6 +1,6 @@
 import { Pro } from '@ionic/pro';
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
-import { IonicErrorHandler } from 'ionic-angular';
+import { IonicErrorHandler, AlertController } from 'ionic-angular';
 
 export { ErrorHandler, IonicErrorHandler };
 
@@ -19,6 +19,7 @@ const IonicPro = Pro.init('51a6d7d8', {
 @Injectable()
 export class SmartieErrorHandler implements ErrorHandler {
   ionicErrorHandler: IonicErrorHandler;
+  alertCtrl: AlertController;
 
   constructor(injector: Injector) {
     try {
@@ -36,4 +37,17 @@ export class SmartieErrorHandler implements ErrorHandler {
     console.info('App handleError() triggered.');
     this.ionicErrorHandler && this.ionicErrorHandler.handleError(err);
   }
+
+  showErrors(err){
+    let alert;
+    if (err.error.error.name == 'JsonWebTokenError') {
+      alert = this.alertCtrl.create({
+        title: 'Authentication Error',
+        subTitle: 'You are not authorized to use this service',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+  }
+
 }

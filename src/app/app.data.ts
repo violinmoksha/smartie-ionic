@@ -126,4 +126,32 @@ export class DataService {
       });
     }
   }
+
+  sanitizeNotifications(notifications:any){
+    // TODO: when these are more than just jobReqs
+    return new Promise(resolve => {
+      let activeJobReqs = [];
+      notifications.map(notification => {
+        if (notification.requestSent == true || notification.acceptState == true) {
+          activeJobReqs.push(notification);
+        }
+      });
+      if (activeJobReqs.length > 0) {
+        for(let activeJob of activeJobReqs) {
+          notifications.forEach((notification, ix) => {
+            if (notification.teacherProfile.objectId == activeJob.teacherProfile.objectId &&
+                notification.otherProfile.objectId == activeJob.otherProfile.objectId &&
+                (notification.requestSent == false && notification.acceptState == false) ) {
+              notifications.splice(ix, 1);
+            }
+            if (ix >= notifications.length - 1) {
+              resolve(notifications);
+            }
+          });
+        }
+      } else {
+        resolve(notifications);
+      }
+    });
+  }
 }

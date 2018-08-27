@@ -61,7 +61,7 @@
     </div>
     <div class="jobprofile-buttons">
       <span *ngIf="!jobObject.hasUpcomings">
-        <button style="width:100%" class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
+        <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
       </span>
       <span *ngIf="jobObject.hasUpcomings">
         <button class="button button-positive" (click)="viewProfile()" ion-button full><i class="fa fa-user" aria-hidden="true"></i> <img src="./assets/imgs/job-profile-icon.png" /> View Job Profile</button>
@@ -71,7 +71,7 @@
         <button class="button button-positive" [disabled]="!jobObject.hasUpcomings" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
       </span>
       <span>
-        <button class="button button-positive" (click)="initChat()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Message</button>
+        <button style="float:right" class="button button-positive" (click)="initChat()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Message</button>
       </span>
     </div>
   </div>
