@@ -1,10 +1,9 @@
-import { FirebaseProvider } from './../../providers/firebase';
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController, MenuController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { Pro } from '@ionic/pro';
 import { AnalyticsProvider } from '../../providers/analytics';
 // import { URLSearchParams } from '@angular/http';
@@ -27,7 +26,7 @@ export class LoginPage {
     profile: { fullname: '' }
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private smartieApi: SmartieAPI, private firebase:FirebaseProvider,private loadingCtrl :LoadingController, private analytics : AnalyticsProvider,private menu: MenuController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private dataService: DataService, private loadingCtrl :LoadingController, private analytics : AnalyticsProvider,private menu: MenuController) {
 
 
     console.log("Login Page");
@@ -51,51 +50,54 @@ export class LoginPage {
     if(data.password !==''){
 
       return new Promise(async (resolve) => {
-        let API = await this.smartieApi.getApi(
+        return await this.dataService.getApi(
           'loginUser',
           {username: this.provisionData.user.username, password: data.password}
-        );
-
-        let loading = this.loadingCtrl.create({
-          content: 'Signing In....'
-        });
-        loading.present();
-        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(data => {
-          console.log(data);
-          loading.dismiss();
-          this.storage.set('UserProfile', data.data).then(UserProfile => {
-            this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: UserProfile.profileData.role, fromWhere: "login" });
-            /*console.log(UserProfile);
-            // TODO server-side fetchNotifications endpoint
-            // to return: all notifications including jobRequests
-            let API = this.smartieApi.getApi(
-              'fetchNotifications',
-              { profileId: UserProfile.profileData.objectId, role: UserProfile.profileData.role }
-            );
-
-            return new Promise(resolve => {
-              interface Response {
-                result: any
-              };
-              this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
-                this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
-                  this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch" });
-                  //this.navCtrl.push("SmartieSearch", { role: UserProfile.profileData.role, fromWhere: 'login', loggedProfileId: UserProfile.profileData.objectId, notifications: notifications });
-                })
-              }, err => {
-                console.log(err);
-              });
-            });*/
+        ).then(async API => {
+          let loading = this.loadingCtrl.create({
+            content: 'Signing In....'
           });
-          if(data){
-            this.firebase.updateFcmToken(null, true);
-          }
-        },
-        (err) => {
-          loading.dismiss();
-          Pro.monitoring.exception(err);
-          console.log(err);
-          this.loginFailed(err);
+          loading.present();
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async data => {
+            console.log(data);
+            loading.dismiss();
+            return await this.storage.set('UserProfile', data.data).then(async UserProfile => {
+              this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: UserProfile.profileData.role, fromWhere: "login" });
+
+              if(data){
+                // TODO: do this directly though the firebase dependency, not some wrapper
+                //this.firebase.updateFcmToken(null, true);
+              }
+
+              /*console.log(UserProfile);
+              // TODO server-side fetchNotifications endpoint
+              // to return: all notifications including jobRequests
+              let API = this.smartieApi.getApi(
+                'fetchNotifications',
+                { profileId: UserProfile.profileData.objectId, role: UserProfile.profileData.role }
+              );
+
+              return new Promise(resolve => {
+                interface Response {
+                  result: any
+                };
+                this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(Notifications => {
+                  this.smartieApi.sanitizeNotifications(Notifications.result).then(notifications => {
+                    this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch" });
+                    //this.navCtrl.push("SmartieSearch", { role: UserProfile.profileData.role, fromWhere: 'login', loggedProfileId: UserProfile.profileData.objectId, notifications: notifications });
+                  })
+                }, err => {
+                  console.log(err);
+                });
+              });*/
+            });
+          },
+          (err) => {
+            loading.dismiss();
+            Pro.monitoring.exception(err);
+            console.log(err);
+            this.loginFailed(err);
+          });
         });
       });
     }else{

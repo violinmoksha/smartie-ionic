@@ -1,7 +1,7 @@
 import { IonicPage } from 'ionic-angular';
 import { Component, NgZone } from '@angular/core';
 import { App, NavController, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 /**
@@ -32,7 +32,7 @@ export class JobRequestPage {
   timeZone: any;
   private appNavCtrl: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public smartieApi: SmartieAPI, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController, private ngZone: NgZone, public app: App, private analytics: AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public dataService: DataService, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController, private ngZone: NgZone, public app: App, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("JobRequest");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("JobRequest", "View"));
 
@@ -139,19 +139,20 @@ export class JobRequestPage {
       }
 
       return new Promise(async (resolve) => {
-        let API = await this.smartieApi.getApi(
+        return await this.dataService.getApi(
           'getRequestedJobRequest',
           this.body
-        );
-        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-          if (Object.keys(response).length > 0) {
-            this.requestSent = true;
-          } else {
-            this.requestSent = false;
-          }
-        }, err => {
-          console.log(err);
-        })
+        ).then(async API => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+            if (Object.keys(response.data.result).length > 0) {
+              this.requestSent = true;
+            } else {
+              this.requestSent = false;
+            }
+          }, err => {
+            console.log(err);
+          })
+        });
       })
     })
   }
@@ -200,15 +201,16 @@ export class JobRequestPage {
         console.log(this.body);
 
         return new Promise(async (resolve) => {
-          let API = await this.smartieApi.getApi(
+          return await this.dataService.getApi(
             'setJobRequest',
             this.body
-          );
-          this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-            this.requestSent = true;
-            this.viewCtrl.dismiss();
-            this.loading.dismiss();
-            this.submitInProgress = false;
+          ).then(async API => {
+            return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+              this.requestSent = true;
+              this.viewCtrl.dismiss();
+              this.loading.dismiss();
+              this.submitInProgress = false;
+            });
           });
         })
       }
@@ -251,19 +253,20 @@ export class JobRequestPage {
       console.log('sending ' + JSON.stringify(this.body));
 
       return new Promise(async (resolve) => {
-        let API = await this.smartieApi.getApi(
+        return await this.dataService.getApi(
           'setJobRequest',
           this.body
-        );
-        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-          this.acceptState = true;
-          this.viewCtrl.dismiss();
-          this.loading.dismiss();
-          this.submitInProgress = false;
+        ).then(async API => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+            this.acceptState = true;
+            this.viewCtrl.dismiss();
+            this.loading.dismiss();
+            this.submitInProgress = false;
 
-          if (this.userRole !== 'teacher') {
-            this.scheduleJob();
-          }
+            if (this.userRole !== 'teacher') {
+              this.scheduleJob();
+            }
+          });
         });
       })
 
@@ -284,14 +287,15 @@ export class JobRequestPage {
       }
 
       return new Promise(async (resolve) => {
-        let API = await this.smartieApi.getApi(
+        return await this.dataService.getApi(
           'setJobRequest',
           this.body
-        );
-        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-          this.viewCtrl.dismiss();
-          this.loading.dismiss();
-          this.submitInProgress = false;
+        ).then(async API => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+            this.viewCtrl.dismiss();
+            this.loading.dismiss();
+            this.submitInProgress = false;
+          });
         });
       })
 

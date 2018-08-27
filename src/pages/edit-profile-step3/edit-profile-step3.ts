@@ -2,12 +2,13 @@ import { IonicPage } from 'ionic-angular';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController, Slides, LoadingController } from 'ionic-angular';
 import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
-import { SmartieAPI } from '../../providers/api/smartie';
-// import { Parse } from 'parse';
-const Parse = require('parse');
+import { DataService } from '../../app/app.data';
 import { Storage } from '@ionic/storage';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { AnalyticsProvider } from '../../providers/analytics';
+
+import Parse from 'parse';
+
 /**
  * Generated class for the EditProfileStep3Page page.
  *
@@ -96,7 +97,7 @@ export class EditProfileStep3Page {
   //TODO post-<snip><snip> RE registration is: add back currency
   //In V2, but it must be done correctly next time with calculated pre-conversions
   //or maybe even plugged into an AI bot that knows the forex
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage,private analytics : AnalyticsProvider) {
     this.analytics.setScreenName("EditProfile_step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
 
@@ -325,17 +326,20 @@ export class EditProfileStep3Page {
     }
 
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'editUser',
         this.body
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-        console.log(response[0].result);
-        this.smartieApi.updateUserProfileStorage(response[0].result.profileData, response[0].result.specificUserData).then(profile => {
-          this.loading.dismiss();
-          this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole, fromWhere: "editProfile" });
-        });
-      })
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          console.log(response.data.result);
+
+          // TODO: must be re-done directly right here via this.storage not this wrapper function updateUserProfileStorage
+          //this.smartieApi.updateUserProfileStorage(response[0].result.profileData, response[0].result.specificUserData).then(profile => {
+            //this.loading.dismiss();
+            this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole, fromWhere: "editProfile" });
+          //});
+        })
+      });
     })
 
     /*return new Promise(resolve => {
@@ -427,7 +431,7 @@ export class EditProfileStep3Page {
         parseFile.save().then((file) => {
           let roledUserProfile = JSON.parse(localStorage.getItem(`${this.userRole}UserProfile`));
           let profileId = roledUserProfile.profile.objectId;
-          let profQuery = new Parse.Query(new Parse.Object.extend('Profile'));
+          let profQuery = new Parse.Query(Parse.Object.extend('Profile'));
 
           profQuery.get(profileId, {
             success: function(profile) {
@@ -447,7 +451,7 @@ export class EditProfileStep3Page {
 
   setTeacherCred(teacherId, cvFile){
     return new Promise((resolve, reject) => {
-      let teacherQuery = new Parse.Query(new Parse.Object.extend('Teacher'));
+      let teacherQuery = new Parse.Query(Parse.Object.extend('Teacher'));
       teacherQuery.get(teacherId, {
         success: function(teacher) {
           let Credential = Parse.Object.extend('Credential');

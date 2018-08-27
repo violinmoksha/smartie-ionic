@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 
 /**
  * Generated class for the AllAcceptedsPage page.
@@ -22,7 +22,7 @@ export class NotificationFeedPage {
   private userRole: any;
   private profileId: any;
 
-  constructor(public navCtrl: NavController, private smartieApi: SmartieAPI, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController, private analytics: AnalyticsProvider) {
+  constructor(public navCtrl: NavController, private dataService: DataService, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController, private analytics: AnalyticsProvider) {
 
     this.analytics.setScreenName("NotificationFeed");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("NotificationFeed", "View"));
@@ -50,47 +50,49 @@ export class NotificationFeedPage {
   }
 
   async fetchAllAcceptedReq(profileId, role) {
-    let API = await this.smartieApi.getApi(
+    return await this.dataService.getApi(
       'getAllAccepteds',
       { profileId: profileId, role: role }
-    );
-    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(jobReq => {
-      if (jobReq)
-        this.allAccepteds = jobReq[0].result;
-
-      console.log(jobReq);
-    }, (err) => {
-      console.log(err);
-    })
+    ).then(async API => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async jobReq => {
+        if (jobReq)
+          this.allAccepteds = jobReq.data.result; // jobReq[0], jobReq.data[0]???
+        console.log(jobReq);
+      }, (err) => {
+        console.log(err);
+      })
+    });
   }
 
   async fetchAllRequested(profileId, role) {
-    let API = await this.smartieApi.getApi(
+    return await this.dataService.getApi(
       'getAllRequesteds',
       { profileId: profileId, role: role }
-    );
-    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(jobReq => {
-      if (jobReq)
-        this.allRequesteds = jobReq[0].result;
-      console.log(jobReq);
-    }, (err) => {
-      console.log(err);
-    })
+    ).then(async API => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async jobReq => {
+        if (jobReq)
+          this.allRequesteds = jobReq[0].result; // ???
+        console.log(jobReq);
+      }, (err) => {
+        console.log(err);
+      })
+    });
   }
 
   async fetchAllUpcomingsReq(profileId, role) {
-    let API = await this.smartieApi.getApi(
+    return await this.dataService.getApi(
       'getAllUpcomings',
       { profileId: profileId, role: role }
-    );
-    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(jobReq => {
-      if (jobReq)
-        this.allUpcomings = jobReq[0].result;
+    ).then(async API => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async jobReq => {
+        if (jobReq)
+          this.allUpcomings = jobReq[0].result; // ????
 
-      console.log(jobReq);
-    }, (err) => {
-      console.log(err);
-    })
+        console.log(jobReq);
+      }, (err) => {
+        console.log(err);
+      })
+    });
   }
 
   toTimeZone(apptDate) {

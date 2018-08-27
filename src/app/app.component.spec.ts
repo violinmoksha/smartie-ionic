@@ -12,9 +12,6 @@ import { Device } from '@ionic-native/device';
 import { HTTP } from '@ionic-native/http';
 import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
 
-//import { SmartieAPI } from '../providers/api/smartie';
-//import { FirebaseProvider } from '../providers/firebase';
-
 import { PlatformMock } from '../mocks/platform';
 import { StatusBarMock } from '../mocks/status-bar';
 import { SplashScreenMock } from '../mocks/splash-screen';
@@ -25,10 +22,6 @@ import { HTTPMock } from '../mocks/http';
 import { SecureStorageMock, SecureStorageObjectMock } from '../mocks/secure-storage';
 
 import { DataService } from './app.data';
-
-//import { SmartieAPIMock } from '../mocks/providers/api/smartie';
-
-//import { FirebaseProviderMock } from '../mocks/providers/firebase';
 
 import { SmartieApp } from './app.component';
 

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 // import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 // import { Response } from '@angular/http';
@@ -32,7 +32,7 @@ export class AddPaymentPage {
   private fromWhere: any;
   private authenticationCode: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser,private analytics : AnalyticsProvider) {
     this.analytics.setScreenName("AddPayment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("AddPayment", "View"));
 
@@ -41,7 +41,7 @@ export class AddPaymentPage {
       emailPayment: new FormControl('', Validators.required),
       emailConfirm: new FormControl('yes'),
     });
-    this.smartieApi.http.get('https://icanhazip.com', { responseType: 'text' }, {}).then(res => {
+    this.dataService.http.get('https://icanhazip.com', { responseType: 'text' }, {}).then(res => {
       this.userIP = res.data.replace(/\s/g, "");
       console.log(`IP ADDRESS: ${this.userIP}`);
     })
@@ -120,7 +120,7 @@ export class AddPaymentPage {
       const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_self', options);
 
       browser.on('loadstop').subscribe(event => {
-        this.authenticationCode = this.smartieApi.getParameterByName('code', event.url);
+        this.authenticationCode = this.dataService.getParameterByName('code', event.url);
 
         if (this.authenticationCode) {
           browser.close();
@@ -143,18 +143,20 @@ export class AddPaymentPage {
     loading.present();
 
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         endPoint,
         body
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-        console.log(response[0].result);
-        this.smartieApi.updateUserProfileStorage(response[0].result).then(profile => {
-          loading.dismiss();
-          this.navCtrl.push('NotificationFeedPage', { stripeAccount: response[0].result });
-        })
-      }, err => {
-        console.log(err);
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          console.log(response.data.result);
+          // TODO: here again this needs to be done directly rght here, no additional provider wrapper needed!!
+          //this.smartieApi.updateUserProfileStorage(response[0].result).then(profile => {
+            //loading.dismiss();
+            this.navCtrl.push('NotificationFeedPage', { stripeAccount: response[0].result });
+          //})
+        }, err => {
+          console.log(err);
+        });
       });
     })
   }

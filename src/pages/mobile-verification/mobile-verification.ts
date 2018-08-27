@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage,Platform, NavController, NavParams,LoadingController } from 'ionic-angular';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
 import { FormBuilder, FormGroup,Validators } from '@angular/forms';
@@ -22,7 +22,7 @@ export class MobileVerificationPage {
   role: string;
   phoneNumber = '';
   mobileVerification: FormGroup;
-  constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, private device: Device, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private storage: Storage,private formBuilder: FormBuilder,private analytics : AnalyticsProvider) {
+  constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, private device: Device, private dataService: DataService, private loadingCtrl: LoadingController, private storage: Storage,private formBuilder: FormBuilder,private analytics : AnalyticsProvider) {
     this.role = navParams.get('role');
 
     console.log(this.device);
@@ -46,7 +46,7 @@ export class MobileVerificationPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("MobileVerification", "Clicked_MobileVerifyButton"));
 
     // encrypt UUID
-    this.smartieApi.getBeyondGDPR(true, {"plaintext":this.device.uuid}).then(cryptUUID => {
+    this.dataService.getBeyondGDPR(true, {"plaintext":this.device.uuid}).then(cryptUUID => {
       let deviceUUID;
       if (cryptUUID) {
         deviceUUID = cryptUUID;
@@ -66,19 +66,20 @@ export class MobileVerificationPage {
 
       return new Promise(async (resolve) => {
         loading.present();
-        let API = await this.smartieApi.getApi(
+        return await this.dataService.getApi(
           'setUserProvision',
           params
-        );
-        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(data=>{
-          loading.dismiss();
-          this.storage.set("Provision", data[0].result);
-          this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
-        },e=>{
-          loading.dismiss();
-          console.log(e);
-          console.log("coming here provision error");
-        })
+        ).then(async API => {
+          this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response=>{
+            loading.dismiss();
+            this.storage.set("Provision", response.data.result);
+            this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
+          },e=>{
+            loading.dismiss();
+            console.log(e);
+            console.log("coming here provision error");
+          })
+        });
       });
     });
   }
