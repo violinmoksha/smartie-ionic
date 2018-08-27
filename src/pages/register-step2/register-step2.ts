@@ -6,9 +6,9 @@ import { Camera } from '@ionic-native/camera';
 // import { Crop } from '@ionic-native/crop';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
-import { DbserviceProvider } from '../../providers/dbservice';
-import { SmartieAPI } from '../../providers/api/smartie';
-import { Address } from '../../providers/data-model';
+import { DataService } from '../../app/app.data';
+
+import { Geoposition } from '@ionic-native/geolocation';
 
 declare let google;
 /**
@@ -71,7 +71,7 @@ export class RegisterStep2Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics : AnalyticsProvider, private smartieApi: SmartieAPI, private device: Device, private alertCtrl: AlertController,  private dbService:DbserviceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics : AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController) {
     this.analytics.setScreenName("Register-step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
 
@@ -103,11 +103,12 @@ export class RegisterStep2Page {
 
       //Checking Device location
       this.storage.get('phoneGeoposition').then(phoneGeoposition => {
-        this.getGeoPlace(phoneGeoposition).then((address: Address) => {
-          if(address.country == 'US'){
-            this.Step2Form.controls['prefLocation'].disable()
-            this.userLocation = address.formattedAddress;
-          }
+        this.getGeoPlace(phoneGeoposition).then((address: Geoposition) => {
+          // TODO: deal with Geoposition now as defined in Test geolocation mock, not Address
+          //if(address.coords. == 'US'){
+            //this.Step2Form.controls['prefLocation'].disable()
+            //this.userLocation = address.formattedAddress;
+          //}
         })
       })
 
@@ -256,14 +257,16 @@ export class RegisterStep2Page {
   }
 
   updateUserToProvision = async (userId, userProfileId) => {
-    let API = await this.smartieApi.getApi(
+    return await this.dataService.getApi(
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
-    );
-    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-      this.smartieApi.updateProvisionStorage(response[0].result);
-    }, err => {
-      console.log(err);
+    ).then(async API => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+        // TODO: needs to happen right here directly into storage
+        //return await this.data.updateProvisionStorage(response[0].result);
+      }, err => {
+        console.log(err);
+      });
     });
   }
 
@@ -280,53 +283,53 @@ export class RegisterStep2Page {
       this.userInfo.prefPayRate = this.hourlyRate;
 
       return new Promise(async (resolve) => {
-        let API = await this.smartieApi.getApi(
+        return await this.dataService.getApi(
           'signUpRole',
           {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo)}
-        );
-        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(signupResult => {
-          this.updateUserToProvision(signupResult[0].result.userData.objectId, signupResult[0].result.profileData.objectId);
+        ).then(async API => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async signupResult => {
+            // TODO do this directly right here using this.storage instead
+            //this.updateUserToProvision(signupResult[0].result.userData.objectId, signupResult[0].result.profileData.objectId);
 
-          this.storage.set("UserProfile", signupResult[0].result).then(() => {
-            return new Promise(async (resolve) => {
-              let API = await this.smartieApi.getApi(
-                'fetchMarkers',
-                { profileId: signupResult[0].result.profileData.objectId, role: this.role }
-              );
-
-              interface Response {
-                result: any
-              };
-              this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(Notifications => {
-                this.smartieApi.sanitizeNotifications(Notifications[0].result).then(notifications => {
-                  this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
-                  //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
-                })
-              }, err => {
-                console.log(err);
+            this.storage.set("UserProfile", signupResult[0].result).then(() => {
+              return new Promise(async (resolve) => {
+                return await this.dataService.getApi(
+                  'fetchMarkers',
+                  { profileId: signupResult[0].result.profileData.objectId, role: this.role }
+                ).then(async API => {
+                  return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
+                    return await this.dataService.sanitizeNotifications(Notifications[0].result).then(async notifications => {
+                      this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
+                      //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
+                    })
+                  }, err => {
+                    console.log(err);
+                    // TODO: hm shud this return, find out in Unit tests
+                  });
+                });
               });
+            })
+          }, err => {
+            let alert = this.alertCtrl.create({
+              title: 'Signup Failed!',
+              subTitle: JSON.stringify(err),
+              buttons: ['OK']
             });
+            alert.present();
           })
-        }, err => {
-          let alert = this.alertCtrl.create({
-            title: 'Signup Failed!',
-            subTitle: JSON.stringify(err),
-            buttons: ['OK']
-          });
-          alert.present();
-        })
+        });
       })
     }else{
       this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
     }
     this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
-    this.dbService.getRegistrationData().then((res)=>{
-      if(res){
-        res[0].step = 2;
-        res[0].form2Values = form2Values;
-        this.dbService.setRegistrationData(res);
+    this.storage.get('Registration').then(registration => {
+      if(registration){
+        registration[0].step = 2;
+        registration[0].form2Values = form2Values;
+        this.storage.set('Registration', registration);
       }else{
-        this.dbService.setRegistrationData({ form1Values : this.form1Values, form2Values : form2Values, role: this.role });
+        this.storage.set('Registration', { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
       }
     })
   }
@@ -353,14 +356,15 @@ export class RegisterStep2Page {
 
       geocoder.geocode({ location: latLng }, function (results, status) {
         console.log(results);
-        let address: Address;
+        let address: Geolocation;
         for (let ac = 0; ac < results[0].address_components.length; ac++) {
           let component = results[0].address_components[ac];
 
           switch (component.types[0]) {
             case 'country':
-              address.country = component.short_name;
-              address.formattedAddress = results[0].formatted_address;
+             // TODO: cleanup related to Geolocation being passed around properly now
+              //address.country = component.short_name;
+              //address.formattedAddress = results[0].formatted_address;
               resolve(address);
               break;
           }

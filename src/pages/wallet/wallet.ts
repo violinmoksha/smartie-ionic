@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the WalletPage page.
@@ -23,7 +23,7 @@ export class WalletPage {
   pendingBalance: any = 0;
   profileData: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private analytics : AnalyticsProvider, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private analytics : AnalyticsProvider, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController) {
     this.analytics.setScreenName("Wallet");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Wallet", "View"));
 
@@ -38,22 +38,20 @@ export class WalletPage {
       loading.present();
 
       return new Promise(async (resolve) => {
-        let API = await this.smartieApi.getApi(
+        return await this.dataService.getApi(
           'getTeacherAvailableBalance',
           { stripeAccountId: this.stripeCustomer.stripe_user_id, profileId: profile.profileData.objectId }
-        );
-        interface Response {
-          result: any;
-        };
-        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
-          loading.dismiss();
-          console.log(response[0].result);
-          this.availableBalance = response[0].result.available[0].amount / 100;
-          this.pendingBalance = response[0].result.pending[0].amount / 100;
-        }, err => {
-          loading.dismiss();
-          console.log(err.error.error.message);
-        })
+        ).then(async API => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
+            loading.dismiss();
+            console.log(response[0].result);
+            this.availableBalance = response[0].result.available[0].amount / 100;
+            this.pendingBalance = response[0].result.pending[0].amount / 100;
+          }, err => {
+            loading.dismiss();
+            console.log(err.error.error.message);
+          })
+        });
       });
     })
   }
@@ -69,17 +67,18 @@ export class WalletPage {
     loading.present();
 
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'createInstantPayouts',
         { stripeAccountId: this.stripeCustomer.stripe_user_id, amount: this.availableBalance * 100, profileId: this.profileData.objectId }
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
-        loading.dismiss();
-          console.log(response[0].result);
-      }, err => {
-        loading.dismiss();
-        console.log(err.error.error);
-      })
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
+          loading.dismiss();
+            console.log(response[0].result);
+        }, err => {
+          loading.dismiss();
+          console.log(err.error.error);
+        })
+      });
     });
   }
 }

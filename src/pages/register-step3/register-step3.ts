@@ -1,10 +1,9 @@
-import { DbserviceProvider } from './../../providers/dbservice';
 import { CameraServiceProvider } from './../../providers/camera-service';
 import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Slides, ModalController, LoadingController  } from 'ionic-angular';
 import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
@@ -94,7 +93,7 @@ export class RegisterStep3Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device,private analytics : AnalyticsProvider,private cameraService : CameraServiceProvider, private dbService:DbserviceProvider ) {    // this.submitInProgress = false;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device,private analytics : AnalyticsProvider,private cameraService : CameraServiceProvider ) {    // this.submitInProgress = false;
 
     this.analytics.setScreenName("Register-step3");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step3", "View"));
@@ -289,18 +288,18 @@ export class RegisterStep3Page {
 
   updateUserToProvision = async (userId, userProfileId) => {
 
-    let API = await this.smartieApi.getApi(
+    return await this.dataService.getApi(
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
-    );
-
-
-    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-      console.log("Getting updated provision");
-      console.log(response);
-      this.smartieApi.updateProvisionStorage(response[0].result);
-    }, err => {
-      console.log(err);
+    ).then(async API => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+        console.log("Getting updated provision");
+        console.log(response);
+        // TODO: do this directly in storage now
+        //this.dataService.updateProvisionStorage(response[0].result);
+      }, err => {
+        console.log(err);
+      });
     });
   }
 
@@ -335,44 +334,49 @@ export class RegisterStep3Page {
 
 
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'signUpRole',
         {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(this.form2Values), userInfo: JSON.stringify(form3Values)}
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(
-        signupResult => {
-          console.log(signupResult);
-          this.updateUserToProvision(signupResult[0].result.userData.objectId, signupResult[0].result.profileData.objectId);
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(
+          async signupResult => {
+            console.log(signupResult);
+            // TODO: do this via storage now
+            //this.updateUserToProvision(signupResult[0].result.userData.objectId, signupResult[0].result.profileData.objectId);
 
-          this.storage.set("UserProfile", signupResult[0].result).then(() => {
-            return new Promise(async (resolve) => {
-              let API = await this.smartieApi.getApi(
-                'fetchMarkers',
-                { profileId: signupResult[0].result.profileData.objectId, role: this.role }
-              );
-              this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(Notifications => {
-                this.loading.dismiss();
-                this.smartieApi.sanitizeNotifications(Notifications[0].result).then(notifications => {
-                  this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
-                  //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
-                  this.dbService.setRegistrationData({step:3, role: this.role, form3: form3Values})
-                })
-              }, err => {
-                console.log(err);
+            return await this.storage.set("UserProfile", signupResult[0].result).then(async () => {
+              return await new Promise(async (resolve) => {
+                return await this.dataService.getApi(
+                  'fetchMarkers',
+                  { profileId: signupResult[0].result.profileData.objectId, role: this.role }
+                ).then(async API => {
+                  return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
+                    this.loading.dismiss();
+                    return await this.dataService.sanitizeNotifications(Notifications[0].result).then(notifications => {
+                      this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
+                      //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
+                      // TODO: do this via storage now
+                      //this.dbService.setRegistrationData({step:3, role: this.role, form3: form3Values})
+                    })
+                  }, err => {
+                    console.log(err);
+                  });
+                });
+
               });
             });
-          });
-        },
-        err => {
-          let alert = this.alertCtrl.create({
-            title: 'Signup Failed!',
-            subTitle: JSON.stringify(err),
-            buttons: ['OK']
-          });
-          this.loading.dismiss();
-          alert.present();
-        }
-      )
+          },
+          err => {
+            let alert = this.alertCtrl.create({
+              title: 'Signup Failed!',
+              subTitle: JSON.stringify(err),
+              buttons: ['OK']
+            });
+            this.loading.dismiss();
+            alert.present();
+          }
+        )
+      });
     });
 
   }

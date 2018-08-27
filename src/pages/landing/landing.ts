@@ -1,4 +1,3 @@
-import { DbserviceProvider } from './../../providers/dbservice';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AnalyticsProvider } from '../../providers/analytics';
@@ -17,7 +16,7 @@ import { AnalyticsProvider } from '../../providers/analytics';
 })
 export class LandingPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private analytics : AnalyticsProvider, private dbService:DbserviceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private analytics : AnalyticsProvider) {
     this.analytics.setScreenName("Landing");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Landing", "View"));
 
@@ -33,7 +32,8 @@ export class LandingPage {
 
   pushMobVerify(role){
     this.navCtrl.push("MobileVerificationPage", { role: role });
-    this.dbService.setRegistrationData({ step:0, role:role})
+    // TODO: redo this using plain ol storage
+    //this.dbService.setRegistrationData({ step:0, role:role})
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Landing", role+"_selected"));
   }
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the ReviewsPage page.
@@ -25,7 +25,7 @@ export class ReviewsPage {
   profilePhoto: any;
   reviews: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics: AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public dataService: DataService, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("Reviews");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Reviews", "View"));
 
@@ -47,42 +47,40 @@ export class ReviewsPage {
     console.log(this.reviewedProfileId);
 
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'getReviews',
         { reviewedProfileId: this.reviewedProfileId }
-      );
-      interface Response {
-        result: any
-      }
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-        console.log(response[0].result);
-        let userReviews = response[0].result;
-        this.reviewCount = userReviews.reviews.length;
-        this.profileData = userReviews.reviewedProfile;
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          console.log(response[0].result); /// ???
+          let userReviews = response[0].result;
+          this.reviewCount = userReviews.reviews.length;
+          this.profileData = userReviews.reviewedProfile;
 
-        for (let review of userReviews.reviews) {
-          this.getReviewingProfileData(review);
-        }
+          for (let review of userReviews.reviews) {
+            this.getReviewingProfileData(review);
+          }
 
-      })
+        })
+      });
     })
   }
 
-  getReviewingProfileData(review) {
+  async getReviewingProfileData(review) {
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await await this.dataService.getApi(
         'getReviewingProfile',
         { reviewingProfileId: review.reviewingProfileId }
-      );
-      return this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-        if (response[0].result.reviewingProfile.profilePhoto) {
-          this.profilePhoto = response[0].result.reviewingProfile.profilePhoto.url;
-        } else {
-          this.profilePhoto = "./assets/img/user-round-icon.png";
-        }
-        this.reviews.push({ 'fullname': response[0].result.reviewingProfile.fullname, 'role': response[0].result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
-      })
-
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          if (response[0].result.reviewingProfile.profilePhoto) { /// ???
+            this.profilePhoto = response[0].result.reviewingProfile.profilePhoto.url;
+          } else {
+            this.profilePhoto = "./assets/img/user-round-icon.png";
+          }
+          this.reviews.push({ 'fullname': response[0].result.reviewingProfile.fullname, 'role': response[0].result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
+        })
+      });
     })
   }
 

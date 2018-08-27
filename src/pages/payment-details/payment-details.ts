@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 import { AnalyticsProvider } from '../../providers/analytics';
 /**
@@ -23,7 +23,7 @@ export class PaymentDetailsPage {
   private registeredWithStripe: boolean = false;
   private stripeCustomerId: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser,private analytics : AnalyticsProvider) {
     this.analytics.setScreenName("PaymentDetails");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("PaymentDetails", "View"));
   }
@@ -51,34 +51,37 @@ export class PaymentDetailsPage {
     loading.present();
 
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'createStripeLoginLink',
         { stripeAccountId: this.stripeCustomerId }
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-        if(response[0].result.url){
-          loading.dismiss();
-          const options: ThemeableBrowserOptions = {
-            toolbar: {
-              height: 44,
-              color: '#00BA63'
-            },
-            title: {
-              color: '#ffffff',
-              showPageTitle: true,
-              staticText: "Payment Details"
-            },
-            backButtonCanClose: true
-          }
-          // const browser = this.iab.create(response.result.url, '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
-          const browser: ThemeableBrowserObject = this.themeableBrowser.create(response[0].result.url, '_self', options);
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          if(response[0].result.url){ // ??? NB: everything is usually response.data.result now FYI using @ionic-native/http
+            loading.dismiss();
+            const options: ThemeableBrowserOptions = {
+              toolbar: {
+                height: 44,
+                color: '#00BA63'
+              },
+              title: {
+                color: '#ffffff',
+                showPageTitle: true,
+                staticText: "Payment Details"
+              },
+              backButtonCanClose: true
+            }
+            // const browser = this.iab.create(response.result.url, '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
+            const browser: ThemeableBrowserObject = this.themeableBrowser.create(response[0].result.url, '_self', options);
 
-          /* browser.on('loadstop').subscribe(event => {
-            console.log(event);
-          }); */
-        }
-      }, err => {
-        console.log(err);
+            /* browser.on('loadstop').subscribe(event => {
+              console.log(event);
+            }); */
+          }
+          // may need to return here for Tests???
+        }, err => {
+          console.log(err);
+          return err;
+        });
       });
     })
 

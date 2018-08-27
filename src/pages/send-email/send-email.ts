@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the SendEmailPage page.
@@ -26,7 +26,7 @@ export class SendEmailPage {
   messageIsValid: boolean = false;
   private senderName: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,public storage: Storage, public smartieApi: SmartieAPI) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,public storage: Storage, public dataService: DataService) {
     this.analytics.setScreenName("SendEmail");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("SendEmail", "View"));
 
@@ -57,15 +57,16 @@ export class SendEmailPage {
   sendEmail(){
 
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'sendEmail',
         { recipientProfileId: this.recipientProfileId, senderRole: this.role, senderName: this.senderName, recipientName: this.recipientName, subject: this.subject, message: this.message }
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
-        this.navCtrl.parent.select(0);
-      }, err => {
-        console.log(err);
-      })
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
+          this.navCtrl.parent.select(0);
+        }, err => {
+          console.log(err);
+        })
+      });
     });
   }
 

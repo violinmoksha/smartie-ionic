@@ -1,11 +1,10 @@
-import { CameraServiceProvider } from './../../providers/camera-service';
+import { CameraServiceProvider } from '../../providers/camera-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { Storage } from '@ionic/storage';
 import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn, } from '@angular/forms';
 import { AnalyticsProvider } from '../../providers/analytics';
-import { DbserviceProvider } from '../../providers/dbservice';
 import { FileUploaderProvider } from '../../providers/file-uploader';
 
 /**
@@ -34,11 +33,11 @@ export class FeedbackPage {
 
   public userScreenshotsView: Array<any> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public smartieApi: SmartieAPI, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private dbService: DbserviceProvider, private fileUploader: FileUploaderProvider, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public dataService: DataService, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
     this.analytics.setScreenName("Feedback");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Feedback", "View"));
     //this.profileData = navParams.get("profileData");
-    this.dbService.getUser().then(user => {
+    this.storage.get('UserProfile').then(user => {
       if (user) {
         this.profileData = user.profileData;
         this.userData = user.userData;
@@ -121,25 +120,28 @@ export class FeedbackPage {
   }
 
   async setFeedbackApi(params) {
-    let API = await this.smartieApi.getApi(
+    return await this.dataService.getApi(
       'setFeedback',
       params
-    );
-    this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(res => {
-      this.loading.dismiss();
-      let alert = this.alertCtrl.create({
-        title: 'Thanks!',
-        subTitle: `Successfully submitted your feedback.`,
-        buttons: [{
-          text: 'OK',
-          handler: () => {
-            this.navCtrl.pop();
-          }
-        }]
+    ).then(async API => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async res => {
+        this.loading.dismiss();
+        let alert = this.alertCtrl.create({
+          title: 'Thanks!',
+          subTitle: `Successfully submitted your feedback.`,
+          buttons: [{
+            text: 'OK',
+            handler: () => {
+              this.navCtrl.pop();
+            }
+          }]
+        });
+        alert.present();
+        return res;
+      }, err => {
+        this.loading.dismiss();
+        return err;
       });
-      alert.present();
-    }, err => {
-      this.loading.dismiss();
     });
   }
 

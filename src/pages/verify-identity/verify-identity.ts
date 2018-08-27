@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the VerifyIdentityPage page.
@@ -26,7 +26,7 @@ export class VerifyIdentityPage {
   private profilePhoto: any;
   private profileId: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,private storage: Storage, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.analytics.setScreenName("VerifyIdentity");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("VerifyIdentity", "View"));
 
@@ -74,23 +74,22 @@ export class VerifyIdentityPage {
     };
 
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'verifyTeacherIdentity',
         this.body
-      );
-      interface Response {
-        result: any;
-      };
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-        this.smartieApi.updateUserProfileStorage(response[0].result).then(profile => {
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+          // TODO redo this as plain ol this.storage
+          //return await this.dataService.updateUserProfileStorage(response[0].result).then(profile => {
+            //loading.dismiss();
+            this.navCtrl.push("AddBankAccountPage", { stripeAccount: response[0].result });
+          //});
+        }, err => {
           loading.dismiss();
-          this.navCtrl.push("AddBankAccountPage", { stripeAccount: response[0].result });
-        });
-      }, err => {
-        loading.dismiss();
-        console.log(err.error.error.message);
-        this.verifyIdentityError(err.error.error.message);
-      })
+          console.log(err.error.error.message);
+          this.verifyIdentityError(err.error.error.message);
+        })
+      });
     });
   }
 

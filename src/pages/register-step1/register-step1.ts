@@ -1,8 +1,8 @@
-import { DbserviceProvider } from './../../providers/dbservice';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { AbstractControl, Validators, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
 
 /**
@@ -24,7 +24,7 @@ export class RegisterStep1Page {
   private Step1Form: FormGroup;
   private notNewEmail: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private smartieApi: SmartieAPI, private loadingCtrl: LoadingController,private analytics : AnalyticsProvider, private dbService:DbserviceProvider ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private loadingCtrl: LoadingController,private analytics : AnalyticsProvider, public storage: Storage) {
     this.role = navParams.get('role');
 
     this.Step1Form = new FormGroup({
@@ -63,30 +63,35 @@ export class RegisterStep1Page {
     delete formParams.confPassword;
 
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'isNewEmail',
         { email: form1Value.email }
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(
-        isNewEmail => {
-          loading.dismiss();
-          if (isNewEmail[0].result == true) {
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(
+          async isNewEmail => {
+            loading.dismiss();
+            if (isNewEmail[0].result == true) {
 
-            this.navCtrl.push("RegisterStep2Page", { form1Values : formParams, role: this.role });
-            this.dbService.getRegistrationData().then((res)=>{
-              if(res){
-                res[0].step = 1;
-                res[0].form1Values = formParams;
-                this.dbService.setRegistrationData(res);
-              }else{
-                this.dbService.setRegistrationData({ step:1, form1Values : formParams, role: this.role });
-              }
-            })
-          } else {
-            this.notNewEmail = true;
+              this.navCtrl.push("RegisterStep2Page", { form1Values : formParams, role: this.role });
+              return await this.storage.get('Registration').then(async registration=>{
+                if(registration){
+                  registration[0].step = 1;
+                  registration[0].form1Values = formParams;
+                  this.storage.set('Registration', registration);
+                  return await registration;
+                }else{
+                  return await this.storage.set('Registration', { step:1, form1Values : formParams, role: this.role }).then(async () => {
+                    return await { step:1, form1Values : formParams, role: this.role };
+                  });
+                }
+              })
+            } else {
+              this.notNewEmail = true;
+              return false;
+            }
           }
-        }
-      );
+        );
+      });
     });
 
   }

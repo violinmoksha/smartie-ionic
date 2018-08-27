@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the PaymentPage page.
@@ -34,7 +34,7 @@ export class PaymentPage {
   // private apptEndTime: any;
   private loading: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("Payment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Payment", "View"));
 
@@ -103,18 +103,18 @@ export class PaymentPage {
       console.log(cardValue);
 
       return new Promise(async (resolve) => {
-        let API = await this.smartieApi.getApi(
+        return await this.dataService.getApi(
           'createCardToken',
           { cardValue: cardValue, customerId: this.stripeCustomer, otherProfileId: this.otherProfileId }
-        );
-        interface Response {
-          result: any;
-        };
-        this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-          this.createTransaction(amount);
-        }, err => {
-          console.log(err);
-        })
+        ).then(async API => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+            this.createTransaction(amount);
+            return response;
+          }, err => {
+            console.log(err);
+            return err;
+          })
+        });
       })
     } else {
       this.createTransaction(amount);
@@ -141,16 +141,19 @@ export class PaymentPage {
       // endTime: this.apptEndTime
     };
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'createTransaction',
         this.body
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-        this.loading.dismiss();
-        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment' });
-      }, err => {
-        console.log(err);
-      })
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          this.loading.dismiss();
+          this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment' });
+          return response;
+        }, err => {
+          console.log(err);
+          return err;
+        })
+      });
     })
   }
 

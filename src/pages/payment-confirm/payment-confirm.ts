@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
-import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the PaymentConfirmPage page.
@@ -29,7 +29,7 @@ export class PaymentConfirmPage {
   showArrow: boolean = true;
   duration: number = 3000;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private smartieApi: SmartieAPI,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private analytics : AnalyticsProvider) {
     this.analytics.setScreenName("PaymentConfirm");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("PaymentConfirm", "View"));
 
@@ -65,15 +65,18 @@ export class PaymentConfirmPage {
     };
 
     return new Promise(async (resolve) => {
-      let API = await this.smartieApi.getApi(
+      return await this.dataService.getApi(
         'createTransaction',
         this.body
-      );
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-        this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
-      }, err => {
-        console.log(err);
-      })
+      ).then(async API => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
+          return response;
+        }, err => {
+          console.log(err);
+          return err;
+        })
+      });
     })
     // this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
   }
