@@ -65,7 +65,6 @@ import { DataService } from './app.data';
     Camera,
     ImagePicker,
     Push,
-    //IonicErrorHandler,
     Globalization,
     InAppBrowser,
     ThemeableBrowser,
@@ -73,15 +72,15 @@ import { DataService } from './app.data';
     Device,
     AnalyticsProvider,
     ContactPatterns,
-    //CameraServiceProvider,
-    //ChatProvider,
-    //FileUploaderProvider,
     SecureStorage,
-    SecureStorageObject,
     FileTransfer,
     Constants,
     HTTP,
-    DataService
+    DataService,
+    //CameraServiceProvider,
+    //ChatProvider,
+    //FileUploaderProvider,
+    //IonicErrorHandler,
   ]
 })
 export class AppModule {}
