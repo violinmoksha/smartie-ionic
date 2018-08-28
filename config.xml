@@ -122,7 +122,6 @@
     <preference name="SplashScreen" value="screen" />
     <plugin name="cordova-plugin-secure-storage" spec="^2.6.8" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
-    <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.5" />
-    <plugin name="cordova-plugin-advanced-http" spec="^1.11.1" />
+    <engine name="android" spec="7.0.0" />
 </widget>
