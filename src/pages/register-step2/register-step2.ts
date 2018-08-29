@@ -1,5 +1,5 @@
 import { Device } from '@ionic-native/device';
-import { Component, ViewChild, ResolvedReflectiveFactory } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, Slides, LoadingController, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
@@ -248,7 +248,8 @@ export class RegisterStep2Page {
 
   // Method executed when the slides are changed
   public rateChanged(): void {
-    let currentIndex = this.hourRate.getActiveIndex();
+    // TODO: never used!
+    //let currentIndex = this.hourRate.getActiveIndex();
   }
 
   public filterRate(rate: number): void {

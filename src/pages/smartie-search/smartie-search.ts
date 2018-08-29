@@ -485,7 +485,6 @@ export class SmartieSearch {
   }
 
   initJobRequestPopUp(locationData){
-    let params;
       if (this.role !== 'teacher') {
         locationData.role = locationData.teacherProfile.role;
 

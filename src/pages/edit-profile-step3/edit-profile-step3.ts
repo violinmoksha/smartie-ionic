@@ -1,6 +1,6 @@
 import { IonicPage } from 'ionic-angular';
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, AlertController, ModalController, Slides, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, Slides, LoadingController } from 'ionic-angular';
 import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { DataService } from '../../app/app.data';
 import { Storage } from '@ionic/storage';
@@ -97,7 +97,7 @@ export class EditProfileStep3Page {
   //TODO post-<snip><snip> RE registration is: add back currency
   //In V2, but it must be done correctly next time with calculated pre-conversions
   //or maybe even plugged into an AI bot that knows the forex
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage,private analytics : AnalyticsProvider) {
     this.analytics.setScreenName("EditProfile_step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
 

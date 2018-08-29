@@ -23,9 +23,7 @@ export class ChatPage {
   public role: any;
   private newmessage: any;
   private allmessages: any = [];
-  private photoURL: string = './assets/imgs/user-img-teacher.png';
   public chatAccess: boolean = true;
-  private infiniteEvent: any;
   studentProfileId: any;
   teacherProfileId: any;
   chatMessages = [];

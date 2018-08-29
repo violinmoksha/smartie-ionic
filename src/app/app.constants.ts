@@ -1,8 +1,8 @@
 export class Constants {
   public static API_ENDPOINTS = {
-    env: 'test',
+    env: 'local',
     beyondGDPR: {
-      chickenSwitch: false,
+      chickenSwitch: true,
       baseUrl: "https://test.t0tl3s.com:3001",
       paths: {
         encrypt: "/encryptPlaintext",

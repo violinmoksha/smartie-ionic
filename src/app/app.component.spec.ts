@@ -143,7 +143,7 @@ describe('SmartieApp Component', () => {
     });
   }));
 
-  it('should have initializeApp completely in 3s', async(() => {
+  it('should have initializeApp completely in 5s', async(() => {
     const overarchingInitSpy = spyOn(component, 'initializeApp').and.callThrough();
     const platformReadySpy = spyOn(component.platform, 'ready');
     const statusBarStyleDefaultSpy = spyOn(component.statusBar, 'styleDefault');
@@ -165,6 +165,6 @@ describe('SmartieApp Component', () => {
       expect(getUserSpy).toHaveBeenCalledWith('UserProfile');
       expect(setRootSpy).toHaveBeenCalled();
       expect(splashScreenHideSpy).toHaveBeenCalled();
-    }, 3000);
+    }, 5000);
   }));
 });

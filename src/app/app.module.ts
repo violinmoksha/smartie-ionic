@@ -2,7 +2,7 @@ import { Constants } from './app.constants';
 import { Device } from '@ionic-native/device';
 
 // TODO: uncomment in prod with appropriate modification
-import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from './app.err';
+//import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from './app.err';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -32,7 +32,7 @@ import { ContactPatterns } from '../providers/contact-patterns';
 //import { ChatProvider } from '../providers/chat';
 //import { FileUploaderProvider } from '../providers/file-uploader';
 import { FileTransfer } from '@ionic-native/file-transfer';
-import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
+import { SecureStorage } from '@ionic-native/secure-storage';
 import { HTTP } from '@ionic-native/http';
 import { DataService } from './app.data';
 

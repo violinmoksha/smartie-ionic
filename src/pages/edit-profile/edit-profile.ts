@@ -48,7 +48,6 @@ export class EditProfilePage {
   }
 
   next(form1Value){
-    let currentUser = Parse.User.current();
     Parse.User.logIn(this.username, form1Value.password).then(user => {
       console.log(user.getSessionToken());
       this.navCtrl.push("EditProfileStep2Page", { form1Value : form1Value, userRole: this.userRole, sessionToken: user.getSessionToken() });

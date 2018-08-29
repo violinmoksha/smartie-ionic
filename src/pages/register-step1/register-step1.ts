@@ -20,7 +20,6 @@ import { AnalyticsProvider } from '../../providers/analytics';
 export class RegisterStep1Page {
 
   private role: any;
-  private phone: any;
   private Step1Form: FormGroup;
   private notNewEmail: boolean;
 

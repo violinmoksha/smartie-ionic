@@ -40,20 +40,22 @@ export class DataService {
         const headers = {
           'X-Parse-Application-Id': this.applicationId,
           'X-Hullo-Token': provisionData ? provisionData.pToken : '',
-          'x-Device-UUID': provisionData ? provisionData.provision.uuid : '',
+          'X-Device-UUID': provisionData ? provisionData.provision.uuid : '',
           'X-Bouncy-Token': userData ? userData.jwtToken : '',
           'X-User-Id': userData ? userData.objectId : '',
           'Content-Type': this.contentType
         };
-        /*for (let headerKey in Object.keys(headers)) {
-          this.http.setHeader(hostname, headerKey, headers[headerKey]);
-        }*/
+        /*Object.keys(headers).forEach((key, value) => {
+          console.log('run setHeader('+hostname+', '+key+', '+(typeof value !== 'undefined'?value:''));
+        });*/
 
-        return await {
+        let retObj = {
           "apiUrl": this.baseUrl + Constants.API_ENDPOINTS.paths.fn + '/' + endPoint,
           "apiBody": body,
           "apiHeaders": headers
         };
+        //console.log(retObj);
+        return await retObj;
       }, error => {
         return error;
       })

@@ -1,8 +1,6 @@
-import { Constants } from '../app/app.constants';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
-import { File } from '@ionic-native/file';
 import { DataService } from '../app/app.data';
 
 import Parse from 'parse';
@@ -16,7 +14,7 @@ import Parse from 'parse';
 @Injectable()
 export class FileUploaderProvider {
   fileTransfer:FileTransferObject
-  constructor(public http: HttpClient, private transfer: FileTransfer, private file: File, public dataService: DataService, private appConfig :Constants) {
+  constructor(public http: HttpClient, private transfer: FileTransfer, public dataService: DataService) {
     console.log('Hello FileUploaderProvider Provider');
     this.fileTransfer = this.transfer.create();
   }
@@ -33,7 +31,7 @@ export class FileUploaderProvider {
   }
 
   async uploadFileToAWS(filePath) {
-    let file = filePath.substr(0, filePath.lastIndexOf('/'));
+    //let file = filePath.substr(0, filePath.lastIndexOf('/'));
     let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
     return await this.dataService.getApi('getAWSCredential', { 'fileName': fileName }).then(async API => {

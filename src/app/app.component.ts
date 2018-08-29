@@ -8,6 +8,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Firebase } from '@ionic-native/firebase';
 import { Device } from '@ionic-native/device';
+import { HTTP } from '@ionic-native/http';
 
 import { DataService } from './app.data';
 
@@ -40,6 +41,7 @@ export class SmartieApp {
     public geolocation: Geolocation,
     public firebase: Firebase,
     public device: Device,
+    public http: HTTP,
     public dataService: DataService) {
 
     this.initializeApp();
@@ -81,12 +83,15 @@ export class SmartieApp {
         Parse.initialize(this.parseAppId, null, this.parseMasterKey);
         Parse.serverURL = this.parseServerUrl;
 
-        return await this.dataService.getApi(
+        this.dataService.getApi(
           'getUserProvision',
           { "uuid": this.device.uuid }
-        ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-            return await this.storage.get('UserProfile').then(async user => {
+        ).then(API => {
+          console.log('got API for getUserProvision: '+JSON.stringify(API));
+          this.http.post(API.apiUrl, JSON.stringify(API.apiBody), JSON.stringify(API.apiHeaders)).then(async response => {
+            console.log(' got a response: '+JSON.stringify(response));
+            this.storage.get('UserProfile').then(async user => {
+              console.log('And made it back with a UserProfile obj called user: '+JSON.stringify(user));
               if (user != null) {
                 this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
                 this.splashScreen.hide();
@@ -113,18 +118,23 @@ export class SmartieApp {
                     return await true;
                   }, async error => {
                     // TODO: alertCtrl UI from err handler
+                    this.splashScreen.hide();
                     return await false;
                   })
                 }
               }
+            }, err => {
+              console.log('Strange err: '+err);
             })
           }, async err => {
+            console.log('Also strange err: '+JSON.stringify(err));
             this.splashScreen.hide();
             this.rootPage = 'LandingPage';
             return await false;
           })
         });
       } else {
+        console.log('What on earth.');
         this.splashScreen.hide();
         this.rootPage = 'LandingPage';
         return await false;
@@ -149,7 +159,8 @@ export class SmartieApp {
         'updateFcmToken',
         { "device": this.device, "token": token }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async data => {
+        console.log("API: "+JSON.stringify(API));
+        return await this.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async data => {
           this.notificationHandler();
           return token;
         }, async error => {
@@ -174,7 +185,7 @@ export class SmartieApp {
           'getJobRequestById',
           { "jobRequestId": job.jobId }
         ).then(API => {
-          this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+          this.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
             this.nav.push("JobRequestPage", { params: response.data.result });
           }, err => {
             // TODO: handle this in UI

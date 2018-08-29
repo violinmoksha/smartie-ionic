@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { DataService } from '../../app/app.data';
 import { Storage } from '@ionic/storage';
-import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn, } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { FileUploaderProvider } from '../../providers/file-uploader';
 
@@ -23,10 +23,8 @@ export class FeedbackPage {
 
   private profileData: any;
   private userData: any;
-  private role: any;
   public feedback: any;
   public feedbackValue: any;
-  private genericAvatar: any;
   public loading: any;
 
   public FeedbackForm: FormGroup;

@@ -70,6 +70,7 @@ export class MobileVerificationPage {
           'setUserProvision',
           params
         ).then(async API => {
+          console.log('API here: '+JSON.stringify(API));
           this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response=>{
             loading.dismiss();
             this.storage.set("Provision", response.data.result);

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AnalyticsProvider } from '../../providers/analytics';
-declare var google;
+//declare var google;
 
 /**
  * Generated class for the SignupPage page.
@@ -27,10 +27,11 @@ export class SignupPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SignupPage');
-    let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
-    let options = {componentRestrictions: {country: 'us'}};
+    //let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
+    //let options = {componentRestrictions: {country: 'us'}};
 
-    let autocomplete = new google.maps.places.Autocomplete(input, options);
+    // TODO: I presume we were intending to use this somewhere??
+    //let autocomplete = new google.maps.places.Autocomplete(input, options);
   }
 
 }

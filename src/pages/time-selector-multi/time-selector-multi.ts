@@ -29,7 +29,7 @@ export class TimeSelectorMultiPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage) {
     this.selectedDates = this.navParams.get("selectedDates");
     this.params = this.navParams.get("params");
-    this.loggedRole = this.navParams.get("loggedRole"); 
+    this.loggedRole = this.navParams.get("loggedRole");
 
     console.log(this.selectedDates);
 
@@ -37,9 +37,9 @@ export class TimeSelectorMultiPage {
 
     this.storage.get("utcOffset").then(utcOffset => {
       // console.log(utcOffset);
-      let newDate = new Date();
-      let utc = newDate.getTime();
-      let zoneTime = new Date(utc + utcOffset);
+      //let newDate = new Date();
+      //let utc = newDate.getTime();
+      //let zoneTime = new Date(utc + utcOffset);
       // console.log(zoneTime);
     })
 
@@ -104,7 +104,7 @@ export class TimeSelectorMultiPage {
         subTitle: 'Please keep in mind, Start Time should be before End Time ;-)',
         buttons: ['OK']
       });
-  
+
       alert.present();
       this.readyToPay = false;
     }

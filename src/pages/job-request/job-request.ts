@@ -1,5 +1,5 @@
 import { IonicPage } from 'ionic-angular';
-import { Component, NgZone } from '@angular/core';
+import { Component } from '@angular/core';
 import { App, NavController, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
 import { DataService } from '../../app/app.data';
 import { Storage } from '@ionic/storage';
@@ -32,7 +32,7 @@ export class JobRequestPage {
   timeZone: any;
   private appNavCtrl: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public dataService: DataService, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController, private ngZone: NgZone, public app: App, private analytics: AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public dataService: DataService, private storage: Storage, public alertCtrl: AlertController, private loadingCtrl: LoadingController, public app: App, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("JobRequest");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("JobRequest", "View"));
 
