@@ -69,7 +69,7 @@ export class PaymentConfirmPage {
         'createTransaction',
         this.body
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
           this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
           return response;
         }, err => {

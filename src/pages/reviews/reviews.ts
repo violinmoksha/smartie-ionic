@@ -51,7 +51,7 @@ export class ReviewsPage {
         'getReviews',
         { reviewedProfileId: this.reviewedProfileId }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
           console.log(response[0].result); /// ???
           let userReviews = response[0].result;
           this.reviewCount = userReviews.reviews.length;
@@ -72,7 +72,7 @@ export class ReviewsPage {
         'getReviewingProfile',
         { reviewingProfileId: review.reviewingProfileId }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
           if (response[0].result.reviewingProfile.profilePhoto) { /// ???
             this.profilePhoto = response[0].result.reviewingProfile.profilePhoto.url;
           } else {

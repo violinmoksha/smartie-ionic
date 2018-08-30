@@ -107,7 +107,7 @@ export class PaymentPage {
           'createCardToken',
           { cardValue: cardValue, customerId: this.stripeCustomer, otherProfileId: this.otherProfileId }
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
             this.createTransaction(amount);
             return response;
           }, err => {
@@ -145,7 +145,7 @@ export class PaymentPage {
         'createTransaction',
         this.body
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
           this.loading.dismiss();
           this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment' });
           return response;

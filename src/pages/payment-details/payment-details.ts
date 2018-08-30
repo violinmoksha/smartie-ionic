@@ -55,7 +55,7 @@ export class PaymentDetailsPage {
         'createStripeLoginLink',
         { stripeAccountId: this.stripeCustomerId }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
           if(response[0].result.url){ // ??? NB: everything is usually response.data.result now FYI using @ionic-native/http
             loading.dismiss();
             // const options: ThemeableBrowserOptions = {

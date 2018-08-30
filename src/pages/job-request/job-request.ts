@@ -143,8 +143,8 @@ export class JobRequestPage {
           'getRequestedJobRequest',
           this.body
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-            if (Object.keys(response.data.result).length > 0) {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
+            if (Object.keys(response[0].data.result).length > 0) {
               this.requestSent = true;
             } else {
               this.requestSent = false;
@@ -205,7 +205,7 @@ export class JobRequestPage {
             'setJobRequest',
             this.body
           ).then(async API => {
-            return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+            return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
               this.requestSent = true;
               this.viewCtrl.dismiss();
               this.loading.dismiss();
@@ -257,7 +257,7 @@ export class JobRequestPage {
           'setJobRequest',
           this.body
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
             this.acceptState = true;
             this.viewCtrl.dismiss();
             this.loading.dismiss();
@@ -291,7 +291,7 @@ export class JobRequestPage {
           'setJobRequest',
           this.body
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
             this.viewCtrl.dismiss();
             this.loading.dismiss();
             this.submitInProgress = false;

@@ -66,7 +66,7 @@ export class RegisterStep1Page {
         'isNewEmail',
         { email: form1Value.email }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
           async isNewEmail => {
             loading.dismiss();
             if (isNewEmail[0].result == true) {

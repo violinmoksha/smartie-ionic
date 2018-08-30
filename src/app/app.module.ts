@@ -33,7 +33,7 @@ import { ContactPatterns } from '../providers/contact-patterns';
 //import { FileUploaderProvider } from '../providers/file-uploader';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { SecureStorage } from '@ionic-native/secure-storage';
-import { HTTP } from '@ionic-native/http';
+import { HttpClientModule } from '@angular/common/http';
 import { DataService } from './app.data';
 
 @NgModule({
@@ -42,6 +42,7 @@ import { DataService } from './app.data';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(SmartieApp),
     IonicStorageModule.forRoot({
       name: 'smartiedb',
@@ -75,7 +76,6 @@ import { DataService } from './app.data';
     SecureStorage,
     FileTransfer,
     Constants,
-    HTTP,
     DataService,
     //CameraServiceProvider,
     //ChatProvider,

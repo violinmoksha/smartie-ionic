@@ -7,11 +7,11 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { Constants } from './app.constants';
 
-import { HTTP } from '@ionic-native/http';
 import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
 
-import { HTTPMock } from '../mocks/http';
 import { SecureStorageMock, SecureStorageObjectMock } from '../mocks/secure-storage';
+
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { DataService } from './app.data';
 
@@ -27,8 +27,8 @@ describe('DataService', () => {
       ],
       providers: [
         Constants,
-        { provide: HTTP, useClass: HTTPMock },
         { provide: SecureStorage, useClass: SecureStorageMock },
+        HttpClient,
         DataService
       ],
     }).compileComponents();

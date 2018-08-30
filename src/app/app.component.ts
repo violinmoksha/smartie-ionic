@@ -8,7 +8,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Firebase } from '@ionic-native/firebase';
 import { Device } from '@ionic-native/device';
-import { HTTP } from '@ionic-native/http';
 
 import { DataService } from './app.data';
 
@@ -41,7 +40,6 @@ export class SmartieApp {
     public geolocation: Geolocation,
     public firebase: Firebase,
     public device: Device,
-    public http: HTTP,
     public dataService: DataService) {
 
     this.initializeApp();
@@ -86,10 +84,10 @@ export class SmartieApp {
         this.dataService.getApi(
           'getUserProvision',
           { "uuid": this.device.uuid }
-        ).then(API => {
+        ).then(async API => {
           console.log('got API for getUserProvision: '+JSON.stringify(API));
-          this.http.post(API.apiUrl, JSON.stringify(API.apiBody), JSON.stringify(API.apiHeaders)).then(async response => {
-            console.log(' got a response: '+JSON.stringify(response));
+          this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+            console.log('getUserProv response: '+JSON.stringify(response));
             this.storage.get('UserProfile').then(async user => {
               console.log('And made it back with a UserProfile obj called user: '+JSON.stringify(user));
               if (user != null) {
@@ -97,8 +95,9 @@ export class SmartieApp {
                 this.splashScreen.hide();
                 return await true;
               } else {
-                if (response.data.result.provision.user && response.data.result.profile){
-                  this.nav.setRoot("LoginPage", { role: response.data.result.provision.role });
+                console.log(response);
+                if (response[0].data.result.provision.user && response[0].data.result.profile){
+                  this.nav.setRoot("LoginPage", { role: response[0].data.result.provision.role });
                   this.splashScreen.hide();
                   return await true;
                 } else {
@@ -112,7 +111,7 @@ export class SmartieApp {
                         this.nav.setRoot("RegisterStep3Page", registration);
                       }
                     }else{
-                      this.nav.setRoot("RegisterStep1Page", { role: response.data.result.provision.role });
+                      this.nav.setRoot("RegisterStep1Page", { role: response[0].data.result.provision.role });
                     }
                     this.splashScreen.hide();
                     return await true;
@@ -160,7 +159,7 @@ export class SmartieApp {
         { "device": this.device, "token": token }
       ).then(async API => {
         console.log("API: "+JSON.stringify(API));
-        return await this.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async data => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async data => {
           this.notificationHandler();
           return token;
         }, async error => {
@@ -185,8 +184,8 @@ export class SmartieApp {
           'getJobRequestById',
           { "jobRequestId": job.jobId }
         ).then(API => {
-          this.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-            this.nav.push("JobRequestPage", { params: response.data.result });
+          this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+            this.nav.push("JobRequestPage", { params: response[0].data.result });
           }, err => {
             // TODO: handle this in UI
             console.info('0: '+err);

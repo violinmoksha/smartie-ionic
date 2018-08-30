@@ -61,7 +61,7 @@ export class SendEmailPage {
         'sendEmail',
         { recipientProfileId: this.recipientProfileId, senderRole: this.role, senderName: this.senderName, recipientName: this.recipientName, subject: this.subject, message: this.message }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
           this.navCtrl.parent.select(0);
         }, err => {
           console.log(err);

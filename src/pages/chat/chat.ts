@@ -127,9 +127,9 @@ export class ChatPage {
         'getAllMessages',
         { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId, skip: skip }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(async response => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(async response => {
           this.chatMessages = [];
-          for(let chat of response.data.result){
+          for(let chat of response[0].data.result){
             this.chatMessages.push(chat);
           }
 
