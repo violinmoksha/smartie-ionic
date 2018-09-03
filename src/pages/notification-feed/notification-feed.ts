@@ -54,7 +54,7 @@ export class NotificationFeedPage {
       'getAllAccepteds',
       { profileId: profileId, role: role }
     ).then(async API => {
-      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async jobReq => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async jobReq => {
         if (jobReq)
           this.allAccepteds = jobReq[0].data.result; // jobReq[0], jobReq.data[0]???
         console.log(jobReq);
@@ -69,7 +69,7 @@ export class NotificationFeedPage {
       'getAllRequesteds',
       { profileId: profileId, role: role }
     ).then(async API => {
-      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async jobReq => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async jobReq => {
         if (jobReq)
           this.allRequesteds = jobReq[0].result; // ???
         console.log(jobReq);
@@ -84,7 +84,7 @@ export class NotificationFeedPage {
       'getAllUpcomings',
       { profileId: profileId, role: role }
     ).then(async API => {
-      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async jobReq => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async jobReq => {
         if (jobReq)
           this.allUpcomings = jobReq[0].result; // ????
 

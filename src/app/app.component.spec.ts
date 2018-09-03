@@ -9,7 +9,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Firebase } from '@ionic-native/firebase';
 import { Device } from '@ionic-native/device';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP } from '@ionic-native/http';
 import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
 
 import { PlatformMock } from '../mocks/platform';
@@ -18,6 +18,7 @@ import { SplashScreenMock } from '../mocks/splash-screen';
 import { GeolocationMock, Geoposition } from '../mocks/geolocation';
 import { FirebaseMock } from '../mocks/firebase';
 import { DeviceMock } from '../mocks/device';
+import { HTTPMock } from '../mocks/http';
 import { SecureStorageMock, SecureStorageObjectMock } from '../mocks/secure-storage';
 
 import { DataService } from './app.data';
@@ -45,8 +46,8 @@ describe('SmartieApp Component', () => {
         { provide: Geolocation, useClass: GeolocationMock },
         { provide: Firebase, useClass: FirebaseMock },
         { provide: Device, useClass: DeviceMock },
+        { provide: HTTP, useClass: HTTPMock },
         { provide: SecureStorage, useClass: SecureStorageMock },
-        HttpClient,
         DataService,
         //{ provide: SmartieAPI, useClass: SmartieAPIMock }
         //{ provide: FirebaseProvider, useClass: FirebaseProviderMock }

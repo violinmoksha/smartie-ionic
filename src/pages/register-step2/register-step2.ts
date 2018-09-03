@@ -262,7 +262,7 @@ export class RegisterStep2Page {
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
     ).then(async API => {
-      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
         // TODO: needs to happen right here directly into storage
         //return await this.data.updateProvisionStorage(response[0].result);
       }, err => {
@@ -288,7 +288,7 @@ export class RegisterStep2Page {
           'signUpRole',
           {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo)}
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async signupResult => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async signupResult => {
             // TODO do this directly right here using this.storage instead
             //this.updateUserToProvision(signupResult[0].result.userData.objectId, signupResult[0].result.profileData.objectId);
 
@@ -298,7 +298,7 @@ export class RegisterStep2Page {
                   'fetchMarkers',
                   { profileId: signupResult[0].result.profileData.objectId, role: this.role }
                 ).then(async API => {
-                  return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async Notifications => {
+                  return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
                     return await this.dataService.sanitizeNotifications(Notifications[0].result).then(async notifications => {
                       this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
                       //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });

@@ -66,16 +66,17 @@ export class RegisterStep1Page {
         'isNewEmail',
         { email: form1Value.email }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(
           async isNewEmail => {
             loading.dismiss();
-            if (isNewEmail[0].result == true) {
+            console.log(isNewEmail);
+            if (isNewEmail.data.result == true) {
 
               this.navCtrl.push("RegisterStep2Page", { form1Values : formParams, role: this.role });
               return await this.storage.get('Registration').then(async registration=>{
                 if(registration){
-                  registration[0].step = 1;
-                  registration[0].form1Values = formParams;
+                  registration.step = 1;
+                  registration.form1Values = formParams;
                   this.storage.set('Registration', registration);
                   return await registration;
                 }else{
@@ -88,6 +89,8 @@ export class RegisterStep1Page {
               this.notNewEmail = true;
               return false;
             }
+          }, err => {
+            console.log(err);
           }
         );
       });

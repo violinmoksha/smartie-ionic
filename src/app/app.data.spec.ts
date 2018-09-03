@@ -1,7 +1,6 @@
 import {} from 'jasmine';
 
 import { TestBed, inject, async } from '@angular/core/testing';
-//import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -11,7 +10,9 @@ import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage
 
 import { SecureStorageMock, SecureStorageObjectMock } from '../mocks/secure-storage';
 
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP } from '@ionic-native/http';
+
+import { HTTPMock } from '../mocks/http';
 
 import { DataService } from './app.data';
 
@@ -28,7 +29,7 @@ describe('DataService', () => {
       providers: [
         Constants,
         { provide: SecureStorage, useClass: SecureStorageMock },
-        HttpClient,
+        { provide: HTTP, useClass: HTTPMock },
         DataService
       ],
     }).compileComponents();

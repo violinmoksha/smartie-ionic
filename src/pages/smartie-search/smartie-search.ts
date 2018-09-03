@@ -225,7 +225,7 @@ export class SmartieSearch {
                 'fetchMarkers',
                 { profileId: profile.profileData.objectId, role: profile.profileData.role }
               ).then(async API => {
-                return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async Notifications => {
+                return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
                   return await this.dataService.sanitizeNotifications(Notifications[0].result).then(async notifications => {
                     this.notifications = notifications;
                     return await this.storage.get('phoneLatLng').then(async phoneLatLng => {
@@ -314,7 +314,7 @@ export class SmartieSearch {
         'getAllRequesteds',
         this.body
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
           this.notifyCount = '';
           if(response[0].result.length > 0){
             this.notifyCount = response[0].result.length;
@@ -334,7 +334,7 @@ export class SmartieSearch {
         'getAllAccepteds',
         this.body
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
           if(response[0].result.length > 0){
             this.notifyCount = this.notifyCount + response[0].result.length;
             this.storage.set("userAllAccepteds", response[0].result);
@@ -351,7 +351,7 @@ export class SmartieSearch {
         'getAllUpcomings',
         this.body
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
           if(response[0].result.length > 0){
             this.hasUpcomings = true;
             this.upcomingsCount = response[0].result.length;

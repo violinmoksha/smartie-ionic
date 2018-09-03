@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Constants } from './app.constants';
 import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HTTP } from '@ionic-native/http';
 import crypto from 'crypto';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class DataService {
   contentType: string;
   hostname: string;
 
-  constructor(public storage: Storage, public secureStorage: SecureStorage, public http: HttpClient) {
+  constructor(public storage: Storage, public secureStorage: SecureStorage, public http: HTTP) {
   }
 
   async getApi(endPoint, body) {
@@ -34,23 +34,22 @@ export class DataService {
         this.contentType = 'application/json';
 
         const httpOptions = {
-          headers: new HttpHeaders({
-            'X-Parse-Application-Id': this.applicationId,
-            'X-Hullo-Token': provisionData ? provisionData.pToken : '',
-            'x-Device-UUID': provisionData ? provisionData.provision.uuid : '',
-            'X-Bouncy-Token': userData ? userData.jwtToken : '',
-            'X-User-Id': userData ? userData.userData.objectId : '',
-            'Content-Type': this.contentType
-          })
+          'X-Parse-Application-Id': this.applicationId,
+          'X-Hullo-Token': provisionData ? provisionData.pToken : '',
+          'x-Device-UUID': provisionData ? provisionData.provision.uuid : '',
+          'X-Bouncy-Token': userData ? userData.jwtToken : '',
+          'X-User-Id': userData ? userData.userData.objectId : '',
+          'Content-Type': this.contentType
         };
 
+        this.http.setDataSerializer('utf8');
 
         let retObj = {
           "apiUrl": this.baseUrl + Constants.API_ENDPOINTS.paths.fn + '/' + endPoint,
           "apiBody": JSON.stringify(body),
           "apiHeaders": httpOptions
         };
-        //console.log(retObj);
+        console.log(retObj);
         return await retObj;
       }, error => {
         return error;

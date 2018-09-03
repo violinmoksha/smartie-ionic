@@ -40,8 +40,8 @@ export class AddPaymentPage {
       emailPayment: new FormControl('', Validators.required),
       emailConfirm: new FormControl('yes'),
     });
-    this.dataService.http.get('https://icanhazip.com', { responseType: 'text' }).subscribe(res => {
-      this.userIP = res.replace(/\s/g, "");
+    this.dataService.http.get('https://icanhazip.com', { responseType: 'text' }, {}).then(res => {
+      this.userIP = res.data.replace(/\s/g, "");
       console.log(`IP ADDRESS: ${this.userIP}`);
     })
   }
@@ -146,7 +146,7 @@ export class AddPaymentPage {
         endPoint,
         body
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async response => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
           console.log(response[0].data.result);
           // TODO: here again this needs to be done directly rght here, no additional provider wrapper needed!!
           //this.smartieApi.updateUserProfileStorage(response[0].result).then(profile => {

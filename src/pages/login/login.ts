@@ -58,7 +58,7 @@ export class LoginPage {
             content: 'Signing In....'
           });
           loading.present();
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async data => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async data => {
             console.log(data);
             loading.dismiss();
             return await this.storage.set('UserProfile', data[0].data).then(async UserProfile => {

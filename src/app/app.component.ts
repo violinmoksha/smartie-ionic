@@ -81,13 +81,11 @@ export class SmartieApp {
         Parse.initialize(this.parseAppId, null, this.parseMasterKey);
         Parse.serverURL = this.parseServerUrl;
 
-        this.dataService.getApi(
+        return await this.dataService.getApi(
           'getUserProvision',
-          { "uuid": this.device.uuid }
+          { uuid: this.device.uuid }
         ).then(async API => {
-          console.log('got API for getUserProvision: '+JSON.stringify(API));
-          this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
-            console.log('getUserProv response: '+JSON.stringify(response));
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
             this.storage.get('UserProfile').then(async user => {
               console.log('And made it back with a UserProfile obj called user: '+JSON.stringify(user));
               if (user != null) {
@@ -95,45 +93,43 @@ export class SmartieApp {
                 this.splashScreen.hide();
                 return await true;
               } else {
-                console.log(response);
-                if (response[0].data.result.provision.user && response[0].data.result.profile){
-                  this.nav.setRoot("LoginPage", { role: response[0].data.result.provision.role });
+                // hm, no UserProfile object but maybe there's a provision???
+                // this.storage.get('Provision').then(async provision => {
+                //
+                // });
+
+                return await this.storage.get("Registration").then(async registration => {
+                  if(registration && registration.step){
+                    if(registration.step === 0){
+                      this.nav.setRoot("RegisterStep1Page", { role: registration.role });
+                    }else if(registration.step == 1){
+                      this.nav.setRoot("RegisterStep2Page", registration);
+                    }else if(registration.step == 2){
+                      this.nav.setRoot("RegisterStep3Page", registration);
+                    }
+                  }else{
+                    // NB has a provision, but no User object and no saved reg, yuup sending them back through registration!
+                    this.nav.setRoot("RegisterStep1Page", { role: JSON.parse(response.data).result.provision.role });
+                  }
                   this.splashScreen.hide();
                   return await true;
-                } else {
-                  return await this.storage.get("Registration").then(async registration => {
-                    if(registration && registration[0].step){
-                      if(registration[0].step === 0){
-                        this.nav.setRoot("RegisterStep1Page", { role: registration[0].role });
-                      }else if(registration[0].step == 1){
-                        this.nav.setRoot("RegisterStep2Page", registration);
-                      }else if(registration[0].step == 2){
-                        this.nav.setRoot("RegisterStep3Page", registration);
-                      }
-                    }else{
-                      this.nav.setRoot("RegisterStep1Page", { role: response[0].data.result.provision.role });
-                    }
-                    this.splashScreen.hide();
-                    return await true;
-                  }, async error => {
-                    // TODO: alertCtrl UI from err handler
-                    this.splashScreen.hide();
-                    return await false;
-                  })
-                }
+
+                }, err => {
+                  console.log(err);
+                });
               }
             }, err => {
               console.log('Strange err: '+err);
             })
           }, async err => {
-            console.log('Also strange err: '+JSON.stringify(err));
+            console.log('No provision from server (yet): '+JSON.stringify(err));
             this.splashScreen.hide();
             this.rootPage = 'LandingPage';
             return await false;
           })
         });
       } else {
-        console.log('What on earth.');
+        console.log('What on earth non-cordova land.');
         this.splashScreen.hide();
         this.rootPage = 'LandingPage';
         return await false;
@@ -156,10 +152,10 @@ export class SmartieApp {
       //console.log(`Firebase token is: ${token}`);
       return await this.dataService.getApi(
         'updateFcmToken',
-        { "device": this.device, "token": token }
+        { device: this.device, token: token }
       ).then(async API => {
         console.log("API: "+JSON.stringify(API));
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async data => {
+        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async data => {
           this.notificationHandler();
           return token;
         }, async error => {
@@ -184,7 +180,7 @@ export class SmartieApp {
           'getJobRequestById',
           { "jobRequestId": job.jobId }
         ).then(API => {
-          this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(response => {
+          this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
             this.nav.push("JobRequestPage", { params: response[0].data.result });
           }, err => {
             // TODO: handle this in UI

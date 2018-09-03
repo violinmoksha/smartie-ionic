@@ -122,7 +122,7 @@ export class FeedbackPage {
       'setFeedback',
       params
     ).then(async API => {
-      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async res => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async res => {
         this.loading.dismiss();
         let alert = this.alertCtrl.create({
           title: 'Thanks!',

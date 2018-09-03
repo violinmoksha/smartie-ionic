@@ -24,7 +24,6 @@
     "@angular/compiler-cli": "5.0.3",
     "@angular/core": "5.0.3",
     "@angular/forms": "5.0.3",
-    "@angular/http": "5.0.3",
     "@angular/platform-browser": "5.0.3",
     "@angular/platform-browser-dynamic": "5.0.3",
     "@ionic-native/camera": "^4.11.0",
@@ -36,6 +35,7 @@
     "@ionic-native/firebase": "^4.9.0",
     "@ionic-native/geolocation": "^4.5.3",
     "@ionic-native/globalization": "^4.7.0",
+    "@ionic-native/http": "^4.12.2",
     "@ionic-native/image-picker": "^4.11.0",
     "@ionic-native/in-app-browser": "^4.7.0",
     "@ionic-native/push": "^4.9.0",
@@ -51,6 +51,7 @@
     "cordova-android": "7.0.0",
     "cordova-android-play-services-gradle-release": "^1.4.3",
     "cordova-ios": "4.5.5",
+    "cordova-plugin-advanced-http": "^2.0.0",
     "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-crop": "^0.4.0",
     "cordova-plugin-device": "^2.0.2",
@@ -137,7 +138,8 @@
         "PHOTO_LIBRARY_USAGE_DESCRIPTION": "Uploading user images"
       },
       "cordova-plugin-secure-storage": {},
-      "cordova-plugin-file-transfer": {}
+      "cordova-plugin-file-transfer": {},
+      "cordova-plugin-advanced-http": {}
     },
     "platforms": [
       "ios",

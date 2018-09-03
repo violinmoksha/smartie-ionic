@@ -35,7 +35,7 @@ export class FileUploaderProvider {
     let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
     return await this.dataService.getApi('getAWSCredential', { 'fileName': fileName }).then(async API => {
-      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).subscribe(async (data) => {
+      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async (data) => {
         console.log(data);
         let params = {
           "key": fileName,
