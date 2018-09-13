@@ -73,12 +73,12 @@ export class ReviewsPage {
         { reviewingProfileId: review.reviewingProfileId }
       ).then(async API => {
         return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-          if (response[0].result.reviewingProfile.profilePhoto) { /// ???
-            this.profilePhoto = response[0].result.reviewingProfile.profilePhoto.url;
+          if (response.data.result.reviewingProfile.profilePhoto) { /// ???
+            this.profilePhoto = response.data.result.reviewingProfile.profilePhoto.url;
           } else {
             this.profilePhoto = "./assets/img/user-round-icon.png";
           }
-          this.reviews.push({ 'fullname': response[0].result.reviewingProfile.fullname, 'role': response[0].result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
+          this.reviews.push({ 'fullname': response.data.result.reviewingProfile.fullname, 'role': response.data.result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
         })
       });
     })

@@ -74,8 +74,9 @@ describe('SmartieApp Component', () => {
 
   it('should have initGeolocation callThrough -capable', () => {
     let spy = spyOn(component, 'initGeolocation').and.callThrough();
-    component.initGeolocation();
-    expect(spy).toHaveBeenCalled();
+    component.initGeolocation().then(() => {
+      expect(spy).toHaveBeenCalled();
+    });
   });
 
   it('should have initGeolocation throwError -capable', () => {

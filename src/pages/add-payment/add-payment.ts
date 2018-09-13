@@ -147,11 +147,11 @@ export class AddPaymentPage {
         body
       ).then(async API => {
         return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-          console.log(response[0].data.result);
+          console.log(response.data.result);
           // TODO: here again this needs to be done directly rght here, no additional provider wrapper needed!!
-          //this.smartieApi.updateUserProfileStorage(response[0].result).then(profile => {
+          //this.smartieApi.updateUserProfileStorage(response.data.result).then(profile => {
             //loading.dismiss();
-            this.navCtrl.push('NotificationFeedPage', { stripeAccount: response[0].result });
+            this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.data.result });
           //})
         }, err => {
           console.log(err);

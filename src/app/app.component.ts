@@ -85,8 +85,8 @@ export class SmartieApp {
           'getUserProvision',
           { uuid: this.device.uuid }
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-            this.storage.get('UserProfile').then(async user => {
+          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+            return await this.storage.get('UserProfile').then(async user => {
               console.log('And made it back with a UserProfile obj called user: '+JSON.stringify(user));
               if (user != null) {
                 this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
@@ -181,7 +181,7 @@ export class SmartieApp {
           { "jobRequestId": job.jobId }
         ).then(API => {
           this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-            this.nav.push("JobRequestPage", { params: response[0].data.result });
+            this.nav.push("JobRequestPage", { params: response.data.result });
           }, err => {
             // TODO: handle this in UI
             console.info('0: '+err);
@@ -196,11 +196,13 @@ export class SmartieApp {
     });
   }
 
-  /*pushPage(event, page) {
+  pushPage(event, page) {
     if (page.iconName == 'log-out') { // logout -->
-       this.dbservice.deleteUser();
+      this.storage.remove('UserProfile'); // yes??
+       //this.dbservice.deleteUser();
       this.nav.setRoot("LoginPage"); // send to Login
-      this.firebase.updateFcmToken(null, false);
+      // NB: wait why are we doing this?
+      //this.firebase.updateFcmToken(null, false);
     }else if(page.text == 'Wallet'){
       this.nav.push("WalletPage");
     }else{
@@ -222,6 +224,7 @@ export class SmartieApp {
       }
 
     }
+  }
 
     /*if (button.iconName == 'paper')
       this.nav.push("FeedbackPage");

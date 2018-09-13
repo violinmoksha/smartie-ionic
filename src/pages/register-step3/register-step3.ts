@@ -287,7 +287,6 @@ export class RegisterStep3Page {
 
 
   updateUserToProvision = async (userId, userProfileId) => {
-
     return await this.dataService.getApi(
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
@@ -295,7 +294,8 @@ export class RegisterStep3Page {
       return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
         console.log("Getting updated provision");
         console.log(response);
-        // TODO: do this directly in storage now
+        // TODO: have we done this correctly, we'll see, this simplification should again be correct
+        this.storage.set('Provision', response.data.result);
         //this.dataService.updateProvisionStorage(response[0].result);
       }, err => {
         console.log(err);
@@ -342,13 +342,13 @@ export class RegisterStep3Page {
           async signupResult => {
             console.log(signupResult);
             // TODO: do this via storage now
-            //this.updateUserToProvision(signupResult[0].result.userData.objectId, signupResult[0].result.profileData.objectId);
+            this.updateUserToProvision(signupResult.data.result.userData.objectId, signupResult.data.result.profileData.objectId);
 
-            return await this.storage.set("UserProfile", signupResult[0].result).then(async () => {
+            return await this.storage.set("UserProfile", signupResult.data.result).then(async () => {
               return await new Promise(async (resolve) => {
                 return await this.dataService.getApi(
                   'fetchMarkers',
-                  { profileId: signupResult[0].result.profileData.objectId, role: this.role }
+                  { profileId: signupResult.data.result.profileData.objectId, role: this.role }
                 ).then(async API => {
                   return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
                     this.loading.dismiss();

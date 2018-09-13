@@ -87,7 +87,7 @@ export class RegisterStep1Page {
               })
             } else {
               this.notNewEmail = true;
-              return false;
+              return await false;
             }
           }, err => {
             console.log(err);

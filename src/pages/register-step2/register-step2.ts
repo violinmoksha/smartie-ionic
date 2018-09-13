@@ -103,12 +103,12 @@ export class RegisterStep2Page {
 
       //Checking Device location
       this.storage.get('phoneGeoposition').then(phoneGeoposition => {
-        this.getGeoPlace(phoneGeoposition).then((address: Geoposition) => {
+        this.getGeoPlace(phoneGeoposition).then((address: any) => {
           // TODO: deal with Geoposition now as defined in Test geolocation mock, not Address
-          //if(address.coords. == 'US'){
-            //this.Step2Form.controls['prefLocation'].disable()
-            //this.userLocation = address.formattedAddress;
-          //}
+          if(address.country == 'US'){
+            this.Step2Form.controls['prefLocation'].disable()
+            this.userLocation = address.formattedAddress;
+          }
         })
       })
 
@@ -263,7 +263,10 @@ export class RegisterStep2Page {
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
     ).then(async API => {
       return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-        // TODO: needs to happen right here directly into storage
+        // TODO: needs to happen right here directly into storage?
+        return await this.storage.set('Provision', response.data.result).then(async prov => {
+          return await prov;
+        })
         //return await this.data.updateProvisionStorage(response[0].result);
       }, err => {
         console.log(err);
@@ -289,14 +292,13 @@ export class RegisterStep2Page {
           {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo)}
         ).then(async API => {
           return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async signupResult => {
-            // TODO do this directly right here using this.storage instead
-            //this.updateUserToProvision(signupResult[0].result.userData.objectId, signupResult[0].result.profileData.objectId);
+            this.updateUserToProvision(signupResult.data.result.userData.objectId, signupResult.data.result.profileData.objectId);
 
-            this.storage.set("UserProfile", signupResult[0].result).then(() => {
+            this.storage.set("UserProfile", signupResult.data.result).then(() => {
               return new Promise(async (resolve) => {
                 return await this.dataService.getApi(
                   'fetchMarkers',
-                  { profileId: signupResult[0].result.profileData.objectId, role: this.role }
+                  { profileId: signupResult.data.result.profileData.objectId, role: this.role }
                 ).then(async API => {
                   return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
                     return await this.dataService.sanitizeNotifications(Notifications[0].result).then(async notifications => {
@@ -357,15 +359,14 @@ export class RegisterStep2Page {
 
       geocoder.geocode({ location: latLng }, function (results, status) {
         console.log(results);
-        let address: Geolocation;
+        let address: { country: string; formattedAddress: string; };
         for (let ac = 0; ac < results[0].address_components.length; ac++) {
           let component = results[0].address_components[ac];
 
           switch (component.types[0]) {
             case 'country':
-             // TODO: cleanup related to Geolocation being passed around properly now
-              //address.country = component.short_name;
-              //address.formattedAddress = results[0].formatted_address;
+              address.country = component.short_name;
+              address.formattedAddress = results[0].formatted_address;
               resolve(address);
               break;
           }

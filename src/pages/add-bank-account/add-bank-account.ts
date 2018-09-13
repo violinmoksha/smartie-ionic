@@ -78,7 +78,7 @@ export class AddBankAccountPage {
         ).then(async API => {
           return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(async response => {
             // TODO: just use storage for this!! no more useless wrappers like this
-            //return await this.dataService.updateUserProfileStorage(response[0].result).then(profile => {
+            //return await this.dataService.updateUserProfileStorage(response.data.result).then(profile => {
               //loading.dismiss();
               this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'teacherStripePayment'});
             //});
