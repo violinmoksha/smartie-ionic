@@ -67,27 +67,27 @@ export class DataService {
       //ss.remove('userkey').then(async data => {
         return await ss.get('userkey').then(async data => {
           if (data.length == 44) {
-            return data;
+            return await data;
           } else {
             // isnt here yet, so gen and store it
             return await ss.set('userkey', newKey).then(async data => {
               return await ss.get('userkey').then(async data => {
-                return data;
+                return await data;
               });
-            }, error => {
-              return error;
+            }, async error => {
+              return await error;
             })
           }
         }, async error => {
           // isnt here yet, so gen and store it
           return await ss.set('userkey', newKey).then(async data => {
-            return await ss.get('userkey').then(data => {
-              return data;
+            return await ss.get('userkey').then(async data => {
+              return await data;
             }, error => {
               return error;
             })
-          }, error => {
-            return error;
+          }, async error => {
+            return await error;
           })
         });
       // }, error => {
@@ -99,7 +99,7 @@ export class DataService {
 
   async getBeyondGDPR(encryptOrDecrypt, body) {
     if (Constants.API_ENDPOINTS.beyondGDPR.chickenSwitch == true) {
-      return false; // NB: resolve so as not to interrupt exec flow (true chickenSwitch)
+      return await false; // NB: resolve so as not to interrupt exec flow (true chickenSwitch)
     } else {
       return await this.getUserkey().then(async userkey => {
         body.userkey = userkey;
@@ -117,9 +117,9 @@ export class DataService {
           "apiBody": body,
           "apiHeaders": headers
         };
-      }, error => {
+      }, async error => {
         // rejecting this inner error so that outer UI has access for ionic alertCtrl
-        return error;
+        return await error;
       });
     }
   }

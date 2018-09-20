@@ -1,6 +1,6 @@
 export class Constants {
   public static API_ENDPOINTS = {
-    env: 'local',
+    env: 'test',
     beyondGDPR: {
       chickenSwitch: true,
       baseUrl: "https://test.t0tl3s.com:3001",
