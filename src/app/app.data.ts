@@ -18,7 +18,6 @@ export class DataService {
   httpPost(url, body, header){
     let self = this;
     return <any> new Promise((resolve, reject)=>{
-      debugger;
       this.http.post(url, body, header).then((res)=>{
         if(res.data){
           res.data = JSON.parse(res.data)
@@ -26,7 +25,6 @@ export class DataService {
         }else{
           reject(res);
         }
-        console.log("api resp: "+JSON.stringify(res));
       }, err=>{
         console.log("Api call failed: "+JSON.stringify(err))
         reject(err);
@@ -36,7 +34,7 @@ export class DataService {
 
   async getApi(endPoint, body) {
     return await this.storage.get('UserProfile').then(async userData => {
-      return await this.storage.get('Provision').then(async provisionData => {
+      return await this.storage.get('Provision').then(provisionData => {
         const ourBaseUrls = Constants.API_ENDPOINTS.baseUrls;
         const ourHeaders = Constants.API_ENDPOINTS.headers;
         const ourEnv = Constants.API_ENDPOINTS.env;
@@ -55,7 +53,7 @@ export class DataService {
         const httpOptions = {
           'X-Parse-Application-Id': this.applicationId,
           'X-Hullo-Token': provisionData ? provisionData.pToken : '',
-          'x-Device-UUID': provisionData ? provisionData.provision.uuid : '',
+          'x-Device-UUID': (provisionData && provisionData.provision) ? provisionData.provision.uuid : '',
           'X-Bouncy-Token': userData ? userData.jwtToken : '',
           'X-User-Id': userData ? userData.userData.objectId : '',
           'Content-Type': this.contentType
@@ -68,8 +66,7 @@ export class DataService {
           "apiBody": JSON.stringify(body),
           "apiHeaders": httpOptions
         };
-        console.log(retObj);
-        return await retObj;
+        return retObj;
       }, error => {
         return error;
       })

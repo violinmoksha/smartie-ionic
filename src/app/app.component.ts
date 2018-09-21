@@ -12,7 +12,8 @@ import { Device } from '@ionic-native/device';
 
 import { DataService } from './app.data';
 
-import Parse from 'parse';
+// import Parse from 'parse';
+const Parse = require('parse');
 
 @Component({
   templateUrl: 'app.html'
@@ -78,7 +79,8 @@ export class SmartieApp {
         this.initGeolocation();
         this.initFirebase(); // NB: calls sync/non-returning notificationHandler
 
-        Parse.initialize(this.parseAppId, null, this.parseMasterKey);
+Parse._initialize(this.parseAppId, null, this.parseMasterKey);
+       // Parse.initialize(this.parseAppId, null, this.parseMasterKey);
         Parse.serverURL = this.parseServerUrl;
 
         return await this.dataService.getApi(
@@ -86,10 +88,8 @@ export class SmartieApp {
           { uuid: this.device.uuid }
         ).then(async API => {
           return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-            console.log(response.data)
             this.storage.set("Provision", response.data.result);
             return await this.storage.get('UserProfile').then(async user => {
-              console.log('And made it back with a UserProfile obj called user: '+JSON.stringify(user));
               if (user != null) {
                 this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
                 this.splashScreen.hide();
@@ -99,13 +99,11 @@ export class SmartieApp {
                 // this.storage.get('Provision').then(async provision => {
                 //
                 // });
-                if(response.data.result.provision.user && response.data.result.profile){
-                  console.log("login page load");
+                if(response.data.result.provision.user && response.data.result.provision.profile){
                   this.nav.setRoot("LoginPage", { role: response.data.result.provision.role });
                   this.splashScreen.hide();
                   return true;
                 }else{
-                  console.log("checking for registration")
                   return await this.storage.get("Registration").then(async registration => {
                     if(registration && registration.step){
                       if(registration.step === 0){
@@ -160,13 +158,10 @@ export class SmartieApp {
   async initFirebase() {
     let self = this;
      this.firebase.getToken().then(async token => {
-      //console.log(`Firebase token is: ${token}`);
       let API = await this.dataService.getApi(
         'updateFcmToken',
         { device: this.device, token: token }
       )
-        console.log("API: "+JSON.stringify(API));
-        debugger;
          self.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(data => {
           this.notificationHandler();
           return token;
@@ -218,7 +213,6 @@ export class SmartieApp {
       this.nav.push("WalletPage");
     }else{
       if(page.isTabs){
-        console.log(page);
       this.storage.get("UserProfile").then(userProfile => {
         let params = {};
 

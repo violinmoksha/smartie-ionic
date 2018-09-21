@@ -69,7 +69,6 @@ export class RegisterStep1Page {
         return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(
           async isNewEmail => {
             loading.dismiss();
-            console.log(isNewEmail);
             if (isNewEmail.data.result == true) {
 
               this.navCtrl.push("RegisterStep2Page", { form1Values : formParams, role: this.role });

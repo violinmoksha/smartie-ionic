@@ -226,7 +226,7 @@ export class SmartieSearch {
                 { profileId: profile.profileData.objectId, role: profile.profileData.role }
               ).then(async API => {
                 return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
-                  return await this.dataService.sanitizeNotifications(Notifications[0].result).then(async notifications => {
+                  return await this.dataService.sanitizeNotifications(Notifications.data.result).then(async notifications => {
                     this.notifications = notifications;
                     return await this.storage.get('phoneLatLng').then(async phoneLatLng => {
                       //console.log(phoneLatLng);
@@ -316,9 +316,9 @@ export class SmartieSearch {
       ).then(async API => {
         return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
           this.notifyCount = '';
-          if(response[0].result.length > 0){
-            this.notifyCount = response[0].result.length;
-            this.storage.set("userAllRequesteds", response[0].result);
+          if(response.data.result.length > 0){
+            this.notifyCount = response.data.result.length;//response[0].result.length;
+            this.storage.set("userAllRequesteds", response.data.result);
           }
           resolve('success');
         }, err => {
@@ -335,9 +335,9 @@ export class SmartieSearch {
         this.body
       ).then(async API => {
         return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-          if(response[0].result.length > 0){
-            this.notifyCount = this.notifyCount + response[0].result.length;
-            this.storage.set("userAllAccepteds", response[0].result);
+          if(response.data.result.length > 0){
+            this.notifyCount = this.notifyCount + response.data.result.length;
+            this.storage.set("userAllAccepteds", response.data.result);
           }
           resolve('success');
         })
@@ -352,11 +352,11 @@ export class SmartieSearch {
         this.body
       ).then(async API => {
         return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-          if(response[0].result.length > 0){
+          if(response.data.result.length > 0){
             this.hasUpcomings = true;
-            this.upcomingsCount = response[0].result.length;
-            this.notifyCount = this.notifyCount + response[0].result.length;
-            this.storage.set("userAllUpcomings", response[0].result);
+            this.upcomingsCount = response.data.result.length;
+            this.notifyCount = this.notifyCount + response.data.result.length;
+            this.storage.set("userAllUpcomings", response.data.result);
           }
           resolve('success');
         }, err => {

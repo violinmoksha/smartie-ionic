@@ -44,9 +44,9 @@ export class WalletPage {
         ).then(async API => {
           return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
             loading.dismiss();
-            console.log(response[0].result);
-            this.availableBalance = response[0].result.available[0].amount / 100;
-            this.pendingBalance = response[0].result.pending[0].amount / 100;
+            console.log(response.data.result);
+            this.availableBalance = response.data.result.available[0].amount / 100;
+            this.pendingBalance = response.data.result.pending[0].amount / 100;
           }, err => {
             loading.dismiss();
             console.log(err.error.error.message);
@@ -73,7 +73,7 @@ export class WalletPage {
       ).then(async API => {
         return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
           loading.dismiss();
-            console.log(response[0].result);
+            console.log(response.data.result);
         }, err => {
           loading.dismiss();
           console.log(err.error.error);

@@ -129,7 +129,7 @@ export class ChatPage {
       ).then(async API => {
         return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders ).then(async response => {
           this.chatMessages = [];
-          for(let chat of response[0].data.result){
+          for(let chat of response.data.result){
             this.chatMessages.push(chat);
           }
 

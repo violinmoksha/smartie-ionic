@@ -65,7 +65,7 @@ export class ChatProvider {
       ).then(async API => {
         return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
           this.allMessages = [];
-          for(let chat of response[0].result){
+          for(let chat of response.data.result){
             this.allMessages.push(chat);
           }
           // this.allMessages = response.result;

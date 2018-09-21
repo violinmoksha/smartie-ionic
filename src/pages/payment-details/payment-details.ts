@@ -56,7 +56,7 @@ export class PaymentDetailsPage {
         { stripeAccountId: this.stripeCustomerId }
       ).then(async API => {
         return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-          if(response[0].result.url){ // ??? NB: everything is usually response.data.result now FYI using @ionic-native/http
+          if(response.data.result.url){ // ??? NB: everything is usually response.data.result now FYI using @ionic-native/http
             loading.dismiss();
             // const options: ThemeableBrowserOptions = {
             //   toolbar: {

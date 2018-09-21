@@ -35,14 +35,13 @@ export class FileUploaderProvider {
     let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
     return await this.dataService.getApi('getAWSCredential', { 'fileName': fileName }).then(async API => {
-      return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async (data) => {
-        console.log(data);
+      return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async (res) => {
         let params = {
           "key": fileName,
-          "AWSAccessKeyId": data[0].result.awsKey,
+          "AWSAccessKeyId": res.data.result.awsKey,
           "acl": "public-read",
-          "policy": data[0].result.policy,
-          "signature": data[0].result.signature,
+          "policy": res.data.result.policy,
+          "signature": res.data.result.signature,
           "Content-Type": "image/jpeg"
         }
         let options: FileUploadOptions = {

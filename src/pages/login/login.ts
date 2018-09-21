@@ -27,14 +27,8 @@ export class LoginPage {
   };
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private dataService: DataService, private loadingCtrl :LoadingController, private analytics : AnalyticsProvider,private menu: MenuController) {
-
-
-    console.log("Login Page");
-
     this.storage.get('Provision').then(provision => {
-      console.log(provision);
       this.provisionData = provision.provision;
-
     })
 
     this.LoginForm = new FormGroup({
@@ -59,9 +53,8 @@ export class LoginPage {
           });
           loading.present();
           return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async data => {
-            console.log(data);
             loading.dismiss();
-            return await this.storage.set('UserProfile', data[0].data).then(async UserProfile => {
+            return await this.storage.set('UserProfile', data.data.result).then(async UserProfile => {
               this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: UserProfile.profileData.role, fromWhere: "login" });
 
               if(data){

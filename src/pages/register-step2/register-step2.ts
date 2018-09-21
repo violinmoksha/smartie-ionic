@@ -301,7 +301,7 @@ export class RegisterStep2Page {
                   { profileId: signupResult.data.result.profileData.objectId, role: this.role }
                 ).then(async API => {
                   return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
-                    return await this.dataService.sanitizeNotifications(Notifications[0].result).then(async notifications => {
+                    return await this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
                       this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
                       //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
                     })
@@ -358,7 +358,6 @@ export class RegisterStep2Page {
       let geocoder = new google.maps.Geocoder();
 
       geocoder.geocode({ location: latLng }, function (results, status) {
-        console.log(results);
         let address: { country: string; formattedAddress: string; };
         for (let ac = 0; ac < results[0].address_components.length; ac++) {
           let component = results[0].address_components[ac];

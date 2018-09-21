@@ -82,7 +82,7 @@ export class VerifyIdentityPage {
           // TODO redo this as plain ol this.storage
           //return await this.dataService.updateUserProfileStorage(response[0].result).then(profile => {
             //loading.dismiss();
-            this.navCtrl.push("AddBankAccountPage", { stripeAccount: response[0].result });
+            this.navCtrl.push("AddBankAccountPage", { stripeAccount: response.data.result });
           //});
         }, err => {
           loading.dismiss();
