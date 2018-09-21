@@ -1,3 +1,4 @@
+// import { Response } from '@angular/http';
 //import { DbserviceProvider } from './../providers/dbservice';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events } from 'ionic-angular';
@@ -41,9 +42,7 @@ export class SmartieApp {
     public firebase: Firebase,
     public device: Device,
     public dataService: DataService) {
-
     this.initializeApp();
-
     this.events.subscribe("buttonsLoad", eventData => {
       //Tabs index 0 is always set to search
       if (eventData !== 'teacher') {
@@ -69,6 +68,7 @@ export class SmartieApp {
     });
   }
 
+
   async initializeApp() { // async for testing-purposes
     return await this.platform.ready().then(async () => {
       // Okay, so the platform is ready and our plugins are available.
@@ -85,7 +85,9 @@ export class SmartieApp {
           'getUserProvision',
           { uuid: this.device.uuid }
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+            console.log(response.data)
+            this.storage.set("Provision", response.data.result);
             return await this.storage.get('UserProfile').then(async user => {
               console.log('And made it back with a UserProfile obj called user: '+JSON.stringify(user));
               if (user != null) {
@@ -97,35 +99,43 @@ export class SmartieApp {
                 // this.storage.get('Provision').then(async provision => {
                 //
                 // });
-
-                return await this.storage.get("Registration").then(async registration => {
-                  if(registration && registration.step){
-                    if(registration.step === 0){
-                      this.nav.setRoot("RegisterStep1Page", { role: registration.role });
-                    }else if(registration.step == 1){
-                      this.nav.setRoot("RegisterStep2Page", registration);
-                    }else if(registration.step == 2){
-                      this.nav.setRoot("RegisterStep3Page", registration);
-                    }
-                  }else{
-                    // NB has a provision, but no User object and no saved reg, yuup sending them back through registration!
-                    this.nav.setRoot("RegisterStep1Page", { role: JSON.parse(response.data).result.provision.role });
-                  }
+                if(response.data.result.provision.user && response.data.result.profile){
+                  console.log("login page load");
+                  this.nav.setRoot("LoginPage", { role: response.data.result.provision.role });
                   this.splashScreen.hide();
-                  return await true;
+                  return true;
+                }else{
+                  console.log("checking for registration")
+                  return await this.storage.get("Registration").then(async registration => {
+                    if(registration && registration.step){
+                      if(registration.step === 0){
+                        this.nav.setRoot("RegisterStep1Page", { role: registration.role });
+                      }else if(registration.step == 1){
+                        this.nav.setRoot("RegisterStep2Page", registration);
+                      }else if(registration.step == 2){
+                        this.nav.setRoot("RegisterStep3Page", registration);
+                      }
+                    }else{
+                      // NB has a provision, but no User object and no saved reg, yuup sending them back through registration!
+                      this.nav.setRoot("RegisterStep1Page", { role: response.data.result.provision.role });
+                    }
+                    this.splashScreen.hide();
+                    return await true;
 
-                }, err => {
-                  console.log(err);
-                });
+                  }, err => {
+                    console.log(err);
+                  });
+                }
+
               }
             }, err => {
               console.log('Strange err: '+err);
             })
-          }, async err => {
+          }, err => {
             console.log('No provision from server (yet): '+JSON.stringify(err));
             this.splashScreen.hide();
             this.rootPage = 'LandingPage';
-            return await false;
+            return false;
           })
         });
       } else {
@@ -148,24 +158,25 @@ export class SmartieApp {
   }
 
   async initFirebase() {
-    return await this.firebase.getToken().then(async token => {
+    let self = this;
+     this.firebase.getToken().then(async token => {
       //console.log(`Firebase token is: ${token}`);
-      return await this.dataService.getApi(
+      let API = await this.dataService.getApi(
         'updateFcmToken',
         { device: this.device, token: token }
-      ).then(async API => {
+      )
         console.log("API: "+JSON.stringify(API));
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async data => {
+        debugger;
+         self.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(data => {
           this.notificationHandler();
           return token;
-        }, async error => {
+        }, error => {
           console.info('Error in updateFcmToken endpoint: ', error);
-          return await error;
+          return error;
         });
-      });
     }, async error => {
       console.info('Error in Firebase getToken: ', JSON.stringify(error));
-      return await error;
+      return error;
     });
   }
 
@@ -180,7 +191,7 @@ export class SmartieApp {
           'getJobRequestById',
           { "jobRequestId": job.jobId }
         ).then(API => {
-          this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+          this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
             this.nav.push("JobRequestPage", { params: response.data.result });
           }, err => {
             // TODO: handle this in UI
@@ -225,7 +236,6 @@ export class SmartieApp {
 
     }
   }
-
     /*if (button.iconName == 'paper')
       this.nav.push("FeedbackPage");
     else if (button.iconName == 'settings')

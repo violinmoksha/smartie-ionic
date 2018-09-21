@@ -262,7 +262,7 @@ export class RegisterStep2Page {
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
     ).then(async API => {
-      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+      return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
         // TODO: needs to happen right here directly into storage?
         return await this.storage.set('Provision', response.data.result).then(async prov => {
           return await prov;
@@ -291,7 +291,7 @@ export class RegisterStep2Page {
           'signUpRole',
           {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo)}
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async signupResult => {
+          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async signupResult => {
             this.updateUserToProvision(signupResult.data.result.userData.objectId, signupResult.data.result.profileData.objectId);
 
             this.storage.set("UserProfile", signupResult.data.result).then(() => {
@@ -300,7 +300,7 @@ export class RegisterStep2Page {
                   'fetchMarkers',
                   { profileId: signupResult.data.result.profileData.objectId, role: this.role }
                 ).then(async API => {
-                  return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
+                  return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
                     return await this.dataService.sanitizeNotifications(Notifications[0].result).then(async notifications => {
                       this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
                       //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
@@ -328,8 +328,8 @@ export class RegisterStep2Page {
     this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
     this.storage.get('Registration').then(registration => {
       if(registration){
-        registration[0].step = 2;
-        registration[0].form2Values = form2Values;
+        registration.step = 2;
+        registration.form2Values = form2Values;
         this.storage.set('Registration', registration);
       }else{
         this.storage.set('Registration', { form1Values : this.form1Values, form2Values : form2Values, role: this.role });

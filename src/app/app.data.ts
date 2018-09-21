@@ -15,6 +15,25 @@ export class DataService {
   constructor(public storage: Storage, public secureStorage: SecureStorage, public http: HTTP) {
   }
 
+  httpPost(url, body, header){
+    let self = this;
+    return <any> new Promise((resolve, reject)=>{
+      debugger;
+      this.http.post(url, body, header).then((res)=>{
+        if(res.data){
+          res.data = JSON.parse(res.data)
+          resolve(res);
+        }else{
+          reject(res);
+        }
+        console.log("api resp: "+JSON.stringify(res));
+      }, err=>{
+        console.log("Api call failed: "+JSON.stringify(err))
+        reject(err);
+      })
+    })
+  }
+
   async getApi(endPoint, body) {
     return await this.storage.get('UserProfile').then(async userData => {
       return await this.storage.get('Provision').then(async provisionData => {

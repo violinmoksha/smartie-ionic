@@ -78,7 +78,7 @@ export class VerifyIdentityPage {
         'verifyTeacherIdentity',
         this.body
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
           // TODO redo this as plain ol this.storage
           //return await this.dataService.updateUserProfileStorage(response[0].result).then(profile => {
             //loading.dismiss();

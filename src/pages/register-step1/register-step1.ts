@@ -66,7 +66,7 @@ export class RegisterStep1Page {
         'isNewEmail',
         { email: form1Value.email }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(
+        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(
           async isNewEmail => {
             loading.dismiss();
             console.log(isNewEmail);

@@ -42,7 +42,7 @@ export class WalletPage {
           'getTeacherAvailableBalance',
           { stripeAccountId: this.stripeCustomer.stripe_user_id, profileId: profile.profileData.objectId }
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
+          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
             loading.dismiss();
             console.log(response[0].result);
             this.availableBalance = response[0].result.available[0].amount / 100;
@@ -71,7 +71,7 @@ export class WalletPage {
         'createInstantPayouts',
         { stripeAccountId: this.stripeCustomer.stripe_user_id, amount: this.availableBalance * 100, profileId: this.profileData.objectId }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
+        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
           loading.dismiss();
             console.log(response[0].result);
         }, err => {

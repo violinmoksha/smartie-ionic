@@ -291,7 +291,7 @@ export class RegisterStep3Page {
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
     ).then(async API => {
-      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+      return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
         console.log("Getting updated provision");
         console.log(response);
         // TODO: have we done this correctly, we'll see, this simplification should again be correct
@@ -338,7 +338,7 @@ export class RegisterStep3Page {
         'signUpRole',
         {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(this.form2Values), userInfo: JSON.stringify(form3Values)}
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(
+        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(
           async signupResult => {
             console.log(signupResult);
             // TODO: do this via storage now
@@ -350,9 +350,9 @@ export class RegisterStep3Page {
                   'fetchMarkers',
                   { profileId: signupResult.data.result.profileData.objectId, role: this.role }
                 ).then(async API => {
-                  return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
+                  return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
                     this.loading.dismiss();
-                    return await this.dataService.sanitizeNotifications(Notifications[0].result).then(notifications => {
+                    return await this.dataService.sanitizeNotifications(Notifications.data.result).then(notifications => {
                       this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
                       //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
                       // TODO: do this via storage now

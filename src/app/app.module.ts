@@ -28,7 +28,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import { AnalyticsProvider } from '../providers/analytics';
 import { ContactPatterns } from '../providers/contact-patterns';
-//import { CameraServiceProvider } from '../providers/camera-service';
+import { CameraServiceProvider } from '../providers/camera-service';
 //import { ChatProvider } from '../providers/chat';
 //import { FileUploaderProvider } from '../providers/file-uploader';
 import { FileTransfer } from '@ionic-native/file-transfer';
@@ -77,7 +77,7 @@ import { DataService } from './app.data';
     Constants,
     HTTP,
     DataService,
-    //CameraServiceProvider,
+    CameraServiceProvider,
     //ChatProvider,
     //FileUploaderProvider,
     //IonicErrorHandler,
