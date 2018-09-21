@@ -1,4 +1,3 @@
-//import { DbserviceProvider } from './../providers/dbservice';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
@@ -69,8 +68,8 @@ export class SmartieApp {
     });
   }
 
-  async initializeApp() { // async for testing-purposes
-    return await this.platform.ready().then(async () => {
+  initializeApp() {
+    this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       if (this.platform.is('cordova')) {
@@ -81,24 +80,23 @@ export class SmartieApp {
         Parse.initialize(this.parseAppId, null, this.parseMasterKey);
         Parse.serverURL = this.parseServerUrl;
 
-        return await this.dataService.getApi(
+        this.dataService.getApi(
           'getUserProvision',
           { uuid: this.device.uuid }
-        ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-            return await this.storage.get('UserProfile').then(async user => {
+        ).then(API => {
+          this.dataService.http.post(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
+            this.storage.get('UserProfile').then(user => {
               console.log('And made it back with a UserProfile obj called user: '+JSON.stringify(user));
               if (user != null) {
                 this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
                 this.splashScreen.hide();
-                return await true;
               } else {
                 // hm, no UserProfile object but maybe there's a provision???
                 // this.storage.get('Provision').then(async provision => {
                 //
                 // });
 
-                return await this.storage.get("Registration").then(async registration => {
+                this.storage.get("Registration").then(registration => {
                   if(registration && registration.step){
                     if(registration.step === 0){
                       this.nav.setRoot("RegisterStep1Page", { role: registration.role });
@@ -112,8 +110,6 @@ export class SmartieApp {
                     this.nav.setRoot("RegisterStep1Page", { role: JSON.parse(response.data).result.provision.role });
                   }
                   this.splashScreen.hide();
-                  return await true;
-
                 }, err => {
                   console.log(err);
                 });
@@ -121,52 +117,54 @@ export class SmartieApp {
             }, err => {
               console.log('Strange err: '+err);
             })
-          }, async err => {
+          }, err => {
             console.log('No provision from server (yet): '+JSON.stringify(err));
             this.splashScreen.hide();
             this.rootPage = 'LandingPage';
-            return await false;
           })
         });
       } else {
         console.log('What on earth non-cordova land.');
         this.splashScreen.hide();
         this.rootPage = 'LandingPage';
-        return await false;
       }
     });
   }
 
-  async initGeolocation() {
-    return await this.geolocation.getCurrentPosition().then(async resp => {
-      this.storage.set('phoneGeoposition', resp);
-      return await resp;
-    }, async error => {
-      console.info('Error setting phoneGeoposition: ', JSON.stringify(error));
-      return await error;
+  initGeolocation() {
+    return new Promise((resolve, reject) => { // only returns promise for testing purpose
+      this.geolocation.getCurrentPosition().then(resp => {
+        this.storage.set('phoneGeoposition', resp);
+        resolve(resp);
+      }, error => {
+        console.info('Error setting phoneGeoposition: ', JSON.stringify(error));
+        reject(error);
+      });
     });
   }
 
-  async initFirebase() {
-    return await this.firebase.getToken().then(async token => {
-      //console.log(`Firebase token is: ${token}`);
-      return await this.dataService.getApi(
-        'updateFcmToken',
-        { device: this.device, token: token }
-      ).then(async API => {
-        console.log("API: "+JSON.stringify(API));
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async data => {
-          this.notificationHandler();
-          return token;
-        }, async error => {
-          console.info('Error in updateFcmToken endpoint: ', error);
-          return await error;
+  initFirebase() {
+    return new Promise((resolve, reject) => {
+      this.firebase.getToken().then(async token => {
+        //console.log(`Firebase token is: ${token}`);
+        this.dataService.getApi(
+          'updateFcmToken',
+          { device: this.device, token: token }
+        ).then(API => {
+          console.log("API: "+JSON.stringify(API));
+          this.dataService.http.post(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(data => {
+            this.notificationHandler();
+            resolve(token);
+          }, error => {
+            console.info('Error in updateFcmToken endpoint: ', error);
+            reject(error);
+          });
         });
+      }, error => {
+        console.info('Error in Firebase getToken: ', JSON.stringify(error));
+        reject(error);
       });
-    }, async error => {
-      console.info('Error in Firebase getToken: ', JSON.stringify(error));
-      return await error;
-    });
+    })
   }
 
   notificationHandler() : void {
@@ -180,7 +178,7 @@ export class SmartieApp {
           'getJobRequestById',
           { "jobRequestId": job.jobId }
         ).then(API => {
-          this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
+          this.dataService.http.post(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
             this.nav.push("JobRequestPage", { params: response.data.result });
           }, err => {
             // TODO: handle this in UI
