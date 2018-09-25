@@ -44,7 +44,7 @@ export class ChatProvider {
           'addChatMessage',
           { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId, message: msg, viewed: false, role: this.profile.role }
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(async response => {
+          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders ).then(async response => {
             resolve(response);
           }, err => {
             console.log(err);
@@ -63,9 +63,9 @@ export class ChatProvider {
         'getAllMessages',
         { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
           this.allMessages = [];
-          for(let chat of response[0].result){
+          for(let chat of response.data.result){
             this.allMessages.push(chat);
           }
           // this.allMessages = response.result;

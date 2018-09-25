@@ -146,7 +146,7 @@ export class AddPaymentPage {
         endPoint,
         body
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
           console.log(response.data.result);
           // TODO: here again this needs to be done directly rght here, no additional provider wrapper needed!!
           //this.smartieApi.updateUserProfileStorage(response.data.result).then(profile => {

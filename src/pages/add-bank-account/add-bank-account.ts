@@ -76,7 +76,7 @@ export class AddBankAccountPage {
           'addBankAccount',
           this.body
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders ).then(async response => {
+          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders ).then(async response => {
             // TODO: just use storage for this!! no more useless wrappers like this
             //return await this.dataService.updateUserProfileStorage(response.data.result).then(profile => {
               //loading.dismiss();

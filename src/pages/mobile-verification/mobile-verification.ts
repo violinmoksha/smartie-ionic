@@ -25,8 +25,6 @@ export class MobileVerificationPage {
   constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, private device: Device, private dataService: DataService, private loadingCtrl: LoadingController, private storage: Storage,private formBuilder: FormBuilder,private analytics : AnalyticsProvider) {
     this.role = navParams.get('role');
 
-    console.log(this.device);
-
     this.mobileVerification = this.formBuilder.group({
      mobileNumber:['', Validators.compose([
         Validators.required,
@@ -70,15 +68,14 @@ export class MobileVerificationPage {
           'setUserProvision',
           params
         ).then(async API => {
-          console.log('API here: '+JSON.stringify(API));
-          this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response=>{
+          this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response=>{
             loading.dismiss();
-            this.storage.set("Provision", JSON.parse(response.data).result);
+            console.log("User provision: "+JSON.stringify(response))
+            this.storage.set("Provision", response.data.result);
             this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
           },e=>{
             loading.dismiss();
             console.log(e);
-            console.log("coming here provision error");
           })
         });
       });

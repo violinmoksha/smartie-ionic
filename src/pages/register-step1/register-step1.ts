@@ -66,10 +66,9 @@ export class RegisterStep1Page {
         'isNewEmail',
         { email: form1Value.email }
       ).then(async API => {
-        return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(
+        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(
           async isNewEmail => {
             loading.dismiss();
-            console.log(isNewEmail);
             if (isNewEmail.data.result == true) {
 
               this.navCtrl.push("RegisterStep2Page", { form1Values : formParams, role: this.role });

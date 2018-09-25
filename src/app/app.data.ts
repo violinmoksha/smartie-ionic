@@ -15,9 +15,27 @@ export class DataService {
   constructor(public storage: Storage, public secureStorage: SecureStorage, public http: HTTP) {
   }
 
+  httpPost(url, body, header){
+    let self = this;
+    return <any> new Promise((resolve, reject)=>{
+      this.http.post(url, body, header).then((res)=>{
+        console.log("API Response = "+JSON.stringify(res));
+        if(res.data){
+          res.data = JSON.parse(res.data)
+          resolve(res);
+        }else{
+          reject(res);
+        }
+      }, err=>{
+        console.log("Api call failed: "+JSON.stringify(err))
+        reject(err);
+      })
+    })
+  }
+
   async getApi(endPoint, body) {
     return await this.storage.get('UserProfile').then(async userData => {
-      return await this.storage.get('Provision').then(async provisionData => {
+      return await this.storage.get('Provision').then(provisionData => {
         const ourBaseUrls = Constants.API_ENDPOINTS.baseUrls;
         const ourHeaders = Constants.API_ENDPOINTS.headers;
         const ourEnv = Constants.API_ENDPOINTS.env;
@@ -35,8 +53,8 @@ export class DataService {
 
         const httpOptions = {
           'X-Parse-Application-Id': this.applicationId,
-          'X-Hullo-Token': provisionData ? provisionData.pToken : '',
-          'x-Device-UUID': provisionData ? provisionData.provision.uuid : '',
+          'X-Hullo-Token': (provisionData && provisionData.pToken) ? provisionData.pToken : '',
+          'x-Device-UUID': (provisionData && provisionData.provision) ? provisionData.provision.uuid : '',
           'X-Bouncy-Token': userData ? userData.jwtToken : '',
           'X-User-Id': userData ? userData.userData.objectId : '',
           'Content-Type': this.contentType
@@ -49,8 +67,8 @@ export class DataService {
           "apiBody": JSON.stringify(body),
           "apiHeaders": httpOptions
         };
-        console.log(retObj);
-        return await retObj;
+        console.log("Headers :"+JSON.stringify(retObj))
+        return retObj;
       }, error => {
         return error;
       })

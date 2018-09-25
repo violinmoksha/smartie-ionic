@@ -258,14 +258,20 @@ export class RegisterStep2Page {
   }
 
   updateUserToProvision = async (userId, userProfileId) => {
-    return await this.dataService.getApi(
+     this.dataService.getApi(
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
-    ).then(async API => {
-      return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+    ).then(API => {
+       this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
         // TODO: needs to happen right here directly into storage?
-        return await this.storage.set('Provision', response.data.result).then(async prov => {
-          return await prov;
+       this.storage.get('Provision').then(async prov => {
+          if(prov){
+            prov.provision = response.data.result;
+            this.storage.set("Provision", prov);
+          }else{
+            console.log("no provision found");
+            this.storage.set("Provision", response.data.result);
+          }
         })
         //return await this.data.updateProvisionStorage(response[0].result);
       }, err => {
@@ -291,7 +297,7 @@ export class RegisterStep2Page {
           'signUpRole',
           {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo)}
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async signupResult => {
+          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async signupResult => {
             this.updateUserToProvision(signupResult.data.result.userData.objectId, signupResult.data.result.profileData.objectId);
 
             this.storage.set("UserProfile", signupResult.data.result).then(() => {
@@ -300,8 +306,8 @@ export class RegisterStep2Page {
                   'fetchMarkers',
                   { profileId: signupResult.data.result.profileData.objectId, role: this.role }
                 ).then(async API => {
-                  return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
-                    return await this.dataService.sanitizeNotifications(Notifications[0].result).then(async notifications => {
+                  return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
+                    return await this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
                       this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
                       //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
                     })
@@ -328,8 +334,8 @@ export class RegisterStep2Page {
     this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
     this.storage.get('Registration').then(registration => {
       if(registration){
-        registration[0].step = 2;
-        registration[0].form2Values = form2Values;
+        registration.step = 2;
+        registration.form2Values = form2Values;
         this.storage.set('Registration', registration);
       }else{
         this.storage.set('Registration', { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
@@ -358,7 +364,6 @@ export class RegisterStep2Page {
       let geocoder = new google.maps.Geocoder();
 
       geocoder.geocode({ location: latLng }, function (results, status) {
-        console.log(results);
         let address: { country: string; formattedAddress: string; };
         for (let ac = 0; ac < results[0].address_components.length; ac++) {
           let component = results[0].address_components[ac];

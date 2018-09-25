@@ -39,7 +39,6 @@ export class JobRequestPage {
     this.params = navParams.get('params');
     console.log("Job Request page");
     this.jobObject = Object.assign({}, this.params);
-    console.log(this.jobObject);
     this.teacherObj = this.params.teacherProfile;
     this.otherObj = this.params.otherProfile;
     // this.jobObject = this.jobObject.role =='teacher' ? (Object.assign({}, ...this.params)this.params.teacherProfile) : this.params.otherProfile;
@@ -47,6 +46,8 @@ export class JobRequestPage {
     this.appNavCtrl = app.getActiveNav();
 
     if (this.params.role == 'teacher') {
+      console.log(this.jobObject.teacher)
+      if(this.jobObject.teacher.defaultStartDateTime.iso && this.jobObject.teacher.defaultEndDateTime.iso){
       // Converting defaultStartDateTime and defaultEndDateTime to current device TimeZone
       let availStartDateTime = new Date(this.jobObject.teacher.defaultStartDateTime.iso);
       let availEndDateTime = new Date(this.jobObject.teacher.defaultEndDateTime.iso);
@@ -60,6 +61,9 @@ export class JobRequestPage {
       this.jobObject.UTCendDate = (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
 
       this.jobObject = Object.assign(this.jobObject, { ...this.teacherObj });
+      }else{
+        console.log("No iso time found")
+      }
     } else {
       this.jobObject = Object.assign(this.jobObject, { ...this.otherObj });
     }
@@ -87,7 +91,6 @@ export class JobRequestPage {
 
       if (this.userRole !== 'teacher' && this.params.fromWhere == 'acceptedJobs') {
         // this.scheduleJob();
-        console.log(this.jobObject);
         let alert = this.alertCtrl.create({
           title: 'Time to schedule!',
           subTitle: `You must now schedule your session! Tap OK to visit your Schedule page!`,
@@ -126,8 +129,6 @@ export class JobRequestPage {
         otherRole = 'teacher';
       }
 
-      console.log(otherRole);
-
       if (otherRole == 'teacher') {
         this.genericAvatar = './assets/imgs/user-img-teacher.png';
       } else if (otherRole == 'student') {
@@ -143,8 +144,8 @@ export class JobRequestPage {
           'getRequestedJobRequest',
           this.body
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-            if (Object.keys(response[0].data.result).length > 0) {
+          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+            if (response.data.result && response.data.result.length > 0) {
               this.requestSent = true;
             } else {
               this.requestSent = false;
@@ -198,14 +199,12 @@ export class JobRequestPage {
           };
         }
 
-        console.log(this.body);
-
         return new Promise(async (resolve) => {
           return await this.dataService.getApi(
             'setJobRequest',
             this.body
           ).then(async API => {
-            return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+            return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
               this.requestSent = true;
               this.viewCtrl.dismiss();
               this.loading.dismiss();
@@ -250,14 +249,12 @@ export class JobRequestPage {
         this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.teacherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole };
       }
 
-      console.log('sending ' + JSON.stringify(this.body));
-
       return new Promise(async (resolve) => {
         return await this.dataService.getApi(
           'setJobRequest',
           this.body
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
             this.acceptState = true;
             this.viewCtrl.dismiss();
             this.loading.dismiss();
@@ -291,7 +288,7 @@ export class JobRequestPage {
           'setJobRequest',
           this.body
         ).then(async API => {
-          return await this.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
             this.viewCtrl.dismiss();
             this.loading.dismiss();
             this.submitInProgress = false;
