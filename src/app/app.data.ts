@@ -19,6 +19,7 @@ export class DataService {
     let self = this;
     return <any> new Promise((resolve, reject)=>{
       this.http.post(url, body, header).then((res)=>{
+        console.log("API Response = "+JSON.stringify(res));
         if(res.data){
           res.data = JSON.parse(res.data)
           resolve(res);
@@ -52,7 +53,7 @@ export class DataService {
 
         const httpOptions = {
           'X-Parse-Application-Id': this.applicationId,
-          'X-Hullo-Token': provisionData ? provisionData.pToken : '',
+          'X-Hullo-Token': (provisionData && provisionData.pToken) ? provisionData.pToken : '',
           'x-Device-UUID': (provisionData && provisionData.provision) ? provisionData.provision.uuid : '',
           'X-Bouncy-Token': userData ? userData.jwtToken : '',
           'X-User-Id': userData ? userData.userData.objectId : '',
@@ -66,6 +67,7 @@ export class DataService {
           "apiBody": JSON.stringify(body),
           "apiHeaders": httpOptions
         };
+        console.log("Headers :"+JSON.stringify(retObj))
         return retObj;
       }, error => {
         return error;

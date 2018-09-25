@@ -287,15 +287,23 @@ export class RegisterStep3Page {
 
 
   updateUserToProvision = async (userId, userProfileId) => {
-    return await this.dataService.getApi(
+    this.dataService.getApi(
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
     ).then(async API => {
-      return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+      this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
         console.log("Getting updated provision");
         console.log(response);
         // TODO: have we done this correctly, we'll see, this simplification should again be correct
-        this.storage.set('Provision', response.data.result);
+        this.storage.get('Provision').then(async prov => {
+          if(prov){
+            prov.provision = response.data.result;
+            this.storage.set("Provision", prov);
+          }else{
+            console.log("no provision found");
+            this.storage.set("Provision", response.data.result);
+          }
+        })
         //this.dataService.updateProvisionStorage(response[0].result);
       }, err => {
         console.log(err);

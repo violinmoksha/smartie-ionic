@@ -70,6 +70,7 @@ export class MobileVerificationPage {
         ).then(async API => {
           this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response=>{
             loading.dismiss();
+            console.log("User provision: "+JSON.stringify(response))
             this.storage.set("Provision", response.data.result);
             this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
           },e=>{

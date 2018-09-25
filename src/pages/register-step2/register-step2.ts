@@ -258,14 +258,20 @@ export class RegisterStep2Page {
   }
 
   updateUserToProvision = async (userId, userProfileId) => {
-    return await this.dataService.getApi(
+     this.dataService.getApi(
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
-    ).then(async API => {
-      return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+    ).then(API => {
+       this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
         // TODO: needs to happen right here directly into storage?
-        return await this.storage.set('Provision', response.data.result).then(async prov => {
-          return await prov;
+       this.storage.get('Provision').then(async prov => {
+          if(prov){
+            prov.provision = response.data.result;
+            this.storage.set("Provision", prov);
+          }else{
+            console.log("no provision found");
+            this.storage.set("Provision", response.data.result);
+          }
         })
         //return await this.data.updateProvisionStorage(response[0].result);
       }, err => {

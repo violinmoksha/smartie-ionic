@@ -93,7 +93,7 @@ Parse._initialize(this.parseAppId, null, this.parseMasterKey);
               if (user != null) {
                 this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
                 this.splashScreen.hide();
-                return await true;
+                return true;
               } else {
                 // hm, no UserProfile object but maybe there's a provision???
                 // this.storage.get('Provision').then(async provision => {

@@ -145,7 +145,7 @@ export class JobRequestPage {
           this.body
         ).then(async API => {
           return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-            if (response.data.result.length > 0) {
+            if (response.data.result && response.data.result.length > 0) {
               this.requestSent = true;
             } else {
               this.requestSent = false;
