@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Geolocation } from '@ionic-native/geolocation';
+import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { Firebase } from '@ionic-native/firebase';
 import { Device } from '@ionic-native/device';
 
@@ -131,11 +131,15 @@ export class SmartieApp {
     });
   }
 
-  initGeolocation() {
+  initGeolocation() : Promise<any> {
     return new Promise((resolve, reject) => { // only returns promise for testing purpose
       this.geolocation.getCurrentPosition().then(resp => {
-        this.storage.set('phoneGeoposition', resp);
-        resolve(resp);
+        this.storage.set('phoneGeoposition', resp).then(() => {
+          resolve(resp);
+        }, error => {
+          console.info('Error storing phoneGeoposition: ', JSON.stringify(error));
+          reject(error);
+        });
       }, error => {
         console.info('Error setting phoneGeoposition: ', JSON.stringify(error));
         reject(error);
@@ -143,22 +147,26 @@ export class SmartieApp {
     });
   }
 
-  initFirebase() {
+  initFirebase() : Promise<any> {
     return new Promise((resolve, reject) => {
-      this.firebase.getToken().then(async token => {
+      this.firebase.getToken().then(token => {
         //console.log(`Firebase token is: ${token}`);
         this.dataService.getApi(
           'updateFcmToken',
           { device: this.device, token: token }
         ).then(API => {
-          console.log("API: "+JSON.stringify(API));
+          //console.log("API: "+JSON.stringify(API));
+          //console.info("http.post from here is: "+this.dataService.http.post);
           this.dataService.http.post(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(data => {
-            this.notificationHandler();
+            //this.notificationHandler();
             resolve(token);
           }, error => {
             console.info('Error in updateFcmToken endpoint: ', error);
             reject(error);
           });
+        }, error => {
+          console.info('Failed to get updateFcmToken API object: '+JSON.stringify(error));
+          reject(error);
         });
       }, error => {
         console.info('Error in Firebase getToken: ', JSON.stringify(error));

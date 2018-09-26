@@ -16,7 +16,7 @@ export class DataService {
   }
 
   getApi(endPoint, body) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.storage.get('UserProfile').then(userData => {
         this.storage.get('Provision').then(provisionData => {
           const ourBaseUrls = Constants.API_ENDPOINTS.baseUrls;

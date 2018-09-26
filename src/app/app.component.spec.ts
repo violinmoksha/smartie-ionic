@@ -1,6 +1,6 @@
 import {} from 'jasmine';
 
-import { async, inject, TestBed } from '@angular/core/testing';
+import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import { IonicModule, Platform } from 'ionic-angular';
 
 import { IonicStorageModule, Storage } from '@ionic/storage';
@@ -26,8 +26,8 @@ import { DataService } from './app.data';
 import { SmartieApp } from './app.component';
 
 describe('SmartieApp Component', () => {
-  let fixture;
-  let component;
+  let component: SmartieApp;
+  let fixture: ComponentFixture<SmartieApp>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -49,8 +49,6 @@ describe('SmartieApp Component', () => {
         { provide: HTTP, useClass: HTTPMock },
         { provide: SecureStorage, useClass: SecureStorageMock },
         DataService,
-        //{ provide: SmartieAPI, useClass: SmartieAPIMock }
-        //{ provide: FirebaseProvider, useClass: FirebaseProviderMock }
       ]
     }).compileComponents();
   }));
@@ -58,6 +56,7 @@ describe('SmartieApp Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SmartieApp);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should be instanced', () => {
@@ -78,7 +77,13 @@ describe('SmartieApp Component', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should have initGeolocation throwError -capable', () => {
+  it('should have initFirebase callThrough -capable', () => {
+    let spy = spyOn(component, 'initFirebase').and.callThrough();
+    component.initFirebase();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should have initGeolocation throwError -capable', async(() => {
     let spy = spyOn(component, 'initGeolocation').and.throwError('problem');
     let ret;
     try {
@@ -87,7 +92,7 @@ describe('SmartieApp Component', () => {
       ret = false;
     }
     expect(ret).toBeFalsy();
-  });
+  }));
 
   it('should have initGeolocation storing a Geoposition in storage', async(() => {
     const theResult: Geoposition = {
@@ -102,67 +107,37 @@ describe('SmartieApp Component', () => {
       },
       "timestamp":1534525964122.865
     };
+    const spy = spyOn(component.storage, 'set');
 
-    let spy = spyOn(component.storage, 'set');
     component.initGeolocation().then(resp => {
       expect(resp).toEqual(theResult);
       expect(spy).toHaveBeenCalledWith('phoneGeoposition', theResult);
-    });
-  }));
-
-  it('should have initFirebase callThrough -capable', () => {
-    let spy = spyOn(component, 'initFirebase').and.callThrough();
-    component.initFirebase();
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should have initFirebase throwError -capable', () => {
-    let spy = spyOn(component, 'initFirebase').and.throwError('problem');
-    let ret;
-    try {
-      ret = component.initFirebase();
-    } catch(ex) {
-      ret = false;
-    }
-    expect(ret).toBeFalsy();
-  });
-
-  it('should have initFirebase running to completion', async(() => {
-    const token = 'ewCVcq2MitU:APA91bEoTcHJiPt8JjRkTsRjdo2isAuPvj8l5EziijcL7p_taK6IrSqAe9f9L3WvbbeUxMR743hEnqrM-RrTpwI-UO2wJVYK6MRLU7JpWVXnzzYa0ZdP6I4GzjHeO08I95VJWTcdD6Wk65ytAs-iGiqwGa9CgOWbzg';
-    const tokenSpy = spyOn(component.firebase, 'getToken');
-    const notificationSpy = spyOn(component.firebase, 'onNotificationOpen');
-
-    component.initFirebase().then(async(data => {
-      expect(data).toEqual(token);
-      expect(tokenSpy).toHaveBeenCalled();
-      expect(notificationSpy).toHaveBeenCalled();
-    }), error => {
+    }, error => {
       expect(error).toBeDefined();
     });
   }));
 
-  it('should have initializeApp completely in 5s', async(() => {
-    const overarchingInitSpy = spyOn(component, 'initializeApp').and.callThrough();
-    const platformReadySpy = spyOn(component.platform, 'ready');
-    const statusBarStyleDefaultSpy = spyOn(component.statusBar, 'styleDefault');
-    const initGeolocationSpy = spyOn(component, 'initGeolocation');
-    const initFirebaseSpy = spyOn(component, 'initFirebase');
-    const getUserProvisionSpy = spyOn(component.dataService, 'getApi');
-    const getUserSpy = spyOn(component.storage, 'get');
-    const setRootSpy = spyOn(component.nav, 'setRoot');
-    const splashScreenHideSpy = spyOn(component.splashScreen, 'hide');
+  // it('should have initFirebase throwError -capable', async(() => {
+  //   let spy = spyOn(component, 'initFirebase').and.throwError('problem'), ret;
+  //
+  //   try {
+  //     ret = component.initFirebase();
+  //   } catch (ex) {
+  //     ret = false;
+  //   }
+  //   expect(ret).toBeFalsy();
+  // }));
 
-    component.initializeApp();
-    setTimeout(() => {
-      expect(overarchingInitSpy).toHaveBeenCalled();
-      expect(platformReadySpy).toHaveBeenCalled();
-      expect(statusBarStyleDefaultSpy).toHaveBeenCalled();
-      expect(initGeolocationSpy).toHaveBeenCalled();
-      expect(initFirebaseSpy).toHaveBeenCalled();
-      //expect(getUserProvisionSpy).toHaveBeenCalledWith('getUserProvision', { "uuid": component.device.uuid });
-      expect(getUserSpy).toHaveBeenCalledWith('UserProfile');
-      expect(setRootSpy).toHaveBeenCalled();
-      expect(splashScreenHideSpy).toHaveBeenCalled();
-    }, 30000);
-  }));
+  it('should have initFirebase running to completion', () => {
+    const token = 'ewCVcq2MitU:APA91bEoTcHJiPt8JjRkTsRjdo2isAuPvj8l5EziijcL7p_taK6IrSqAe9f9L3WvbbeUxMR743hEnqrM-RrTpwI-UO2wJVYK6MRLU7JpWVXnzzYa0ZdP6I4GzjHeO08I95VJWTcdD6Wk65ytAs-iGiqwGa9CgOWbzg';
+    const tokenSpy = spyOn(component.firebase, 'getToken');
+    const notificationSpy = spyOn(component.firebase, 'onNotificationOpen');
+
+    component.initFirebase().then(data => {
+      expect(data).toEqual(token);
+      expect(tokenSpy).toHaveBeenCalled();
+      expect(notificationSpy).toHaveBeenCalled();
+    });
+  });
+
 });
