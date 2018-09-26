@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+import { Geolocation } from '@ionic-native/geolocation';
 import { Firebase } from '@ionic-native/firebase';
 import { Device } from '@ionic-native/device';
 

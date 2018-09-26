@@ -16,10 +16,11 @@ export class DataService {
   }
 
   httpPost(url, body, header){
-    let self = this;
+    // NB; linter dosnt like it, so not sure I see the usefulness in this TS context?
+    //let self = this;
     return <any> new Promise((resolve, reject)=>{
       this.http.post(url, body, header).then((res)=>{
-        console.log("API Response = "+JSON.stringify(res));
+        //console.log("API Response = "+JSON.stringify(res));
         if(res.data){
           res.data = JSON.parse(res.data)
           resolve(res);

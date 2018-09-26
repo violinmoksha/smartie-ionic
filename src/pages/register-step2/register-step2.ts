@@ -8,7 +8,7 @@ import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { DataService } from '../../app/app.data';
 
-import { Geoposition } from '@ionic-native/geolocation';
+//import { Geoposition } from '@ionic-native/geolocation';
 
 declare let google;
 /**
