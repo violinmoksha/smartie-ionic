@@ -1,0 +1,97 @@
+page-notification-feed {
+  .teacher{
+    .toolbar-title{
+      color: #00BC5B !important
+    }
+    .back-button{
+      color: #00BC5B !important
+    }
+  }
+  .parent {
+    .toolbar-title{
+      color: #F97533 !important
+    }
+    .back-button{
+      color: #F97533 !important
+    }
+  }
+  .school {
+    .toolbar-title{
+      color: #F31C62 !important
+    }
+    .back-button{
+      color: #F31C62 !important
+    }
+  }
+  .student {
+    .toolbar-title{
+      color: #0096D7 !important
+    }
+    .back-button{
+      color: #0096D7 !important
+    }
+  }
+
+  ul{
+    padding: 0;
+    margin: 0;
+    li.upcoming{
+      background-color: #F98D54;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-bottom: 1px solid #cfcfcf;
+      a{
+        text-decoration:none;
+        color: #000;
+        background-image: url(./../assets/imgs/red-alert-icon.png)!important;
+        background-size: 30px;
+        background-position: 15px center;
+        background-repeat: no-repeat;
+        padding: 15px;
+        padding-left: 60px;
+        display: block;
+      }
+    }
+
+    li.accepted{
+      background-color: #CCE9DA;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-bottom: 1px solid #cfcfcf;
+      a{
+        text-decoration:none;
+        color: #000;
+        background-image: url(./../assets/imgs/green-alert-icon.png)!important;
+
+        background-size: 30px;
+        background-position: 15px center;
+        background-repeat: no-repeat;
+        padding: 15px;
+        padding-left: 60px;
+        display: block;
+      }
+    }
+
+    li.requested{
+      background-color: #FCDADD;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-bottom: 1px solid #cfcfcf;
+      a{
+        text-decoration:none;
+        color: #000;
+        background-image: url(./../assets/imgs/red-alert-icon.png)!important;
+
+        background-size: 30px;
+        background-position: 15px center;
+        background-repeat: no-repeat;
+        padding: 15px;
+        padding-left: 60px;
+        display: block;
+      }
+    }
+  }
+}

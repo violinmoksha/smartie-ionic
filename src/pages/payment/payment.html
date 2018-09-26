@@ -1,0 +1,69 @@
+<!--
+  Generated template for the PaymentPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="{{ userRole }}">
+  <ion-navbar>
+    <ion-title>Payment Options</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="{{ userRole }}" padding>
+
+  <div class="profile-data">
+    <div class="left">
+      <div class="avatar">
+        <img *ngIf="params.profilePhoto !== undefined" src="{{ params.profilePhoto.url }}">
+        <img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}" />
+      </div>
+      <div class="u-detail">
+        <div class="name">{{ params.fullname }}</div>
+        <div class="profile-type">{{ params.role }}</div>
+      </div>
+    </div>
+    <div class="rates">
+      <h3>Total Hours: {{ totalHours }} Hrs<br /><span class="money">${{ totalAmount }}</span></h3>
+    </div>
+  </div>
+
+  <form [formGroup]="CardForm" name="CardForm" novalidate>
+    <div class="card-title">
+        Credit Card
+    </div>
+
+    <div class="name-row">
+      <label class="item item-input">
+        <span class="input-label">Card Number</span>
+        <ion-input type="text" name="cardnumber" formControlName="cardnumber" [value]="stripeCustomerCard?.last4"></ion-input>
+      </label>
+    </div>
+    <span *ngIf="CardForm.controls['cardnumber'].invalid && CardForm.controls['cardnumber'].touched"  class="card-error">Please enter valid credit card number</span>
+
+    <div class="date-row">
+      <label class="item item-input expiry-date">
+        <span class="input-label">Expiry Date</span>
+        <ion-input placeholder="" type="text" name="monthexp" formControlName="monthexp" [value]="stripeCustomerCard?.exp_month"></ion-input>
+        <ion-input placeholder="" type="text" name="yearexp" formControlName="yearexp" [value]="stripeCustomerCard?.exp_year"></ion-input>
+      </label>
+
+      <label class="item item-input cvv-no">
+        <span class="input-label">CVV</span>
+        <ion-input placeholder="" type="text" name="cvv" formControlName="cvv"></ion-input>
+      </label>
+      <button tooltip="Flip your card to see cvv number" positionV="bottom" class="cvv-alert" arrow>
+          <ion-icon name="ios-alert-outline"></ion-icon>
+      </button>
+    </div>
+    <span *ngIf="CardForm.controls['monthexp'].invalid && CardForm.controls['monthexp'].touched"  class="card-error">Please enter valid Month of Expiry</span>
+    <span *ngIf="CardForm.controls['yearexp'].invalid && CardForm.controls['yearexp'].touched"  class="card-error">Please enter Year of Expiry</span>
+    <span *ngIf="CardForm.controls['cvv'].invalid && CardForm.controls['cvv'].touched"  class="card-error">Please enter CVV</span>
+
+    <!-- <span class="card-error">Error Message</span> -->
+    <button class="button button-positive" [disabled]="CardForm.invalid" (click)="pay(totalAmount, CardForm.value)" ion-button full>Pay {{ totalAmount }}</button>
+
+  </form>
+
+</ion-content>

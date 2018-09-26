@@ -1,0 +1,118 @@
+page-register {
+  .scroll-content {
+    overflow: hidden;
+  }
+
+  .toolbar-md{
+    min-height: 43px;
+  }
+  .toolbar-title-md {
+    color: #00BC5B;
+    padding: 0;
+    font-size: 17px;
+    font-weight: normal;
+    text-align: center;
+  }
+
+  .bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default {
+    color: #00BC5B;
+  }
+
+  .logo-icon {
+    width: 150px;
+    margin: 0 auto;
+  }
+
+  .reg-text {
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    h1{
+      color: #00BC5B;
+    }
+  }
+
+  .item.item-role {
+    background-color: #00BC5B;
+    color: #fff;
+    padding: 16px;
+    cursor: pointer;
+    &:hover {
+      border-color: #006838;
+      background-color: #006838;
+      opacity: 1;
+    }
+  }
+
+  .roles {
+    padding: 0;
+    margin: 5px 0;
+    border-radius: 5px;
+  }
+
+  a.item {
+    text-decoration: none;
+    text-align: center;
+    display: block;
+  }
+
+  .item-md.item-block .item-inner {
+    padding: 0;
+    border: none;
+  }
+
+  .item-ios.item-block .item-inner {
+    padding-right: 0;
+  }
+
+  .label-md{
+    margin: 0px;
+  }
+
+  .label-ios .item {
+    border-radius:5px;
+  }
+
+  .label-ios {
+    margin: 0;
+  }
+
+  .bar-button-menutoggle-md, .back-button.show-back-button{
+    position: absolute;
+    z-index: 1;
+
+    &.bar-button-md {
+      top: 5px;
+    }
+
+    &.bar-button-ios {
+      top: 25px;
+    }
+  }
+
+  .bg-teacher{
+    background-color: #00BC5B!important;
+  }
+  .cl-teacher{
+    color: #00BC5B!important;
+  }
+  .bg-parent{
+    background-color: #F97533!important;
+  }
+  .cl-parent{
+    color: #F97533!important;
+  }
+  .bg-school{
+    background-color: #F31C62!important;
+  }
+  .cl-school{
+    color: #F31C62!important;
+  }
+  .bg-student{
+    background-color: #0096D7!important;
+  }
+  .cl-student{
+    color:#0096D7!important;
+  }
+}

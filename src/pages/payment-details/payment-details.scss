@@ -1,0 +1,73 @@
+page-payment-details {
+  .payment-landing{
+    text-align: center;
+    p{
+      font-size: 12px;
+      text-align: center;
+      margin: 0;
+      margin-bottom:5px;
+
+    }
+    img{
+      width: 100%;
+      max-width: 150px;
+      margin-top: 15px;
+    }
+    .top-content {
+      margin-bottom: 20px;
+      p{
+       color: red;
+     }
+     .headtitle{
+       font-size: 15px;
+     }
+    }
+    .stripeActive p{
+      color: green !important;
+    }
+    .middle-content {
+      margin-bottom: 20px;
+    }
+    .bottom-content {
+      margin-bottom: 20px;
+    }
+
+  }
+
+  .teacher{
+    .button-default{
+      background-color: #00BC5B!important;
+      border-radius: 4px;
+    }
+    .back-button-text{
+      color: #00BC5B!important;
+    }
+  }
+  .student{
+    .button-default{
+      background-color: #0096D7!important;
+      border-radius: 4px;
+    }
+    .back-button-text{
+      color: #0096D7!important;
+    }
+  }
+  .school{
+    .button-default{
+      background-color: #F31C62!important;
+      border-radius: 4px;
+    }
+    .back-button-text{
+      color: #F31C62!important;
+    }
+  }
+  .parent{
+    .button-default{
+      background-color: #F97533!important;
+      border-radius: 4px;
+    }
+    .back-button-text{
+      color: #F97533!important;
+    }
+  }
+}

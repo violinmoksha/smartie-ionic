@@ -1,0 +1,73 @@
+<!--
+  Generated template for the RegisterStep1Page page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="{{ role }}">
+  <ion-navbar hideBackButton="true">
+    <ion-title class="{{ role }}">Account Information</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="{{ role }}">
+  <form [formGroup]="Step1Form" name="Step1Form" (ngSubmit)="next(Step1Form.value)" novalidate>
+
+    <!--<div>
+      <h4>Debug</h4>
+      <pre>Form : {{Step1Form.value | json }}</pre>
+      <pre>Form Status : {{Step1Form.status }}</pre>
+      <pre>Form Password Status : {{Step1Form.get('password').status }}</pre>
+      <pre>Form confPassword Status : {{Step1Form.get('confPassword').status }}</pre>
+    </div>-->
+    <div class="list list-inset registration">
+
+      <div class="tagline">
+        <p>Let's create your account information </p>
+      </div>
+
+      <ion-item>
+        <ion-label fixed>Email </ion-label>
+        <ion-input placeholder="yourmail@mail.com" type="text" formControlName="email" (ionChange)="this.notNewEmail = false"></ion-input>
+      </ion-item>
+
+      <div *ngIf="Step1Form.controls['email'].invalid && Step1Form.controls['email'].touched" class="item item-message">
+        Email is required
+      </div>
+
+      <div *ngIf="notNewEmail" class="item item-message">
+        This email appears to already be in our system!
+      </div>
+      <!-- <ion-item>
+        <ion-label fixed>User Name</ion-label>
+        <ion-input placeholder="johndoe" type="text" formControlName="username"></ion-input>
+      </ion-item>
+
+      <div *ngIf="Step1Form.controls['username'].invalid && Step1Form.controls['username'].touched" class="item item-message">
+        User name is required
+      </div> -->
+
+      <ion-item>
+        <ion-label fixed> Password</ion-label>
+        <ion-input placeholder="********" type="password" formControlName="password"></ion-input>
+      </ion-item>
+
+      <div class="item item-message" *ngIf="Step1Form.get('password').invalid && Step1Form.get('password').touched">
+        Password is required, Password must be longer than 6 characters
+      </div>
+
+      <ion-item>
+        <ion-label fixed> Confirm Password</ion-label>
+        <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
+      </ion-item>
+
+      <div class="item item-message" *ngIf="Step1Form.get('confPassword').invalid && Step1Form.get('confPassword').touched">
+        Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
+      </div>
+
+
+    </div>
+    <button class="button button-positive" [disabled]="Step1Form.invalid" ion-button full> Next</button>
+
+  </form>
+</ion-content>

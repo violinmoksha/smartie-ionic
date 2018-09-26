@@ -1,0 +1,34 @@
+<!--
+  Generated template for the MobileVerificationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+
+<ion-navbar transparent>
+
+</ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<div>
+  <h4 class="font-18 color-grey">Please give us your mobile number so we can verify your phone</h4>
+
+  <ion-list>
+      <form [formGroup]="mobileVerification">
+          <ion-item class="bottom-border-inp">
+              <ion-label class="margin-btm-0 height-44 margin-top-0"><h4 class="margin-top-8"><img src="./assets/imgs/login/united-states.png" class="country-img"/><span class="coutry-code">+1</span></h4></ion-label>
+              <ion-input [formControl]="mobileVerification.controls['mobileNumber']" type="tel" maxlength="14" [(ngModel)]="phoneNumber" (ionChange)="phoneNumber = maskUSPhone(phoneNumber)" placeholder="(323) 555-5555" class="mob-input color-grey height-44"></ion-input>
+            </ion-item>
+
+      </form>
+    </ion-list>
+
+</div>
+</ion-content>
+<ion-footer transparent no-border>
+  <button type="submit" (click)="pushSignUp()" class="button verify-button" ion-button full [disabled]="!mobileVerification.valid">Next</button>
+</ion-footer>

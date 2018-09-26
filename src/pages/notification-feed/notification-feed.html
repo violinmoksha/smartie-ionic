@@ -1,0 +1,36 @@
+<!--
+  Generated template for the NotificationFeedPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="{{userRole}}">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Job Notifications</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="{{userRole}}">
+  <ul>
+    <li class="accepted" *ngFor="let accepted of allAccepteds">
+      <a *ngIf="userRole == 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">{{ accepted.otherProfile.fullname }} has Accepted!</a>
+      <a *ngIf="userRole != 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">{{ accepted.teacherProfile.fullname }} has Accepted!</a>
+    </li>
+
+    <li class="requested" *ngFor="let requested of allRequesteds">
+      <a *ngIf="userRole == 'teacher'" href="javascript:" (click)="showJobRequest(requested,'requestSentJobs')">{{ requested.otherProfile.fullname }} invited you!</a>
+      <a *ngIf="userRole != 'teacher'" href="javascript:" (click)="showJobRequest(requested,'requestSentJobs')">{{ requested.teacherProfile.fullname }} invited you!</a>
+    </li>
+
+    <li class="upcoming" *ngFor="let upcoming of allUpcomings">
+      <a href="javascript:" (click)="showUpcomingAlert()">{{ upcoming.otherProfile.fullname }} made payment and booked appointment for {{ [toTimeZone(upcoming.apptDate.iso)] }} from {{ upcoming.startTime }} to {{ upcoming.endTime }}!</a>
+    </li>
+
+    <li class="requested" *ngIf="allAccepteds.length == 0 && allRequesteds.length == 0 && allUpcomings.length == 0">
+      <a href="javascript:">Your job notifications will appear here.</a>
+    </li>
+  </ul>
+</ion-content>

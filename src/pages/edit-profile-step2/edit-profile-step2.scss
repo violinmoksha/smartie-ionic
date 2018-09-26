@@ -1,0 +1,62 @@
+page-edit-profile-step2 {
+  .profile-pic{
+    background-image: url(../assets/imgs/loader.gif);
+    background-size:190px;
+    background-position:top center;
+    background-repeat: no-repeat;
+    .p-image{
+      width: 130px;
+      height: 130px;
+      border-radius: 500px;
+      overflow: hidden;
+      margin: auto;
+
+      img{
+        width: 100%!important;
+        height: 100%!important;
+
+      }
+    }
+  }
+  .cl-student .toolbar-title{
+    color: #0096D7 !important
+  }
+  .swiper-wrapper{
+    width: 120px;
+    margin: auto;
+    .swiper-slide.active{
+      border-color: #0096D7 !important;
+    }
+  }
+  .school-information{
+    text-align: center;
+    padding-top: 20px;
+    h2{
+      font-size: 23px;
+      color: #0096D7;
+    }
+  }
+  h3{
+    font-size: 15px;
+  }
+  .swiper-wrapper{
+    width:80px;
+    margin: auto;
+
+    .swiper-slide{
+      width: 100%!important;
+      border:2px solid transparent;
+      border-radius: 100px;
+      p{
+        margin:10px 0;
+      }
+    }
+  }
+  .school-information{
+    text-align: center;
+    padding-top: 20px;
+    h2{
+      font-size:20px;
+    }
+  }
+}
