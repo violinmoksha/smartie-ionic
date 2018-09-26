@@ -42,11 +42,11 @@ export class WalletPage {
           'getTeacherAvailableBalance',
           { stripeAccountId: this.stripeCustomer.stripe_user_id, profileId: profile.profileData.objectId }
         ).then(async API => {
-          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
+          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders'] ).then(response => {
             loading.dismiss();
-            console.log(response.data.result);
-            this.availableBalance = response.data.result.available[0].amount / 100;
-            this.pendingBalance = response.data.result.pending[0].amount / 100;
+            console.log(response.result);
+            this.availableBalance = response.result.available[0].amount / 100;
+            this.pendingBalance = response.result.pending[0].amount / 100;
           }, err => {
             loading.dismiss();
             console.log(err.error.error.message);
@@ -71,9 +71,9 @@ export class WalletPage {
         'createInstantPayouts',
         { stripeAccountId: this.stripeCustomer.stripe_user_id, amount: this.availableBalance * 100, profileId: this.profileData.objectId }
       ).then(async API => {
-        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders ).then(response => {
+        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders'] ).then(response => {
           loading.dismiss();
-            console.log(response.data.result);
+            console.log(response.result);
         }, err => {
           loading.dismiss();
           console.log(err.error.error);

@@ -330,8 +330,8 @@ export class EditProfileStep3Page {
         'editUser',
         this.body
       ).then(async API => {
-        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-          console.log(response.data.result);
+        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+          console.log(response.result);
 
           // TODO: must be re-done directly right here via this.storage not this wrapper function updateUserProfileStorage
           //this.smartieApi.updateUserProfileStorage(response[0].result.profileData, response[0].result.specificUserData).then(profile => {

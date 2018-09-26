@@ -52,9 +52,9 @@ export class LoginPage {
             content: 'Signing In....'
           });
           loading.present();
-          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async data => {
+          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async data => {
             loading.dismiss();
-            return await this.storage.set('UserProfile', data.data.result).then(async UserProfile => {
+            return await this.storage.set('UserProfile', data.result).then(async UserProfile => {
               this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: UserProfile.profileData.role, fromWhere: "login" });
 
               if(data){

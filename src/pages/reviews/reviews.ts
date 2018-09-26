@@ -30,6 +30,7 @@ export class ReviewsPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Reviews", "View"));
 
     this.params = navParams.data.params;
+    console.log(this.params);
 
     if (this.params.role != 'teacher') {
       this.reviewedProfileId = this.params.otherProfile.objectId;
@@ -43,14 +44,16 @@ export class ReviewsPage {
   }
 
   ionViewDidLoad() {
+    console.log(this.reviewedProfileId);
 
     return new Promise(async (resolve) => {
       return await this.dataService.getApi(
         'getReviews',
         { reviewedProfileId: this.reviewedProfileId }
       ).then(async API => {
-        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-          let userReviews = response.data.result;
+        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+          console.log(response.result); /// ???
+          let userReviews = response.result;
           this.reviewCount = userReviews.reviews.length;
           this.profileData = userReviews.reviewedProfile;
 
@@ -69,13 +72,13 @@ export class ReviewsPage {
         'getReviewingProfile',
         { reviewingProfileId: review.reviewingProfileId }
       ).then(async API => {
-        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-          if (response.data.result.reviewingProfile.profilePhoto) { /// ???
-            this.profilePhoto = response.data.result.reviewingProfile.profilePhoto.url;
+        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+          if (response.result.reviewingProfile.profilePhoto) { /// ???
+            this.profilePhoto = response.result.reviewingProfile.profilePhoto.url;
           } else {
             this.profilePhoto = "./assets/img/user-round-icon.png";
           }
-          this.reviews.push({ 'fullname': response.data.result.reviewingProfile.fullname, 'role': response.data.result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
+          this.reviews.push({ 'fullname': response.result.reviewingProfile.fullname, 'role': response.result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
         })
       });
     })

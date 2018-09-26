@@ -144,8 +144,8 @@ export class JobRequestPage {
           'getRequestedJobRequest',
           this.body
         ).then(async API => {
-          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-            if (response.data.result && response.data.result.length > 0) {
+          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+            if (response.result && response.result.length > 0) {
               this.requestSent = true;
             } else {
               this.requestSent = false;
@@ -204,7 +204,7 @@ export class JobRequestPage {
             'setJobRequest',
             this.body
           ).then(async API => {
-            return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+            return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
               this.requestSent = true;
               this.viewCtrl.dismiss();
               this.loading.dismiss();
@@ -254,7 +254,7 @@ export class JobRequestPage {
           'setJobRequest',
           this.body
         ).then(async API => {
-          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
             this.acceptState = true;
             this.viewCtrl.dismiss();
             this.loading.dismiss();
@@ -288,7 +288,7 @@ export class JobRequestPage {
           'setJobRequest',
           this.body
         ).then(async API => {
-          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
             this.viewCtrl.dismiss();
             this.loading.dismiss();
             this.submitInProgress = false;

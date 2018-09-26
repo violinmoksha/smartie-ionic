@@ -33,113 +33,119 @@ export class DataService {
     })
   }
 
-  async getApi(endPoint, body) {
-    return await this.storage.get('UserProfile').then(async userData => {
-      return await this.storage.get('Provision').then(provisionData => {
-        const ourBaseUrls = Constants.API_ENDPOINTS.baseUrls;
-        const ourHeaders = Constants.API_ENDPOINTS.headers;
-        const ourEnv = Constants.API_ENDPOINTS.env;
+  getApi(endPoint, body) {
+    return new Promise((resolve, reject) => {
+      this.storage.get('UserProfile').then(userData => {
+        this.storage.get('Provision').then(provisionData => {
+          const ourBaseUrls = Constants.API_ENDPOINTS.baseUrls;
+          const ourHeaders = Constants.API_ENDPOINTS.headers;
+          const ourEnv = Constants.API_ENDPOINTS.env;
 
-        if(ourEnv === 'local' || ourEnv === 'test'){
-          (ourEnv === 'test') ?
-            this.baseUrl = ourBaseUrls.test :
-            this.baseUrl = ourBaseUrls.local;
-          this.applicationId = ourHeaders.localAndTest.applicationId;
-        } else if(Constants.API_ENDPOINTS.env === 'prod'){
-          this.baseUrl = ourBaseUrls.prod;
-          this.applicationId = ourHeaders.prod.applicationId;
-        }
-        this.contentType = 'application/json';
+          if(ourEnv === 'local' || ourEnv === 'test'){
+            (ourEnv === 'test') ?
+              this.baseUrl = ourBaseUrls.test :
+              this.baseUrl = ourBaseUrls.local;
+            this.applicationId = ourHeaders.localAndTest.applicationId;
+          } else if(Constants.API_ENDPOINTS.env === 'prod'){
+            this.baseUrl = ourBaseUrls.prod;
+            this.applicationId = ourHeaders.prod.applicationId;
+          }
+          this.contentType = 'application/json';
 
-        const httpOptions = {
-          'X-Parse-Application-Id': this.applicationId,
-          'X-Hullo-Token': (provisionData && provisionData.pToken) ? provisionData.pToken : '',
-          'x-Device-UUID': (provisionData && provisionData.provision) ? provisionData.provision.uuid : '',
-          'X-Bouncy-Token': userData ? userData.jwtToken : '',
-          'X-User-Id': userData ? userData.userData.objectId : '',
-          'Content-Type': this.contentType
-        };
+          const httpOptions = {
+            'X-Parse-Application-Id': this.applicationId,
+            'X-Hullo-Token': provisionData ? provisionData.pToken : '',
+            'x-Device-UUID': provisionData ? provisionData.provision.uuid : '',
+            'X-Bouncy-Token': userData ? userData.jwtToken : '',
+            'X-User-Id': userData ? userData.userData.objectId : '',
+            'Content-Type': this.contentType
+          };
 
-        this.http.setDataSerializer('utf8');
+          this.http.setDataSerializer('utf8');
 
-        let retObj = {
-          "apiUrl": this.baseUrl + Constants.API_ENDPOINTS.paths.fn + '/' + endPoint,
-          "apiBody": JSON.stringify(body),
-          "apiHeaders": httpOptions
-        };
-        console.log("Headers :"+JSON.stringify(retObj))
-        return retObj;
+          resolve({
+            "apiUrl": this.baseUrl + Constants.API_ENDPOINTS.paths.fn + '/' + endPoint,
+            "apiBody": JSON.stringify(body),
+            "apiHeaders": httpOptions
+          });
+        }, error => {
+          reject(error);
+        })
       }, error => {
-        return error;
-      })
-    }, error => {
-      return error;
-    });
+        reject(error);
+      });
+    })
   }
 
   // TODO: needs further testing in real device
-  async getUserkey(){
+  getUserkey(){
     let newKey = crypto.randomBytes(32).toString('base64');
-    return await this.secureStorage.create('smartieKeys').then(async (ss: SecureStorageObject) => {
-      /* remove == Illuminati (or us testing this) */
-      //ss.remove('userkey').then(async data => {
-        return await ss.get('userkey').then(async data => {
-          if (data.length == 44) {
-            return await data;
-          } else {
+    return new Promise((resolve, reject) => {
+      this.secureStorage.create('smartieKeys').then((ss: SecureStorageObject) => {
+        /* remove == Illuminati (or us testing this) */
+        //ss.remove('userkey').then(async data => {
+          ss.get('userkey').then(data => {
+            if (data.length == 44) {
+              resolve(data);
+            } else {
+              // isnt here yet, so gen and store it
+              ss.set('userkey', newKey).then(data => {
+                ss.get('userkey').then(data => {
+                  resolve(data);
+                }, error => {
+                  reject(error);
+                });
+              }, error => {
+                reject(error);
+              })
+            }
+          }, error => {
             // isnt here yet, so gen and store it
-            return await ss.set('userkey', newKey).then(async data => {
-              return await ss.get('userkey').then(async data => {
-                return await data;
-              });
-            }, async error => {
-              return await error;
-            })
-          }
-        }, async error => {
-          // isnt here yet, so gen and store it
-          return await ss.set('userkey', newKey).then(async data => {
-            return await ss.get('userkey').then(async data => {
-              return await data;
+            ss.set('userkey', newKey).then(data => {
+              ss.get('userkey').then(data => {
+                resolve(data);
+              }, error => {
+                reject(error);
+              })
             }, error => {
-              return error;
+              reject(error);
             })
-          }, async error => {
-            return await error;
-          })
-        });
-      // }, error => {
-      //   console.log('here4 '+error);
-      //   return error;
-      // });
+          });
+        // }, error => {
+        //   console.log('here4 '+error);
+        //   return error;
+        // });
+      });
     });
   }
 
-  async getBeyondGDPR(encryptOrDecrypt, body) {
-    if (Constants.API_ENDPOINTS.beyondGDPR.chickenSwitch == true) {
-      return await false; // NB: resolve so as not to interrupt exec flow (true chickenSwitch)
-    } else {
-      return await this.getUserkey().then(async userkey => {
-        body.userkey = userkey;
+  getBeyondGDPR(encryptOrDecrypt, body) {
+    return new Promise((resolve, reject) => {
+      if (Constants.API_ENDPOINTS.beyondGDPR.chickenSwitch == true) {
+        resolve(false); // NB: resolve so as not to interrupt exec flow (true chickenSwitch)
+      } else {
+        this.getUserkey().then(userkey => {
+          body.userkey = userkey;
 
-        const headers = {
-          'Content-Type': 'application/json'
-        };
+          const headers = {
+            'Content-Type': 'application/json'
+          };
 
-        const endPoint = encryptOrDecrypt == true ?
-          Constants.API_ENDPOINTS.beyondGDPR.paths.encrypt :
-          Constants.API_ENDPOINTS.beyondGDPR.paths.decrypt;
+          const endPoint = encryptOrDecrypt == true ?
+            Constants.API_ENDPOINTS.beyondGDPR.paths.encrypt :
+            Constants.API_ENDPOINTS.beyondGDPR.paths.decrypt;
 
-        return await {
-          "apiUrl": Constants.API_ENDPOINTS.beyondGDPR.baseUrl + endPoint,
-          "apiBody": body,
-          "apiHeaders": headers
-        };
-      }, async error => {
-        // rejecting this inner error so that outer UI has access for ionic alertCtrl
-        return await error;
-      });
-    }
+          resolve({
+            "apiUrl": Constants.API_ENDPOINTS.beyondGDPR.baseUrl + endPoint,
+            "apiBody": body,
+            "apiHeaders": headers
+          });
+        }, error => {
+          // rejecting this inner error so that outer UI has access for ionic alertCtrl
+          reject(error);
+        });
+      }
+    });
   }
 
   sanitizeNotifications(notifications:any){

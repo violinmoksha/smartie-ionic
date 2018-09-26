@@ -1,12 +1,10 @@
-// import { Response } from '@angular/http';
-//import { DbserviceProvider } from './../providers/dbservice';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Geolocation } from '@ionic-native/geolocation';
+import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { Firebase } from '@ionic-native/firebase';
 import { Device } from '@ionic-native/device';
 
@@ -69,9 +67,8 @@ export class SmartieApp {
     });
   }
 
-
-  async initializeApp() { // async for testing-purposes
-    return await this.platform.ready().then(async () => {
+  initializeApp() {
+    this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       if (this.platform.is('cordova')) {
@@ -79,52 +76,43 @@ export class SmartieApp {
         this.initGeolocation();
         this.initFirebase(); // NB: calls sync/non-returning notificationHandler
 
-Parse._initialize(this.parseAppId, null, this.parseMasterKey);
+        Parse._initialize(this.parseAppId, null, this.parseMasterKey);
        // Parse.initialize(this.parseAppId, null, this.parseMasterKey);
         Parse.serverURL = this.parseServerUrl;
 
-        return await this.dataService.getApi(
+        this.dataService.getApi(
           'getUserProvision',
           { uuid: this.device.uuid }
-        ).then(async API => {
-          return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
-            this.storage.set("Provision", response.data.result);
-            return await this.storage.get('UserProfile').then(async user => {
+        ).then(API => {
+          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
+            this.storage.get('UserProfile').then(user => {
+              console.log('And made it back with a UserProfile obj called user: '+JSON.stringify(user));
               if (user != null) {
                 this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
                 this.splashScreen.hide();
-                return true;
               } else {
                 // hm, no UserProfile object but maybe there's a provision???
                 // this.storage.get('Provision').then(async provision => {
                 //
                 // });
-                if(response.data.result.provision.user && response.data.result.provision.profile){
-                  this.nav.setRoot("LoginPage", { role: response.data.result.provision.role });
-                  this.splashScreen.hide();
-                  return true;
-                }else{
-                  return await this.storage.get("Registration").then(async registration => {
-                    if(registration && registration.step){
-                      if(registration.step === 0){
-                        this.nav.setRoot("RegisterStep1Page", { role: registration.role });
-                      }else if(registration.step == 1){
-                        this.nav.setRoot("RegisterStep2Page", registration);
-                      }else if(registration.step == 2){
-                        this.nav.setRoot("RegisterStep3Page", registration);
-                      }
-                    }else{
-                      // NB has a provision, but no User object and no saved reg, yuup sending them back through registration!
-                      this.nav.setRoot("RegisterStep1Page", { role: response.data.result.provision.role });
+
+                this.storage.get("Registration").then(registration => {
+                  if(registration && registration.step){
+                    if(registration.step === 0){
+                      this.nav.setRoot("RegisterStep1Page", { role: registration.role });
+                    }else if(registration.step == 1){
+                      this.nav.setRoot("RegisterStep2Page", registration);
+                    }else if(registration.step == 2){
+                      this.nav.setRoot("RegisterStep3Page", registration);
                     }
-                    this.splashScreen.hide();
-                    return await true;
-
-                  }, err => {
-                    console.log(err);
-                  });
-                }
-
+                  }else{
+                    // NB has a provision, but no User object and no saved reg, yuup sending them back through registration!
+                    this.nav.setRoot("RegisterStep1Page", { role: response.result.provision.role });
+                  }
+                  this.splashScreen.hide();
+                }, err => {
+                  console.log(err);
+                });
               }
             }, err => {
               console.log('Strange err: '+err);
@@ -133,46 +121,58 @@ Parse._initialize(this.parseAppId, null, this.parseMasterKey);
             console.log('No provision from server (yet): '+JSON.stringify(err));
             this.splashScreen.hide();
             this.rootPage = 'LandingPage';
-            return false;
           })
         });
       } else {
         console.log('What on earth non-cordova land.');
         this.splashScreen.hide();
         this.rootPage = 'LandingPage';
-        return await false;
       }
     });
   }
 
-  async initGeolocation() {
-    return await this.geolocation.getCurrentPosition().then(async resp => {
-      this.storage.set('phoneGeoposition', resp);
-      return await resp;
-    }, async error => {
-      console.info('Error setting phoneGeoposition: ', JSON.stringify(error));
-      return await error;
+  initGeolocation() : Promise<any> {
+    return new Promise((resolve, reject) => { // only returns promise for testing purpose
+      this.geolocation.getCurrentPosition().then(resp => {
+        this.storage.set('phoneGeoposition', resp).then(() => {
+          resolve(resp);
+        }, error => {
+          console.info('Error storing phoneGeoposition: ', JSON.stringify(error));
+          reject(error);
+        });
+      }, error => {
+        console.info('Error setting phoneGeoposition: ', JSON.stringify(error));
+        reject(error);
+      });
     });
   }
 
-  async initFirebase() {
-    let self = this;
-     this.firebase.getToken().then(async token => {
-      let API = await this.dataService.getApi(
-        'updateFcmToken',
-        { device: this.device, token: token }
-      )
-         self.dataService.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(data => {
-          this.notificationHandler();
-          return token;
+  initFirebase() : Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.firebase.getToken().then(token => {
+        //console.log(`Firebase token is: ${token}`);
+        this.dataService.getApi(
+          'updateFcmToken',
+          { device: this.device, token: token }
+        ).then(API => {
+          //console.log("API: "+JSON.stringify(API));
+          //console.info("http.post from here is: "+this.dataService.http.post);
+          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(data => {
+            //this.notificationHandler();
+            resolve(token);
+          }, error => {
+            console.info('Error in updateFcmToken endpoint: ', error);
+            reject(error);
+          });
         }, error => {
-          console.info('Error in updateFcmToken endpoint: ', error);
-          return error;
+          console.info('Failed to get updateFcmToken API object: '+JSON.stringify(error));
+          reject(error);
         });
-    }, async error => {
-      console.info('Error in Firebase getToken: ', JSON.stringify(error));
-      return error;
-    });
+      }, error => {
+        console.info('Error in Firebase getToken: ', JSON.stringify(error));
+        reject(error);
+      });
+    })
   }
 
   notificationHandler() : void {
@@ -186,8 +186,8 @@ Parse._initialize(this.parseAppId, null, this.parseMasterKey);
           'getJobRequestById',
           { "jobRequestId": job.jobId }
         ).then(API => {
-          this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(response => {
-            this.nav.push("JobRequestPage", { params: response.data.result });
+          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
+            this.nav.push("JobRequestPage", { params: response.result });
           }, err => {
             // TODO: handle this in UI
             console.info('0: '+err);

@@ -68,7 +68,7 @@ export class MobileVerificationPage {
           'setUserProvision',
           params
         ).then(async API => {
-          this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response=>{
+          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response=>{
             loading.dismiss();
             console.log("User provision: "+JSON.stringify(response))
             this.storage.set("Provision", response.data.result);
