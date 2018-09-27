@@ -15,7 +15,7 @@ export class Constants {
       // local: 'http://76.170.58.147:1337'
       //  local: 'http://172.16.4.159:1337'
       //local: 'http://172.16.1.179:1337'
-      local: 'https://0adbbb02.ngrok.io'
+      local: 'https://24ec78d5.ngrok.io'
     },
     paths: {
       fn: '/parse/functions',

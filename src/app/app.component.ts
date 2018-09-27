@@ -156,9 +156,13 @@ export class SmartieApp {
     return new Promise((resolve, reject) => {
       this.firebase.getToken().then(token => {
         //console.log(`Firebase token is: ${token}`);
+        console.log('Going to updateFcmToken with: '+JSON.stringify(this.device));
         this.dataService.getApi(
           'updateFcmToken',
-          { device: this.device, token: token }
+          {
+            device: { cordova: this.device.cordova, isVirtual: this.device.isVirtual, manufacturer: this.device.manufacturer, model: this.device.model, platform: this.device.platform, serial: this.device.serial, uuid: this.device.uuid, version: this.device.version },
+            token: token
+          }
         ).then(API => {
           //console.log("API: "+JSON.stringify(API));
           //console.info("http.post from here is: "+this.dataService.http.post);
