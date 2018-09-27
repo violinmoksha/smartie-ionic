@@ -87,17 +87,18 @@ export class SmartieApp {
           this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
             this.storage.get('UserProfile').then(user => {
               console.log('And made it back with a UserProfile obj called user: '+JSON.stringify(user));
-              if (user != null) {
-                this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
-                this.splashScreen.hide();
-              } else {
+              if (user == null) {
                 // hm, no UserProfile object but maybe there's a provision???
+                // NB; we should not need this since it is accomodated for by the else below
+                // in Registration object save logics
                 // this.storage.get('Provision').then(async provision => {
                 //
                 // });
 
+                console.log('Attempting to fetch Registration object in absence of UserProfile.');
                 this.storage.get("Registration").then(registration => {
                   if(registration && registration.step){
+                    console.log('Registration weirdness.');
                     if(registration.step === 0){
                       this.nav.setRoot("RegisterStep1Page", { role: registration.role });
                     }else if(registration.step == 1){
@@ -107,12 +108,16 @@ export class SmartieApp {
                     }
                   }else{
                     // NB has a provision, but no User object and no saved reg, yuup sending them back through registration!
+                    console.log('We likely have a provision, but no User or Registration objects, so are going to RegisterStep1 with role from: '+JSON.stringify(response));
                     this.nav.setRoot("RegisterStep1Page", { role: response.result.provision.role });
                   }
                   this.splashScreen.hide();
                 }, err => {
-                  console.log(err);
+                  console.log('Error getting Registration from storage: '+err);
                 });
+              } else {
+                this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
+                this.splashScreen.hide();
               }
             }, err => {
               console.log('Strange err: '+err);
@@ -158,7 +163,7 @@ export class SmartieApp {
           //console.log("API: "+JSON.stringify(API));
           //console.info("http.post from here is: "+this.dataService.http.post);
           this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(data => {
-            //this.notificationHandler();
+            this.notificationHandler();
             resolve(token);
           }, error => {
             console.info('Error in updateFcmToken endpoint: ', error);

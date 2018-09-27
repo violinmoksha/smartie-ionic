@@ -20,13 +20,7 @@ export class DataService {
     //let self = this;
     return <any> new Promise((resolve, reject)=>{
       this.http.post(url, body, header).then((res)=>{
-        //console.log("API Response = "+JSON.stringify(res));
-        if(res.data){
-          res.data = JSON.parse(res.data)
-          resolve(res);
-        }else{
-          reject(res);
-        }
+        resolve(JSON.parse(res.data)); // it's here if it's here
       }, err=>{
         console.log("Api call failed: "+JSON.stringify(err))
         reject(err);
