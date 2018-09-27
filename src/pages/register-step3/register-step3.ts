@@ -287,23 +287,15 @@ export class RegisterStep3Page {
 
 
   updateUserToProvision = async (userId, userProfileId) => {
-    this.dataService.getApi(
+    return await this.dataService.getApi(
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
     ).then(async API => {
-      this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async response => {
+      return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
         console.log("Getting updated provision");
         console.log(response);
         // TODO: have we done this correctly, we'll see, this simplification should again be correct
-        this.storage.get('Provision').then(async prov => {
-          if(prov){
-            prov.provision = response.data.result;
-            this.storage.set("Provision", prov);
-          }else{
-            console.log("no provision found");
-            this.storage.set("Provision", response.data.result);
-          }
-        })
+        this.storage.set('Provision', response.result);
         //this.dataService.updateProvisionStorage(response[0].result);
       }, err => {
         console.log(err);
@@ -346,21 +338,21 @@ export class RegisterStep3Page {
         'signUpRole',
         {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(this.form2Values), userInfo: JSON.stringify(form3Values)}
       ).then(async API => {
-        return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(
+        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(
           async signupResult => {
             console.log(signupResult);
             // TODO: do this via storage now
-            this.updateUserToProvision(signupResult.data.result.userData.objectId, signupResult.data.result.profileData.objectId);
+            this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
 
-            return await this.storage.set("UserProfile", signupResult.data.result).then(async () => {
+            return await this.storage.set("UserProfile", signupResult.result).then(async () => {
               return await new Promise(async (resolve) => {
                 return await this.dataService.getApi(
                   'fetchMarkers',
-                  { profileId: signupResult.data.result.profileData.objectId, role: this.role }
+                  { profileId: signupResult.result.profileData.objectId, role: this.role }
                 ).then(async API => {
-                  return await this.dataService.httpPost(API.apiUrl, API.apiBody, API.apiHeaders).then(async Notifications => {
+                  return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
                     this.loading.dismiss();
-                    return await this.dataService.sanitizeNotifications(Notifications.data.result).then(notifications => {
+                    return await this.dataService.sanitizeNotifications(Notifications.result).then(notifications => {
                       this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
                       //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
                       // TODO: do this via storage now
