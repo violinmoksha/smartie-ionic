@@ -1,6 +1,6 @@
 export class Constants {
   public static API_ENDPOINTS = {
-    env: 'local',
+    env: 'test',
     beyondGDPR: {
       chickenSwitch: false,
       baseUrl: "https://test.t0tl3s.com:3001",
@@ -13,9 +13,9 @@ export class Constants {
       prod: 'https://smartieapp.com',
       test: 'https://test.t0tl3s.com',
       // local: 'http://76.170.58.147:1337'
-      //  local: 'http://172.16.4.159:1337'
+      local: 'http://172.16.4.159:1337'
       //local: 'http://172.16.1.179:1337'
-      local: 'https://24ec78d5.ngrok.io'
+     // local: 'https://24ec78d5.ngrok.io'
     },
     paths: {
       fn: '/parse/functions',

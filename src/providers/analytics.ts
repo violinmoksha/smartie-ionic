@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Firebase } from '@ionic-native/firebase';
 /*
@@ -10,7 +9,7 @@ import { Firebase } from '@ionic-native/firebase';
 @Injectable()
 export class AnalyticsProvider {
 
-  constructor(public http: HttpClient, public firebase:Firebase) {
+  constructor(public firebase:Firebase) {
     console.log('Hello AnalyticsProvider Provider');
   }
 

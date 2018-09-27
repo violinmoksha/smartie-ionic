@@ -26,9 +26,9 @@ export class LandingPage {
     console.log('ionViewDidLoad LandingPage');
   }
 
-  pushRegister(){
-    this.navCtrl.push("RegisterPage");
-  }
+  // pushRegister(){
+  //   this.navCtrl.push("RegisterPage");
+  // }
 
   pushMobVerify(role){
     this.navCtrl.push("MobileVerificationPage", { role: role });
