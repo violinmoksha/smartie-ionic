@@ -1,4 +1,4 @@
-import {} from 'jasmine';
+import { } from 'jasmine';
 
 import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import { IonicModule, Platform } from 'ionic-angular';
@@ -59,7 +59,7 @@ describe('SmartieApp Component', () => {
     fixture.detectChanges();
   });
 
-  it("is created", ()=>{
+  it("is created", () => {
     expect(fixture).toBeTruthy()
     expect(component).toBeTruthy()
   })
@@ -93,7 +93,7 @@ describe('SmartieApp Component', () => {
     let ret;
     try {
       ret = component.initGeolocation();
-    } catch(ex) {
+    } catch (ex) {
       ret = false;
     }
     expect(ret).toBeFalsy();
@@ -108,9 +108,9 @@ describe('SmartieApp Component', () => {
         "altitude": 67.53787994384766,
         "heading": -1,
         "speed": -1,
-        "altitudeAccuracy":10
+        "altitudeAccuracy": 10
       },
-      "timestamp":1534525964122.865
+      "timestamp": 1534525964122.865
     };
     const spy = spyOn(component.storage, 'set');
 
@@ -139,8 +139,8 @@ describe('SmartieApp Component', () => {
     const notificationSpy = spyOn(component.firebase, 'onNotificationOpen');
 
     component.initFirebase().then(data => {
-     // expect(data).toEqual(token);
-     expect(data).toEqual(jasmine.any(String))
+      // expect(data).toEqual(token);
+      expect(data).toEqual(jasmine.any(String))
       expect(tokenSpy).toHaveBeenCalled();
       expect(notificationSpy).toHaveBeenCalled();
     });

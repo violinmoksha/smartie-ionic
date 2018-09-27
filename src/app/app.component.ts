@@ -164,7 +164,7 @@ export class SmartieApp {
             token: token
           }
         ).then(API => {
-          //console.log("API: "+JSON.stringify(API));
+          console.log(API);
           //console.info("http.post from here is: "+this.dataService.http.post);
           this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(data => {
             this.notificationHandler();

@@ -12,7 +12,7 @@ let el: HTMLElement;
 
 let fixture: ComponentFixture<MobileVerificationPage> = null;
 let instance: any = null;
-describe("Mobile verification", ()=>{
+describe("Mobile verification", () => {
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -23,21 +23,21 @@ describe("Mobile verification", ()=>{
         IonicModule.forRoot(SmartieApp)
       ],
     })
-    .compileComponents().then(() => {
-      console.log(" Component intialization......");
-      fixture = TestBed.createComponent(MobileVerificationPage);
-      instance = fixture;
-      fixture.detectChanges();
-      console.log(instance)
-    });
+      .compileComponents().then(() => {
+        console.log(" Component intialization......");
+        fixture = TestBed.createComponent(MobileVerificationPage);
+        instance = fixture;
+        fixture.detectChanges();
+        console.log(instance)
+      });
   }));
 
-  it("is created", ()=>{
+  it("is created", () => {
     expect(true).toBeTruthy();
   });
 });
-describe("test", ()=>{
-  it("sample", ()=>{
+describe("test", () => {
+  it("sample", () => {
     expect(true).toBeTruthy()
   })
 })
