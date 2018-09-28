@@ -80,7 +80,7 @@ describe('Landing Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SmartieApp, LandingPage],
+      declarations: [LandingPage],
       imports: [
         IonicModule.forRoot(SmartieApp)
       ],
@@ -96,10 +96,10 @@ describe('Landing Component', () => {
     console.log("****** landing test ******")
     console.log(comp)
   }));
-  afterEach(() => {
-    fixture.destroy();
-    comp = null;
-  });
+  // afterEach(() => {
+  //   fixture.destroy();
+  //   comp = null;
+  // });
 
   it('should create component', () => expect(comp).toBeDefined());
 });

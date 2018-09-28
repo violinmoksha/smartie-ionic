@@ -2,7 +2,6 @@ import { ActionSheetController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 //import { Page } from './../../../e2e/app.po';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ImagePicker } from '@ionic-native/image-picker';
 /*
@@ -14,7 +13,7 @@ import { ImagePicker } from '@ionic-native/image-picker';
 @Injectable()
 export class CameraServiceProvider {
 
-  constructor(public http: HttpClient, public camera:Camera, public actionSheetCtrl:ActionSheetController, public imagePicker:ImagePicker, public storage: Storage) {
+  constructor(public camera:Camera, public actionSheetCtrl:ActionSheetController, public imagePicker:ImagePicker, public storage: Storage) {
     console.log('Hello CameraServiceProvider Provider');
   }
 

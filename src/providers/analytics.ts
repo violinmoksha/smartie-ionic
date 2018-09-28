@@ -13,7 +13,7 @@ export class AnalyticsProvider {
     console.log('Hello AnalyticsProvider Provider');
   }
 
-  setScreenName = (name)=>{
+  setScreenName = async (name)=>{
     this.firebase.setScreenName(name);
   }
 
@@ -21,11 +21,11 @@ export class AnalyticsProvider {
     return {title:eventName, attributes:{action:eventAction}};
   }
 
-  addEvent = (event)=>{
-    this.firebase.logEvent(event.title,event.attributes);
+  addEvent = async (event) => {
+    this.firebase.logEvent(event.title, event.attributes);
   }
 
-  addUserProperty = ()=>{
+  addUserProperty = async () => {
     this.firebase.setUserProperty("role", "test");
   }
 
