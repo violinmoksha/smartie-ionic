@@ -46,10 +46,10 @@ export class SmartieApp {
       //Tabs index 0 is always set to search
       if (eventData !== 'teacher') {
         this.buttons = [
-          { iconName: 'book', text: 'Manage Orders', pageName: ''},
+          { iconName: 'book', text: 'Manage Orders', pageName: '' },
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
-          { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage', isTabs:false  },
+          { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage', isTabs: false },
           { iconName: 'add-circle', text: 'Create a Job', pageName: '' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
@@ -77,7 +77,7 @@ export class SmartieApp {
         this.initFirebase(); // NB: calls sync/non-returning notificationHandler
 
         Parse._initialize(this.parseAppId, null, this.parseMasterKey);
-       // Parse.initialize(this.parseAppId, null, this.parseMasterKey);
+        // Parse.initialize(this.parseAppId, null, this.parseMasterKey);
         Parse.serverURL = this.parseServerUrl;
 
         this.dataService.getApi(
@@ -85,8 +85,9 @@ export class SmartieApp {
           { uuid: this.device.uuid }
         ).then(API => {
           this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
+            this.storage.set("Provision", response.result);
             this.storage.get('UserProfile').then(user => {
-              console.log('And made it back with a UserProfile obj called user: '+JSON.stringify(user));
+              console.log('And made it back with a UserProfile obj called user: ' + JSON.stringify(user));
               if (user == null) {
                 // hm, no UserProfile object but maybe there's a provision???
                 // NB; we should not need this since it is accomodated for by the else below
@@ -95,35 +96,37 @@ export class SmartieApp {
                 //
                 // });
 
-                console.log('Attempting to fetch Registration object in absence of UserProfile.');
-                this.storage.get("Registration").then(registration => {
-                  if(registration && registration.step){
-                    console.log('Registration weirdness.');
-                    if(registration.step === 0){
-                      this.nav.setRoot("RegisterStep1Page", { role: registration.role });
-                    }else if(registration.step == 1){
-                      this.nav.setRoot("RegisterStep2Page", registration);
-                    }else if(registration.step == 2){
-                      this.nav.setRoot("RegisterStep3Page", registration);
-                    }
-                  }else{
-                    // NB has a provision, but no User object and no saved reg, yuup sending them back through registration!
-                    console.log('We likely have a provision, but no User or Registration objects, so are going to RegisterStep1 with role from: '+JSON.stringify(response));
-                    this.nav.setRoot("RegisterStep1Page", { role: response.result.provision.role });
-                  }
+                if (response.result.provision.user && response.result.provision.profile) {
+                  this.nav.setRoot("LoginPage", { role: response.result.provision.role });
                   this.splashScreen.hide();
-                }, err => {
-                  console.log('Error getting Registration from storage: '+err);
-                });
+                } else {
+                  this.storage.get("Registration").then(async registration => {
+                    if (registration && registration.step) {
+                      if (registration.step === 0) {
+                        this.nav.setRoot("RegisterStep1Page", { role: registration.role });
+                      } else if (registration.step == 1) {
+                        this.nav.setRoot("RegisterStep2Page", registration);
+                      } else if (registration.step == 2) {
+                        this.nav.setRoot("RegisterStep3Page", registration);
+                      }
+                    } else {
+                      // NB has a provision, but no User object and no saved reg, yuup sending them back through registration!
+                      this.nav.setRoot("RegisterStep1Page", { role: response.result.provision.role });
+                    }
+                    this.splashScreen.hide();
+                  }, err => {
+                    console.log(err);
+                  });
+                }
               } else {
                 this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
                 this.splashScreen.hide();
               }
             }, err => {
-              console.log('Strange err: '+err);
+              console.log('Strange err: ' + err);
             })
           }, err => {
-            console.log('No provision from server (yet): '+JSON.stringify(err));
+            console.log('No provision from server (yet): ' + JSON.stringify(err));
             this.splashScreen.hide();
             this.rootPage = 'LandingPage';
           })
@@ -136,7 +139,7 @@ export class SmartieApp {
     });
   }
 
-  initGeolocation() : Promise<any> {
+  initGeolocation(): Promise<any> {
     return new Promise((resolve, reject) => { // only returns promise for testing purpose
       this.geolocation.getCurrentPosition().then(resp => {
         this.storage.set('phoneGeoposition', resp).then(() => {
@@ -152,11 +155,11 @@ export class SmartieApp {
     });
   }
 
-  initFirebase() : Promise<any> {
+  initFirebase(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.firebase.getToken().then(token => {
         //console.log(`Firebase token is: ${token}`);
-        console.log('Going to updateFcmToken with: '+JSON.stringify(this.device));
+        console.log('Going to updateFcmToken with: ' + JSON.stringify(this.device));
         this.dataService.getApi(
           'updateFcmToken',
           {
@@ -174,7 +177,7 @@ export class SmartieApp {
             reject(error);
           });
         }, error => {
-          console.info('Failed to get updateFcmToken API object: '+JSON.stringify(error));
+          console.info('Failed to get updateFcmToken API object: ' + JSON.stringify(error));
           reject(error);
         });
       }, error => {
@@ -184,7 +187,7 @@ export class SmartieApp {
     })
   }
 
-  notificationHandler() : void {
+  notificationHandler(): void {
     this.firebase.onNotificationOpen().subscribe((notification: any) => {
       //perform action based notification's action
       if (notification.eventAction == "PaymentReminder") {
@@ -199,57 +202,57 @@ export class SmartieApp {
             this.nav.push("JobRequestPage", { params: response.result });
           }, err => {
             // TODO: handle this in UI
-            console.info('0: '+err);
+            console.info('0: ' + err);
           })
         }, err => {
-          console.info('sub-0: '+err);
+          console.info('sub-0: ' + err);
         });
       }
     }, err => {
       // TODO: ditto
-      console.info('1: '+err);
+      console.info('1: ' + err);
     });
   }
 
   pushPage(event, page) {
     if (page.iconName == 'log-out') { // logout -->
       this.storage.remove('UserProfile'); // yes??
-       //this.dbservice.deleteUser();
+      //this.dbservice.deleteUser();
       this.nav.setRoot("LoginPage"); // send to Login
       // NB: wait why are we doing this?
       //this.firebase.updateFcmToken(null, false);
-    }else if(page.text == 'Wallet'){
+    } else if (page.text == 'Wallet') {
       this.nav.push("WalletPage");
-    }else{
-      if(page.isTabs){
-      this.storage.get("UserProfile").then(userProfile => {
-        let params = {};
+    } else {
+      if (page.isTabs) {
+        this.storage.get("UserProfile").then(userProfile => {
+          let params = {};
 
-        // The index is equal to the order of our tabs inside tabs.ts
-        if (page.index) {
-          params = { tabIndex: page.index, tabTitle: page.pageTitle, role: userProfile.profileData.role };
-        }
+          // The index is equal to the order of our tabs inside tabs.ts
+          if (page.index) {
+            params = { tabIndex: page.index, tabTitle: page.pageTitle, role: userProfile.profileData.role };
+          }
 
-        this.nav.setRoot("TabsPage", params);
-        // this.nav.setRoot(page.pageName);
-      })
-      }else{
+          this.nav.setRoot("TabsPage", params);
+          // this.nav.setRoot(page.pageName);
+        })
+      } else {
         this.nav.push(page.pageName);
       }
 
     }
   }
-    /*if (button.iconName == 'paper')
-      this.nav.push("FeedbackPage");
-    else if (button.iconName == 'settings')
-      this.nav.setRoot("TabsPage", { tabIndex: 1} );
-    else if (button.iconName == 'add-circle')
-      this.nav.push("CreateJobPage");
-    else if (button.iconName == 'card')
-      this.nav.push("PaymentDetailsPage");
-    else if (button.iconName == 'log-out') { // logout -->
-      this.storage.clear(); // dump ephemeral session
-      this.nav.setRoot("LoginPage"); // send to Login
-    }*/
+  /*if (button.iconName == 'paper')
+    this.nav.push("FeedbackPage");
+  else if (button.iconName == 'settings')
+    this.nav.setRoot("TabsPage", { tabIndex: 1} );
+  else if (button.iconName == 'add-circle')
+    this.nav.push("CreateJobPage");
+  else if (button.iconName == 'card')
+    this.nav.push("PaymentDetailsPage");
+  else if (button.iconName == 'log-out') { // logout -->
+    this.storage.clear(); // dump ephemeral session
+    this.nav.setRoot("LoginPage"); // send to Login
+  }*/
   //}
 }

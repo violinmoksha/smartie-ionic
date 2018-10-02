@@ -1,10 +1,15 @@
+import { IonicStorageModule } from '@ionic/storage';
+import { DataService } from './../../app/app.data';
+import { AnalyticsProvider } from './../../providers/analytics';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule } from 'ionic-angular';
+import { IonicModule, NavController } from 'ionic-angular';
 import { SmartieApp } from '../../app/app.component';
 import { MobileVerificationPage } from './mobile-verification';
 import { MobileVerificationPageModule } from './mobile-verification.module'
+import { DeviceMock } from '../../mocks/device';
+import { FormBuilder } from '@angular/forms';
 
 let de: DebugElement;
 let el: HTMLElement;
@@ -18,9 +23,15 @@ describe("Mobile verification", () => {
     TestBed.configureTestingModule({
       declarations: [MobileVerificationPage],
       providers: [
+        AnalyticsProvider,
+        DataService,
+        DeviceMock,
+        NavController,
+        FormBuilder
       ],
       imports: [
-        IonicModule.forRoot(SmartieApp)
+        IonicStorageModule,
+        IonicModule.forRoot(MobileVerificationPage)
       ],
     })
       .compileComponents().then(() => {
@@ -36,8 +47,3 @@ describe("Mobile verification", () => {
     expect(true).toBeTruthy();
   });
 });
-describe("test", () => {
-  it("sample", () => {
-    expect(true).toBeTruthy()
-  })
-})
