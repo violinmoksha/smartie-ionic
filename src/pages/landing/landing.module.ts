@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { LandingPage } from './landing';
 
@@ -9,5 +9,8 @@ import { LandingPage } from './landing';
   imports: [
     IonicPageModule.forChild(LandingPage),
   ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ]
 })
-export class LandingPageModule {}
+export class LandingPageModule { }

@@ -33,11 +33,10 @@ describe("Mobile verification", () => {
         IonicStorageModule,
         IonicModule.forRoot(MobileVerificationPage)
       ],
-    })
-      .compileComponents().then(() => {
+    }).compileComponents().then(() => {
         console.log(" Component intialization......");
         fixture = TestBed.createComponent(MobileVerificationPage);
-        instance = fixture;
+        instance = fixture.componentInstance;
         fixture.detectChanges();
         console.log(instance)
       });

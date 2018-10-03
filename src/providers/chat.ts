@@ -1,80 +1,82 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Events } from 'ionic-angular';
-import { DataService } from '../app/app.data';
+//TODO: Not ReUsable
 
-/*
-  Generated class for the ChatProvider provider.
+// import { HttpClient } from '@angular/common/http';
+// import { Injectable } from '@angular/core';
+// import { Events } from 'ionic-angular';
+// import { DataService } from '../app/app.data';
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
-@Injectable()
-export class ChatProvider {
+// /*
+//   Generated class for the ChatProvider provider.
 
-  profile: any;
-  studentProfileId: any;
-  teacherProfileId: any;
-  allMessages = [];
+//   See https://angular.io/guide/dependency-injection for more info on providers
+//   and Angular DI.
+// */
+// @Injectable()
+// export class ChatProvider {
 
-  constructor(public http: HttpClient, public dataService: DataService, public events: Events) {
-    // console.log('Hello ChatProvider Provider');
-  }
+//   profile: any;
+//   studentProfileId: any;
+//   teacherProfileId: any;
+//   allMessages = [];
 
-  initializebuddy(profile) {
-    this.profile = profile;
+//   constructor(public http: HttpClient, public dataService: DataService, public events: Events) {
+//     // console.log('Hello ChatProvider Provider');
+//   }
 
-    if(this.profile.role != 'teacher'){
-      this.studentProfileId = this.profile.objectId;
-      this.teacherProfileId = this.profile.teacherProfile.objectId;
-    }else{
-      this.teacherProfileId = this.profile.objectId;
-      this.studentProfileId = this.profile.otherProfile.objectId;
-    }
-  }
+//   initializebuddy(profile) {
+//     this.profile = profile;
 
-  addnewmessage(msg) {
-    if (this.profile) {
+//     if(this.profile.role != 'teacher'){
+//       this.studentProfileId = this.profile.objectId;
+//       this.teacherProfileId = this.profile.teacherProfile.objectId;
+//     }else{
+//       this.teacherProfileId = this.profile.objectId;
+//       this.studentProfileId = this.profile.otherProfile.objectId;
+//     }
+//   }
 
-      console.log(this.studentProfileId);
-      console.log(this.teacherProfileId);
+//   addnewmessage(msg) {
+//     if (this.profile) {
 
-      return new Promise(async (resolve) => {
-        return await this.dataService.getApi(
-          'addChatMessage',
-          { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId, message: msg, viewed: false, role: this.profile.role }
-        ).then(async API => {
-          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders'] ).then(async response => {
-            resolve(response);
-          }, err => {
-            console.log(err);
-          })
-        });
-      });
-    }
-  }
+//       console.log(this.studentProfileId);
+//       console.log(this.teacherProfileId);
 
-  getAllMessages() {
-    console.log(this.studentProfileId);
-    console.log(this.teacherProfileId);
+//       return new Promise(async (resolve) => {
+//         return await this.dataService.getApi(
+//           'addChatMessage',
+//           { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId, message: msg, viewed: false, role: this.profile.role }
+//         ).then(async API => {
+//           return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders'] ).then(async response => {
+//             resolve(response);
+//           }, err => {
+//             console.log(err);
+//           })
+//         });
+//       });
+//     }
+//   }
 
-    return new Promise(async (resolve) => {
-      return await this.dataService.getApi(
-        'getAllMessages',
-        { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId }
-      ).then(async API => {
-        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-          this.allMessages = [];
-          for(let chat of response.result){
-            this.allMessages.push(chat);
-          }
-          // this.allMessages = response.result;
-          this.events.publish('newmessage');
-        }, err => {
-          console.log(err);
-        })
-      });
-    })
-  }
+//   getAllMessages() {
+//     console.log(this.studentProfileId);
+//     console.log(this.teacherProfileId);
 
-}
+//     return new Promise(async (resolve) => {
+//       return await this.dataService.getApi(
+//         'getAllMessages',
+//         { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId }
+//       ).then(async API => {
+//         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+//           this.allMessages = [];
+//           for(let chat of response.result){
+//             this.allMessages.push(chat);
+//           }
+//           // this.allMessages = response.result;
+//           this.events.publish('newmessage');
+//         }, err => {
+//           console.log(err);
+//         })
+//       });
+//     })
+//   }
+
+// }

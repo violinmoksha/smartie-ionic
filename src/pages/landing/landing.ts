@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { AnalyticsProvider } from '../../providers/analytics';
 
 /**
@@ -16,7 +16,7 @@ import { AnalyticsProvider } from '../../providers/analytics';
 })
 export class LandingPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController,private analytics : AnalyticsProvider) {
     this.analytics.setScreenName("Landing");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Landing", "View"));
 

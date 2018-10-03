@@ -1,5 +1,3 @@
-import {} from 'jasmine';
-
 import { TestBed, inject, async } from '@angular/core/testing';
 
 import { IonicStorageModule } from '@ionic/storage';
