@@ -106,6 +106,7 @@
     "karma-verbose-reporter": "0.0.6",
     "karma-webpack": "^3.0.0",
     "null-loader": "^0.1.1",
+    "parse-mock": "^1.1.4",
     "protractor": "^5.4.0",
     "ts-loader": "^4.4.2",
     "ts-node": "^7.0.0",

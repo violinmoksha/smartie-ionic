@@ -9,14 +9,14 @@ describe("Analytics: Provider", () => {
   let eventAction = "testaction";
   let eventObj = { title: eventName, attributes: { action: eventAction } };
   var analyticSpy;
-  beforeEach(() => {
-     analyticSpy = jasmine.createSpyObj('AnalyticsProvider', ['setScreenName']);
+  beforeEach(async(() => {
+    analyticSpy = jasmine.createSpyObj('AnalyticsProvider', ['setScreenName']);
     TestBed.configureTestingModule({
       providers: [
         AnalyticsProvider,
         Firebase]
     }).compileComponents();
-  });
+  }));
 
   it('should be created', inject([AnalyticsProvider], (analyticsService: AnalyticsProvider) => {
     expect(analyticsService).toBeTruthy();

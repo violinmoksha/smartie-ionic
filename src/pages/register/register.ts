@@ -1,7 +1,7 @@
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { AnalyticsProvider } from '../../providers/analytics';
+// import { AnalyticsProvider } from '../../providers/analytics';
 //import { Pro } from '@ionic/pro';
 
 @IonicPage()@Component({
@@ -10,10 +10,10 @@ import { AnalyticsProvider } from '../../providers/analytics';
 })
 export class RegisterPage {
 
-  constructor(public navCtrl: NavController, private analytics : AnalyticsProvider ) {
+  constructor(public navCtrl: NavController) {
     //Pro.getApp().monitoring.log('Register.construct', { level: 'error' });
-    this.analytics.setScreenName("Register");
-    this.analytics.addEvent(this.analytics.getAnalyticEvent("Register", "View"));
+    // this.analytics.setScreenName("Register");
+    // this.analytics.addEvent(this.analytics.getAnalyticEvent("Register", "View"));
   }
 
   pushPage(item){

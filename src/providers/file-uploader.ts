@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { DataService } from '../app/app.data';
@@ -14,7 +13,7 @@ import Parse from 'parse';
 @Injectable()
 export class FileUploaderProvider {
   fileTransfer:FileTransferObject
-  constructor(public http: HttpClient, private transfer: FileTransfer, public dataService: DataService) {
+  constructor(private transfer: FileTransfer, public dataService: DataService) {
     console.log('Hello FileUploaderProvider Provider');
     this.fileTransfer = this.transfer.create();
   }
@@ -35,7 +34,7 @@ export class FileUploaderProvider {
     let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
     return await this.dataService.getApi('getAWSCredential', { 'fileName': fileName }).then(async API => {
-      return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (res) => {
+      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (res) => {
         let params = {
           "key": fileName,
           "AWSAccessKeyId": res.result.awsKey,
@@ -52,34 +51,38 @@ export class FileUploaderProvider {
           params: params,
         }
 
-        return await this.fileTransfer.upload(filePath, "https://smartiebucket.s3.amazonaws.com/", options)
+       this.fileTransfer.upload(filePath, "https://smartiebucket.s3.amazonaws.com/", options)
           .then(async (data) => {
             console.log(data);
-            return await data;
+            return data;
             // success
           }, async (err) => {
             console.log(err);
-            return await err;
+            return err;
             // error
           })
       }, async (err) => {
         console.log(err);
-        return await err;
+        return err;
       })
     });
   }
 
   saveToCredentialClass(profile, fileUrl) {
-    let Credential = Parse.Object.extend('Credential');
-    let cred = new Credential();
-    cred.set('profile', profile);
-    cred.set('file', fileUrl);
-    cred.save({ useMasterKey: true }).then(credential => {
-      console.log(credential);
-      console.log("Credentials saved successfully..!");
-    }).fail((e) => {
-      console.log(e);
-    });
+    return new Promise((resolve, reject)=>{
+      let Credential = Parse.Object.extend('Credential');
+      let cred = new Credential();
+      cred.set('profile', profile);
+      cred.set('file', fileUrl);
+      cred.save({ useMasterKey: true }).then(credential => {
+        resolve(credential);
+        console.log(credential);
+        console.log("Credentials saved successfully..!");
+      }).fail((e) => {
+        console.log(e);
+        reject(e);
+      });
+    })
   }
 
 }

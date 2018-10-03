@@ -3,10 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By }           from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { RegisterPage } from './register';
-import { IonicModule, Platform, NavController} from 'ionic-angular/index';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { SmartieApp } from '../../app/app.component';
+import { NavController } from 'ionic-angular/index';
 
 describe('Register Component', () => {
   let de: DebugElement;

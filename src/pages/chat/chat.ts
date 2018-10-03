@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { ChatProvider } from '../../providers/chat';
 import { DataService } from '../../app/app.data';
 
 /**
@@ -28,7 +27,7 @@ export class ChatPage {
   teacherProfileId: any;
   chatMessages = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public chatService: ChatProvider, public events: Events, private dataService: DataService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events, private dataService: DataService) {
     this.params = navParams.get("params");
 
     if(!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined'){
@@ -48,7 +47,7 @@ export class ChatPage {
       }
     } */
     // Initialize chat
-    this.chatService.initializebuddy(this.params);
+    //this.chatService.initializebuddy(this.params);
     if(this.params.role != 'teacher'){
       this.studentProfileId = this.params.objectId;
       this.teacherProfileId = this.params.teacherProfile.objectId;
@@ -56,6 +55,7 @@ export class ChatPage {
       this.teacherProfileId = this.params.objectId;
       this.studentProfileId = this.params.otherProfile.objectId;
     }
+
 
     this.storage.get("UserProfile").then(profile => {
       this.role = profile.profileData.role;
@@ -102,13 +102,26 @@ export class ChatPage {
   }
 
   addmessage() {
-    this.chatService.addnewmessage(this.newmessage).then((response) => {
-      console.log('test');
-      this.content.scrollToBottom();
-      this.newmessage = '';
-      console.log(response);
-      this.getAllMessages();
-    })
+    this.dataService.getApi(
+      'addChatMessage',
+      { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId, message: this.newmessage, viewed: false, role: this.role }
+    ).then(async API => {
+      return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders'] ).then(async response => {
+        this.content.scrollToBottom();
+        this.newmessage = '';
+        console.log(response);
+        this.getAllMessages();
+      }, err => {
+        console.log(err);
+      })
+    });
+    // this.chatService.addnewmessage(this.newmessage).then((response) => {
+    //   console.log('test');
+    //   this.content.scrollToBottom();
+    //   this.newmessage = '';
+    //   console.log(response);
+    //   this.getAllMessages();
+    // })
   }
 
   scrollto() {
