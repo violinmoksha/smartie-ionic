@@ -9,5 +9,8 @@ import { MobileVerificationPage } from './mobile-verification';
   imports: [
     IonicPageModule.forChild(MobileVerificationPage),
   ],
+  exports:[
+    MobileVerificationPage
+  ]
 })
 export class MobileVerificationPageModule {}

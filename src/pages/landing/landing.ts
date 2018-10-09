@@ -16,25 +16,21 @@ import { AnalyticsProvider } from '../../providers/analytics';
 })
 export class LandingPage {
 
-  constructor(public navCtrl: NavController,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public analytics:AnalyticsProvider) {
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad LandingPage');
     this.analytics.setScreenName("Landing");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Landing", "View"));
 
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LandingPage');
-  }
-
-  // pushRegister(){
-  //   this.navCtrl.push("RegisterPage");
-  // }
-
   pushMobVerify(role){
     this.navCtrl.push("MobileVerificationPage", { role: role });
     // TODO: redo this using plain ol storage
     //this.dbService.setRegistrationData({ step:0, role:role})
-    this.analytics.addEvent(this.analytics.getAnalyticEvent("Landing", role+"_selected"));
+    // this.analytics.addEvent(this.analytics.getAnalyticEvent("Landing", role+"_selected"));
   }
 
   pushForgotPassword(){

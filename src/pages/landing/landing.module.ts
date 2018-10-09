@@ -9,6 +9,9 @@ import { LandingPage } from './landing';
   imports: [
     IonicPageModule.forChild(LandingPage),
   ],
+  exports:[
+    LandingPage
+  ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ]
