@@ -1,3 +1,4 @@
+import { TestPage } from './../pages/test/test';
 import { Constants } from './app.constants';
 import { Device } from '@ionic-native/device';
 

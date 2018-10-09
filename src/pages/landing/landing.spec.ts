@@ -1,13 +1,9 @@
-import { AppModule } from './../../app/app.module';
-import { SmartieApp } from './../../app/app.component';
-import { LandingPageModule } from './landing.module';
+import { FirebaseMock } from './../../mocks/firebase';
+import { Firebase } from '@ionic-native/firebase';
 import { AnalyticsProvider } from './../../providers/analytics';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By }           from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { LandingPage } from './landing';
-import { IonicPageModule, IonicModule, NavController} from 'ionic-angular';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { IonicModule, NavController} from 'ionic-angular';
 describe('Landing Page', () => {
  // let de: DebugElement;
   let comp: LandingPage;
@@ -15,28 +11,37 @@ describe('Landing Page', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
+      declarations: [LandingPage],
       imports: [
-        IonicModule.forRoot(LandingPage),
-        AppModule
-      ],
-      schemas: [
-        CUSTOM_ELEMENTS_SCHEMA
+        IonicModule.forRoot(LandingPage)
       ],
       providers: [
-        AnalyticsProvider,
-        NavController
+        NavController,
+        {provide:AnalyticsProvider, useValue:AnalyticsProvider, deps:[FirebaseMock]}
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LandingPage);
-    console.log("Landing component");
-    console.log(fixture)
     comp = fixture.componentInstance;
-    //de = fixture.debugElement.query(By.css('ion-content'));
   });
 
-  it('should create component', () => expect(comp instanceof LandingPage).toBeDefined());
+  it('should create component', () => {
+    expect(comp instanceof LandingPage).toBeDefined();
+  });
+
+  it('view Did Load',inject([AnalyticsProvider], (analyticsService: AnalyticsProvider) => {
+    let setScreen = spyOn(comp, 'ionViewDidLoad').and.callThrough();
+    //let addEvent = spyOn(analytics, 'addEvent').and.callThrough();
+    fixture.detectChanges();
+    expect(setScreen).toHaveBeenCalled();
+  //  expect(addEvent).toHaveBeenCalled();
+  }));
+
+  it('should navigate to Mobileverification',inject([NavController], (navCtrl: NavController) => {
+    let navSpy = spyOn(navCtrl, 'push').and.callThrough();
+    comp.pushMobVerify("Test Role");
+    expect(navSpy).toHaveBeenCalled();
+  }));
 });
