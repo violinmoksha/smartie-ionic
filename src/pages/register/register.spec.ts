@@ -1,6 +1,6 @@
 import { AnalyticsProvider } from './../../providers/analytics';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By }           from '@angular/platform-browser';
+import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { RegisterPage } from './register';
 import { IonicModule, NavController } from 'ionic-angular';
@@ -18,14 +18,14 @@ describe('Register Component', () => {
       ],
       providers: [
         NavController,
-        {provide:AnalyticsProvider, useValue:AnalyticsProvider, deps:[FirebaseMock]}
+        { provide: AnalyticsProvider, useValue: AnalyticsProvider, deps: [FirebaseMock] }
       ]
     }).compileComponents();
     fixture = TestBed.createComponent(RegisterPage);
     comp = fixture.componentInstance;
   }));
 
-  it('should create fixture',()=>{
+  it('should create fixture', () => {
     expect(fixture).toBeTruthy()
   })
   it('should create component', () => expect(comp).toBeDefined());

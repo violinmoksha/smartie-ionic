@@ -1,4 +1,5 @@
 import { browser, by, element } from 'protractor';
+import { By } from 'selenium-webdriver';
 
 export class Page {
 
@@ -13,5 +14,9 @@ export class Page {
 
   getFirstButtonText() {
     return element(by.tagName('page-landing')).element(by.tagName('p')).getText();
+  }
+
+  checkButtonText() {
+    return element(by.tagName('page-landing')).element(by.css('.button p')).getText();
   }
 }

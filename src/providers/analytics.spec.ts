@@ -32,20 +32,20 @@ describe("Analytics: Provider", () => {
 
   it('should have addEvent callThrough -capable', inject([AnalyticsProvider], (analyticsService: AnalyticsProvider) => {
     const spyFirebase = spyOn(analyticsService.firebase, 'logEvent').and.callThrough();
-    analyticsService.addEvent(event).then(()=>{
+    analyticsService.addEvent(event).then(() => {
       expect(spyFirebase).toHaveBeenCalled();
     });
   }));
 
   it('should have addUserProperty callThrough -capable', inject([AnalyticsProvider], (analyticsService: AnalyticsProvider) => {
     const spyFirebase = spyOn(analyticsService.firebase, 'setUserProperty').and.callThrough();
-    analyticsService.addUserProperty().then(()=>{
+    analyticsService.addUserProperty().then(() => {
       expect(spyFirebase).toHaveBeenCalled();
     });
   }));
 
   it('should have setScreenName callThrough -capable', inject([AnalyticsProvider], (analyticsService: AnalyticsProvider) => {
-    analyticsService.setScreenName("spec tests").then(()=>{
+    analyticsService.setScreenName("spec tests").then(() => {
       expect(analyticSpy).toHaveBeenCalled();
     });
   }));

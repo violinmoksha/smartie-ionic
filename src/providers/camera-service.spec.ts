@@ -6,7 +6,7 @@ import { ActionSheetController } from 'ionic-angular';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { ActionSheetControllerMock } from "ionic-mocks"
 
-let isAlphaNumeric = (string)=>{
+let isAlphaNumeric = (string) => {
   return /^[a-zA-Z0-9]+$/.test(string)
 }
 describe('Camera Service:', () => {
@@ -65,7 +65,7 @@ describe('Camera Service:', () => {
   }));
 
   it("Get File Name", inject([CameraServiceProvider], (cameraService: CameraServiceProvider) => {
-    cameraService.getFileName().then(res=>{
+    cameraService.getFileName().then(res => {
       expect(isAlphaNumeric(res)).toBeTruthy()
     })
   }));

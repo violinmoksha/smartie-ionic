@@ -28,13 +28,13 @@ describe("Mobile verification", () => {
     TestBed.configureTestingModule({
       declarations: [MobileVerificationPage],
       providers: [
-        {provide:AnalyticsProvider, useValue:AnalyticsProvider, deps:[FirebaseMock]},
-        {provide:DataService, useValue:DataService, deps:[SecureStorageMock,HTTPMock]},
-        {provide:Device, useValue:DeviceMock},
-        {provide:NavController, useValue:NavControllerMock},
-        {provide:Platform, useValue:PlatformMock},
-        {provide:LoadingController, useValue:LoadingControllerMock},
-        {provide:NavParams, useValue:NavParamsMock},
+        { provide: AnalyticsProvider, useValue: AnalyticsProvider, deps: [FirebaseMock] },
+        { provide: DataService, useValue: DataService, deps: [SecureStorageMock, HTTPMock] },
+        { provide: Device, useValue: DeviceMock },
+        { provide: NavController, useValue: NavControllerMock },
+        { provide: Platform, useValue: PlatformMock },
+        { provide: LoadingController, useValue: LoadingControllerMock },
+        { provide: NavParams, useValue: NavParamsMock },
       ],
       imports: [
         IonicModule.forRoot(MobileVerificationPage),
