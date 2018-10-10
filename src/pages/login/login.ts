@@ -1,6 +1,6 @@
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController, MenuController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, MenuController } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
@@ -15,7 +15,7 @@ import { AnalyticsProvider } from '../../providers/analytics';
  * on Ionic pages and navigation.
  */
 
-@IonicPage()@Component({
+@IonicPage() @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
 })
@@ -26,7 +26,7 @@ export class LoginPage {
     profile: { fullname: '' }
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private dataService: DataService, private loadingCtrl :LoadingController, private analytics : AnalyticsProvider,private menu: MenuController) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public storage: Storage, public dataService: DataService, public loadingCtrl: LoadingController, public analytics: AnalyticsProvider, public menu: MenuController) {
     this.storage.get('Provision').then(provision => {
       this.provisionData = provision.provision;
     })
@@ -36,17 +36,20 @@ export class LoginPage {
       password: new FormControl('')
     });
 
+  }
+
+  ionViewDidLoad() {
     this.analytics.setScreenName("Login");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Login", "View"));
   }
 
-  login(data){
-    if(data.password !==''){
+  login(data) {
+    if (data.password !== '') {
 
       return new Promise(async (resolve) => {
         return await this.dataService.getApi(
           'loginUser',
-          {username: this.provisionData.user.username, password: data.password}
+          { username: this.provisionData.user.username, password: data.password }
         ).then(async API => {
           let loading = this.loadingCtrl.create({
             content: 'Signing In....'
@@ -57,7 +60,7 @@ export class LoginPage {
             return await this.storage.set('UserProfile', data.result).then(async UserProfile => {
               this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: UserProfile.profileData.role, fromWhere: "login" });
 
-              if(data){
+              if (data) {
                 // TODO: do this directly though the firebase dependency, not some wrapper
                 //this.firebase.updateFcmToken(null, true);
               }
@@ -85,21 +88,21 @@ export class LoginPage {
               });*/
             });
           },
-          (err) => {
-            loading.dismiss();
-            Pro.monitoring.exception(err);
-            console.log(err);
-            this.loginFailed(err);
-          });
+            (err) => {
+              loading.dismiss();
+              Pro.monitoring.exception(err);
+              console.log(err);
+              this.loginFailed(err);
+            });
         });
       });
-    }else{
+    } else {
       this.loginFailed(null);
     }
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Login", "Login_Btn_Clicked"));
   }
 
-  loginFailed(err){
+  loginFailed(err) {
     let alert;
     if (err) {
       alert = this.alertCtrl.create({
@@ -117,15 +120,15 @@ export class LoginPage {
     alert.present();
   }
 
-  pushRegister(){
+  pushRegister() {
     this.navCtrl.push("RegisterPage");
   }
 
-  pushMobVerify(role){
+  pushMobVerify(role) {
     this.navCtrl.push("MobileVerificationPage", { role: role });
   }
 
-  pushForgotPassword(){
+  pushForgotPassword() {
     this.navCtrl.push("ForgotPassword");
   }
 
