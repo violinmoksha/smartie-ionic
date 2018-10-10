@@ -15,13 +15,14 @@ describe('App', () => {
     });
 
     it('should have a first button saying I WANT TO LEARN', () => {
-      page.checkButtonText().then(text => {
-        console.log("++++++++++++++++++++++++");
-        console.log(text);
+      page.getFirstButtonText().then(text => {
         expect(text).toEqual('I WANT TO LEARN');
-      }, err => {
-        console.log("___________________");
-        console.log("EROROR" + err)
+      });
+    });
+
+    it('should have a second button saying I WANT TO TEACH', () => {
+      page.getSecondButtonText().then(text => {
+        expect(text).toEqual('I WANT TO TEACH');
       });
     });
   })
