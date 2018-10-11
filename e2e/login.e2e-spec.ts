@@ -9,7 +9,6 @@ describe('Login', () => {
   beforeEach(() => {
     loginPage = new LoginPageObject();
     smartieSearch = new SmartieSearchObject();
-    loginPage.navigateTo('login')
   });
 
   it('a user should be able to reach the home page by providing a valid license key', () => {

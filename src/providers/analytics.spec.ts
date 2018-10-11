@@ -10,7 +10,7 @@ describe("Analytics: Provider", () => {
   let eventObj = { title: eventName, attributes: { action: eventAction } };
   var analyticSpy;
   beforeEach(async(() => {
-    analyticSpy = jasmine.createSpyObj('AnalyticsProvider', ['setScreenName']);
+    //analyticSpy = jasmine.createSpyObj('AnalyticsProvider', ['setScreenName']);
     TestBed.configureTestingModule({
       providers: [
         AnalyticsProvider,
@@ -45,8 +45,9 @@ describe("Analytics: Provider", () => {
   }));
 
   it('should have setScreenName callThrough -capable', inject([AnalyticsProvider], (analyticsService: AnalyticsProvider) => {
+    const spyFirebase = spyOn(analyticsService.firebase, 'setScreenName').and.callThrough();
     analyticsService.setScreenName("spec tests").then(() => {
-      expect(analyticSpy).toHaveBeenCalled();
+      expect(spyFirebase).toHaveBeenCalled();
     });
   }));
 

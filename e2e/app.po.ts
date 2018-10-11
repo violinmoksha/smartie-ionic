@@ -13,10 +13,14 @@ export class Page {
   }
 
   getFirstButtonText() {
-    return element(by.tagName('page-landing')).element(by.tagName('p')).getText();
+    return element.all(by.tagName('button p')).first().getText();
   }
 
-  checkButtonText() {
-    return element(by.tagName('page-landing')).element(by.css('.button p')).getText();
+  getSecondButtonText() {
+    return element.all(by.tagName('button p')).get(1).getText();
   }
+
+  // checkButtonText() {
+  //   return element(by.tagName('page-landing')).element(by.css('.button p')).getText();
+  // }
 }
