@@ -1,5 +1,6 @@
+import { NavMock } from './../../mocks/nav';
 import { AnalyticsProvider } from './../../providers/analytics';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { RegisterPage } from './register';
@@ -17,7 +18,7 @@ describe('Register Component', () => {
         IonicModule.forRoot(RegisterPage)
       ],
       providers: [
-        NavController,
+        { provide: NavController, useClass: NavMock },
         { provide: AnalyticsProvider, useValue: AnalyticsProvider, deps: [FirebaseMock] }
       ]
     }).compileComponents();
@@ -29,4 +30,12 @@ describe('Register Component', () => {
     expect(fixture).toBeTruthy()
   })
   it('should create component', () => expect(comp).toBeDefined());
+
+  it('should navigate to Mobileverification', async(inject([NavController], (navCtrl: NavController) => {
+    let navSpy = spyOn(navCtrl, 'push').and.callThrough();
+    comp.pushPage("teacher");
+    setTimeout(() => {
+      expect(navSpy).toHaveBeenCalledWith('RegisterStep1Page', { role: "teacher" })
+    }, 1000)
+  })));
 });

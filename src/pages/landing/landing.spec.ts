@@ -1,11 +1,15 @@
+import { NavMock } from './../../mocks/nav';
+import { MobileVerificationPage } from './../mobile-verification/mobile-verification';
 import { FirebaseMock } from './../../mocks/firebase';
-import { Firebase } from '@ionic-native/firebase';
+import { DebugElement } from '@angular/core';
 import { AnalyticsProvider } from './../../providers/analytics';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { LandingPage } from './landing';
 import { IonicModule, NavController } from 'ionic-angular';
+import { By } from '@angular/platform-browser';
+
 describe('Landing Page', () => {
-  // let de: DebugElement;
+  let de: DebugElement;
   let comp: LandingPage;
   let fixture: ComponentFixture<LandingPage>;
 
@@ -16,8 +20,8 @@ describe('Landing Page', () => {
         IonicModule.forRoot(LandingPage)
       ],
       providers: [
-        NavController,
-        { provide: AnalyticsProvider, useValue: AnalyticsProvider, deps: [FirebaseMock] }
+        { provide: NavController, useClass: NavMock },
+        { provide: AnalyticsProvider, deps: [FirebaseMock] }
       ]
     }).compileComponents();
   }));
@@ -31,17 +35,19 @@ describe('Landing Page', () => {
     expect(comp instanceof LandingPage).toBeDefined();
   });
 
-  it('view Did Load', inject([AnalyticsProvider], (analyticsService: AnalyticsProvider) => {
-    let setScreen = spyOn(comp, 'ionViewDidLoad').and.callThrough();
-    //let addEvent = spyOn(analytics, 'addEvent').and.callThrough();
+  it('view Did Load', async(inject([AnalyticsProvider], (analytics: AnalyticsProvider) => {
+    let setScreen = spyOn(comp.analytics, 'setScreenName').and.callThrough();
+    comp.ionViewDidLoad();
     fixture.detectChanges();
     expect(setScreen).toHaveBeenCalled();
-    //  expect(addEvent).toHaveBeenCalled();
-  }));
+  })));
 
   it('should navigate to Mobileverification', async(inject([NavController], (navCtrl: NavController) => {
-    let navSpy = spyOn(comp.navCtrl, 'push').and.callThrough();
+    let navSpy = spyOn(navCtrl, 'push').and.callThrough();
     comp.pushMobVerify("Test Role");
-    expect(navSpy).toHaveBeenCalled();
+    setTimeout(()=>{
+      expect(navSpy).toHaveBeenCalledWith('MobileVerificationPage',{ role: "Test Role" })
+    }, 1000)
   })));
+
 });
