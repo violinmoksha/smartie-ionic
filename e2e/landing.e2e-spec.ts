@@ -1,4 +1,4 @@
-import { browser, protractor } from 'protractor';
+import { browser, protractor, element, by } from 'protractor';
 import { LandingPageObject } from './page-object/landing.page-object';
 
 describe('LandingPage', () => {
@@ -23,6 +23,13 @@ describe('LandingPage', () => {
         page.getSecondButtonText().then(text => {
           expect(text).toEqual('I WANT TO TEACH');
         });
+      });
+
+      it('should navigate to MOBILE VERIFICATION page on clicking any button', () => {
+        let button = element.all(by.tagName('button')).first();
+        let expected = browser.ExpectedConditions;
+        browser.wait(expected.elementToBeClickable(button));
+        button.click();
       });
     })
   });
