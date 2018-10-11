@@ -34,6 +34,7 @@ export class LandingPage {
   }
 
   pushForgotPassword(){
-    this.navCtrl.push("ForgotPassword");
+   // this.navCtrl.push("ForgotPassword");
+   return true;
   }
 }

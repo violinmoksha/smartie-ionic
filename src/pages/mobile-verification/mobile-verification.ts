@@ -23,6 +23,11 @@ export class MobileVerificationPage {
   phoneNumber = '';
   mobileVerification: FormGroup;
   constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, private device: Device, private dataService: DataService, private loadingCtrl: LoadingController, private storage: Storage,private formBuilder: FormBuilder,private analytics : AnalyticsProvider) {
+
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad MobileVerificationPage');
     this.role = this.navParams.get('role');
 
     this.mobileVerification = this.formBuilder.group({
@@ -32,11 +37,6 @@ export class MobileVerificationPage {
         Validators.minLength(14)
     ])]
     });
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MobileVerificationPage');
-
     this.analytics.setScreenName("MobileVerification");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("MobileVerification", "View"));
   }

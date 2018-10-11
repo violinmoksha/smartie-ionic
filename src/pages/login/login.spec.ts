@@ -26,7 +26,7 @@ describe('Login Page', () => {
         NavController,
         { provide: AlertController, useValue: AlertController },
         { provide: AnalyticsProvider, useValue: AnalyticsProvider, deps: [FirebaseMock] },
-        { provide: DataService, useValue: DataService },
+        { provide: DataService, deps:[] },
         { provide: LoadingController, useValue: LoadingControllerMock },
         { provide: MenuController, useValue: MenuControllerMock },
       ]
@@ -43,7 +43,7 @@ describe('Login Page', () => {
   });
 
   it('Login Clicked', inject([DataService], (dataService: DataService) => {
-    let loginEventSpy = spyOn(dataService, "getApi").and.callThrough();
+    let loginEventSpy = spyOn(comp.dataService, "getApi").and.callThrough();
     comp.login(loginData).then(res => {
       expect(loginEventSpy).toHaveBeenCalled();
     })

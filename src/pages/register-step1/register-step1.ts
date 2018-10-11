@@ -23,14 +23,19 @@ export class RegisterStep1Page {
   private Step1Form: FormGroup;
   private notNewEmail: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private loadingCtrl: LoadingController,private analytics : AnalyticsProvider, public storage: Storage) {
-    this.role = navParams.get('role');
+  constructor(public navCtrl: NavController, public navParams: NavParams, public dataService: DataService, public loadingCtrl: LoadingController,public analytics : AnalyticsProvider, public storage: Storage) {
 
     this.Step1Form = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')])
     });
+  }
+
+  ionViewDidLoad() {
+    // console.log('ionViewDidLoad RegisterStep1Page');
+    this.role = this.navParams.get('role');
+
     this.analytics.setScreenName("Register-step1");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step1", "View"));
   }
@@ -96,10 +101,6 @@ export class RegisterStep1Page {
       });
     });
 
-  }
-
-  ionViewDidLoad() {
-    // console.log('ionViewDidLoad RegisterStep1Page');
   }
 
 }
