@@ -26,10 +26,41 @@ describe('LandingPage', () => {
       });
 
       it('should navigate to MOBILE VERIFICATION page on clicking any button', () => {
+        // let d = protractor.promise.defer();
         let button = element.all(by.tagName('button')).first();
-        let expected = browser.ExpectedConditions;
-        browser.wait(expected.elementToBeClickable(button));
+        let expected = protractor.ExpectedConditions;
+
+        let condition = expected.and(page.urlChanged)
         button.click();
+        
+        browser.wait(condition, 5000).then( (result) => {
+          console.log("########### result ############");
+          console.log(result);
+          // expect(result).toBeTruthy();
+        })
+
+        expect(true).toBeTruthy();
+
+        /*button.click().then(() => {
+          setTimeout(() => { d.fulfill('ok')}, 50000)
+          setTimeout(() => {
+            d.fulfill('ok')
+          }, 10000)
+        })*/
+
+        /*button.click().then(() => {
+          browser.getCurrentUrl().then((actualUrl) => {
+            console.log("############# actual url ###############");
+            console.log(actualUrl);
+          })
+        })*/
+        // browser.wait(expected.elementToBeClickable(button)).then(() => {
+        //   button.click().then(() => {
+        //     let newPageTitle = browser.getTitle();
+        //     console.log("######## Title #######");
+        //     console.log(newPageTitle);
+        //   })
+        // })
       });
     })
   });
