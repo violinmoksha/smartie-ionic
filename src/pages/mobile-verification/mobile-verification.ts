@@ -77,6 +77,7 @@ export class MobileVerificationPage {
             this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
           },e=>{
             loading.dismiss();
+            console.log("Error api failed")
             console.log(e);
           })
         });

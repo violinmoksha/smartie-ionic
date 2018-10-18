@@ -33,25 +33,32 @@ export class FileUploaderProvider {
     //let file = filePath.substr(0, filePath.lastIndexOf('/'));
     let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
-    return await this.dataService.getApi('getAWSCredential', { 'fileName': fileName }).then(async API => {
-      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (res) => {
-        let params = {
-          "key": fileName,
-          "AWSAccessKeyId": res.result.awsKey,
-          "acl": "public-read",
-          "policy": res.result.policy,
-          "signature": res.result.signature,
-          "Content-Type": "image/jpeg"
-        }
+    return await this.dataService.getApi('getAWSCredential', { 'fileName': "Test_filename.png" }).then(async API => {
+      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (signedUrl) => {
+        // let params = {
+        //   "key": fileName,
+        //   "AWSAccessKeyId": res.result.awsKey,
+        //   "acl": "public-read",
+        //   "policy": res.result.policy,
+        //   "signature": res.result.signature,
+        //   "Content-Type": "image/jpeg"
+        // }
         let options: FileUploadOptions = {
           fileKey: 'file',
-          fileName: fileName,
+          fileName: "Test_filename.png",
           chunkedMode: false,
-          mimeType: "image/jpeg",
-          params: params,
+          mimeType: "image/png",
+          httpMethod:'PUT',
+          headers: {
+            "Content-Type": "image/png",
+            "acl": "authenticated-read",
+            'X-Amz-Acl': 'authenticated-read'
+          }
         }
+        console.log("**** file uploader***");
+        console.log(signedUrl);
 
-       this.fileTransfer.upload(filePath, "https://smartiebucket.s3.amazonaws.com/", options)
+       this.fileTransfer.upload("data:image/png;base64,"+filePath, signedUrl.result, options)
           .then(async (data) => {
             console.log(data);
             return data;
