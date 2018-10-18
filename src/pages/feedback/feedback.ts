@@ -84,7 +84,7 @@ export class FeedbackPage {
       }
       /***testing file transfer */
 
-      // this.fileUploader.uploadFileToAWS(files[0]);
+      this.fileUploader.uploadFileToAWS(files[0]);
     }, (err) => {
       console.log(err);
     })
