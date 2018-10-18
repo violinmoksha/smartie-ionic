@@ -1,4 +1,4 @@
-import { browser, by, element } from 'protractor';
+import { browser, by, element, protractor } from 'protractor';
 
 export class LandingPageObject {
 
@@ -18,4 +18,23 @@ export class LandingPageObject {
     getSecondButtonText() {
         return element.all(by.tagName('button p')).get(1).getText();
     }
+
+    // pushMobVerify(role){
+    //     // browser.navigate("MobileVerificationPage", { role: role });
+    //     browser.get("mobile-verification");
+    // }
+
+
+    urlChanged() {
+        return browser.getCurrentUrl().then(function(url) {
+            console.log(url);
+            if(url != 'http://localhost:8100/#/landing'){
+                console.log("True");
+                return true;
+            }else{
+                console.log("False");
+                return false;
+            }
+        });
+    };
 }

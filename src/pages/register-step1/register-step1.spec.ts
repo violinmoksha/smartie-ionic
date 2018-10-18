@@ -14,6 +14,7 @@ describe('Register step-1 Component', () => {
   var comp: RegisterStep1Page;
   var fixture: ComponentFixture<RegisterStep1Page>;
   var formData = {"email":"abc@mail.com", "password":"123456", "confPassword":"123456"};
+  var spies;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RegisterStep1Page],
@@ -27,11 +28,12 @@ describe('Register step-1 Component', () => {
       providers: [
         { provide: NavController, useClass: NavMock },
         { provide: AnalyticsProvider, useValue: AnalyticsProvider, deps: [FirebaseMock] },
-        { provide: LoadingController, useClass: LoadingControllerMock },
-        { provide: DataService, deps: [] },
-        { provide: NavParams, useValue: NavParamsMock },
+        { provide: LoadingController, useFactory: () => LoadingControllerMock.instance() },
+        { provide: DataService, useFactory: () => new DataService(null, null, null), deps: [] },
+        { provide: NavParams, useFactory: () => NavParamsMock.instance() },
       ]
     }).compileComponents();
+    spies = jasmine.createSpyObj('DataService', ['getApi']);
     fixture = TestBed.createComponent(RegisterStep1Page);
     comp = fixture.componentInstance;
   }));
@@ -43,10 +45,9 @@ describe('Register step-1 Component', () => {
     expect(comp).toBeDefined();
   });
 
-  it("Navigate to next step", async(inject([LoadingController], (loader: LoadingController) => {
-    let loaderSpy = spyOn(comp.dataService, 'getApi').and.callThrough();
+  it("Navigate to next step", async(inject([DataService], (dataService: DataService) => {
     comp.next(formData).then(res=>{
-      expect(loaderSpy).toHaveBeenCalled();
+      expect(spies).toHaveBeenCalled();
     })
   })))
 

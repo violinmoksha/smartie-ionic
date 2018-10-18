@@ -22,12 +22,7 @@ export class MobileVerificationPage {
   role: string;
   phoneNumber = '';
   mobileVerification: FormGroup;
-  constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, private device: Device, private dataService: DataService, private loadingCtrl: LoadingController, private storage: Storage,private formBuilder: FormBuilder,private analytics : AnalyticsProvider) {
-
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MobileVerificationPage');
+  constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, public device: Device, public dataService: DataService, public loadingCtrl: LoadingController, public storage: Storage,public formBuilder: FormBuilder,public analytics : AnalyticsProvider) {
     this.role = this.navParams.get('role');
 
     this.mobileVerification = this.formBuilder.group({
@@ -37,6 +32,10 @@ export class MobileVerificationPage {
         Validators.minLength(14)
     ])]
     });
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad MobileVerificationPage');
     this.analytics.setScreenName("MobileVerification");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("MobileVerification", "View"));
   }
@@ -45,7 +44,7 @@ export class MobileVerificationPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("MobileVerification", "Clicked_MobileVerifyButton"));
 
     // encrypt UUID
-    this.dataService.getBeyondGDPR(true, {"plaintext":this.device.uuid}).then(cryptUUID => {
+    return this.dataService.getBeyondGDPR(true, {"plaintext":this.device.uuid}).then(cryptUUID => {
       let deviceUUID;
       if (cryptUUID) {
         deviceUUID = cryptUUID;

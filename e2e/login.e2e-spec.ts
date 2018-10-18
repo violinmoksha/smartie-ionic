@@ -7,6 +7,7 @@ describe('Login', () => {
   let smartieSearch: SmartieSearchObject;
 
   beforeEach(() => {
+    loginPage.navigateTo('/login');
     loginPage = new LoginPageObject();
     smartieSearch = new SmartieSearchObject();
   });
