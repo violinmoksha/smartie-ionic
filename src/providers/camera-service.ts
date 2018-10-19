@@ -20,7 +20,7 @@ export class CameraServiceProvider {
   getCameraOptions() {
     const options: CameraOptions = {
       quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
+      destinationType: this.camera.DestinationType.FILE_URI,
       saveToPhotoAlbum: true,
       mediaType: this.camera.MediaType.PICTURE,
       sourceType: this.camera.PictureSourceType.CAMERA,
@@ -48,7 +48,7 @@ export class CameraServiceProvider {
       quality: 100,
       width: 512,
       height: 512,
-      outputType: 1
+      outputType: 0
     }
     return new Promise((resolve, reject) => {
       this.imagePicker.hasReadPermission().then((res) => {
