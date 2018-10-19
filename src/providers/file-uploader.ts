@@ -51,14 +51,14 @@ export class FileUploaderProvider {
           httpMethod:'PUT',
           headers: {
             "Content-Type": "image/png",
-            "acl": "authenticated-read",
-            'X-Amz-Acl': 'authenticated-read'
+            "acl": "public-read",
+            'X-Amz-Acl': 'public-read'
           }
         }
         console.log("**** file uploader***");
         console.log(signedUrl);
-
-       this.fileTransfer.upload("data:image/png;base64,"+filePath, signedUrl.result, options)
+        // "data:image/png;base64,"+
+       this.fileTransfer.upload(filePath, signedUrl.result, options)
           .then(async (data) => {
             console.log(data);
             return data;
