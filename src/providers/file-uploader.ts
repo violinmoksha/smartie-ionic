@@ -29,50 +29,40 @@ export class FileUploaderProvider {
     });
   }
 
-  async uploadFileToAWS(filePath) {
+  uploadFileToAWS(filePath) {
     //let file = filePath.substr(0, filePath.lastIndexOf('/'));
-    let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+    return new Promise((resolve, reject) => {
+      let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
-    return await this.dataService.getApi('getAWSCredential', { 'fileName': "Test_filename.png" }).then(async API => {
-      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (signedUrl) => {
-        // let params = {
-        //   "key": fileName,
-        //   "AWSAccessKeyId": res.result.awsKey,
-        //   "acl": "public-read",
-        //   "policy": res.result.policy,
-        //   "signature": res.result.signature,
-        //   "Content-Type": "image/jpeg"
-        // }
-        let options: FileUploadOptions = {
-          fileKey: 'file',
-          fileName: "Test_filename.png",
-          chunkedMode: false,
-          mimeType: "image/png",
-          httpMethod:'PUT',
-          headers: {
-            "Content-Type": "image/png",
-            "acl": "public-read",
-            'X-Amz-Acl': 'public-read'
+      this.dataService.getApi('getAWSCredential', { 'fileName': fileName }).then(async API => {
+        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (signedUrl) => {
+          let options: FileUploadOptions = {
+            fileKey: 'file',
+            fileName: fileName,
+            chunkedMode: false,
+            mimeType: "image/jpg",
+            httpMethod:'PUT',
+            headers: {
+              "Content-Type": "image/jpg",
+              "acl": "public-read",
+              'X-Amz-Acl': 'public-read'
+            }
           }
-        }
-        console.log("**** file uploader***");
-        console.log(signedUrl);
-        // "data:image/png;base64,"+
-       this.fileTransfer.upload(filePath, signedUrl.result, options)
-          .then(async (data) => {
-            console.log(data);
-            return data;
-            // success
-          }, async (err) => {
-            console.log(err);
-            return err;
-            // error
-          })
-      }, async (err) => {
-        console.log(err);
-        return err;
-      })
-    });
+         this.fileTransfer.upload(filePath, signedUrl.result, options)
+            .then((data) => {
+              console.log(data);
+              let filePath = signedUrl.result.split('?')[0];
+              resolve(filePath);
+            }, (err) => {
+              console.log(err);
+              reject(err);
+            })
+        }, (err) => {
+          console.log(err);
+          reject(err);
+        })
+      });
+    })
   }
 
   saveToCredentialClass(profile, fileUrl) {

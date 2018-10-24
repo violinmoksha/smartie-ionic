@@ -23,9 +23,11 @@ createDrawable();
 // }
 
 function createDrawable() {
+  console.log(" **** Running hooks ******")
   fse.ensureDir(ANDROID_DIR + "/app/src/main/res/drawable", err => {
     fse.copy("build-config/android/splash_window.xml", ANDROID_DIR + "/app/src/main/res/drawable/splash_window.xml", err => {
       setStyles();
+      copySplashImage();
     })
   })
 }
@@ -46,4 +48,10 @@ function updateThemeInManifest() {
     manifestString = manifestString.replace(temp, 'android:theme="' + configValues.android.theme + '"');
     fse.writeFileSync(ANDROID_DIR + "/app/src/main/AndroidManifest.xml", manifestString);
   }
+}
+
+function copySplashImage() {
+  fse.copy("resources/splash.png", ANDROID_DIR + "/app/src/main/res/drawable/screen.png", err => {
+    console.log(err);
+  })
 }

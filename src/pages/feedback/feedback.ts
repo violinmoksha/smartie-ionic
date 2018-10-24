@@ -78,13 +78,10 @@ export class FeedbackPage {
   addUserScreenShot() {
     this.cameraService.getImage().then(async (files) => {
       if (Array.isArray(files)) {
-        for (var i=0; i<files.length; i++) {
-          this.userScreenshotsView.push({ 'displayName':"file"+this.userScreenshotsView.length,'name': await this.cameraService.getFileName(), 'data': files[i] });
+        for (var i = 0; i < files.length; i++) {
+          this.userScreenshotsView.push({ 'displayName': "file" + this.userScreenshotsView.length, 'name': await this.cameraService.getFileName(), 'data': files[i] });
         }
       }
-      /***testing file transfer */
-
-      this.fileUploader.uploadFileToAWS(files[0]);
     }, (err) => {
       console.log(err);
     })
@@ -97,24 +94,42 @@ export class FeedbackPage {
   submitFeedback() {
     return new Promise((resolve) => {
       this.loading.present();
-      let params = { feedBack: this.feedbackValue, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null, userName:this.profileData.fullname, email: this.userData.email };
+      let params = { feedBack: this.feedbackValue, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null, userName: this.profileData.fullname, email: this.userData.email };
 
       if (this.userScreenshotsView.length > 0) {
         let filePromises = [];
         for (let i = 0; i < this.userScreenshotsView.length; i++) {
           filePromises.push(this.fileUploader.uploadFile(this.userScreenshotsView[i], 'png'));
         }
-        Promise.all(filePromises).then((results) => {
-          console.log(results);
-          params.attachment = results;
+        /*** Upload to parse server */
+        // Promise.all(filePromises).then((results) => {
+        //   console.log(results);
+        //   params.attachment = results;
+        //   this.setFeedbackApi(params);
+        // });
+
+        /** To S3 bucket */
+        this.uploadToS3(this.userScreenshotsView).then(res => {
+          params.attachment = res;
           this.setFeedbackApi(params);
         })
       } else {
         this.setFeedbackApi(params);
       }
     });
+  }
 
-
+  uploadToS3(files) {
+    return new Promise((resolve, reject) => {
+      let filePromises = [];
+      for (let i = 0; i < files.length; i++) {
+        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data));
+      }
+      Promise.all(filePromises).then((results) => {
+        console.log(results);
+        resolve(results);
+      })
+    })
   }
 
   async setFeedbackApi(params) {
