@@ -31,7 +31,7 @@ export class ChatPage {
     this.params = navParams.get("params");
 
     if(!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined'){
-      this.chatAccess = false;
+      this.chatAccess = true;
     }
     /* if(this.params.role == 'teacher'){
       console.log("Teacher");
@@ -142,7 +142,7 @@ export class ChatPage {
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders'] ).then(async response => {
           this.chatMessages = [];
-          for(let chat of response.data.result){
+          for(let chat of response.result){
             this.chatMessages.push(chat);
           }
 
