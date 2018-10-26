@@ -49,8 +49,8 @@ export class DataService {
 
           const httpOptions = {
             'X-Parse-Application-Id': this.applicationId,
-            'X-Hullo-Token': provisionData ? provisionData.pToken : '',
-            'x-Device-UUID': provisionData ? provisionData.provision.uuid : '',
+            'X-Hullo-Token': (provisionData && provisionData.pToken) ? provisionData.pToken : '',
+            'x-Device-UUID': (provisionData && provisionData.provision) ? provisionData.provision.uuid : '',
             'X-Bouncy-Token': userData ? userData.jwtToken : '',
             'X-User-Id': userData ? userData.userData.objectId : '',
             'Content-Type': this.contentType
@@ -181,4 +181,21 @@ export class DataService {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
 
+  updateUserProfileStorage(updatedProfile = null, specificUserData = null) {
+    return new Promise((resolve, reject) => {
+      this.storage.get("UserProfile").then(profile => {
+        if (updatedProfile) {
+          profile['profileData'] = updatedProfile;
+        }
+        if (specificUserData != null) {
+          profile['specificUser'] = specificUserData;
+        }
+        this.storage.set("UserProfile", profile).then(() => {
+          resolve(profile);
+        })
+      }, err => {
+        reject(err);
+      })
+    });
+  }
 }
