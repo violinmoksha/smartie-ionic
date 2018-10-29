@@ -56,7 +56,7 @@ export class NotificationFeedPage {
     ).then(async API => {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async jobReq => {
         if (jobReq)
-          this.allAccepteds = jobReq.data.result; // jobReq[0], jobReq.data[0]???
+          this.allAccepteds = jobReq.result; // jobReq[0], jobReq.data[0]???
         console.log(jobReq);
       }, (err) => {
         console.log(err);
