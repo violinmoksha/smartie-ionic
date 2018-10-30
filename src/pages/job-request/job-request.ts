@@ -97,14 +97,14 @@ export class JobRequestPage {
           buttons: [{
             text: 'OK',
             handler: () => {
-              // this.navCtrl.push('NotificationFeedPage');
+              console.log(this.jobObject);
               this.navCtrl.push('SchedulePage', {
                 params: {
                   jobRequestId: this.jobObject.jobRequestId,
                   profilePhoto: this.jobObject.profilePhoto,
-                  profileStripeAccount: this.jobObject.profileStripeAccount,
+                  profileStripeAccount: this.jobObject.stripeCustomer,
                   fullname: this.jobObject.fullname,
-                  teacherProfileId: this.jobObject.teacherProfileId,
+                  teacherProfileId: this.jobObject.teacherProfile.objectId,
                   role: this.jobObject.role,
                   prefPayRate: this.jobObject.prefPayRate,
                   prefLocation: this.jobObject.prefLocation,
@@ -263,6 +263,8 @@ export class JobRequestPage {
             if (this.userRole !== 'teacher') {
               this.scheduleJob();
             }
+          }, err => {
+            this.loading.dismiss();
           });
         });
       })
@@ -304,7 +306,7 @@ export class JobRequestPage {
       params: {
         profilePhoto: this.teacherObj.profilePhoto,
         fullname: this.teacherObj.fullname,
-        teacherProfileId: this.teacherObj.teacherProfileId,
+        teacherProfileId: this.teacherObj.objectId,
         role: this.teacherObj.role,
         prefPayRate: this.teacherObj.prefPayRate,
         prefLocation: this.teacherObj.prefLocation,
@@ -312,7 +314,7 @@ export class JobRequestPage {
         defaultEndDate: this.teacherObj.defaultEndDate,
         defaultStartTime: this.teacherObj.defaultStartTime,
         defaultEndTime: this.teacherObj.defaultEndTime,
-        profileStripeAccount: this.teacherObj.profileStripeAccount,
+        profileStripeAccount: this.teacherObj.stripeCustomer,
         jobRequestId: this.jobObject.jobRequestId
       }
     })
