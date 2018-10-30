@@ -1,7 +1,7 @@
 import { CameraServiceProvider } from './../../providers/camera-service';
 import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Slides, ModalController, LoadingController  } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Slides, ModalController, LoadingController } from 'ionic-angular';
 import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { DataService } from '../../app/app.data';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
@@ -27,7 +27,7 @@ export class RegisterStep3Page {
   private loading: any;
   private form1Values: any;
   private form2Values: any;
-  private Step3Form : FormGroup;
+  private Step3Form: FormGroup;
   public TeacherFiles: any;
   public TeacherFilesView: any;
   public fileData: any;
@@ -40,7 +40,7 @@ export class RegisterStep3Page {
   private role: any;
   private today: any;
   public userLocation: any;
-  public cvFiles:Array<any>=[]
+  public cvFiles: Array<any> = []
 
   public event = {
     timeStarts: '10:00',
@@ -93,7 +93,7 @@ export class RegisterStep3Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device,private analytics : AnalyticsProvider,private cameraService : CameraServiceProvider ) {    // this.submitInProgress = false;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider) {    // this.submitInProgress = false;
 
     this.analytics.setScreenName("Register-step3");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step3", "View"));
@@ -108,9 +108,9 @@ export class RegisterStep3Page {
     this.role = navParams.data.role;
 
     this.today = new Date();
-    this.startDate = this.today.getMonth()+1 +'-'+this.today.getDate()+'-'+this.today.getFullYear();
+    this.startDate = this.today.getMonth() + 1 + '-' + this.today.getDate() + '-' + this.today.getFullYear();
     var defEndDate = new Date(this.today.setDate(this.today.getDate() + 365));
-    this.endDate = defEndDate.getMonth()+1 +'-'+defEndDate.getDate()+'-'+defEndDate.getFullYear();
+    this.endDate = defEndDate.getMonth() + 1 + '-' + defEndDate.getDate() + '-' + defEndDate.getFullYear();
 
     /* let timeZoneStartTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), 10, 0, 0);
     console.log(timeZoneStartTime);
@@ -129,14 +129,14 @@ export class RegisterStep3Page {
       //this.form2Values.profilePhoto = profilePhoto;
     })
 
-    if(this.role == 'teacher'){
+    if (this.role == 'teacher') {
       this.Step3Form = new FormGroup({
         teacherCvCerts: new FormControl(''),
         prefLocation: new FormControl('', Validators.required),
         startTime: new FormControl('', Validators.required),
         endTime: new FormControl('', [Validators.required, this.gretarThan('startTime')])
       })
-    }else{
+    } else {
       this.Step3Form = new FormGroup({
         prefLocation: new FormControl('', Validators.required)
       })
@@ -149,7 +149,7 @@ export class RegisterStep3Page {
     } => {
       if (!control['_parent']) return null;
       if (!control['_parent'].controls[equalControlName])
-      throw new TypeError('Form Control ' + equalControlName + ' does not exists.');
+        throw new TypeError('Form Control ' + equalControlName + ' does not exists.');
       var controlMatch = control['_parent'].controls[equalControlName];
       return controlMatch.value < control.value ? null : {
         'gretarThan': true
@@ -161,14 +161,14 @@ export class RegisterStep3Page {
     const options: CalendarModalOptions = {
       pickMode: 'single'
     };
-    let myCalendar =  this.modalCtrl.create(CalendarModal, {
+    let myCalendar = this.modalCtrl.create(CalendarModal, {
       options: options
     });
 
     myCalendar.present();
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
-      if(date){
+      if (date) {
         this.startDate = date.months + '-' + date.date + '-' + date.years;
         console.log(this.startDate);
       }
@@ -179,14 +179,14 @@ export class RegisterStep3Page {
     const options: CalendarModalOptions = {
       pickMode: 'single'
     };
-    let myCalendar =  this.modalCtrl.create(CalendarModal, {
+    let myCalendar = this.modalCtrl.create(CalendarModal, {
       options: options
     });
 
     myCalendar.present();
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
-      if(date){
+      if (date) {
         this.endDate = date.months + '-' + date.date + '-' + date.years;
         console.log(this.endDate);
       }
@@ -217,18 +217,18 @@ export class RegisterStep3Page {
     console.log(currentIndex);
   }
 
-  addTeacherCvCert(files){
+  addTeacherCvCert(files) {
     let TeacherCVs = new Array();
     let TeacherCVsView = new Array();
     let requests = files.length;
     // let k = 0;
-    for(let file of files){
+    for (let file of files) {
       TeacherCVsView.push(file);
       this.getBase64(file).then((obj) => {
         // console.log(k);
         // TeacherCVs[k]['name'] = obj['name'];
         // TeacherCVs[k]['data'] = obj['data'];
-        TeacherCVs.push({name: obj['name'],data: obj['data']});
+        TeacherCVs.push({ name: obj['name'], data: obj['data'] });
         requests--;
         // k++;
         // Call Parse Login function with those variables
@@ -248,7 +248,7 @@ export class RegisterStep3Page {
             console.log(error);
           }
         });*/
-        if(requests == 0) {
+        if (requests == 0) {
           this.storage.set('teacherCreds', TeacherCVs);
         }
       });
@@ -261,7 +261,7 @@ export class RegisterStep3Page {
   }
 
   getBase64(file) {
-    return new Promise(function(resolve, reject){
+    return new Promise(function (resolve, reject) {
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
@@ -278,8 +278,8 @@ export class RegisterStep3Page {
     })
   }
 
-  deleteTeacherCert(fileName){
-    this.TeacherFilesView = this.TeacherFilesView.filter(function(el) {
+  deleteTeacherCert(fileName) {
+    this.TeacherFilesView = this.TeacherFilesView.filter(function (el) {
       return el !== fileName;
     });
     this.addTeacherCvCert(this.TeacherFilesView);
@@ -289,7 +289,7 @@ export class RegisterStep3Page {
   updateUserToProvision = async (userId, userProfileId) => {
     return await this.dataService.getApi(
       'addUserToProvision',
-      { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
+      { uuid: this.device.uuid, userId: userId, profileId: userProfileId }
     ).then(async API => {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
         console.log("Getting updated provision");
@@ -303,15 +303,15 @@ export class RegisterStep3Page {
     });
   }
 
-  finalRegisterSubmit(form3Values){
+  finalRegisterSubmit(form3Values) {
     // this.submitInProgress = true;
     this.loading.present();
 
-    if(this.cvFiles.length>0)
-    this.storage.set('teacherCreds', this.cvFiles);
+    if (this.cvFiles.length > 0)
+      this.storage.set('teacherCreds', this.cvFiles);
 
     form3Values.prefPayRate = this.hourlyRate;
-    if(this.role == 'teacher'){
+    if (this.role == 'teacher') {
       form3Values.yrsExperience = this.yearExperience;
 
       let UTCstartTime = new Date(this.startDate.split('-')[2], (this.startDate.split('-')[0] - 1), this.startDate.split('-')[1], parseInt(form3Values.startTime.split(':')[0]), parseInt(form3Values.startTime.split(':')[1]));
@@ -336,35 +336,51 @@ export class RegisterStep3Page {
     return new Promise(async (resolve) => {
       return await this.dataService.getApi(
         'signUpRole',
-        {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(this.form2Values), userInfo: JSON.stringify(form3Values)}
+        { role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(this.form2Values), userInfo: JSON.stringify(form3Values) }
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(
           async signupResult => {
-            console.log(signupResult);
-            // TODO: do this via storage now
+
             this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
-
-            return await this.storage.set("UserProfile", signupResult.result).then(async () => {
-              return await new Promise(async (resolve) => {
-                return await this.dataService.getApi(
-                  'fetchMarkers',
-                  { profileId: signupResult.result.profileData.objectId, role: this.role }
-                ).then(async API => {
-                  return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
-                    this.loading.dismiss();
-                    return await this.dataService.sanitizeNotifications(Notifications.result).then(notifications => {
-                      this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
-                      //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
-                      // TODO: do this via storage now
-                      //this.dbService.setRegistrationData({step:3, role: this.role, form3: form3Values})
-                    })
-                  }, err => {
-                    console.log(err);
-                  });
-                });
-
+            
+            if (!signupResult.result.userData.emailVerified) {
+              let alert = this.alertCtrl.create({
+                title: 'Email not verified',
+                subTitle: "Please verify your email id",
+                buttons: [{
+                  text: 'Ok',
+                  role: 'Ok',
+                  handler: data => {
+                    this.navCtrl.push("LoginPage");
+                  }
+                }]
               });
-            });
+              this.loading.dismiss();
+              alert.present();
+            } else {
+              // TODO: do this via storage now
+              return await this.storage.set("UserProfile", signupResult.result).then(async () => {
+                return await new Promise(async (resolve) => {
+                  return await this.dataService.getApi(
+                    'fetchMarkers',
+                    { profileId: signupResult.result.profileData.objectId, role: this.role }
+                  ).then(async API => {
+                    return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
+                      this.loading.dismiss();
+                      return await this.dataService.sanitizeNotifications(Notifications.result).then(notifications => {
+                        this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
+                        //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
+                        // TODO: do this via storage now
+                        //this.dbService.setRegistrationData({step:3, role: this.role, form3: form3Values})
+                      })
+                    }, err => {
+                      console.log(err);
+                    });
+                  });
+
+                });
+              });
+            }
           },
           err => {
             let alert = this.alertCtrl.create({
@@ -374,8 +390,7 @@ export class RegisterStep3Page {
             });
             this.loading.dismiss();
             alert.present();
-          }
-        )
+          })
       });
     });
 
@@ -444,7 +459,7 @@ export class RegisterStep3Page {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterStep3Page');
     let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
-    let options = { componentRestrictions: {country: 'us'} };
+    let options = { componentRestrictions: { country: 'us' } };
 
     let autocomplete = new google.maps.places.Autocomplete(input, options);
     autocomplete.addListener("place_changed", () => {
@@ -454,17 +469,17 @@ export class RegisterStep3Page {
     })
   }
 
-  uploadCv(){
-    this.cameraService.getImage().then((files)=>{
+  uploadCv() {
+    this.cameraService.getImage().then((files) => {
       console.log(files);
-      if(Array.isArray(files)){
-        for(let file of files){
-            this.cvFiles.push({'name':this.cameraService.getFileName(), 'data':file});
+      if (Array.isArray(files)) {
+        for (let file of files) {
+          this.cvFiles.push({ 'name': this.cameraService.getFileName(), 'data': file });
         }
-      }else{
-        this.cvFiles.push({'name':this.cameraService.getFileName(), 'data':files});
+      } else {
+        this.cvFiles.push({ 'name': this.cameraService.getFileName(), 'data': files });
       }
-    },(err)=>{
+    }, (err) => {
       console.log(err);
     })
   }
