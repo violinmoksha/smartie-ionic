@@ -150,6 +150,7 @@ export class PaymentPage {
           this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment' });
           return response;
         }, err => {
+          this.loading.dismiss();
           console.log(err);
           return err;
         })

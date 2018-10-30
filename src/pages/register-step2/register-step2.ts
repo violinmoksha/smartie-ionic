@@ -28,8 +28,8 @@ export class RegisterStep2Page {
   private Step2Form: FormGroup;
   private form1Values: any;
   private role: any;
-  private profilePicSrc:string;
-  public schoolPicSrc:string = './assets/img/school-img.png';
+  private profilePicSrc: string;
+  public schoolPicSrc: string = './assets/img/school-img.png';
   private cameraData: string;
   private schoolCameraData: string;
   private photoTaken: boolean;
@@ -46,7 +46,7 @@ export class RegisterStep2Page {
   private hourlyRate: any;
   public userLocation: any;
   public nextText: string = '';
-  private userInfo: any = { prefLocation: '', prefPayRate: ''};
+  private userInfo: any = { prefLocation: '', prefPayRate: '' };
 
   public hourRates = [
     { "text": '5', "value": 5 },
@@ -71,16 +71,16 @@ export class RegisterStep2Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics : AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController) {
     this.analytics.setScreenName("Register-step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
 
     this.form1Values = navParams.data.form1Values;
     this.role = navParams.data.role;
-    this.profilePicSrc = './assets/img/user-img-'+this.role+'.png';
+    this.profilePicSrc = './assets/img/user-img-' + this.role + '.png';
     this.partOfSchool = false;
 
-    if(this.role == 'school'){
+    if (this.role == 'school') {
       this.titlePlaceHolder = "School seeking CMRA";
       this.messagePlaceHolder = "We looking for Market Research Analyst, who have hands of experience in CMRA for our school";
       this.Step2Form = new FormGroup({
@@ -91,12 +91,12 @@ export class RegisterStep2Page {
         contactName: new FormControl('', Validators.required),
         contactPosition: new FormControl('', Validators.required)
       })
-    }else if(this.role == 'student' || this.role == 'parent'){
+    } else if (this.role == 'student' || this.role == 'parent') {
       this.nextText = "Submit";
-      if(this.role == 'parent'){
+      if (this.role == 'parent') {
         this.titlePlaceHolder = "Parent seeking CMRA";
         this.messagePlaceHolder = "I'm a Parent looking for experienced Market Research Analyst for my child";
-      }else{
+      } else {
         this.titlePlaceHolder = "Student seeking CMRA";
         this.messagePlaceHolder = "I'm a student interested in learning Market Research Analyst and looking for experienced instructor";
       }
@@ -105,7 +105,7 @@ export class RegisterStep2Page {
       this.storage.get('phoneGeoposition').then(phoneGeoposition => {
         this.getGeoPlace(phoneGeoposition).then((address: any) => {
           // TODO: deal with Geoposition now as defined in Test geolocation mock, not Address
-          if(address.country == 'US'){
+          if (address.country == 'US') {
             this.Step2Form.controls['prefLocation'].disable()
             this.userLocation = address.formattedAddress;
           }
@@ -119,7 +119,7 @@ export class RegisterStep2Page {
         prefLocation: new FormControl('', Validators.required),
         // associateSchoolName: new FormControl('')
       })
-    }else{
+    } else {
       this.nextText = "Next";
       this.titlePlaceHolder = "I am a Certified TOEFL Instructor";
       this.messagePlaceHolder = "Although I am certified in TOEFL I also have a passion for teaching Korean. Please book a session with me, you'll be amazed at the quick learning results!";
@@ -162,7 +162,7 @@ export class RegisterStep2Page {
     this.partOfSchool = result;
   } */
 
-  chooseUploadType(inputEvent, photoFor){
+  chooseUploadType(inputEvent, photoFor) {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'How you like to upload your photos',
       buttons: [
@@ -180,14 +180,14 @@ export class RegisterStep2Page {
               quality: 100
             };
             this.camera.getPicture(options).then((imageData) => {
-              if(photoFor == 'prof'){
+              if (photoFor == 'prof') {
                 // console.log(imageData);
                 this.cameraData = 'data:image/jpeg;base64,' + imageData;
                 // localStorage.setItem('profilePhotoDataUrl', this.profileCameraData);
                 this.storage.set('profilePhotoDataUrl', imageData);
                 this.photoTaken = true;
                 this.photoSelected = false;
-              }else if(photoFor == 'school'){
+              } else if (photoFor == 'school') {
                 this.schoolCameraData = 'data:image/jpeg;base64,' + imageData;
                 // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraData);
                 this.storage.set('schoolPhotoDataUrl', imageData);
@@ -195,11 +195,11 @@ export class RegisterStep2Page {
                 this.schoolPhotoSelected = false;
               }
             }, (err) => {
-            // Handle error
+              // Handle error
               console.log(err);
             });
           }
-        },{
+        }, {
           text: 'Open Gallery',
           role: 'openGallery',
           icon: 'image',
@@ -214,14 +214,14 @@ export class RegisterStep2Page {
             };
 
             this.camera.getPicture(options).then((imageData) => {
-             // imageData is either a base64 encoded string or a file URI
-             // If it's base64:
-              if(photoFor == 'prof'){
+              // imageData is either a base64 encoded string or a file URI
+              // If it's base64:
+              if (photoFor == 'prof') {
                 this.cameraUrl = "data:image/jpeg;base64," + imageData;
                 this.storage.set('profilePhotoDataUrl', imageData);
                 this.photoSelected = true;
                 this.photoTaken = false;
-              }else if(photoFor == 'school'){
+              } else if (photoFor == 'school') {
                 this.schoolCameraUrl = "data:image/jpeg;base64," + imageData;
                 // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraUrl);
                 this.storage.set('schoolPhotoDataUrl', imageData);
@@ -229,11 +229,11 @@ export class RegisterStep2Page {
                 this.schoolPhotoTaken = false;
               }
             }, (err) => {
-             // Handle error
-             console.log(err);
+              // Handle error
+              console.log(err);
             });
           }
-        },{
+        }, {
           text: 'Cancel',
           role: 'cancel',
           icon: 'close',
@@ -260,7 +260,7 @@ export class RegisterStep2Page {
   updateUserToProvision = async (userId, userProfileId) => {
     return await this.dataService.getApi(
       'addUserToProvision',
-      { uuid: this.device.uuid, userId: userId, profileId: userProfileId}
+      { uuid: this.device.uuid, userId: userId, profileId: userProfileId }
     ).then(async API => {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
         // TODO: needs to happen right here directly into storage?
@@ -274,14 +274,14 @@ export class RegisterStep2Page {
     });
   }
 
-  next(form2Values){
+  next(form2Values) {
     let loading = this.loadingCtrl.create({
       content: 'Loading...',
       dismissOnPageChange: true
     });
     loading.present();
 
-    if(this.role == 'student' || this.role == 'parent'){
+    if (this.role == 'student' || this.role == 'parent') {
       // TODO need to submit data here for students
       this.userInfo.prefLocation = this.userLocation;
       this.userInfo.prefPayRate = this.hourlyRate;
@@ -289,29 +289,44 @@ export class RegisterStep2Page {
       return new Promise(async (resolve) => {
         return await this.dataService.getApi(
           'signUpRole',
-          {role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo)}
+          { role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo) }
         ).then(async API => {
           return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async signupResult => {
             this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
 
-            this.storage.set("UserProfile", signupResult.result).then(() => {
-              return new Promise(async (resolve) => {
-                return await this.dataService.getApi(
-                  'fetchMarkers',
-                  { profileId: signupResult.result.profileData.objectId, role: this.role }
-                ).then(async API => {
-                  return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
-                    return await this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
-                      this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
-                      //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
-                    })
-                  }, err => {
-                    console.log(err);
-                    // TODO: hm shud this return, find out in Unit tests
+            if (!signupResult.result.userData.emailVerified) {
+              let alert = this.alertCtrl.create({
+                title: 'Email not verified',
+                subTitle: "Please verify your email id",
+                buttons: [{
+                  text: 'Ok',
+                  role: 'Ok',
+                  handler: data => {
+                    this.navCtrl.push("LoginPage");
+                  }
+                }]
+              });
+              alert.present();
+            } else {
+              this.storage.set("UserProfile", signupResult.result).then(() => {
+                return new Promise(async (resolve) => {
+                  return await this.dataService.getApi(
+                    'fetchMarkers',
+                    { profileId: signupResult.result.profileData.objectId, role: this.role }
+                  ).then(async API => {
+                    return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
+                      return await this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
+                        this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
+                        //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
+                      })
+                    }, err => {
+                      console.log(err);
+                      // TODO: hm shud this return, find out in Unit tests
+                    });
                   });
                 });
-              });
-            })
+              })
+            }
           }, err => {
             let alert = this.alertCtrl.create({
               title: 'Signup Failed!',
@@ -322,25 +337,25 @@ export class RegisterStep2Page {
           })
         });
       })
-    }else{
-      this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
+    } else {
+      this.navCtrl.push("RegisterStep3Page", { form1Values: this.form1Values, form2Values: form2Values, role: this.role });
     }
-    this.navCtrl.push("RegisterStep3Page", { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
+    this.navCtrl.push("RegisterStep3Page", { form1Values: this.form1Values, form2Values: form2Values, role: this.role });
     this.storage.get('Registration').then(registration => {
-      if(registration){
+      if (registration) {
         registration[0].step = 2;
         registration[0].form2Values = form2Values;
         this.storage.set('Registration', registration);
-      }else{
-        this.storage.set('Registration', { form1Values : this.form1Values, form2Values : form2Values, role: this.role });
+      } else {
+        this.storage.set('Registration', { form1Values: this.form1Values, form2Values: form2Values, role: this.role });
       }
     })
   }
 
   ionViewDidLoad() {
-    if(this.role == 'student'){
+    if (this.role == 'student') {
       let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
-      let options = { componentRestrictions: {country: 'us'} };
+      let options = { componentRestrictions: { country: 'us' } };
 
       let autocomplete = new google.maps.places.Autocomplete(input, options);
       autocomplete.addListener("place_changed", () => {
