@@ -129,8 +129,8 @@ export class PaymentPage {
 
     this.body = {
       amountPayable: amount * 100, // in cents
-      customerId: this.stripeCustomer,
-      teacherAccountId: this.params.profileStripeAccount.stripe_user_id,
+      studentStripeId: this.stripeCustomer,
+      teacherStripeId: this.params.profileStripeAccount.stripe_user_id,
       teacherProfileId: this.params.teacherProfileId,
       fullName: this.params.fullName,
       otherProfileId: this.otherProfileId,

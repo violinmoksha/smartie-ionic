@@ -15,14 +15,14 @@ export class DataService {
   constructor(public storage: Storage, public secureStorage: SecureStorage, public http: HTTP) {
   }
 
-  httpPost(url, body, header){
+  httpPost(url, body, header) {
     // NB; linter dosnt like it, so not sure I see the usefulness in this TS context?
     //let self = this;
-    return <any> new Promise((resolve, reject)=>{
-      this.http.post(url, body, header).then((res)=>{
+    return <any>new Promise((resolve, reject) => {
+      this.http.post(url, body, header).then((res) => {
         resolve(JSON.parse(res.data)); // it's here if it's here
-      }, err=>{
-        console.log("Api call failed: "+JSON.stringify(err))
+      }, err => {
+        console.log("Api call failed: " + JSON.stringify(err))
         reject(err);
       })
     })
@@ -36,12 +36,12 @@ export class DataService {
           const ourHeaders = Constants.API_ENDPOINTS.headers;
           const ourEnv = Constants.API_ENDPOINTS.env;
 
-          if(ourEnv === 'local' || ourEnv === 'test'){
+          if (ourEnv === 'local' || ourEnv === 'test') {
             (ourEnv === 'test') ?
               this.baseUrl = ourBaseUrls.test :
               this.baseUrl = ourBaseUrls.local;
             this.applicationId = ourHeaders.localAndTest.applicationId;
-          } else if(Constants.API_ENDPOINTS.env === 'prod'){
+          } else if (Constants.API_ENDPOINTS.env === 'prod') {
             this.baseUrl = ourBaseUrls.prod;
             this.applicationId = ourHeaders.prod.applicationId;
           }
@@ -73,39 +73,39 @@ export class DataService {
   }
 
   // TODO: needs further testing in real device
-  getUserkey(){
+  getUserkey() {
     let newKey = crypto.randomBytes(32).toString('base64');
     return new Promise((resolve, reject) => {
       this.secureStorage.create('smartieKeys').then((ss: SecureStorageObject) => {
         /* remove == Illuminati (or us testing this) */
         //ss.remove('userkey').then(async data => {
-          ss.get('userkey').then(data => {
-            if (data.length == 44) {
-              resolve(data);
-            } else {
-              // isnt here yet, so gen and store it
-              ss.set('userkey', newKey).then(data => {
-                ss.get('userkey').then(data => {
-                  resolve(data);
-                }, error => {
-                  reject(error);
-                });
-              }, error => {
-                reject(error);
-              })
-            }
-          }, error => {
+        ss.get('userkey').then(data => {
+          if (data.length == 44) {
+            resolve(data);
+          } else {
             // isnt here yet, so gen and store it
             ss.set('userkey', newKey).then(data => {
               ss.get('userkey').then(data => {
                 resolve(data);
               }, error => {
                 reject(error);
-              })
+              });
             }, error => {
               reject(error);
             })
-          });
+          }
+        }, error => {
+          // isnt here yet, so gen and store it
+          ss.set('userkey', newKey).then(data => {
+            ss.get('userkey').then(data => {
+              resolve(data);
+            }, error => {
+              reject(error);
+            })
+          }, error => {
+            reject(error);
+          })
+        });
         // }, error => {
         //   console.log('here4 '+error);
         //   return error;
@@ -143,7 +143,7 @@ export class DataService {
     });
   }
 
-  sanitizeNotifications(notifications:any){
+  sanitizeNotifications(notifications: any) {
     // TODO: when these are more than just jobReqs
     return new Promise(resolve => {
       let activeJobReqs = [];
@@ -153,12 +153,14 @@ export class DataService {
         }
       });
       if (activeJobReqs.length > 0) {
-        for(let activeJob of activeJobReqs) {
+        for (let activeJob of activeJobReqs) {
           notifications.forEach((notification, ix) => {
-            if (notification.teacherProfile.objectId == activeJob.teacherProfile.objectId &&
+            if (notification.teacherProfile && notification.otherProfile && activeJob.otherProfile) {
+              if (notification.teacherProfile.objectId == activeJob.teacherProfile.objectId &&
                 notification.otherProfile.objectId == activeJob.otherProfile.objectId &&
-                (notification.requestSent == false && notification.acceptState == false) ) {
-              notifications.splice(ix, 1);
+                (notification.requestSent == false && notification.acceptState == false)) {
+                notifications.splice(ix, 1);
+              }
             }
             if (ix >= notifications.length - 1) {
               resolve(notifications);
@@ -175,7 +177,7 @@ export class DataService {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
+      results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));

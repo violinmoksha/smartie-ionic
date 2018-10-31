@@ -259,7 +259,7 @@ export class JobRequestPage {
             this.viewCtrl.dismiss();
             this.loading.dismiss();
             this.submitInProgress = false;
-
+            console.log("Job request accepted"+response);
             if (this.userRole !== 'teacher') {
               this.scheduleJob();
             }
