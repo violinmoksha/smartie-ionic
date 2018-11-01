@@ -34,7 +34,8 @@ import { FileTransfer } from '@ionic-native/file-transfer';
 import { SecureStorage } from '@ionic-native/secure-storage';
 import { HTTP } from '@ionic-native/http';
 import { DataService } from './app.data';
-
+import { ToasterServiceProvider } from '../providers/toaster-service/toaster-service';
+import { Network } from '@ionic-native/network'
 @NgModule({
   declarations: [
     SmartieApp
@@ -78,6 +79,8 @@ import { DataService } from './app.data';
     DataService,
     CameraServiceProvider,
     FileUploaderProvider,
+    ToasterServiceProvider,
+    Network
     //IonicErrorHandler,
   ]
 })

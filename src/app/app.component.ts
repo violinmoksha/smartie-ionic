@@ -9,7 +9,7 @@ import { Firebase } from '@ionic-native/firebase';
 import { Device } from '@ionic-native/device';
 
 import { DataService } from './app.data';
-
+import { ToasterServiceProvider } from '../providers/toaster-service/toaster-service'
 // import Parse from 'parse';
 const Parse = require('parse');
 
@@ -30,6 +30,7 @@ export class SmartieApp {
   private parseServerUrl: string = "https://test.t0tl3s.com/parse";
   // private parseServerUrl: string = "http://172.16.1.179:1337/parse";
   // private parseServerUrl: string = "http://76.170.58.147:1337/parse";
+  public userName: String;
 
   constructor(
     public platform: Platform,
@@ -40,7 +41,8 @@ export class SmartieApp {
     public geolocation: Geolocation,
     public firebase: Firebase,
     public device: Device,
-    public dataService: DataService) {
+    public dataService: DataService,
+    public tosterService: ToasterServiceProvider) {
     this.initializeApp();
     this.events.subscribe("buttonsLoad", eventData => {
       //Tabs index 0 is always set to search
@@ -67,6 +69,19 @@ export class SmartieApp {
     });
   }
 
+  ionViewDidLoad(){
+   console.log("App loaded");
+  }
+  setUserName(){
+    this.storage.get('UserProfile').then(user => {
+      if(user && user.profileData){
+        this.userName = user.profileData.fullname
+      }else{
+        this.userName = "Smartie"
+      }
+    })
+  }
+
   initializeApp() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -75,6 +90,8 @@ export class SmartieApp {
         this.statusBar.styleDefault();
         this.initGeolocation();
         this.initFirebase(); // NB: calls sync/non-returning notificationHandler
+        this.tosterService.internetListener();
+        this.setUserName();
 
         Parse._initialize(this.parseAppId, null, this.parseMasterKey);
         // Parse.initialize(this.parseAppId, null, this.parseMasterKey);
