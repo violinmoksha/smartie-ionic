@@ -31,6 +31,7 @@ export class SmartieApp {
   // private parseServerUrl: string = "http://172.16.1.179:1337/parse";
   // private parseServerUrl: string = "http://76.170.58.147:1337/parse";
   public userName: String;
+  public roleColor: String;
 
   constructor(
     public platform: Platform,
@@ -76,8 +77,10 @@ export class SmartieApp {
     this.storage.get('UserProfile').then(user => {
       if(user && user.profileData){
         this.userName = user.profileData.fullname
+        this.roleColor = user.profileData.role =='teacher' ? '#00BC5B':'#0096D7';
       }else{
         this.userName = "Smartie"
+        this.roleColor = 'black';
       }
     })
   }
