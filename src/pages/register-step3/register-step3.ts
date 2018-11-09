@@ -478,9 +478,14 @@ export class RegisterStep3Page {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterStep3Page');
     let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
+    console.log("input address field");
+    console.log(input);
     let options = { componentRestrictions: { country: 'us' } };
+    console.log(options);
 
     let autocomplete = new google.maps.places.Autocomplete(input, options);
+    console.log("Auto complete here");
+    console.log(autocomplete);
     autocomplete.addListener("place_changed", () => {
       let place = autocomplete.getPlace();
       console.log(place.formatted_address);

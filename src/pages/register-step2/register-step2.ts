@@ -339,17 +339,17 @@ export class RegisterStep2Page {
       })
     } else {
       this.navCtrl.push("RegisterStep3Page", { form1Values: this.form1Values, form2Values: form2Values, role: this.role });
-    }
-    this.navCtrl.push("RegisterStep3Page", { form1Values: this.form1Values, form2Values: form2Values, role: this.role });
-    this.storage.get('Registration').then(registration => {
-      if (registration) {
-        registration[0].step = 2;
-        registration[0].form2Values = form2Values;
-        this.storage.set('Registration', registration);
-      } else {
-        this.storage.set('Registration', { form1Values: this.form1Values, form2Values: form2Values, role: this.role });
-      }
-    })
+
+      this.storage.get('Registration').then(registration => {
+        if (registration) {
+          registration.step = 2;
+          registration.form2Values = form2Values;
+          this.storage.set('Registration', registration);
+        } else {
+          this.storage.set('Registration', { form1Values: this.form1Values, form2Values: form2Values, role: this.role });
+        }
+      })
+    }    
   }
 
   ionViewDidLoad() {
