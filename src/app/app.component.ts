@@ -90,10 +90,11 @@ export class SmartieApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       if (this.platform.is('cordova')) {
-        this.statusBar.styleDefault();
+        // this.statusBar.styleDefault();
+        this.statusBar.styleLightContent();
         this.initGeolocation();
         this.initFirebase(); // NB: calls sync/non-returning notificationHandler
-        this.tosterService.internetListener();
+       // this.tosterService.internetListener();
         this.setUserName();
 
         Parse._initialize(this.parseAppId, null, this.parseMasterKey);
