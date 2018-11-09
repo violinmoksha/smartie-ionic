@@ -93,7 +93,7 @@ export class SmartieApp {
         this.statusBar.styleDefault();
         this.initGeolocation();
         this.initFirebase(); // NB: calls sync/non-returning notificationHandler
-        this.tosterService.internetListener();
+       // this.tosterService.internetListener();
         this.setUserName();
 
         Parse._initialize(this.parseAppId, null, this.parseMasterKey);

@@ -1,3 +1,4 @@
+import { FileUploaderProvider } from './../../providers/file-uploader';
 import { CameraServiceProvider } from './../../providers/camera-service';
 import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
@@ -7,6 +8,7 @@ import { DataService } from '../../app/app.data';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
+
 declare let google;
 
 /**
@@ -93,7 +95,7 @@ export class RegisterStep3Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider) {    // this.submitInProgress = false;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider) {    // this.submitInProgress = false;
 
     this.analytics.setScreenName("Register-step3");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step3", "View"));
@@ -303,13 +305,36 @@ export class RegisterStep3Page {
     });
   }
 
+  uploadToS3(files) {
+    return new Promise((resolve, reject) => {
+      let filePromises = [];
+      for (let i = 0; i < files.length; i++) {
+        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data, this.fileUploader.awsBucket.credential));
+      }
+      Promise.all(filePromises).then((results) => {
+        console.log(results);
+        resolve(results);
+      })
+    })
+  }
+
+  signupRole(form3Values) {
+    this.loading.present();
+    if (this.cvFiles.length > 0 && this.role == "teacher"){
+      this.uploadToS3(this.cvFiles).then(res => {
+        form3Values.credentials = res;
+        this.finalRegisterSubmit(form3Values);
+      }, err => {
+        console.log(err);
+      })
+    }else{
+      this.finalRegisterSubmit(form3Values);
+    }
+  }
+
   finalRegisterSubmit(form3Values) {
     // this.submitInProgress = true;
-    this.loading.present();
-
-    if (this.cvFiles.length > 0)
-      this.storage.set('teacherCreds', this.cvFiles);
-
+    //this.loading.present();
     form3Values.prefPayRate = this.hourlyRate;
     if (this.role == 'teacher') {
       form3Values.yrsExperience = this.yearExperience;
@@ -328,21 +353,17 @@ export class RegisterStep3Page {
       form3Values.prefLocation = this.userLocation;
 
       console.log(form3Values);
-
       // form3Values.defaultUTCEndTime = UTCendTime.getUTCHours()+':'+UTCendTime.getUTCMinutes();
     }
-
-
-    return new Promise(async (resolve) => {
-      return await this.dataService.getApi(
+      this.dataService.getApi(
         'signUpRole',
         { role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(this.form2Values), userInfo: JSON.stringify(form3Values) }
       ).then(async API => {
-        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(
+        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(
           async signupResult => {
 
             this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
-            
+
             if (!signupResult.result.userData.emailVerified) {
               let alert = this.alertCtrl.create({
                 title: 'Email not verified',
@@ -392,8 +413,6 @@ export class RegisterStep3Page {
             alert.present();
           })
       });
-    });
-
   }
 
 

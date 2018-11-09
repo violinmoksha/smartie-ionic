@@ -12,10 +12,12 @@ import Parse from 'parse';
 */
 @Injectable()
 export class FileUploaderProvider {
-  fileTransfer:FileTransferObject
+  fileTransfer:FileTransferObject;
+  public awsBucket;
   constructor(private transfer: FileTransfer, public dataService: DataService) {
     console.log('Hello FileUploaderProvider Provider');
     this.fileTransfer = this.transfer.create();
+    this.awsBucket = {"feedback":"Feedbacks", "credential":"Credentials", "profile":"Profile"}
   }
 
   uploadFile(file, format) {
@@ -29,12 +31,12 @@ export class FileUploaderProvider {
     });
   }
 
-  uploadFileToAWS(filePath) {
+  uploadFileToAWS(filePath, bucketFolder) {
     //let file = filePath.substr(0, filePath.lastIndexOf('/'));
     return new Promise((resolve, reject) => {
       let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
-      this.dataService.getApi('getAWSCredential', { 'fileName': fileName }).then(async API => {
+      this.dataService.getApi('getAWSCredential', { 'fileName': fileName, 'folder':bucketFolder }).then(async API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (signedUrl) => {
           let options: FileUploadOptions = {
             fileKey: 'file',

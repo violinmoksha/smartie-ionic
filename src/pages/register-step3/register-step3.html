@@ -23,7 +23,7 @@
     <pre>Form End Time Status : {{Step3Form.get('endTime').status }}</pre>
     <pre>Form StartDate Status : {{Step3Form.get('dates.endDate').value }}</pre>
   </div> -->
-  <form [formGroup]="Step3Form" name="Step3Form" (ngSubmit)="finalRegisterSubmit(Step3Form.value)" novalidate>
+  <form [formGroup]="Step3Form" name="Step3Form" (ngSubmit)="signupRole(Step3Form.value)" novalidate>
 
     <div class="list list-inset registration teacher step3">
 
