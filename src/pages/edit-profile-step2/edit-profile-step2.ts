@@ -1,10 +1,12 @@
 import { IonicPage } from 'ionic-angular';
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Slides } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, Slides, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
+import { FileUploaderProvider } from './../../providers/file-uploader';
+import { CameraServiceProvider } from './../../providers/camera-service';
 /**
  * Generated class for the EditProfileStep2Page page.
  *
@@ -44,8 +46,11 @@ export class EditProfileStep2Page {
   phone: string;
   profileTitle: string;
   profileAbout: string;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage,private analytics : AnalyticsProvider) {
+  public loading = this.loadingCtrl.create({
+    content: 'Loading...',
+    dismissOnPageChange: true
+  });
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage,private analytics : AnalyticsProvider, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public loadingCtrl:LoadingController) {
     this.analytics.setScreenName("EditProfile_step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
     this.userRole = navParams.get("userRole");
@@ -89,10 +94,10 @@ export class EditProfileStep2Page {
     this.storage.get("UserProfile").then(roleProfile => {
       console.log(roleProfile);
       if(roleProfile.profileData.schoolPhoto){
-        this.schoolPicSrc = roleProfile.profileData.schoolPhoto.url;
+        this.schoolPicSrc = roleProfile.profileData.schoolPhoto;
       }
       if(roleProfile.profileData.profilePhoto){
-        this.pageProfileSrc = roleProfile.profileData.profilePhoto.url;
+        this.pageProfileSrc = roleProfile.profileData.profilePhoto;
       }else{
         if (this.userRole == 'teacher') {
           this.pageProfileSrc = './assets/img/user-img-teacher.png';
@@ -131,88 +136,13 @@ export class EditProfileStep2Page {
     this.form1Values = navParams.data.form1Value;
   }
 
-  chooseUploadType(inputEvent, photoFor){
-    let actionSheet = this.actionSheetCtrl.create({
-      title: 'How you like to upload your photos',
-      buttons: [
-        {
-          text: 'Take Picture',
-          role: 'destructive',
-          icon: 'camera',
-          handler: () => {
-            var options = {
-              sourceType: this.camera.PictureSourceType.CAMERA,
-              destinationType: this.camera.DestinationType.DATA_URL,
-              allowEdit: true,
-              targetWidth: 500,
-              targetHeight: 500,
-              quality: 100
-            };
-            this.camera.getPicture(options).then((imageData) => {
-              if(photoFor == 'prof'){
-                // console.log(imageData);
-                this.cameraData = 'data:image/jpeg;base64,' + imageData;
-                // localStorage.setItem('profilePhotoDataUrl', this.profileCameraData);
-                this.storage.set('profilePhotoDataUrl', imageData);
-                this.photoTaken = true;
-                this.photoSelected = false;
-              }else if(photoFor == 'school'){
-                this.schoolCameraData = 'data:image/jpeg;base64,' + imageData;
-                // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraData);
-                this.storage.set('schoolPhotoDataUrl', imageData);
-                this.schoolPhotoTaken = true;
-                this.schoolPhotoSelected = false;
-              }
-            }, (err) => {
-            // Handle error
-              console.log(err);
-            });
-          }
-        },{
-          text: 'Open Gallery',
-          role: 'openGallery',
-          icon: 'image',
-          handler: () => {
-            let options = {
-              sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-              destinationType: this.camera.DestinationType.DATA_URL,
-              allowEdit: true,
-              targetWidth: 500,
-              targetHeight: 500,
-              quality: 75
-            };
-
-            this.camera.getPicture(options).then((imageData) => {
-             // imageData is either a base64 encoded string or a file URI
-             // If it's base64:
-              if(photoFor == 'prof'){
-                this.cameraUrl = "data:image/jpeg;base64," + imageData;
-                this.storage.set('profilePhotoDataUrl', imageData);
-                this.photoSelected = true;
-                this.photoTaken = false;
-              }else if(photoFor == 'school'){
-                this.schoolCameraUrl = "data:image/jpeg;base64," + imageData;
-                // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraUrl);
-                this.storage.set('schoolPhotoDataUrl', imageData);
-                this.schoolPhotoSelected = true;
-                this.schoolPhotoTaken = false;
-              }
-            }, (err) => {
-             // Handle error
-             console.log(err);
-            });
-          }
-        },{
-          text: 'Cancel',
-          role: 'cancel',
-          icon: 'close',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    actionSheet.present();
+  chooseUploadType(inputEvent, photoFor) {
+    this.cameraService.getImage().then(imageData => {
+      this.cameraData = imageData[0];
+      this.storage.set('profilePhotoDataUrl', imageData[0]);
+      this.photoTaken = true;
+      this.photoSelected = false;
+    })
   }
 
   public filterpartOfSchool(result: string): void {
@@ -230,7 +160,30 @@ export class EditProfileStep2Page {
     return this.userRole;
   }
 
+  submitStep2(form2Values) {
+
+    this.loading.present();
+
+    if(this.cameraData || this.schoolCameraData){
+      console.log("image uploading....")
+      var uploadContent = null;
+      if(this.cameraData){
+        uploadContent = this.cameraData;
+      }else if(this.schoolCameraData){
+        uploadContent = this.schoolCameraData;
+      }
+      this.fileUploader.uploadFileToAWS(uploadContent, this.fileUploader.awsBucket.profile).then(res => {
+        console.log(res);
+        form2Values.profilePhoto = res;
+        this.next(form2Values);
+      })
+    }else{
+      this.next(form2Values);
+    }
+  }
+
   next(form2Value){
+    console.log("going to step 3"+JSON.stringify(form2Value))
     this.navCtrl.push("EditProfileStep3Page", { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool, userRole: this.userRole });
   }
 

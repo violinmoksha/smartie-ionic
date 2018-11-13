@@ -21,7 +21,7 @@
     <pre>Form Status : {{Step2Form.status }}</pre>
   </div>-->
 
-  <form [formGroup]="Step2Form" name="Step2Form" (ngSubmit)="next(Step2Form.value)" novalidate>
+  <form [formGroup]="Step2Form" name="Step2Form" (ngSubmit)="submitStep2(Step2Form.value)" novalidate>
 
     <div class="list list-inset registration {{ role }} step2">
 
@@ -152,7 +152,7 @@
           <ion-label fixed>Preferred Learning Location</ion-label>
           <ion-input placeholder="Location Name" [(ngModel)]="userLocation" id="locationSearch" type="text" formControlName="prefLocation"></ion-input>
         </ion-item>
-  
+
         <div *ngIf="!Step2Form.controls['prefLocation'].valid && Step2Form.controls['prefLocation'].touched" class="item item-message">
           Preferred Location
         </div>
