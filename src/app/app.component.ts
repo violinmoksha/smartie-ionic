@@ -9,7 +9,8 @@ import { Firebase } from '@ionic-native/firebase';
 import { Device } from '@ionic-native/device';
 
 import { DataService } from './app.data';
-import { ToasterServiceProvider } from '../providers/toaster-service/toaster-service'
+import { ToasterServiceProvider } from '../providers/toaster-service/toaster-service';
+import { ImagePicker } from '@ionic-native/image-picker';
 // import Parse from 'parse';
 const Parse = require('parse');
 
@@ -43,7 +44,8 @@ export class SmartieApp {
     public firebase: Firebase,
     public device: Device,
     public dataService: DataService,
-    public tosterService: ToasterServiceProvider) {
+    public tosterService: ToasterServiceProvider,
+    public imagePicker:ImagePicker) {
     this.initializeApp();
     this.events.subscribe("buttonsLoad", eventData => {
       //Tabs index 0 is always set to search
@@ -94,8 +96,9 @@ export class SmartieApp {
         this.statusBar.styleLightContent();
         this.initGeolocation();
         this.initFirebase(); // NB: calls sync/non-returning notificationHandler
-       // this.tosterService.internetListener();
+        this.tosterService.internetListener();
         this.setUserName();
+        this.getGalleryPermission();
 
         Parse._initialize(this.parseAppId, null, this.parseMasterKey);
         // Parse.initialize(this.parseAppId, null, this.parseMasterKey);
@@ -158,6 +161,10 @@ export class SmartieApp {
         this.rootPage = 'LandingPage';
       }
     });
+  }
+
+  getGalleryPermission(){
+      this.imagePicker.requestReadPermission()
   }
 
   initGeolocation(): Promise<any> {
