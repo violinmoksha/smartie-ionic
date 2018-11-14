@@ -92,7 +92,6 @@ export class EditProfileStep2Page {
     }
 
     this.storage.get("UserProfile").then(roleProfile => {
-      console.log(roleProfile);
       if(roleProfile.profileData.schoolPhoto){
         this.schoolPicSrc = roleProfile.profileData.schoolPhoto;
       }
@@ -147,7 +146,6 @@ export class EditProfileStep2Page {
 
   public filterpartOfSchool(result: string): void {
     // Handle what to do when a category is selected
-    console.log(result);
     if(result == 'yes'){
       this.EditProfilestep2Form.get('othersSchoolName').setValidators([Validators.required]);
     }else{
@@ -165,7 +163,6 @@ export class EditProfileStep2Page {
     this.loading.present();
 
     if(this.cameraData || this.schoolCameraData){
-      console.log("image uploading....")
       var uploadContent = null;
       if(this.cameraData){
         uploadContent = this.cameraData;
@@ -173,7 +170,6 @@ export class EditProfileStep2Page {
         uploadContent = this.schoolCameraData;
       }
       this.fileUploader.uploadFileToAWS(uploadContent, this.fileUploader.awsBucket.profile).then(res => {
-        console.log(res);
         form2Values.profilePhoto = res;
         this.next(form2Values);
       })
@@ -183,7 +179,6 @@ export class EditProfileStep2Page {
   }
 
   next(form2Value){
-    console.log("going to step 3"+JSON.stringify(form2Value))
     this.navCtrl.push("EditProfileStep3Page", { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool, userRole: this.userRole });
   }
 

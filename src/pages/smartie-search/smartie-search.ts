@@ -80,91 +80,93 @@ export class SmartieSearch {
     this.fromWhere = navParams.get('fromWhere');
     console.log(this.fromWhere);
 
-    if(this.fromWhere == 'editProfile'){
-      console.log("Getting into editProfile");
+    //TODO:Removed file upload by parse server
+    // if(this.fromWhere == 'editProfile'){
+    //   console.log("Getting into editProfile");
 
-      this.storage.get('schoolPhotoDataUrl').then(schoolPhotoDataUrl => {
-        this.schoolPhotoDataUrl = schoolPhotoDataUrl;
-      });
+    //   this.storage.get('schoolPhotoDataUrl').then(schoolPhotoDataUrl => {
+    //     this.schoolPhotoDataUrl = schoolPhotoDataUrl;
+    //   });
 
-      this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
-        this.profilePhotoData = profilePhotoData;
-        console.log("Profile Photo Data");
-        let Profile = new Parse.Object.extend('Profile');
-        let profQuery = new Parse.Query(Profile);
+    //   this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
+    //     this.profilePhotoData = profilePhotoData;
+    //     console.log("Profile Photo Data");
+    //     let Profile = new Parse.Object.extend('Profile');
+    //     let profQuery = new Parse.Query(Profile);
 
-        console.log("Getting here");
-        console.log(Parse.User.current());
+    //     console.log("Getting here");
+    //     console.log(Parse.User.current());
 
-        profQuery.equalTo('user', Parse.User.current());
-        profQuery.first({ useMasterKey:true }).then(profile => {
-          console.log("Getting Profile here");
-          console.log(profile);
-          this.addProfilePhoto(profile);
-        })
-      });
-    }
+    //     profQuery.equalTo('user', Parse.User.current());
+    //     profQuery.first({ useMasterKey:true }).then(profile => {
+    //       console.log("Getting Profile here");
+    //       console.log(profile);
+    //       this.addProfilePhoto(profile);
+    //     })
+    //   });
+    // }
 
-    if (this.fromWhere == 'signUp') {
-      // TODO: retrieve the profilePhoto and CVs from
-      // this.storage HERE if we came from signUp,
-      this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
-        this.profilePhotoData = profilePhotoData;
-      });
-      this.storage.get('schoolPhotoDataUrl').then(schoolPhotoDataUrl => {
-        this.schoolPhotoDataUrl = schoolPhotoDataUrl;
-      });
-      this.storage.get('teacherCreds').then(teacherCreds => {
-        this.teacherCv = teacherCreds;
-        console.log(this.teacherCv);
-      });
-      console.log('We are here.');
-      this.storage.get('UserProfile').then(UserProfile => {
-        this.role = UserProfile.profileData.role;
+    //TODO: removed due to file upload migrated to aws s3 bucket
+    // if (this.fromWhere == 'signUp') {
+    //   // TODO: retrieve the profilePhoto and CVs from
+    //   // this.storage HERE if we came from signUp,
+    //   this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
+    //     this.profilePhotoData = profilePhotoData;
+    //   });
+    //   this.storage.get('schoolPhotoDataUrl').then(schoolPhotoDataUrl => {
+    //     this.schoolPhotoDataUrl = schoolPhotoDataUrl;
+    //   });
+    //   this.storage.get('teacherCreds').then(teacherCreds => {
+    //     this.teacherCv = teacherCreds;
+    //     console.log(this.teacherCv);
+    //   });
+    //   console.log('We are here.');
+    //   this.storage.get('UserProfile').then(UserProfile => {
+    //     this.role = UserProfile.profileData.role;
 
-        // this.storage.get('registeredWithStripe').then(regdWithStripe => {
-          let Profile = new Parse.Object.extend('Profile');
-          let Teacher = new Parse.Object.extend('Teacher');
-          let profQuery = new Parse.Query(Profile);
-          let userQuery = new Parse.Query(Parse.User);
-          let teacherQuery = new Parse.Query(Teacher);
+    //     // this.storage.get('registeredWithStripe').then(regdWithStripe => {
+    //       let Profile = new Parse.Object.extend('Profile');
+    //       let Teacher = new Parse.Object.extend('Teacher');
+    //       let profQuery = new Parse.Query(Profile);
+    //       let userQuery = new Parse.Query(Parse.User);
+    //       let teacherQuery = new Parse.Query(Teacher);
 
-          userQuery.equalTo('username', UserProfile.userData.username);
-          userQuery.first({useMasterKey:true}).then(user => {
-            console.log('Got the user');
-            profQuery.equalTo('user', user);
-            profQuery.first({useMasterKey:true}).then(profile => {
-              console.log('Got the profile');
-              if(this.profilePhotoData){
-                this.addProfilePhoto(profile);
-              }
-              //setting teacher Credentials
-              if(this.role == 'teacher'){
-                if(this.teacherCv){
-                  console.log("Getting into teacher credentials save");
-                  teacherQuery.equalTo('profile', profile);
-                  teacherQuery.first({ useMasterKey: true }).then(teacher => {
-                    for(let teacherCv of this.teacherCv){
-                      var parseCvFile = new Parse.File(teacherCv.name, {base64: teacherCv.data});
-                      parseCvFile.save({ useMasterKey: true }).then(parseFile => {
-                        let Credential = new Parse.Object.extend('Credential');
-                        let cred = new Credential();
-                        cred.set('profile', profile);
-                        cred.set('file', parseFile);
-                        cred.save({ useMasterKey: true }).then(credential => {
-                          console.log(credential);
-                          console.log("Credentials saved successfully..!");
-                        });
-                      })
-                    }
-                  })
-                }
-              }
-            })
-          });
-        // })
-      });
-    }
+    //       userQuery.equalTo('username', UserProfile.userData.username);
+    //       userQuery.first({useMasterKey:true}).then(user => {
+    //         console.log('Got the user');
+    //         profQuery.equalTo('user', user);
+    //         profQuery.first({useMasterKey:true}).then(profile => {
+    //           console.log('Got the profile');
+    //           if(this.profilePhotoData){
+    //             this.addProfilePhoto(profile);
+    //           }
+    //           //setting teacher Credentials
+    //           if(this.role == 'teacher'){
+    //             if(this.teacherCv){
+    //               console.log("Getting into teacher credentials save");
+    //               teacherQuery.equalTo('profile', profile);
+    //               teacherQuery.first({ useMasterKey: true }).then(teacher => {
+    //                 for(let teacherCv of this.teacherCv){
+    //                   var parseCvFile = new Parse.File(teacherCv.name, {base64: teacherCv.data});
+    //                   parseCvFile.save({ useMasterKey: true }).then(parseFile => {
+    //                     let Credential = new Parse.Object.extend('Credential');
+    //                     let cred = new Credential();
+    //                     cred.set('profile', profile);
+    //                     cred.set('file', parseFile);
+    //                     cred.save({ useMasterKey: true }).then(credential => {
+    //                       console.log(credential);
+    //                       console.log("Credentials saved successfully..!");
+    //                     });
+    //                   })
+    //                 }
+    //               })
+    //             }
+    //           }
+    //         })
+    //       });
+    //     // })
+    //   });
+    // }
   }
 
   addProfilePhoto(profile){

@@ -125,7 +125,6 @@ export class EditProfileStep3Page {
     }
 
     this.storage.get("UserProfile").then(roleProfile => {
-      console.log(roleProfile);
       this.userData = roleProfile.userData;
       this.startDate = roleProfile.specificUser.defaultStartDate;
       this.endDate = roleProfile.specificUser.defaultEndDate;
@@ -165,7 +164,6 @@ export class EditProfileStep3Page {
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if(date){
         this.startDate = date.date + '-' + date.months + '-' + date.years;
-        console.log(this.startDate);
       }
     })
   }
@@ -183,14 +181,12 @@ export class EditProfileStep3Page {
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if(date){
         this.endDate = date.date + '-' + date.months + '-' + date.years;
-        console.log(this.endDate);
       }
     })
   }
 
   public filterYear(years: number): void {
     // Handle what to do when a category is selected
-    console.log(years);
     this.yearExperience = years;
   }
 
@@ -201,7 +197,6 @@ export class EditProfileStep3Page {
   // Method executed when the slides are changed
   public yearChanged(): void {
     let currentIndex = this.yearExp.getActiveIndex();
-    console.log(currentIndex);
   }
 
   addTeacherCvCert(files){
@@ -227,14 +222,12 @@ export class EditProfileStep3Page {
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
-        // var toResolve: object;
         let toResolve: any = {};
         toResolve.name = file.name;
         toResolve.data = this.result;
         resolve(toResolve);
       };
       reader.onerror = function (error) {
-        //  console.log('Error: ', error);
         reject(error);
       };
     })
@@ -250,7 +243,6 @@ export class EditProfileStep3Page {
   finalEditProfileSubmit(form3Values){
     this.submitInProgress = true;
     this.loading.present();
-
     if (this.userRole == 'teacher') {
       this.body = {
         role: this.userRole,
@@ -260,16 +252,17 @@ export class EditProfileStep3Page {
           username: this.form2Values.username.toLowerCase(),
           email: this.form2Values.email.toLowerCase(),
           profile: {
-            profileabout: this.form2Values.profileAbout,
-            profiletitle: this.form2Values.profileTitle,
-            prefpayrate: this.hourlyRate,
+            profileAbout: this.form2Values.profileAbout,
+            profileTitle: this.form2Values.profileTitle,
+            prefPayRate: this.hourlyRate,
             phone: this.form2Values.phone,
             fullname: this.form2Values.name,
-            preflocation: form3Values.prefLocation,
+            prefLocation: form3Values.prefLocation,
+            profilePhoto: this.form2Values.profilePhoto
           },
           specificUser: {
-            yrsexperience: this.yearExperience,
-            profiletitle: this.form2Values.profileTitle,
+            yrsExperience: this.yearExperience,
+            profileTitle: this.form2Values.profileTitle,
             defstartdate: this.startDate,
             defenddate: this.endDate,
             defstarttime: form3Values.startTime,
@@ -286,13 +279,14 @@ export class EditProfileStep3Page {
           username: this.form2Values.username.toLowerCase(),
           email: this.form2Values.email.toLowerCase(),
           profile: {
-            profileabout: this.form2Values.profileAbout,
-            profiletitle: this.form2Values.profileTitle,
-            prefpayrate: this.hourlyRate,
+            profileAbout: this.form2Values.profileAbout,
+            profileTitle: this.form2Values.profileTitle,
+            prefPayRate: this.hourlyRate,
             phone: this.form2Values.phone,
             fullname: this.form2Values.name,
-            preflocation: form3Values.prefLocation,
+            prefLocation: form3Values.prefLocation,
             schoolname: this.form2Values.othersSchoolName,
+            profilePhoto: this.form2Values.profilePhoto
           },
           specificUser: {
             partofschool:
@@ -309,12 +303,13 @@ export class EditProfileStep3Page {
           username: this.form2Values.username.toLowerCase(),
           email: this.form2Values.email.toLowerCase(),
           profile: {
-            profileabout: this.form2Values.profileAbout,
-            profiletitle: this.form2Values.profileTitle,
-            prefpayrate: this.hourlyRate,
+            profileAbout: this.form2Values.profileAbout,
+            profileTitle: this.form2Values.profileTitle,
+            prefPayRate: this.hourlyRate,
             phone: this.form2Values.phone,
             fullname: this.form2Values.name,
-            preflocation: form3Values.prefLocation,
+            prefLocation: form3Values.prefLocation,
+            profilePhoto: this.form2Values.profilePhoto
           },
           specificUser: {
             schoolname: this.form2Values.schoolName,
@@ -324,20 +319,17 @@ export class EditProfileStep3Page {
         }
       }
     }
-
     return new Promise(async (resolve) => {
       return await this.dataService.getApi(
         'editUser',
         this.body
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-          console.log(response.result);
-
-          // TODO: must be re-done directly right here via this.storage not this wrapper function updateUserProfileStorage
-          //this.smartieApi.updateUserProfileStorage(response[0].result.profileData, response[0].result.specificUserData).then(profile => {
-            //this.loading.dismiss();
-            this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole, fromWhere: "editProfile" });
-          //});
+          this.loading.dismiss();
+          this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole, fromWhere: "editProfile" });
+          this.dataService.updateUserProfileStorage(response.result.profileData, response.result.specificUserData);
+        }, err => {
+          this.loading.dismiss();
         })
       });
     })
@@ -422,32 +414,32 @@ export class EditProfileStep3Page {
     });*/
   }
 
-  setProfilePic() {
-    return new Promise(function(resolve, reject){
-      if(localStorage.getItem('profilePhotoDataUrl') == null){
-        resolve('success');
-      }else{
-        let parseFile = new Parse.File('photo.jpg', {base64: localStorage.getItem('profilePhotoDataUrl')});
-        parseFile.save().then((file) => {
-          let roledUserProfile = JSON.parse(localStorage.getItem(`${this.userRole}UserProfile`));
-          let profileId = roledUserProfile.profile.objectId;
-          let profQuery = new Parse.Query(Parse.Object.extend('Profile'));
+  // setProfilePic() {
+  //   return new Promise(function(resolve, reject){
+  //     if(localStorage.getItem('profilePhotoDataUrl') == null){
+  //       resolve('success');
+  //     }else{
+  //       let parseFile = new Parse.File('photo.jpg', {base64: localStorage.getItem('profilePhotoDataUrl')});
+  //       parseFile.save().then((file) => {
+  //         let roledUserProfile = JSON.parse(localStorage.getItem(`${this.userRole}UserProfile`));
+  //         let profileId = roledUserProfile.profile.objectId;
+  //         let profQuery = new Parse.Query(Parse.Object.extend('Profile'));
 
-          profQuery.get(profileId, {
-            success: function(profile) {
-              profile.set('profilePhoto', file);
-              profile.save();
-              resolve('success');
-            }, error: function(profile, error) {
-              // TODO: internet connection problem err
-              reject('failed');
-            }
-          });
-        });
-      }
-    });
+  //         profQuery.get(profileId, {
+  //           success: function(profile) {
+  //             profile.set('profilePhoto', file);
+  //             profile.save();
+  //             resolve('success');
+  //           }, error: function(profile, error) {
+  //             // TODO: internet connection problem err
+  //             reject('failed');
+  //           }
+  //         });
+  //       });
+  //     }
+  //   });
 
-  }
+  // }
 
   setTeacherCred(teacherId, cvFile){
     return new Promise((resolve, reject) => {
@@ -460,11 +452,9 @@ export class EditProfileStep3Page {
           cred.set('file', cvFile);
           cred.save(null, {
             success: function(credential) {
-              // console.log(credential);
               resolve(credential);
             },
             error: function(credentials, error) {
-              // console.log(error);
               reject(error);
             }
           });
@@ -490,14 +480,11 @@ export class EditProfileStep3Page {
 
   public filterRate(rate: number): void {
     // Handle what to do when a category is selected
-    console.log(rate);
-    console.log(typeof rate);
     this.hourlyRate = rate;
   }
 
   // Method executed when the slides are changed
   public rateChanged(): void {
     let currentIndex = this.hourRate.getActiveIndex();
-    console.log(currentIndex);
   }
 }
