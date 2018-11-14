@@ -23,16 +23,19 @@ export class ToasterServiceProvider {
   }
 
   internetListener() {
+    const toast = this.toastCtrl.create({
+      message: 'You are offline, Please check your internet connection!',
+      position: 'bottom',
+      showCloseButton: true,
+      closeButtonText: 'OK'
+    });
     this.network.onDisconnect().subscribe(() => {
       console.log('network was disconnected :-(');
-      const toast = this.toastCtrl.create({
-        message: 'You are offline, Please check your internet connection!',
-        position: 'bottom',
-        showCloseButton: true,
-        closeButtonText: 'OK'
-      });
       toast.present();
     });
+    this.network.onConnect().subscribe(() => {
+      toast.dismiss();
+    })
   }
 
 }

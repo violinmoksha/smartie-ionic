@@ -183,7 +183,7 @@ export class DataService {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
 
-  updateUserProfileStorage(updatedProfile = null, specificUserData = null) {
+  updateUserProfileStorage(updatedProfile = null, specificUserData = null, userData = null) {
     return new Promise((resolve, reject) => {
       this.storage.get("UserProfile").then(profile => {
         if (updatedProfile) {
@@ -192,6 +192,9 @@ export class DataService {
         if (specificUserData != null) {
           profile['specificUser'] = specificUserData;
         }
+        if(userData != null)
+        profile['userData'] = userData;
+
         this.storage.set("UserProfile", profile).then(() => {
           resolve(profile);
         })
