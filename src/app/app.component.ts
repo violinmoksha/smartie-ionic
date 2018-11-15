@@ -45,7 +45,7 @@ export class SmartieApp {
     public device: Device,
     public dataService: DataService,
     public tosterService: ToasterServiceProvider,
-    public imagePicker:ImagePicker) {
+    public imagePicker: ImagePicker) {
     this.initializeApp();
     this.events.subscribe("buttonsLoad", eventData => {
       //Tabs index 0 is always set to search
@@ -72,15 +72,15 @@ export class SmartieApp {
     });
   }
 
-  ionViewDidLoad(){
-   console.log("App loaded");
+  ionViewDidLoad() {
+    console.log("App loaded");
   }
-  setUserName(){
+  setUserName() {
     this.storage.get('UserProfile').then(user => {
-      if(user && user.profileData){
+      if (user && user.profileData) {
         this.userName = user.profileData.fullname
-        this.roleColor = user.profileData.role =='teacher' ? '#00BC5B':'#0096D7';
-      }else{
+        this.roleColor = user.profileData.role == 'teacher' ? '#00BC5B' : '#0096D7';
+      } else {
         this.userName = "Smartie"
         this.roleColor = 'black';
       }
@@ -163,8 +163,8 @@ export class SmartieApp {
     });
   }
 
-  getGalleryPermission(){
-      this.imagePicker.requestReadPermission()
+  getGalleryPermission() {
+    this.imagePicker.requestReadPermission()
   }
 
   initGeolocation(): Promise<any> {
