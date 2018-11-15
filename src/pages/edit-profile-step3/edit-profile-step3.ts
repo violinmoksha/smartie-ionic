@@ -45,6 +45,8 @@ export class EditProfileStep3Page {
   private endTime: any;
   private userData: any;
   private body: any;
+  private timeZone: any;
+  yrsExperience: any;
 
   public partOfSchool: boolean;
   public prefLocation: string;
@@ -125,14 +127,34 @@ export class EditProfileStep3Page {
     }
 
     this.storage.get("UserProfile").then(roleProfile => {
+      console.log('Getting role profile');
+      console.log(roleProfile);
       this.userData = roleProfile.userData;
-      this.startDate = roleProfile.specificUser.defaultStartDate;
-      this.endDate = roleProfile.specificUser.defaultEndDate;
-      this.startTime = roleProfile.specificUser.defaultStartTime;
-      this.endTime = roleProfile.specificUser.defaultEndTime;
+      // this.startDate = roleProfile.specificUser.defaultStartDate;
+      // this.endDate = roleProfile.specificUser.defaultEndDate;
+      // this.startTime = roleProfile.specificUser.defaultStartTime;
+      // this.endTime = roleProfile.specificUser.defaultEndTime;
       this.prefLocation = roleProfile.profileData.prefLocation;
       this.hourlyRate = roleProfile.profileData.prefPayRate;
+      this.yrsExperience = roleProfile.specificUser.yrsExperience;
+
+      let availStartDateTime = new Date(roleProfile.specificUser.defaultStartDateTime.iso);
+      let availEndDateTime = new Date(roleProfile.specificUser.defaultEndDateTime.iso);
+
+      this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
+
+      this.startTime = availStartDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+      console.log(this.startTime);
+      this.endTime = availEndDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+      console.log(this.endTime);
+
+      this.startDate = (availStartDateTime.getMonth() + 1) + '-' + availStartDateTime.getDate() + '-' + availStartDateTime.getFullYear();
+      this.endDate = (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
     });
+  }
+
+  formatTime(dateTime) {
+    return dateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
   }
 
   gretarThan(equalControlName): ValidatorFn {
