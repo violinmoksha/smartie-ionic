@@ -1,3 +1,5 @@
+import { CameraServiceProvider } from './../../providers/camera-service';
+import { FileUploaderProvider } from './../../providers/file-uploader';
 import { IonicPage } from 'ionic-angular';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ModalController, Slides, LoadingController } from 'ionic-angular';
@@ -47,7 +49,8 @@ export class EditProfileStep3Page {
   private body: any;
   private timeZone: any;
   yrsExperience: any;
-
+  public cvFiles: Array<any> = [];
+  public uploadedCvFiles: Array<any> = []
   public partOfSchool: boolean;
   public prefLocation: string;
   public hourRates = [
@@ -99,7 +102,7 @@ export class EditProfileStep3Page {
   //TODO post-<snip><snip> RE registration is: add back currency
   //In V2, but it must be done correctly next time with calculated pre-conversions
   //or maybe even plugged into an AI bot that knows the forex
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage, private analytics: AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage, private analytics: AnalyticsProvider, public fileUploader: FileUploaderProvider, public cameraService: CameraServiceProvider) {
     this.analytics.setScreenName("EditProfile_step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
 
@@ -127,8 +130,6 @@ export class EditProfileStep3Page {
     }
 
     this.storage.get("UserProfile").then(roleProfile => {
-      console.log('Getting role profile');
-      console.log(roleProfile);
       this.userData = roleProfile.userData;
       // this.startDate = roleProfile.specificUser.defaultStartDate;
       // this.endDate = roleProfile.specificUser.defaultEndDate;
@@ -137,7 +138,6 @@ export class EditProfileStep3Page {
       this.prefLocation = roleProfile.profileData.prefLocation;
       this.hourlyRate = roleProfile.profileData.prefPayRate;
       this.yrsExperience = roleProfile.specificUser.yrsExperience;
-
       let availStartDateTime = new Date(roleProfile.specificUser.defaultStartDateTime.iso);
       let availEndDateTime = new Date(roleProfile.specificUser.defaultEndDateTime.iso);
 
@@ -145,13 +145,15 @@ export class EditProfileStep3Page {
 
       // this.startTime = availStartDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
       this.startTime = "10 30 AM";
-      console.log(this.startTime);
       // this.endTime = availEndDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
       this.endTime = "10 30 AM";
-      console.log(this.endTime);
 
       this.startDate = (availStartDateTime.getMonth() + 1) + '-' + availStartDateTime.getDate() + '-' + availStartDateTime.getFullYear();
       this.endDate = (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
+
+      for (var i = 0; i < roleProfile.specificUser.credentials.length; i++) {
+        this.uploadedCvFiles.push({ name: "File" + i, data: roleProfile.specificUser.credentials[i] });
+      }
     });
   }
 
@@ -223,45 +225,61 @@ export class EditProfileStep3Page {
     let currentIndex = this.yearExp.getActiveIndex();
   }
 
-  addTeacherCvCert(files) {
-    let TeacherCVs = new Array();
-    let TeacherCVsView = new Array();
-    for (let file of files) {
-      TeacherCVsView.push(file);
-      this.getBase64(file).then((obj) => {
-        var parseCvFile = new Parse.File(obj['name'], { base64: obj['data'] });
-        parseCvFile.save().then(function (cvFile) {
-          TeacherCVs.push(cvFile);
-        });
-      });
-    }
-    this.TeacherFiles = TeacherCVs;
-    this.TeacherFilesView = TeacherCVsView;
-    //storing object in localstorage using JSON.stringify
-    localStorage.setItem('teacherCreds', JSON.stringify(TeacherCVs));
-  }
-
-  getBase64(file) {
-    return new Promise(function (resolve, reject) {
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        let toResolve: any = {};
-        toResolve.name = file.name;
-        toResolve.data = this.result;
-        resolve(toResolve);
-      };
-      reader.onerror = function (error) {
-        reject(error);
-      };
+  uploadCv() {
+    this.cameraService.getImage().then(async (files) => {
+      if (Array.isArray(files)) {
+        for (let file of files) {
+          this.cvFiles.push({ 'name': await this.cameraService.getFileName(), 'data': file });
+        }
+      } else {
+        this.cvFiles.push({ 'name': await this.cameraService.getFileName(), 'data': files });
+      }
+    }, (err) => {
+      console.log(err);
     })
   }
 
-  deleteTeacherCert(fileName) {
-    this.TeacherFilesView = this.TeacherFilesView.filter(function (el) {
-      return el !== fileName;
-    });
-    this.addTeacherCvCert(this.TeacherFilesView);
+  removeFile(i) {
+    this.cvFiles.splice(i, 1);
+  }
+
+  removeUploadedFile(i) {
+    this.uploadedCvFiles.splice(i, 1);
+  }
+
+  uploadToS3(files) {
+    return new Promise((resolve, reject) => {
+      let filePromises = [];
+      for (let i = 0; i < files.length; i++) {
+        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data, this.fileUploader.awsBucket.credential));
+      }
+      Promise.all(filePromises).then((results) => {
+        resolve(results);
+      })
+    })
+  }
+
+  signupRole(form3Values) {
+    form3Values.credentials = [];
+    this.loading.present();
+    if (this.cvFiles.length > 0 && this.userRole == "teacher") {
+      this.uploadToS3(this.cvFiles).then(res => {
+        if (this.uploadedCvFiles.length > 0) {
+          for (var i = 0; i < this.uploadedCvFiles.length; i++) {
+            form3Values.credentials.push(this.uploadedCvFiles[i].data);
+          }
+        }
+        form3Values.credentials = form3Values.credentials.concat(res);
+        this.finalEditProfileSubmit(form3Values);
+      }, err => {
+        console.log(err);
+      })
+    } else {
+      for (var i = 0; i < this.uploadedCvFiles.length; i++) {
+        form3Values.credentials.push(this.uploadedCvFiles[i].data);
+      }
+      this.finalEditProfileSubmit(form3Values);
+    }
   }
 
   finalEditProfileSubmit(form3Values) {
@@ -290,7 +308,8 @@ export class EditProfileStep3Page {
             defstartdate: this.startDate,
             defenddate: this.endDate,
             defstarttime: form3Values.startTime,
-            defendtime: form3Values.endTime
+            defendtime: form3Values.endTime,
+            credentials: form3Values.credentials
           }
         }
       }
@@ -357,137 +376,6 @@ export class EditProfileStep3Page {
         })
       });
     })
-
-    /*return new Promise(resolve => {
-      this.smartieApi.http.post(API.apiUrl, API.apiBody, API.apiHeaders).then(res => {
-          console.log(res);
-          // TODO: save new mega teacherUserProfile object to localstorage
-          localStorage.setItem(`${this.userRole}UserProfile`, Object.keys(res)['result']);
-
-          // now save the Parse.User since we are auth'd only here
-          // NB: this is only impossible due to opensrc Parse user save
-          /*
-          Parse.User.logIn(userData.username, this.form1Values.password, {
-            success: user => {
-              console.log('logIn success');
-              user.set("username", this.form1Values.username);  // attempt to change username
-              user.set("email", this.form1Values.email);
-              console.log('reset members?');
-              user.save({sessionToken: user.get('sessionToken'), useMasterKey: true}).then(user => {
-                console.log(`W00t saved ${user}`);
-              });
-            }, error: (err) => {
-
-            }
-          });
-
-
-          let cvPromises = [];
-          // console.log(this.TeacherFiles);
-          if(this.TeacherFiles){
-            for(let cvFile of this.TeacherFiles){
-              cvPromises.push(this.setTeacherCred(JSON.parse(localStorage.getItem('teacherUserProfile')).specificUser.objectId, cvFile).then((responseResult) => {
-                console.log(responseResult);
-              }).catch((rejectResult) => {
-                console.log(rejectResult);
-              }))
-            }
-
-            // finish all of the array of promises,
-            // then setProfilePic()
-            Promise.all(cvPromises).then(()=>{
-              this.setProfilePic().then((pictureResolve) => {
-                this.navCtrl.push("TotlesSearch", {role: this.userRole, fromwhere: 'editProfile'});
-                this.loading.dismiss();
-              }).catch((pictureReject) => {
-                // TODO: do something in a modal?
-                console.log(pictureReject);
-              });
-            })
-          }else{
-            this.setProfilePic().then((pictureResolve) => {
-              this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole, fromWhere: "editProfile" });
-              this.loading.dismiss();
-            }).catch((pictureReject) => {
-              // TODO: do something in the UX here!!
-              console.log(pictureReject);
-            });
-          }
-        },
-        err => {
-          let alert;
-          if (err.status == 400) {
-            alert = this.alertCtrl.create({
-              title: 'Edit Failed !',
-              subTitle: err.error.error,
-              buttons: ['OK']
-            });
-          } else { // Parse errs, 100-399
-            alert = this.alertCtrl.create({
-              title: 'Edit Failed !',
-              subTitle: err.message,
-              buttons: ['OK']
-            });
-          }
-
-          this.submitInProgress = false;
-          this.loading.dismiss();
-          alert.present();
-        }
-      )
-    });*/
-  }
-
-  // setProfilePic() {
-  //   return new Promise(function(resolve, reject){
-  //     if(localStorage.getItem('profilePhotoDataUrl') == null){
-  //       resolve('success');
-  //     }else{
-  //       let parseFile = new Parse.File('photo.jpg', {base64: localStorage.getItem('profilePhotoDataUrl')});
-  //       parseFile.save().then((file) => {
-  //         let roledUserProfile = JSON.parse(localStorage.getItem(`${this.userRole}UserProfile`));
-  //         let profileId = roledUserProfile.profile.objectId;
-  //         let profQuery = new Parse.Query(Parse.Object.extend('Profile'));
-
-  //         profQuery.get(profileId, {
-  //           success: function(profile) {
-  //             profile.set('profilePhoto', file);
-  //             profile.save();
-  //             resolve('success');
-  //           }, error: function(profile, error) {
-  //             // TODO: internet connection problem err
-  //             reject('failed');
-  //           }
-  //         });
-  //       });
-  //     }
-  //   });
-
-  // }
-
-  setTeacherCred(teacherId, cvFile) {
-    return new Promise((resolve, reject) => {
-      let teacherQuery = new Parse.Query(Parse.Object.extend('Teacher'));
-      teacherQuery.get(teacherId, {
-        success: function (teacher) {
-          let Credential = Parse.Object.extend('Credential');
-          let cred = new Credential();
-          cred.set('teacher', teacher);
-          cred.set('file', cvFile);
-          cred.save(null, {
-            success: function (credential) {
-              resolve(credential);
-            },
-            error: function (credentials, error) {
-              reject(error);
-            }
-          });
-        }, error: function (profile, error) {
-          // console.log(error);
-          reject(error);
-        }
-      });
-    });
   }
 
   onChangeLevel(name: string, isChecked: boolean) {

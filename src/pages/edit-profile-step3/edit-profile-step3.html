@@ -11,7 +11,7 @@
 </ion-header>
 
 <ion-content [class]="getRole()" padding>
-  <form [formGroup]="EditProfilestep3Form" name="EditProfilestep3Form" (ngSubmit)="finalEditProfileSubmit(EditProfilestep3Form.value)" novalidate>
+  <form [formGroup]="EditProfilestep3Form" name="EditProfilestep3Form" (ngSubmit)="signupRole(EditProfilestep3Form.value)" novalidate>
     <!-- TODO: same, make these classes role-specific via something like getRole() -->
     <ion-list class="list-inset registration teacher step3">
 
@@ -48,17 +48,34 @@
           </ion-slide>
         </ion-slides>
 
-        <ion-list>
+        <!-- <ion-list>
           <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
             {{cert.name}}
-            <a href="javascript:" (click)="deleteTeacherCert(cert)"><img src="./assets/img/delete-icon.png"></a>
+            <a href="javascript:" (click)="removeFile($index)"><img src="./assets/img/delete-icon.png"></a>
           </ion-item>
-        </ion-list>
+        </ion-list> -->
 
-        <div class="teacher-cv">
-          <input type="file" formControlName="teacherCvCerts" (ngChange)="addTeacherCvCert($event.srcElement.files)" id="teachercv" multiple="" />
-          <div class="button button-cv">Upload Your CV and Credentials</div>
+        <div class="teacher-cv text-center">
+          <button type="button" class="button button-cv" (click)=uploadCv()>Upload Your CV and Credentials</button>
           <span class="input-label">Credentials verifiable via phone camera</span>
+          <div *ngIf="cvFiles.length > 0">
+            <ion-item *ngFor="let files of cvFiles" class="list-files">
+              <ion-icon name="image" class="" item-start></ion-icon>
+              <h4 class="file-name font-14">{{files.name}} </h4>
+              <span item-end>
+                <ion-icon name="close" (click)="removeFile($index)"></ion-icon>
+              </span>
+            </ion-item>
+          </div>
+          <div *ngIf="uploadedCvFiles.length > 0">
+            <ion-item *ngFor="let files of uploadedCvFiles" class="list-files">
+              <ion-icon name="image" class="" item-start></ion-icon>
+              <h4 class="file-name font-14">{{files.name}} </h4>
+              <span item-end>
+                <ion-icon name="close" (click)="removeUploadedFile($index)"></ion-icon>
+              </span>
+            </ion-item>
+          </div>
         </div>
 
         <h3>Available Timings</h3>
