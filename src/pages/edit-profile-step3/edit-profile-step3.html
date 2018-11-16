@@ -43,7 +43,7 @@
       <div *ngIf="userRole == 'teacher'">
         <h3 padding-top>Years of Experience</h3>
         <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
-          <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">
+          <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yrsExperience == year.value}" *ngFor="let year of years">
             <p>{{ year.text }}</p>
           </ion-slide>
         </ion-slides>
