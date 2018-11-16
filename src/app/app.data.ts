@@ -1,4 +1,6 @@
+import { ToasterServiceProvider } from './../providers/toaster-service';
 import { Injectable } from '@angular/core';
+import { AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Constants } from './app.constants';
 import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
@@ -12,20 +14,35 @@ export class DataService {
   contentType: string;
   hostname: string;
 
-  constructor(public storage: Storage, public secureStorage: SecureStorage, public http: HTTP) {
+  constructor(public storage: Storage, public secureStorage: SecureStorage, public http: HTTP, public toasterService: ToasterServiceProvider, public alertCtrl: AlertController) {
   }
 
   httpPost(url, body, header) {
-    // NB; linter dosnt like it, so not sure I see the usefulness in this TS context?
-    //let self = this;
+    console.log("creating alert")
     return <any>new Promise((resolve, reject) => {
-      this.http.post(url, body, header).then((res) => {
-        resolve(JSON.parse(res.data)); // it's here if it's here
-      }, err => {
-        console.log("Api call failed: " + JSON.stringify(err))
-        reject(err);
-      })
-    })
+      if (this.toasterService.isInternetConnected) {
+        this.http.post(url, body, header).then((res) => {
+          resolve(JSON.parse(res.data)); // it's here if it's here
+        }, err => {
+          console.log("Api call failed: " + JSON.stringify(err))
+          reject(err);
+        });
+      } else {
+        reject("No internet connection!");
+        let internetAlert = this.alertCtrl.create({
+          title: 'Network Connection!',
+          subTitle: 'Please check your internet connection!',
+          buttons: [{
+            text: 'Close',
+            handler: () => {
+              internetAlert.dismiss();
+            }
+          }]
+        });
+        console.log(internetAlert);
+        internetAlert.present();
+      }
+    });
   }
 
   getApi(endPoint, body) {
@@ -192,8 +209,8 @@ export class DataService {
         if (specificUserData != null) {
           profile['specificUser'] = specificUserData;
         }
-        if(userData != null)
-        profile['userData'] = userData;
+        if (userData != null)
+          profile['userData'] = userData;
 
         this.storage.set("UserProfile", profile).then(() => {
           resolve(profile);

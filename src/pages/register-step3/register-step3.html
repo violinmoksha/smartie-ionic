@@ -44,9 +44,17 @@
         </ion-list>
 
         <div class="teacher-cv">
-          <!-- <input type="file" formControlName="teacherCvCerts" (change)="addTeacherCvCert($event.srcElement.files)" id="teacherCv" multiple="" /> -->
           <button type="button" class="button button-cv" (click)=uploadCv()>Upload Your CV and Credentials</button>
           <span class="input-label">Credentials verifiable via phone camera</span>
+          <div *ngIf="cvFiles.length > 0">
+            <ion-item *ngFor="let files of cvFiles" class="list-files">
+              <ion-icon name="image" class="" item-start></ion-icon>
+              <h4 class="file-name font-14">{{files.name}} </h4>
+              <span item-end>
+                <ion-icon name="close" (click)="removeFile($index)"></ion-icon>
+              </span>
+            </ion-item>
+          </div>
         </div>
 
       </div>

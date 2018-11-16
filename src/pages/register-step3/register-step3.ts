@@ -493,15 +493,19 @@ export class RegisterStep3Page {
     })
   }
 
+  removeFile(i) {
+    this.cvFiles.splice(i, 1);
+  }
+
   uploadCv() {
-    this.cameraService.getImage().then((files) => {
+    this.cameraService.getImage().then(async (files) => {
       console.log(files);
       if (Array.isArray(files)) {
         for (let file of files) {
-          this.cvFiles.push({ 'name': this.cameraService.getFileName(), 'data': file });
+          this.cvFiles.push({ 'name': await this.cameraService.getFileName(), 'data': file });
         }
       } else {
-        this.cvFiles.push({ 'name': this.cameraService.getFileName(), 'data': files });
+        this.cvFiles.push({ 'name': await this.cameraService.getFileName(), 'data': files });
       }
     }, (err) => {
       console.log(err);

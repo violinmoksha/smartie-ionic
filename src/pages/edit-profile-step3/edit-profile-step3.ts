@@ -16,7 +16,7 @@ import Parse from 'parse';
  * Ionic pages and navigation.
  */
 
-@IonicPage()@Component({
+@IonicPage() @Component({
   selector: 'page-edit-profile-step3',
   templateUrl: 'edit-profile-step3.html',
 })
@@ -25,7 +25,7 @@ export class EditProfileStep3Page {
   private userRole: string;
   private submitInProgress: boolean;
   private loading: any;
-  private EditProfilestep3Form : FormGroup;
+  private EditProfilestep3Form: FormGroup;
   private form1Values: any;
   private form2Values: any;
   @ViewChild(Slides) hourRate: Slides;
@@ -99,7 +99,7 @@ export class EditProfileStep3Page {
   //TODO post-<snip><snip> RE registration is: add back currency
   //In V2, but it must be done correctly next time with calculated pre-conversions
   //or maybe even plugged into an AI bot that knows the forex
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("EditProfile_step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
 
@@ -143,9 +143,11 @@ export class EditProfileStep3Page {
 
       this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
-      this.startTime = availStartDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+      // this.startTime = availStartDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+      this.startTime = "10 30 AM";
       console.log(this.startTime);
-      this.endTime = availEndDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+      // this.endTime = availEndDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+      this.endTime = "10 30 AM";
       console.log(this.endTime);
 
       this.startDate = (availStartDateTime.getMonth() + 1) + '-' + availStartDateTime.getDate() + '-' + availStartDateTime.getFullYear();
@@ -163,7 +165,7 @@ export class EditProfileStep3Page {
     } => {
       if (!control['_parent']) return null;
       if (!control['_parent'].controls[equalControlName])
-      throw new TypeError('Form Control ' + equalControlName + ' does not exists.');
+        throw new TypeError('Form Control ' + equalControlName + ' does not exists.');
       var controlMatch = control['_parent'].controls[equalControlName];
       return controlMatch.value < control.value ? null : {
         'gretarThan': true
@@ -177,14 +179,14 @@ export class EditProfileStep3Page {
       pickMode: 'single',
       monthFormat: 'MMM YYYY'
     };
-    let myCalendar =  this.modalCtrl.create(CalendarModal, {
+    let myCalendar = this.modalCtrl.create(CalendarModal, {
       options: options
     });
 
     myCalendar.present();
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
-      if(date){
+      if (date) {
         this.startDate = date.date + '-' + date.months + '-' + date.years;
       }
     })
@@ -194,14 +196,14 @@ export class EditProfileStep3Page {
     const options: CalendarModalOptions = {
       title: 'BASIC',
     };
-    let myCalendar =  this.modalCtrl.create(CalendarModal, {
+    let myCalendar = this.modalCtrl.create(CalendarModal, {
       options: options
     });
 
     myCalendar.present();
 
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
-      if(date){
+      if (date) {
         this.endDate = date.date + '-' + date.months + '-' + date.years;
       }
     })
@@ -221,14 +223,14 @@ export class EditProfileStep3Page {
     let currentIndex = this.yearExp.getActiveIndex();
   }
 
-  addTeacherCvCert(files){
+  addTeacherCvCert(files) {
     let TeacherCVs = new Array();
     let TeacherCVsView = new Array();
-    for(let file of files){
+    for (let file of files) {
       TeacherCVsView.push(file);
       this.getBase64(file).then((obj) => {
-        var parseCvFile = new Parse.File(obj['name'], {base64: obj['data']});
-        parseCvFile.save().then(function(cvFile){
+        var parseCvFile = new Parse.File(obj['name'], { base64: obj['data'] });
+        parseCvFile.save().then(function (cvFile) {
           TeacherCVs.push(cvFile);
         });
       });
@@ -240,7 +242,7 @@ export class EditProfileStep3Page {
   }
 
   getBase64(file) {
-    return new Promise(function(resolve, reject){
+    return new Promise(function (resolve, reject) {
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
@@ -255,14 +257,14 @@ export class EditProfileStep3Page {
     })
   }
 
-  deleteTeacherCert(fileName){
-    this.TeacherFilesView = this.TeacherFilesView.filter(function(el) {
+  deleteTeacherCert(fileName) {
+    this.TeacherFilesView = this.TeacherFilesView.filter(function (el) {
       return el !== fileName;
     });
     this.addTeacherCvCert(this.TeacherFilesView);
   }
 
-  finalEditProfileSubmit(form3Values){
+  finalEditProfileSubmit(form3Values) {
     this.submitInProgress = true;
     this.loading.present();
     if (this.userRole == 'teacher') {
@@ -463,24 +465,24 @@ export class EditProfileStep3Page {
 
   // }
 
-  setTeacherCred(teacherId, cvFile){
+  setTeacherCred(teacherId, cvFile) {
     return new Promise((resolve, reject) => {
       let teacherQuery = new Parse.Query(Parse.Object.extend('Teacher'));
       teacherQuery.get(teacherId, {
-        success: function(teacher) {
+        success: function (teacher) {
           let Credential = Parse.Object.extend('Credential');
           let cred = new Credential();
           cred.set('teacher', teacher);
           cred.set('file', cvFile);
           cred.save(null, {
-            success: function(credential) {
+            success: function (credential) {
               resolve(credential);
             },
-            error: function(credentials, error) {
+            error: function (credentials, error) {
               reject(error);
             }
           });
-        }, error: function(profile, error) {
+        }, error: function (profile, error) {
           // console.log(error);
           reject(error);
         }
@@ -492,7 +494,7 @@ export class EditProfileStep3Page {
     const knownLevel = <FormArray>this.EditProfilestep3Form.controls.teacherLevel;
     console.log(knownLevel);
 
-    if(isChecked) {
+    if (isChecked) {
       knownLevel.push(new FormControl(name));
     } else {
       let index = knownLevel.controls.findIndex(x => x.value == name)

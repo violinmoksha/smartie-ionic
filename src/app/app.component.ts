@@ -9,7 +9,7 @@ import { Firebase } from '@ionic-native/firebase';
 import { Device } from '@ionic-native/device';
 
 import { DataService } from './app.data';
-import { ToasterServiceProvider } from '../providers/toaster-service/toaster-service';
+import { ToasterServiceProvider } from '../providers/toaster-service';
 import { ImagePicker } from '@ionic-native/image-picker';
 // import Parse from 'parse';
 const Parse = require('parse');
@@ -113,13 +113,6 @@ export class SmartieApp {
             this.storage.get('UserProfile').then(user => {
               console.log('And made it back with a UserProfile obj called user: ' + JSON.stringify(user));
               if (user == null) {
-                // hm, no UserProfile object but maybe there's a provision???
-                // NB; we should not need this since it is accomodated for by the else below
-                // in Registration object save logics
-                // this.storage.get('Provision').then(async provision => {
-                //
-                // });
-
                 if (response.result.provision.user && response.result.provision.profile) {
                   this.nav.setRoot("LoginPage", { role: response.result.provision.role });
                   this.splashScreen.hide();
@@ -267,7 +260,6 @@ export class SmartieApp {
       } else {
         this.nav.push(page.pageName);
       }
-
     }
   }
   /*if (button.iconName == 'paper')
