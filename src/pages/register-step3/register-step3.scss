@@ -2,6 +2,14 @@ page-register-step3 {
   .scroll-content{
     padding-top: 0!important;
   }
+  .list-files{
+    .item-inner{
+      margin-left: 5px!important;
+    }
+  }
+  .file-name{
+    margin-top: 1px !important;
+  }
   .teacher{
     .toolbar-title{
       color: #00BC5B !important;
@@ -167,7 +175,7 @@ page-register-step3 {
     font-weight:500;
   }
   #year-teaching {
-    margin-bottom: 0;      
+    margin-bottom: 0;
   }
 
   .slides-0{

@@ -10,6 +10,8 @@ import { Network } from '@ionic-native/network';
 @Injectable()
 export class ToasterServiceProvider {
 
+  public isInternetConnected: Boolean = true;
+
   constructor(public toastCtrl: ToastController, private network: Network) {
     console.log('Hello ToasterServiceProvider Provider');
   }
@@ -31,9 +33,11 @@ export class ToasterServiceProvider {
     });
     this.network.onDisconnect().subscribe(() => {
       console.log('network was disconnected :-(');
+      this.isInternetConnected = false;
       toast.present();
     });
     this.network.onConnect().subscribe(() => {
+      this.isInternetConnected = true;
       toast.dismiss();
     })
   }

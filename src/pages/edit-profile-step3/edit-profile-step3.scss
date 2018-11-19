@@ -57,7 +57,8 @@ page-edit-profile-step3 {
   }
   .teacher-cv{
     position: relative;
-    height: 100px;
+    min-height: 100px;
+    height: 100%;
     #teachercv{
       width:100%!important;
       display: block;
@@ -79,12 +80,13 @@ page-edit-profile-step3 {
       border-color: transparent;
       background-color: #f8f8f8;
       color: #444;
-      position: relative;
       display: inline-block;
       margin: 0;
       padding: 0 7px;
       min-width: 52px;
-      min-height: 35px;
+      min-height:40px;
+      height: 40px;
+      line-height: 30px!important;
       border-width: 1px;
       border-style: solid;
       border-radius: 4px;
@@ -94,22 +96,16 @@ page-edit-profile-step3 {
       font-size: 16px;
       line-height: 42px;
       cursor: pointer;
-      background: #e5e5e5;
-      border-color: #a2a2a2;
+      background: #fff!important;
+      border-color: #00BC5B!important;
       padding: 0px 10px;
       color: #000;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      margin: auto;
       z-index: 0;
       max-width: 280px;
     }
     .input-label{
       width: 100%;
       color: #00BC5B;
-      padding-top: 60px;
     }
 
     .my-class {
