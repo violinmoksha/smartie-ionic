@@ -170,7 +170,7 @@ export class RegisterStep2Page {
 
   chooseUploadType(inputEvent, photoFor) {
     this.cameraService.getImage().then(imageData => {
-        this.cameraData = imageData[0];
+        this.cameraData = imageData[0].replace('file://', '');
         this.storage.set('profilePhotoDataUrl', imageData[0]);
         this.photoTaken = true;
         this.photoSelected = false;
