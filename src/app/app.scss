@@ -17,6 +17,14 @@
 html, body, ion-app {
   background-color: transparent !important;
 }
+.teacher{
+  .toolbar-title{
+    color: #00BC5B !important
+  }
+  .back-button{
+    color: #00BC5B !important
+  }
+}
 .menu-inner .scroll-content {
   overflow: hidden;
   padding: 0 !important;

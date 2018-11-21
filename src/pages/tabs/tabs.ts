@@ -14,7 +14,7 @@ export class TabsPage {
   tab1Root: any = 'PaymentDetailsPage';
   tab2Root: any = 'EditProfilePage';
   tab3Root: any = 'NotificationFeedPage';
-
+  tab4Root: any = 'ChatRoomsPage';
   // private tabs: any = [{ "tabRoot": '', "rootParams": '', "tabTitle": '', "tabIcon": ''}];
   private role: string;
 
