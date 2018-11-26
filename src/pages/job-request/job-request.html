@@ -71,7 +71,7 @@
         <button class="button button-positive" [disabled]="!jobObject.hasUpcomings" (click)="initSendEmail()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Mail</button>
       </span>
       <span>
-        <button style="float:right" class="button button-positive" (click)="initChat()" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Message</button>
+        <button style="float:right" class="button button-positive" (click)="initChat()" [disabled]="!acceptState" ion-button full><i class="fa fa-envelope" aria-hidden="true"></i><img src="./assets/imgs/view-mail-icon.png" /> Send Message</button>
       </span>
     </div>
   </div>

@@ -2,7 +2,7 @@ import { FileUploaderProvider } from './../../providers/file-uploader';
 import { CameraServiceProvider } from './../../providers/camera-service';
 import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, Slides, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, ActionSheetController, Slides, LoadingController, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 // import { Crop } from '@ionic-native/crop';
@@ -77,7 +77,7 @@ export class RegisterStep2Page {
     dismissOnPageChange: true
   });
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public platform:Platform) {
     this.analytics.setScreenName("Register-step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
 
@@ -170,11 +170,11 @@ export class RegisterStep2Page {
 
   chooseUploadType(inputEvent, photoFor) {
     this.cameraService.getImage().then(imageData => {
-        this.cameraData = imageData[0].replace('file://', '');
+        this.cameraData = this.platform.is("ios") ? imageData[0].replace('file://', '') : imageData[0];
         this.storage.set('profilePhotoDataUrl', imageData[0]);
         this.photoTaken = true;
         this.photoSelected = false;
-    })
+    });
   }
     // let actionSheet = this.actionSheetCtrl.create({
     //   title: 'How you like to upload your photos',

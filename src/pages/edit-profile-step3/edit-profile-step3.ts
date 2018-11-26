@@ -77,26 +77,26 @@ export class EditProfileStep3Page {
   ];
 
   public years = [
-    { "value": '1', "text": '1' },
-    { "value": '2', "text": '2' },
-    { "value": '3', "text": '3' },
-    { "value": '4', "text": '4' },
-    { "value": '5', "text": '5' },
-    { "value": '6', "text": '6' },
-    { "value": '7', "text": '7' },
-    { "value": '8', "text": '8' },
-    { "value": '9', "text": '9' },
-    { "value": '10', "text": '10' },
-    { "value": '11', "text": '11' },
-    { "value": '12', "text": '12' },
-    { "value": '13', "text": '13' },
-    { "value": '14', "text": '14' },
-    { "value": '15', "text": '15' },
-    { "value": '16', "text": '16' },
-    { "value": '17', "text": '17' },
-    { "value": '18', "text": '18' },
-    { "value": '19', "text": '19' },
-    { "value": '20', "text": 'More than 20' }
+    { "value": 1, "text": '1' },
+    { "value": 2, "text": '2' },
+    { "value": 3, "text": '3' },
+    { "value": 4, "text": '4' },
+    { "value": 5, "text": '5' },
+    { "value": 6, "text": '6' },
+    { "value": 7, "text": '7' },
+    { "value": 8, "text": '8' },
+    { "value": 9, "text": '9' },
+    { "value": 10, "text": '10' },
+    { "value": 11, "text": '11' },
+    { "value": 12, "text": '12' },
+    { "value": 13, "text": '13' },
+    { "value": 14, "text": '14' },
+    { "value": 15, "text": '15' },
+    { "value": 16, "text": '16' },
+    { "value": 17, "text": '17' },
+    { "value": 18, "text": '18' },
+    { "value": 19, "text": '19' },
+    { "value": 20, "text": '20 +' }
   ];
 
   //TODO post-<snip><snip> RE registration is: add back currency
@@ -144,9 +144,12 @@ export class EditProfileStep3Page {
       this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
       // this.startTime = availStartDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-      this.startTime = "10 30 AM";
+      // this.startTime = availStartDateTime.toUTCString();
+      this.startTime = this.formatTime(availStartDateTime);
+      // console.log(this.startTime[4]);
       // this.endTime = availEndDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-      this.endTime = "10 30 AM";
+      this.endTime = this.formatTime(availEndDateTime);
+      // console.log(this.endTime[4]);
 
       this.startDate = (availStartDateTime.getMonth() + 1) + '-' + availStartDateTime.getDate() + '-' + availStartDateTime.getFullYear();
       this.endDate = (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
@@ -158,7 +161,23 @@ export class EditProfileStep3Page {
   }
 
   formatTime(dateTime) {
-    return dateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+
+    function pad(number) {
+      if (number < 10) {
+        return '0' + number;
+      }
+      return number;
+    }
+
+    // return dateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    return dateTime.getFullYear() +
+        '-' + pad(dateTime.getMonth() + 1) +
+        '-' + pad(dateTime.getDate()) +
+        'T' + pad(dateTime.getHours()) +
+        ':' + pad(dateTime.getMinutes()) +
+        ':' + pad(dateTime.getSeconds()) +
+        '.' + (dateTime.getMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+        'Z';
   }
 
   gretarThan(equalControlName): ValidatorFn {
@@ -285,6 +304,15 @@ export class EditProfileStep3Page {
   finalEditProfileSubmit(form3Values) {
     this.submitInProgress = true;
     this.loading.present();
+    
+    let UTCstartTime = new Date(this.startDate.split('-')[2], (this.startDate.split('-')[0] - 1), this.startDate.split('-')[1], parseInt(form3Values.startTime.split(':')[0]), parseInt(form3Values.startTime.split(':')[1]));
+
+    let UTCendTime = new Date(this.endDate.split('-')[2], (this.endDate.split('-')[0] - 1), this.endDate.split('-')[1], parseInt(form3Values.endTime.split(':')[0]), parseInt(form3Values.endTime.split(':')[1]));
+
+    console.log(form3Values);
+    console.log(UTCstartTime);
+    console.log(UTCendTime);
+
     if (this.userRole == 'teacher') {
       this.body = {
         role: this.userRole,
@@ -305,10 +333,12 @@ export class EditProfileStep3Page {
           specificUser: {
             yrsExperience: this.yearExperience,
             profileTitle: this.form2Values.profileTitle,
-            defstartdate: this.startDate,
-            defenddate: this.endDate,
-            defstarttime: form3Values.startTime,
-            defendtime: form3Values.endTime,
+            // defstartdate: this.startDate,
+            // defenddate: this.endDate,
+            // defstarttime: form3Values.startTime,
+            // defendtime: form3Values.endTime,
+            defaultStartDateTime: UTCstartTime,
+            defaultEndDateTime: UTCendTime,
             credentials: form3Values.credentials
           }
         }

@@ -20,7 +20,7 @@ declare var google;
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@IonicPage()@Component({
+@IonicPage() @Component({
   selector: 'page-smartie-search',
   templateUrl: 'smartie-search.html'
 })
@@ -58,15 +58,15 @@ export class SmartieSearch {
   // TODO: autopopulate input with user's location
   // private reverseGeocodedLocation: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private dataService: DataService, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private dataService: DataService, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("Smartie-search");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Smartie-search", "View"));
 
     this.role = navParams.get('role');
 
     let options = {
-      formatLength:'short',
-      selector:'date and time'
+      formatLength: 'short',
+      selector: 'date and time'
     }
     this.globalization.getDatePattern(options).then(res => {
       console.log(res);
@@ -79,112 +79,24 @@ export class SmartieSearch {
     this.accepteds = [];
     this.fromWhere = navParams.get('fromWhere');
     console.log(this.fromWhere);
-
-    //TODO:Removed file upload by parse server
-    // if(this.fromWhere == 'editProfile'){
-    //   console.log("Getting into editProfile");
-
-    //   this.storage.get('schoolPhotoDataUrl').then(schoolPhotoDataUrl => {
-    //     this.schoolPhotoDataUrl = schoolPhotoDataUrl;
-    //   });
-
-    //   this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
-    //     this.profilePhotoData = profilePhotoData;
-    //     console.log("Profile Photo Data");
-    //     let Profile = new Parse.Object.extend('Profile');
-    //     let profQuery = new Parse.Query(Profile);
-
-    //     console.log("Getting here");
-    //     console.log(Parse.User.current());
-
-    //     profQuery.equalTo('user', Parse.User.current());
-    //     profQuery.first({ useMasterKey:true }).then(profile => {
-    //       console.log("Getting Profile here");
-    //       console.log(profile);
-    //       this.addProfilePhoto(profile);
-    //     })
-    //   });
-    // }
-
-    //TODO: removed due to file upload migrated to aws s3 bucket
-    // if (this.fromWhere == 'signUp') {
-    //   // TODO: retrieve the profilePhoto and CVs from
-    //   // this.storage HERE if we came from signUp,
-    //   this.storage.get('profilePhotoDataUrl').then(profilePhotoData => {
-    //     this.profilePhotoData = profilePhotoData;
-    //   });
-    //   this.storage.get('schoolPhotoDataUrl').then(schoolPhotoDataUrl => {
-    //     this.schoolPhotoDataUrl = schoolPhotoDataUrl;
-    //   });
-    //   this.storage.get('teacherCreds').then(teacherCreds => {
-    //     this.teacherCv = teacherCreds;
-    //     console.log(this.teacherCv);
-    //   });
-    //   console.log('We are here.');
-    //   this.storage.get('UserProfile').then(UserProfile => {
-    //     this.role = UserProfile.profileData.role;
-
-    //     // this.storage.get('registeredWithStripe').then(regdWithStripe => {
-    //       let Profile = new Parse.Object.extend('Profile');
-    //       let Teacher = new Parse.Object.extend('Teacher');
-    //       let profQuery = new Parse.Query(Profile);
-    //       let userQuery = new Parse.Query(Parse.User);
-    //       let teacherQuery = new Parse.Query(Teacher);
-
-    //       userQuery.equalTo('username', UserProfile.userData.username);
-    //       userQuery.first({useMasterKey:true}).then(user => {
-    //         console.log('Got the user');
-    //         profQuery.equalTo('user', user);
-    //         profQuery.first({useMasterKey:true}).then(profile => {
-    //           console.log('Got the profile');
-    //           if(this.profilePhotoData){
-    //             this.addProfilePhoto(profile);
-    //           }
-    //           //setting teacher Credentials
-    //           if(this.role == 'teacher'){
-    //             if(this.teacherCv){
-    //               console.log("Getting into teacher credentials save");
-    //               teacherQuery.equalTo('profile', profile);
-    //               teacherQuery.first({ useMasterKey: true }).then(teacher => {
-    //                 for(let teacherCv of this.teacherCv){
-    //                   var parseCvFile = new Parse.File(teacherCv.name, {base64: teacherCv.data});
-    //                   parseCvFile.save({ useMasterKey: true }).then(parseFile => {
-    //                     let Credential = new Parse.Object.extend('Credential');
-    //                     let cred = new Credential();
-    //                     cred.set('profile', profile);
-    //                     cred.set('file', parseFile);
-    //                     cred.save({ useMasterKey: true }).then(credential => {
-    //                       console.log(credential);
-    //                       console.log("Credentials saved successfully..!");
-    //                     });
-    //                   })
-    //                 }
-    //               })
-    //             }
-    //           }
-    //         })
-    //       });
-    //     // })
-    //   });
-    // }
   }
 
-  addProfilePhoto(profile){
+  addProfilePhoto(profile) {
     let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
     console.log('trying to save the file');
     parseFile.save({ useMasterKey: true }).then(file => {
       console.log('Saved the file');
       profile.set('profilePhoto', file);
-      profile.save({ useMasterKey:true }).then(profile => {
-        if(this.role == 'school'){
-          if(this.schoolPhotoDataUrl){
+      profile.save({ useMasterKey: true }).then(profile => {
+        if (this.role == 'school') {
+          if (this.schoolPhotoDataUrl) {
             let parseSchoolFile = new Parse.File('school.jpg', { base64: this.schoolPhotoDataUrl });
-              parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
-                profile.set('schoolPhoto', schoolFile);
-                profile.save({ useMasterKey: true }).then(school => {
-                  // TODO: run fetchNotifications here for the new user, same as in login.ts
-                })
+            parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
+              profile.set('schoolPhoto', schoolFile);
+              profile.save({ useMasterKey: true }).then(school => {
+                // TODO: run fetchNotifications here for the new user, same as in login.ts
               })
+            })
           }
         }
       })
@@ -198,7 +110,7 @@ export class SmartieSearch {
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
     this.events.publish("buttonsLoad", this.role);
-    if(this.fromWhere == 'signUp'){
+    if (this.fromWhere == 'signUp') {
       let alert = this.alertCtrl.create({
         title: 'One more step to go!',
         subTitle: `Please check your email and click the verification link.`,
@@ -210,115 +122,115 @@ export class SmartieSearch {
     }
   }
 
-  ionViewDidLoad(){
-    try{
+  ionViewDidLoad() {
+    try {
       this.events.publish("buttonsLoad", this.role);
 
       this.storage.get('UserProfile').then(profile => {
         console.log(profile);
         this.role = profile.profileData.role;
 
-          if (profile == null) {
-            this.navCtrl.setRoot("LoginPage");
-          } else {
+        if (profile == null) {
+          this.navCtrl.setRoot("LoginPage");
+        } else {
 
-            return new Promise(async (resolve) => {
-              return await this.dataService.getApi(
-                'fetchMarkers',
-                { profileId: profile.profileData.objectId, role: profile.profileData.role }
-              ).then(async API => {
-                return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
-                  return await this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
-                    this.notifications = notifications;
-                    return await this.storage.get('phoneLatLng').then(async phoneLatLng => {
-                      //console.log(phoneLatLng);
-                      if (phoneLatLng !== undefined && phoneLatLng !== null) {
-                        this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
-                      } else {
-                        this.latLngUser = profile.profileData.latlng;
-                        this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, this.extendBound);
-                      }
+          return new Promise(async (resolve) => {
+            return await this.dataService.getApi(
+              'fetchMarkers',
+              { profileId: profile.profileData.objectId, role: profile.profileData.role }
+            ).then(async API => {
+              return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
+                return await this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
+                  this.notifications = notifications;
+                  return await this.storage.get('phoneLatLng').then(async phoneLatLng => {
+                    //console.log(phoneLatLng);
+                    if (phoneLatLng !== undefined && phoneLatLng !== null) {
+                      this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
+                    } else {
+                      this.latLngUser = profile.profileData.latlng;
+                      this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, this.extendBound);
+                    }
 
-                      //get all requested's
-                      this.body = {
-                        profileId: profile.profileData.objectId,
-                        role: profile.profileData.role
-                      };
+                    //get all requested's
+                    this.body = {
+                      profileId: profile.profileData.objectId,
+                      role: profile.profileData.role
+                    };
 
-                      //resolve all promises and if notifyCount > 0 make alert present and push to notification page
-                      Promise.all([
-                        this.getAllRequesteds(),
-                        this.getAllAccepteds(),
-                        this.getAllUpcomings()
-                      ]).then(value => {
-                        if(this.hasUpcomings == true) {
-                          let title, subTitle;
-                          if (this.upcomingsCount == 1) {
-                            title = "You have an upcoming appointment!";
-                            subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
-                          } else {
-                            title = "You have upcoming appointments";
-                            subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
-                          }
-                          let alert = this.alertCtrl.create({
-                            title: title,
-                            subTitle: subTitle,
-                            buttons: [{
-                              text: 'OK',
-                              handler: () => {
-                                if(this.role !== 'teacher'){
-                                  this.navCtrl.parent.select(2);
-                                }else{
-                                  this.navCtrl.parent.select(3);
-                                }
-                              }
-                            }]
-                          });
-                          alert.present();
-                        } else if(this.notifyCount > 0) {
-                          let alert = this.alertCtrl.create({
-                            title: 'Wow, check it out!',
-                            subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
-                            buttons: [{
-                              text: 'OK',
-                              handler: () => {
-                                if(this.role !== 'teacher'){
-                                  this.navCtrl.parent.select(2);
-                                }else{
-                                  this.navCtrl.parent.select(3);
-                                }
-                              }
-                            }]
-                          });
-                          alert.present();
+                    //resolve all promises and if notifyCount > 0 make alert present and push to notification page
+                    Promise.all([
+                      this.getAllRequesteds(),
+                      this.getAllAccepteds(),
+                      this.getAllUpcomings()
+                    ]).then(value => {
+                      if (this.hasUpcomings == true) {
+                        let title, subTitle;
+                        if (this.upcomingsCount == 1) {
+                          title = "You have an upcoming appointment!";
+                          subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
+                        } else {
+                          title = "You have upcoming appointments";
+                          subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
                         }
-                      })
-                    });
-                  })
-                }, err => {
-                  console.log(err.error.error);
-                  //this.smartieErrHandler.showErrors(err);
-                });
+                        let alert = this.alertCtrl.create({
+                          title: title,
+                          subTitle: subTitle,
+                          buttons: [{
+                            text: 'OK',
+                            handler: () => {
+                              if (this.role !== 'teacher') {
+                                this.navCtrl.parent.select(2);
+                              } else {
+                                this.navCtrl.parent.select(3);
+                              }
+                            }
+                          }]
+                        });
+                        alert.present();
+                      } else if (this.notifyCount > 0) {
+                        let alert = this.alertCtrl.create({
+                          title: 'Wow, check it out!',
+                          subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
+                          buttons: [{
+                            text: 'OK',
+                            handler: () => {
+                              if (this.role !== 'teacher') {
+                                this.navCtrl.parent.select(2);
+                              } else {
+                                this.navCtrl.parent.select(3);
+                              }
+                            }
+                          }]
+                        });
+                        alert.present();
+                      }
+                    })
+                  });
+                })
+              }, err => {
+                console.log(err.error.error);
+                //this.smartieErrHandler.showErrors(err);
               });
-
             });
-          }
+
+          });
+        }
       });
-    }catch(e){
+    } catch (e) {
       console.log(e);
     }
 
   }
 
-  getAllRequesteds(){
+  getAllRequesteds() {
     return new Promise(async (resolve) => {
       return await this.dataService.getApi(
         'getAllRequesteds',
         this.body
       ).then(async API => {
-        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders'] ).then(response => {
+        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
           this.notifyCount = '';
-          if(response.result.length > 0){
+          if (response.result.length > 0) {
             this.notifyCount = response.result.length;//response[0].result.length;
             this.storage.set("userAllRequesteds", response.result);
           }
@@ -330,14 +242,14 @@ export class SmartieSearch {
     })
   }
 
-  getAllAccepteds(){
+  getAllAccepteds() {
     return new Promise(async (resolve) => {
       return await this.dataService.getApi(
         'getAllAccepteds',
         this.body
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-          if(response.result.length > 0){
+          if (response.result.length > 0) {
             this.notifyCount = this.notifyCount + response.result.length;
             this.storage.set("userAllAccepteds", response.result);
           }
@@ -347,14 +259,14 @@ export class SmartieSearch {
     })
   }
 
-  getAllUpcomings(){
+  getAllUpcomings() {
     return new Promise(async (resolve) => {
       return await this.dataService.getApi(
         'getAllUpcomings',
         this.body
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-          if(response.result.length > 0){
+          if (response.result.length > 0) {
             this.hasUpcomings = true;
             this.upcomingsCount = response.result.length;
             this.notifyCount = this.notifyCount + response.result.length;
@@ -368,28 +280,28 @@ export class SmartieSearch {
     })
   }
 
-  getGeoPoint(searchLoc){
+  getGeoPoint(searchLoc) {
     return new Promise(resolve => {
       let geocoder = new google.maps.Geocoder();
       geocoder.geocode({
-      'address': searchLoc
-      }, function(results, status) {
+        'address': searchLoc
+      }, function (results, status) {
 
         // hide actual geopoint
         let x0 = results[0].geometry.location.lng();
         let y0 = results[0].geometry.location.lat();
 
         // 5km rad as deg (reasonably close but not too far)
-        let rd = 5000/111300, u = Math.random(), v = Math.random();
+        let rd = 5000 / 111300, u = Math.random(), v = Math.random();
         let w = rd * Math.sqrt(u);
         let t = 2 * Math.PI * v;
         let x = w * Math.cos(t);
         let y = w * Math.sin(t);
-        let xp = x/Math.cos(y0);
+        let xp = x / Math.cos(y0);
 
         let searchLocLatLng = new Parse.GeoPoint({
-          latitude: y+y0,
-          longitude: xp+x0
+          latitude: y + y0,
+          longitude: xp + x0
         });
 
         resolve(searchLocLatLng);
@@ -397,7 +309,7 @@ export class SmartieSearch {
     })
   }
 
-  findJobsSearch(searchLoc){
+  findJobsSearch(searchLoc) {
     this.getGeoPoint(searchLoc).then(response => {
       console.log(this.extendBound);
       this.smartieSearchResult(null, this.navParams.get("role"), response, this.extendBound);
@@ -465,7 +377,7 @@ export class SmartieSearch {
     }
   }
 
-  randomGeo(center, radius){
+  randomGeo(center, radius) {
     var y0 = center.latitude;
     var x0 = center.longitude;
     var rd = radius / 111300;
@@ -486,54 +398,55 @@ export class SmartieSearch {
     // return new google.maps.LatLng(this.toDeg(y + y0), this.toDeg(x + x0));
   }
 
-  initJobRequestPopUp(locationData){
-      if (this.role !== 'teacher') {
-        locationData.role = locationData.teacherProfile.role;
+  initJobRequestPopUp(locationData) {
+    console.log(locationData);
+    if (this.role !== 'teacher') {
+      locationData.role = locationData.teacherProfile.role;
 
-        /* params = {
-          profilePhoto: locationData.teacherProfile.profilePhoto,
-          profileStripeAccount: locationData.teacherProfile.stripeCustomer,
-          fullname: locationData.teacherProfile.fullname,
-          role: locationData.teacherProfile.role,
-          prefPayRate: locationData.teacherProfile.prefPayRate,
-          yrsExperience: locationData.teacher.yrsExperience,
-          profileAbout: locationData.teacherProfile.profileAbout,
-          profileTitle: locationData.teacherProfile.profileTitle,
-          prefLocation: locationData.teacherProfile.prefLocation,
-          phone: locationData.teacherProfile.phone,
-          teacherProfileId: locationData.teacherProfile.objectId,
-          loggedRole: this.role,
-          hasUpcomings: this.hasUpcomings,
-          defaultStartDateTime: locationData.teacher.defaultStartDateTime,
-          defaultEndDateTime: locationData.teacher.defaultEndDateTime,
-        }; */
-      } else {
-        locationData.role = locationData.otherProfile.role;
-        /* params = {
-          profilePhoto: locationData.otherProfile.profilePhoto,
-          profileStripeAccount: locationData.otherProfile.stripeCustomer,
-          fullname: locationData.otherProfile.fullname,
-          role: locationData.otherProfile.role,
-          profileAbout: locationData.otherProfile.profileAbout,
-          profileTitle: locationData.otherProfile.profileTitle,
-          prefPayRate: locationData.otherProfile.prefPayRate,
-          prefLocation: locationData.otherProfile.prefLocation,
-          phone: locationData.otherProfile.phone,
-          otherProfileId: locationData.otherProfile.objectId,
-          loggedRole: this.role,
-          hasUpcomings: this.hasUpcomings,
-          schoolName: locationData.otherProfile.schoolName,
-          contactName: locationData.otherProfile.contactName
-        } */
-      }
-      let popover = this.popoverCtrl.create("JobRequestPage", { params: locationData });
-      popover.present();
-      /* popover.onDidDismiss(() => {
-        // Popover should be gone at this point completely.
-        console.log("Popover completely removed");
-        this.ionViewDidLoad();
-      }); */
-      //this.navCtrl.push("JobRequestPage", { params: params });
+      /* params = {
+        profilePhoto: locationData.teacherProfile.profilePhoto,
+        profileStripeAccount: locationData.teacherProfile.stripeCustomer,
+        fullname: locationData.teacherProfile.fullname,
+        role: locationData.teacherProfile.role,
+        prefPayRate: locationData.teacherProfile.prefPayRate,
+        yrsExperience: locationData.teacher.yrsExperience,
+        profileAbout: locationData.teacherProfile.profileAbout,
+        profileTitle: locationData.teacherProfile.profileTitle,
+        prefLocation: locationData.teacherProfile.prefLocation,
+        phone: locationData.teacherProfile.phone,
+        teacherProfileId: locationData.teacherProfile.objectId,
+        loggedRole: this.role,
+        hasUpcomings: this.hasUpcomings,
+        defaultStartDateTime: locationData.teacher.defaultStartDateTime,
+        defaultEndDateTime: locationData.teacher.defaultEndDateTime,
+      }; */
+    } else {
+      locationData.role = locationData.otherProfile.role;
+      /* params = {
+        profilePhoto: locationData.otherProfile.profilePhoto,
+        profileStripeAccount: locationData.otherProfile.stripeCustomer,
+        fullname: locationData.otherProfile.fullname,
+        role: locationData.otherProfile.role,
+        profileAbout: locationData.otherProfile.profileAbout,
+        profileTitle: locationData.otherProfile.profileTitle,
+        prefPayRate: locationData.otherProfile.prefPayRate,
+        prefLocation: locationData.otherProfile.prefLocation,
+        phone: locationData.otherProfile.phone,
+        otherProfileId: locationData.otherProfile.objectId,
+        loggedRole: this.role,
+        hasUpcomings: this.hasUpcomings,
+        schoolName: locationData.otherProfile.schoolName,
+        contactName: locationData.otherProfile.contactName
+      } */
+    }
+    let popover = this.popoverCtrl.create("JobRequestPage", { params: locationData });
+    popover.present();
+    /* popover.onDidDismiss(() => {
+      // Popover should be gone at this point completely.
+      console.log("Popover completely removed");
+      this.ionViewDidLoad();
+    }); */
+    //this.navCtrl.push("JobRequestPage", { params: params });
   }
 
   public contentTitle() {
@@ -558,21 +471,21 @@ export class SmartieSearch {
     let lon1 = this.toRad(LatLng.longitude);
 
     let lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) +
-                          Math.cos(lat1) * Math.sin(dist) * Math.cos(brng));
+      Math.cos(lat1) * Math.sin(dist) * Math.cos(brng));
 
     let lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(dist) *
-                                  Math.cos(lat1),
-                                  Math.cos(dist) - Math.sin(lat1) *
-                                  Math.sin(lat2));
+      Math.cos(lat1),
+      Math.cos(dist) - Math.sin(lat1) *
+      Math.sin(lat2));
 
     if (isNaN(lat2) || isNaN(lon2)) return null;
 
     return new google.maps.LatLng(this.toDeg(lat2), this.toDeg(lon2));
   }
 
-  smartieSearchResult(latLng, searchRole, searchLoc, extendBound){
+  smartieSearchResult(latLng, searchRole, searchLoc, extendBound) {
     let mapCenter;
-    if(latLng !== null){
+    if (latLng !== null) {
       mapCenter = latLng;
     } else if (searchLoc !== null) {
       // TODO: this now needs to do a quick geocoder call (fixed)
@@ -588,24 +501,24 @@ export class SmartieSearch {
     // thus the actual applied trigonometry yaaaaaaay!!!!^$%^
     // let radiusInKm = 50;
     // console.log(this.radiusInKm);
-    if(extendBound){
+    if (extendBound) {
       this.bounds = new google.maps.LatLngBounds();
-    }else{
+    } else {
       this.markerCount = [];
       let pointSouthwest = this.destinationPoint(220, this.radiusInKm / 2, mapCenter);
       let pointNortheast = this.destinationPoint(45, this.radiusInKm / 2, mapCenter);
       this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
     }
 
-    for(let searchResult of this.notifications){
+    for (let searchResult of this.notifications) {
       this.createMarkerLocation(searchResult);
     }
 
-    if(this.markerCount){
-      if(this.markerCount.length < 5){
+    if (this.markerCount) {
+      if (this.markerCount.length < 5) {
         this.extendBound = true;
         this.smartieSearchResult(latLng, searchRole, searchLoc, this.extendBound);
-      }else{
+      } else {
         // console.log("test");
       }
     }
@@ -619,10 +532,10 @@ export class SmartieSearch {
     this.map.fitBounds(this.bounds);
   }
 
-  pushAccepteds(){
-    if(this.role !== 'teacher'){
+  pushAccepteds() {
+    if (this.role !== 'teacher') {
       this.navCtrl.parent.select(2);
-    }else{
+    } else {
       this.navCtrl.parent.select(3);
     }
   }
