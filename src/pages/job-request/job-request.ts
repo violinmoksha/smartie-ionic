@@ -41,6 +41,8 @@ export class JobRequestPage {
     this.jobObject = Object.assign({}, this.params);
     this.teacherObj = this.params.teacherProfile;
     this.otherObj = this.params.otherProfile;
+    console.log(this.jobObject);
+    this.acceptState = this.jobObject.acceptState;
     // this.jobObject = this.jobObject.role =='teacher' ? (Object.assign({}, ...this.params)this.params.teacherProfile) : this.params.otherProfile;
 
     this.appNavCtrl = app.getActiveNav();
@@ -324,7 +326,14 @@ export class JobRequestPage {
     this.navCtrl.push("SendEmailPage", { params: this.jobObject });
   }
 
-  initChat(){
-    this.navCtrl.push("ChatPage", { params: this.jobObject });
+  initChat() {
+    let params = {
+      jobObject: this.jobObject,
+      sender: this.userRole == 'teacher' ? this.teacherObj : this.otherObj,
+      receiver: this.userRole == 'teacher' ? this.otherObj : this.teacherObj,
+      from: "jobrequest"
+    }
+    console.log(params);
+    this.navCtrl.push("ChatPage", params);
   }
 }
