@@ -10,6 +10,7 @@ import { Device } from '@ionic-native/device';
 
 import { DataService } from './app.data';
 import { ToasterServiceProvider } from '../providers/toaster-service';
+import { FetchiOSUDID } from '../providers/fetch-ios-udid';
 import { ImagePicker } from '@ionic-native/image-picker';
 // import Parse from 'parse';
 const Parse = require('parse');
@@ -35,17 +36,19 @@ export class SmartieApp {
   public roleColor: String;
 
   constructor(
-    public platform: Platform,
-    public events: Events,
-    public storage: Storage,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen,
-    public geolocation: Geolocation,
-    public firebase: Firebase,
-    public device: Device,
-    public dataService: DataService,
-    public tosterService: ToasterServiceProvider,
-    public imagePicker: ImagePicker) {
+      public platform: Platform,
+      public events: Events,
+      public storage: Storage,
+      public statusBar: StatusBar,
+      public splashScreen: SplashScreen,
+      public geolocation: Geolocation,
+      public firebase: Firebase,
+      public device: Device,
+      public dataService: DataService,
+      public tosterService: ToasterServiceProvider,
+      public imagePicker: ImagePicker,
+      public fetchiOSUDID: FetchiOSUDID) {
+
     this.initializeApp();
     this.events.subscribe("buttonsLoad", eventData => {
       //Tabs index 0 is always set to search
@@ -75,6 +78,7 @@ export class SmartieApp {
   ionViewDidLoad() {
     console.log("App loaded");
   }
+
   setUserName() {
     this.storage.get('UserProfile').then(user => {
       if (user && user.profileData) {
@@ -85,6 +89,53 @@ export class SmartieApp {
         this.roleColor = 'black';
       }
     })
+  }
+
+  initializeAppInner(UDID) {
+    this.dataService.getApi(
+      'getUserProvision',
+      { uuid: UDID }
+    ).then(API => {
+      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
+        this.storage.set("Provision", response.result);
+        this.storage.get('UserProfile').then(user => {
+          console.log('And made it back with a UserProfile obj called user: ' + JSON.stringify(user));
+          if (user == null) {
+            if (response.result.provision.user && response.result.provision.profile) {
+              this.nav.setRoot("LoginPage", { role: response.result.provision.role });
+              this.splashScreen.hide();
+            } else {
+              this.storage.get("Registration").then(async registration => {
+                if (registration && registration.step) {
+                  if (registration.step === 0) {
+                    this.nav.setRoot("RegisterStep1Page", { role: registration.role });
+                  } else if (registration.step == 1) {
+                    this.nav.setRoot("RegisterStep2Page", registration);
+                  } else if (registration.step == 2) {
+                    this.nav.setRoot("RegisterStep3Page", registration);
+                  }
+                } else {
+                  // NB has a provision, but no User object and no saved reg, yuup sending them back through registration!
+                  this.nav.setRoot("RegisterStep1Page", { role: response.result.provision.role });
+                }
+                this.splashScreen.hide();
+              }, err => {
+                console.log(err);
+              });
+            }
+          } else {
+            this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
+            this.splashScreen.hide();
+          }
+        }, err => {
+          console.log('Strange err: ' + err);
+        })
+      }, err => {
+        console.log('No provision from server (yet): ' + JSON.stringify(err));
+        this.splashScreen.hide();
+        this.rootPage = 'LandingPage';
+      })
+    });
   }
 
   initializeApp() {
@@ -104,50 +155,15 @@ export class SmartieApp {
         // Parse.initialize(this.parseAppId, null, this.parseMasterKey);
         Parse.serverURL = this.parseServerUrl;
 
-        this.dataService.getApi(
-          'getUserProvision',
-          { uuid: this.device.uuid }
-        ).then(API => {
-          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
-            this.storage.set("Provision", response.result);
-            this.storage.get('UserProfile').then(user => {
-              console.log('And made it back with a UserProfile obj called user: ' + JSON.stringify(user));
-              if (user == null) {
-                if (response.result.provision.user && response.result.provision.profile) {
-                  this.nav.setRoot("LoginPage", { role: response.result.provision.role });
-                  this.splashScreen.hide();
-                } else {
-                  this.storage.get("Registration").then(async registration => {
-                    if (registration && registration.step) {
-                      if (registration.step === 0) {
-                        this.nav.setRoot("RegisterStep1Page", { role: registration.role });
-                      } else if (registration.step == 1) {
-                        this.nav.setRoot("RegisterStep2Page", registration);
-                      } else if (registration.step == 2) {
-                        this.nav.setRoot("RegisterStep3Page", registration);
-                      }
-                    } else {
-                      // NB has a provision, but no User object and no saved reg, yuup sending them back through registration!
-                      this.nav.setRoot("RegisterStep1Page", { role: response.result.provision.role });
-                    }
-                    this.splashScreen.hide();
-                  }, err => {
-                    console.log(err);
-                  });
-                }
-              } else {
-                this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
-                this.splashScreen.hide();
-              }
-            }, err => {
-              console.log('Strange err: ' + err);
-            })
-          }, err => {
-            console.log('No provision from server (yet): ' + JSON.stringify(err));
-            this.splashScreen.hide();
-            this.rootPage = 'LandingPage';
-          })
-        });
+        if (this.platform.is('ios')) {
+          this.fetchiOSUDID.fetch().then(iOSUDID => {
+            this.initializeAppInner(iOSUDID);
+          });
+        } else {
+          // android, persistant UDID
+          this.initializeAppInner(this.device.uuid);
+        }
+
       } else {
         console.log('What on earth non-cordova land.');
         this.splashScreen.hide();
