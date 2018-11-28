@@ -1,3 +1,4 @@
+import { FileTransfer } from '@ionic-native/file-transfer';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
@@ -26,11 +27,18 @@ export class ChatPage {
   studentProfileId: any;
   teacherProfileId: any;
   chatMessages = [];
-
+  navigateFrom: any;
+  userId: any;
+  receiverProfile: any;
+  sender: any;
+  receiver: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events, private dataService: DataService) {
-    this.params = navParams.get("params");
+    this.params = navParams.get("jobObject");
+    this.sender = navParams.get("sender");
+    this.receiver = navParams.get("receiver");
+    this.navigateFrom = navParams.get("from");
 
-    if(!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined'){
+    if (!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined') {
       this.chatAccess = true;
     }
     /* if(this.params.role == 'teacher'){
@@ -48,45 +56,24 @@ export class ChatPage {
     } */
     // Initialize chat
     //this.chatService.initializebuddy(this.params);
-    if(this.params.role != 'teacher'){
+    if (this.params.role != 'teacher') {
       this.studentProfileId = this.params.objectId;
       this.teacherProfileId = this.params.teacherProfile.objectId;
-    }else{
+    } else {
       this.teacherProfileId = this.params.objectId;
       this.studentProfileId = this.params.otherProfile.objectId;
     }
 
-
     this.storage.get("UserProfile").then(profile => {
       this.role = profile.profileData.role;
+      this.userId = profile.userData.objectId;
     })
 
     this.scrollto();
-
-    /* this.events.subscribe("newMessage", (messages) => {
-      console.log(messages);
-      console.log("Test subscribe");
-      this.allmessages = messages;
-      // this.allmessages.reverse();
-    })
-
-    this.events.subscribe("loadOldMessage", (messages) => {
-      console.log("loadOldMessage");
-      let oldMessages = messages;
-      // oldMessages.reverse();
-      // this.allmessages.reverse();
-      console.log(oldMessages);
-      if(oldMessages.length > 0 ){
-        this.allmessages.push(...oldMessages);
-        // this.allmessages = this.allmessages.concat(oldMessages);
-        console.log(this.allmessages);
-      }
-    }) */
-
   }
 
-  onScroll(scrollEvent){
-    if(scrollEvent.scrollTop == 0){
+  onScroll(scrollEvent) {
+    if (scrollEvent.scrollTop == 0) {
       console.log(this.allmessages.length);
       console.log("Almost reach top");
       this.getAllMessages(this.allmessages.length);
@@ -98,7 +85,53 @@ export class ChatPage {
 
   ionViewDidEnter() {
     console.log(this.chatAccess);
-    this.getAllMessages();
+  }
+
+  sendMessage() {
+    console.log("sending message")
+    if (this.navigateFrom == 'jobrequest') {
+      this.dataService.getApi('getMyChatRoom', { roomId: this.teacherProfileId + '|' + this.studentProfileId }).then(API => {
+        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
+          console.log(res);
+          this.pushMessage(res.result.roomId);
+        }, err => {
+          console.log(err);
+          let chatRoomArg = {
+            "teacherId": this.teacherProfileId,
+            "studentId": this.studentProfileId,
+            "userId": this.userId,
+            "message": {
+              "body": this.newmessage,
+              "senderId": this.userId,
+              "receiverId": this.receiver.objectId,
+              "sentAt": new Date().toISOString()
+            }
+          }
+          this.dataService.getApi("createChatRoom", chatRoomArg).then(API => {
+            this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
+              console.log(res);
+            })
+          })
+        })
+      })
+    } else {
+      console.log("direct messaging goes here");
+    }
+  }
+
+  pushMessage(roomId) {
+    let messageBody = {
+      "roomId": roomId,
+      "message": this.newmessage,
+      "sender": this.userId,
+      "receiver": this.receiver.objectId,
+      "sentTime": new Date().toISOString()
+    }
+    this.dataService.getApi('sendMessage', messageBody).then(API => {
+      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
+        console.log(res);
+      })
+    })
   }
 
   addmessage() {
@@ -106,7 +139,7 @@ export class ChatPage {
       'addChatMessage',
       { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId, message: this.newmessage, viewed: false, role: this.role }
     ).then(async API => {
-      return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders'] ).then(async response => {
+      return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
         this.content.scrollToBottom();
         this.newmessage = '';
         console.log(response);
@@ -115,13 +148,6 @@ export class ChatPage {
         console.log(err);
       })
     });
-    // this.chatService.addnewmessage(this.newmessage).then((response) => {
-    //   console.log('test');
-    //   this.content.scrollToBottom();
-    //   this.newmessage = '';
-    //   console.log(response);
-    //   this.getAllMessages();
-    // })
   }
 
   scrollto() {
@@ -140,17 +166,17 @@ export class ChatPage {
         'getAllMessages',
         { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId, skip: skip }
       ).then(async API => {
-        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders'] ).then(async response => {
+        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           this.chatMessages = [];
-          for(let chat of response.result){
+          for (let chat of response.result) {
             this.chatMessages.push(chat);
           }
 
-          if(skip){
+          if (skip) {
             console.log("append chat");
             this.allmessages.concat(this.chatMessages);
             console.log(this.allmessages);
-          }else{
+          } else {
             console.log('new message');
             this.allmessages = this.chatMessages;
             console.log(this.allmessages);
