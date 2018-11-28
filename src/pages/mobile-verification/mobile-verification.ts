@@ -5,6 +5,8 @@ import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
 import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { AnalyticsProvider } from '../../providers/analytics';
+import { FetchiOSUDID } from '../../providers/fetch-ios-udid';
+
 /**
  * Generated class for the MobileVerificationPage page.
  *
@@ -22,7 +24,7 @@ export class MobileVerificationPage {
   role: string;
   phoneNumber = '';
   mobileVerification: FormGroup;
-  constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, public device: Device, public dataService: DataService, public loadingCtrl: LoadingController, public storage: Storage,public formBuilder: FormBuilder,public analytics : AnalyticsProvider) {
+  constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, public device: Device, public dataService: DataService, public loadingCtrl: LoadingController, public storage: Storage,public formBuilder: FormBuilder,public analytics : AnalyticsProvider, public fetchiOSUDID: FetchiOSUDID) {
     this.role = this.navParams.get('role');
 
     this.mobileVerification = this.formBuilder.group({
@@ -43,20 +45,31 @@ export class MobileVerificationPage {
   pushSignUp(){
     this.analytics.addEvent(this.analytics.getAnalyticEvent("MobileVerification", "Clicked_MobileVerifyButton"));
 
+    if (this.platform.is('ios')) {
+      this.fetchiOSUDID.fetch().then(iOSUDID => {
+        this.pushSignUpInner(iOSUDID);
+      });
+    } else {
+      // android, persistant UDID
+      this.pushSignUpInner(this.device.uuid);
+    }
+  }
+
+  pushSignUpInner(UDID) {
     // encrypt UUID
-    return this.dataService.getBeyondGDPR(true, {"plaintext":this.device.uuid}).then(cryptUUID => {
+    return this.dataService.getBeyondGDPR(true, {"plaintext":UDID}).then(cryptUUID => {
       let deviceUUID;
       if (cryptUUID) {
         deviceUUID = cryptUUID;
       } else { // chickenSwitch == false
-        deviceUUID = this.device.uuid;
+        deviceUUID = UDID;
       }
 
       // TODO: actually wire this to beyondgdpr, for now we're going with plaintext this.device.uuid
       let params={
         //"uuid": (this.platform.is('cordova')) ? deviceUUID :'123456',
-        "uuid": (this.platform.is('cordova')) ? this.device.uuid :'123456',
-        "device": { 'cordova': this.device.cordova, 'isVirtual': this.device.isVirtual, 'manufacturer': this.device.manufacturer, 'model': this.device.model, 'platform': this.device.platform, 'serial': this.device.serial, 'uuid': this.device.uuid, 'version': this.device.version },
+        "uuid": (this.platform.is('cordova')) ? UDID :'123456',
+        "device": { 'cordova': this.device.cordova, 'isVirtual': this.device.isVirtual, 'manufacturer': this.device.manufacturer, 'model': this.device.model, 'platform': this.device.platform, 'serial': this.device.serial, 'uuid': UDID, 'version': this.device.version },
         "role": this.role
       }
 
