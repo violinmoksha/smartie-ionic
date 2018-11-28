@@ -143,16 +143,11 @@ export class EditProfileStep3Page {
 
       this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
-      // this.startTime = availStartDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-      // this.startTime = availStartDateTime.toUTCString();
       this.startTime = this.formatTime(availStartDateTime);
-      // console.log(this.startTime[4]);
-      // this.endTime = availEndDateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
       this.endTime = this.formatTime(availEndDateTime);
-      // console.log(this.endTime[4]);
 
-      this.startDate = (availStartDateTime.getMonth() + 1) + '-' + availStartDateTime.getDate() + '-' + availStartDateTime.getFullYear();
-      this.endDate = (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
+      this.startDate = availStartDateTime.getDate() + '-' + (availStartDateTime.getMonth() + 1) + '-' + availStartDateTime.getFullYear();
+      this.endDate = availEndDateTime.getDate() + '-' + (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getFullYear();
 
       for (var i = 0; i < roleProfile.specificUser.credentials.length; i++) {
         this.uploadedCvFiles.push({ name: "File" + i, data: roleProfile.specificUser.credentials[i] });
@@ -304,10 +299,13 @@ export class EditProfileStep3Page {
   finalEditProfileSubmit(form3Values) {
     this.submitInProgress = true;
     this.loading.present();
-    
-    let UTCstartTime = new Date(this.startDate.split('-')[2], (this.startDate.split('-')[0] - 1), this.startDate.split('-')[1], parseInt(form3Values.startTime.split(':')[0]), parseInt(form3Values.startTime.split(':')[1]));
+    let selectedStartDate = this.startDate.split('-');
+    let selectedEndDate = this.endDate.split('-');
+    let selectedStartTime = this.startTime.split('T')[1];
+    let selectedEndTime = this.endTime.split('T')[1];
+    let UTCstartTime = new Date(selectedStartDate[2], selectedStartDate[1] - 1, selectedStartDate[0], parseInt(selectedStartTime.split(':')[0]), parseInt(selectedStartTime.split(':')[1]));
 
-    let UTCendTime = new Date(this.endDate.split('-')[2], (this.endDate.split('-')[0] - 1), this.endDate.split('-')[1], parseInt(form3Values.endTime.split(':')[0]), parseInt(form3Values.endTime.split(':')[1]));
+    let UTCendTime = new Date(selectedEndDate[2], selectedEndDate[1] - 1, selectedEndDate[0], parseInt(selectedEndTime.split(':')[0]), parseInt(selectedEndTime.split(':')[1]));
 
     console.log(form3Values);
     console.log(UTCstartTime);
@@ -337,8 +335,8 @@ export class EditProfileStep3Page {
             // defenddate: this.endDate,
             // defstarttime: form3Values.startTime,
             // defendtime: form3Values.endTime,
-            defaultStartDateTime: UTCstartTime,
-            defaultEndDateTime: UTCendTime,
+            defaultStartDateTime: UTCstartTime.toISOString(),
+            defaultEndDateTime: UTCendTime.toISOString(),
             credentials: form3Values.credentials
           }
         }
