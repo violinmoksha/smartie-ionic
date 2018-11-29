@@ -19,39 +19,54 @@ export class ChatRoomsPage {
   public chats: Array<any>;
   public userData: any;
   public userRole: String;
+  public userDefaultImg:String = './assets/imgs/user-round-icon.png';
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public dataService: DataService) {
     this.userRole = navParams.get("role");
     console.log(navParams.data);
+    this.chats = [];
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatRoomsPage');
-    this.chats = [{ name: "Test A", profilePic: "./assets/imgs/logo.png" }, { name: "Test B", profilePic: "./assets/imgs/logo.png" }, { name: "Test C", profilePic: "./assets/imgs/logo.png" }]
-    this.loadUserData();
+    this.loadUserData().then(res => {
+      this.fetchChatRooms();
+    })
   }
 
   loadUserData() {
-    this.storage.get("UserProfile").then(user => {
-      console.log(user);
-      if (user != null) {
-        this.userData = user;
-        this.userRole = user.profileData.role;
-      }
+    return new Promise((resolve, reject) => {
+      this.storage.get("UserProfile").then(user => {
+        console.log(user);
+        if (user != null) {
+          this.userData = user;
+          this.userRole = user.profileData.role;
+          resolve(user);
+        } else {
+          reject("no user");
+        }
+      })
     })
   }
 
   fetchChatRooms() {
-    this.dataService.getApi('getMyChatRoom', { profileId: this.userData.profileData.objectId }).then(API => {
+    this.dataService.getApi('fetchChatRoomsById', { profileId: this.userData.profileData.objectId }).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
         console.log(res);
+        for (let i=0; i<res.result.length; i++){
+          if(res.result[i].receiver.profilePhoto == undefined){
+            res.result[i].receiver.profilePhoto = './assets/imgs/user-round-icon.png';
+          }
+          this.chats.push(res.result[i])
+        }
+        console.log(this.chats)
       }, err => {
         console.log(err);
       })
     })
   }
 
-  openChat() {
-    this.navCtrl.push("ChatPage")
+  openChat(chat) {
+    this.navCtrl.push("ChatPage", {chat:chat})
   }
 
 }
