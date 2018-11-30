@@ -65,15 +65,15 @@ export class ChatPage {
       this.userProfileId = profile.profileData.objectId;
     })
 
-    this.scrollto();
+    //this.scrollto();
   }
 
   onScroll(scrollEvent) {
-    if (scrollEvent.scrollTop == 0) {
-      console.log(this.allmessages.length);
-      console.log("Almost reach top");
-      this.getAllMessages(this.allmessages.length);
-    }
+    // if (scrollEvent.scrollTop == 0) {
+    //   console.log(this.allmessages.length);
+    //   console.log("Almost reach top");
+    //   this.getAllMessages(this.allmessages.length);
+    // }
   }
 
   ionViewDidLoad() {
@@ -106,7 +106,8 @@ export class ChatPage {
           this.dataService.getApi("createChatRoom", chatRoomArg).then(API => {
             this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
               console.log(res);
-              this.chatMessages.push(res.result)
+              this.chatMessages.push(res.result);
+              this.newmessage = '';
             })
           })
         })
@@ -128,6 +129,8 @@ export class ChatPage {
     this.dataService.getApi('sendMessage', messageBody).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
         console.log(res);
+        this.chatMessages.push(res.result.messages[0]);
+        this.newmessage = '';
       })
     })
   }

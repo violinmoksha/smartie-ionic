@@ -244,6 +244,8 @@ export class SmartieApp {
         }, err => {
           console.info('sub-0: ' + err);
         });
+      } else if (notification.eventAction == "MESSAGE_RECEIVED") {
+        this.nav.parent.select(4);
       }
     }, err => {
       // TODO: ditto
