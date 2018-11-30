@@ -29,44 +29,40 @@ export class ChatPage {
   chatMessages = [];
   navigateFrom: any;
   userId: any;
-  receiverProfile: any;
   sender: any;
   receiver: any;
+  chatRoom:any;
+  userProfileId:String;
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events, private dataService: DataService) {
     this.params = navParams.get("jobObject");
     this.sender = navParams.get("sender");
     this.receiver = navParams.get("receiver");
     this.navigateFrom = navParams.get("from");
 
-    if (!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined') {
-      this.chatAccess = true;
-    }
-    /* if(this.params.role == 'teacher'){
-      console.log("Teacher");
-      if(!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined'){
-        this.chatAccess = false;
+
+    if (this.navigateFrom == "jobrequest") {
+      if (!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined') {
+        this.chatAccess = true;
+      }  
+      if (this.params.role != 'teacher') {
+        this.studentProfileId = this.params.objectId;
+        this.teacherProfileId = this.params.teacherProfile.objectId;
+      } else {
+        this.teacherProfileId = this.params.objectId;
+        this.studentProfileId = this.params.otherProfile.objectId;
       }
     }else{
-      console.log("Student");
-      console.log(this.params.teacherProfile);
-      if(!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined'){
-        console.log("Debug ok");
-        this.chatAccess = false;
-      }
-    } */
-    // Initialize chat
-    //this.chatService.initializebuddy(this.params);
-    if (this.params.role != 'teacher') {
-      this.studentProfileId = this.params.objectId;
-      this.teacherProfileId = this.params.teacherProfile.objectId;
-    } else {
-      this.teacherProfileId = this.params.objectId;
-      this.studentProfileId = this.params.otherProfile.objectId;
+      this.chatAccess = true;
+      this.chatRoom = navParams.get('chat');
+      this.receiver = this.chatRoom.receiver
+      this.chatMessages = this.chatRoom.messages.reverse();
     }
+
 
     this.storage.get("UserProfile").then(profile => {
       this.role = profile.profileData.role;
       this.userId = profile.userData.objectId;
+      this.userProfileId = profile.profileData.objectId;
     })
 
     this.scrollto();
@@ -102,7 +98,7 @@ export class ChatPage {
             "userId": this.userId,
             "message": {
               "body": this.newmessage,
-              "senderId": this.userId,
+              "senderId": this.userProfileId,
               "receiverId": this.receiver.objectId,
               "sentAt": new Date().toISOString()
             }
@@ -110,12 +106,14 @@ export class ChatPage {
           this.dataService.getApi("createChatRoom", chatRoomArg).then(API => {
             this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
               console.log(res);
+              this.chatMessages.push(res.result)
             })
           })
         })
       })
     } else {
       console.log("direct messaging goes here");
+      this.pushMessage(this.chatRoom.roomId);
     }
   }
 
@@ -123,7 +121,7 @@ export class ChatPage {
     let messageBody = {
       "roomId": roomId,
       "message": this.newmessage,
-      "sender": this.userId,
+      "sender": this.userProfileId,
       "receiver": this.receiver.objectId,
       "sentTime": new Date().toISOString()
     }

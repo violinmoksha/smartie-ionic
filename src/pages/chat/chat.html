@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ params.fullname }}</ion-title>
+    <ion-title>{{ receiver.fullname }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -17,22 +17,21 @@
   </div>
   <div *ngIf="chatAccess" class="chatwindow">
     <ion-list no-lines>
-      <ion-item *ngFor="let item of allmessages;" text-wrap>
-        <ion-avatar item-left *ngIf="params.objectId != item.sentBy.objectId">
-          <img *ngIf="role=='student' && item.student.profilePhoto" src="{{item.student.profilePhoto.url}}">
-          <img *ngIf="role=='teacher' && item.teacher.profilePhoto" src="{{item.teacher.profilePhoto.url}}">
-          <img *ngIf="(role=='teacher' && !item.teacher.profilePhoto) || (role=='student' && !item.student.profilePhoto) " src="{{ photoURL }}">
+      <ion-item *ngFor="let item of chatMessages;" text-wrap>
+        <ion-avatar item-left *ngIf="(receiver.objectId == item.sender && receiver.objectId != item.receiver)">
+          <img *ngIf="receiver.profilePhoto" [src]="receiver.profilePhoto">
+          <!-- <img *ngIf="role=='teacher' && item.teacher.profilePhoto" src="{{item.teacher.profilePhoto.url}}">
+          <img *ngIf="(role=='teacher' && !item.teacher.profilePhoto) || (role=='student' && !item.student.profilePhoto) " src="{{ photoURL }}"> -->
         </ion-avatar>
-        <div class="bubble me" *ngIf="params.objectId != item.sentBy.objectId">
+        <div class="bubble me" *ngIf="(receiver.objectId == item.sender && receiver.objectId != item.receiver)">
           <h3>{{item.message}}</h3>
-          <!-- <img src="{{item.message}}" *ngIf="imgornot[i]"> -->
         </div>
-        <ion-avatar item-right *ngIf="params.objectId === item.sentBy.objectId">
+        <!-- <ion-avatar item-right *ngIf="(receiver.objectId == item.receiver && receiver.objectId != item.sender)">
           <img *ngIf="role=='student' && item.student.profilePhoto" src="{{item.student.profilePhoto.url}}">
           <img *ngIf="role=='teacher' && item.teacher.profilePhoto" src="{{item.teacher.profilePhoto.url}}">
           <img *ngIf="(role=='teacher' && !item.teacher.profilePhoto) || (role=='student' && !item.student.profilePhoto) " src="{{ photoURL }}">
-        </ion-avatar>
-        <div class="bubble you" *ngIf="params.objectId === item.sentBy.objectId">
+        </ion-avatar> -->
+        <div class="bubble you" *ngIf="(receiver.objectId == item.receiver && receiver.objectId != item.sender)">
           <h3>{{item.message}}</h3>
           <!-- <img src="{{item.message}}" *ngIf="imgornot[i]"> -->
         </div>
