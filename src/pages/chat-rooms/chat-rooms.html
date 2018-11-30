@@ -16,19 +16,24 @@
 
 <ion-content>
 <div class="text-center">
-  <ion-list>
-    <div *ngIf="chats.length == 0" class="text-center">
-      <h4>No chats available.</h4>
-    </div>
-    <div *ngIf="chats.length > 0">
-        <ion-item *ngFor="let chat of chats" (click)="openChat(chat)">
-            <ion-avatar item-start>
-                <img [src]="chat.receiver.profilePhoto" />
-              </ion-avatar>
-              <h2 class="chat-title">{{chat.receiver.fullname}}</h2>
-              <p>Ugh. As if.</p>
-        </ion-item>
-    </div>
-  </ion-list>
+  <div *ngIf="chatLoader; else chatLoaded" class="text-center">
+    <h4>Loading chats...</h4>
+  </div>
+  <ng-template #chatLoaded>
+      <ion-list>
+          <div *ngIf="chats.length == 0" class="text-center">
+            <h4>No chats available.</h4>
+          </div>
+          <div *ngIf="chats.length > 0">
+              <ion-item *ngFor="let chat of chats" (click)="openChat(chat)">
+                  <ion-avatar item-start>
+                      <img [src]="chat.receiver.profilePhoto" />
+                    </ion-avatar>
+                    <h2 class="chat-title">{{chat.receiver.fullname}}</h2>
+                    <p class="last-message" *ngIf="chat.messages.length > 0">{{chat.messages[0].message}}</p>
+              </ion-item>
+          </div>
+        </ion-list>
+  </ng-template>
 </div>
 </ion-content>
