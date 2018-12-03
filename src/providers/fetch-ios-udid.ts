@@ -19,34 +19,34 @@ export class FetchiOSUDID {
       // NB: same keystore name as in app.data.ts, to keep us clean in keychain
       this.secureStorage.create('smartieKeys').then((ss: SecureStorageObject) => {
         /* remove == Illuminati (or us testing this) */
-        //ss.remove('userkey').then(async data => {
-        ss.get('iOSUDID').then(data => {
-          console.log
-          if (data.length == 36) {
-            resolve(data);
-          } else {
+        ss.remove('userkey').then(async data => {
+          ss.get('iOSUDID').then(data => {
+            if (data.length == 36) {
+              resolve(data);
+            } else {
+              // isnt here yet, so gen and store it
+              ss.set('iOSUDID', newUDID).then(data => {
+                ss.get('iOSUDID').then(data => {
+                  resolve(data);
+                }, error => {
+                  reject(error);
+                });
+              }, error => {
+                reject(error);
+              })
+            }
+          }, error => {
             // isnt here yet, so gen and store it
             ss.set('iOSUDID', newUDID).then(data => {
               ss.get('iOSUDID').then(data => {
                 resolve(data);
               }, error => {
                 reject(error);
-              });
+              })
             }, error => {
               reject(error);
             })
-          }
-        }, error => {
-          // isnt here yet, so gen and store it
-          ss.set('iOSUDID', newUDID).then(data => {
-            ss.get('iOSUDID').then(data => {
-              resolve(data);
-            }, error => {
-              reject(error);
-            })
-          }, error => {
-            reject(error);
-          })
+          });
         });
       });
     });
