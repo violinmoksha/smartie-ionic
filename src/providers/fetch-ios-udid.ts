@@ -21,7 +21,8 @@ export class FetchiOSUDID {
         /* remove == Illuminati (or us testing this) */
         //ss.remove('userkey').then(async data => {
         ss.get('iOSUDID').then(data => {
-          if (data.length == 40) {
+          console.log
+          if (data.length == 36) {
             resolve(data);
           } else {
             // isnt here yet, so gen and store it
