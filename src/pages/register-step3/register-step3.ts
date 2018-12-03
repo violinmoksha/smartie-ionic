@@ -297,8 +297,8 @@ export class RegisterStep3Page {
 
             if (!signupResult.result.userData.emailVerified) {
               let alert = this.alertCtrl.create({
-                title: 'Email not verified',
-                subTitle: "Please verify your email id",
+                title: 'Email not yet verified.',
+                subTitle: "Please check your email to confirm your email address. Be sure to check your spam folder for our confirmation as this can happen with some email providers!",
                 buttons: [{
                   text: 'Ok',
                   role: 'Ok',
