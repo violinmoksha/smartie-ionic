@@ -2,5 +2,13 @@ page-chat-rooms {
   .chat-title{
     margin-top: 5px !important;
     margin-bottom: 5px !important;
+    font-weight: bold;
+  }
+  .last-message{
+    font-size: 12px;
+  }
+  .unread-msg{
+    font-size: 12px;
+    font-weight: bold;
   }
 }

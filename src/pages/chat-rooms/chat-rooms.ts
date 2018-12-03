@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
+import { resolve, reject } from 'q';
 
 /**
  * Generated class for the ChatRoomsPage page.
@@ -20,6 +21,7 @@ export class ChatRoomsPage {
   public userData: any;
   public userRole: String;
   public userDefaultImg:String = './assets/imgs/user-round-icon.png';
+  public chatLoader:Boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public dataService: DataService) {
     this.userRole = navParams.get("role");
     console.log(navParams.data);
@@ -28,6 +30,10 @@ export class ChatRoomsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatRoomsPage');
+  }
+
+  ionViewDidEnter() {
+    console.log('ionViewDidEnter ChatRoomsPage');
     this.loadUserData().then(res => {
       this.fetchChatRooms();
     })
@@ -49,6 +55,8 @@ export class ChatRoomsPage {
   }
 
   fetchChatRooms() {
+    this.chatLoader = true;
+    this.chats = [];
     this.dataService.getApi('fetchChatRoomsById', { profileId: this.userData.profileData.objectId }).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
         console.log(res);
@@ -56,16 +64,44 @@ export class ChatRoomsPage {
           if(res.result[i].receiver.profilePhoto == undefined){
             res.result[i].receiver.profilePhoto = './assets/imgs/user-round-icon.png';
           }
-          this.chats.push(res.result[i])
+          this.fetchMessages(res.result[i].roomId).then(messages => {
+            res.result[i].messages = messages[0].messages;
+            this.chats.push(res.result[i]);
+            this.chatLoader = false;
+          }, err => {
+            res.result[i].messages = [];
+            this.chats.push(res.result[i]);
+            this.chatLoader = false;
+          })
         }
         console.log(this.chats)
       }, err => {
         console.log(err);
+        this.chatLoader = false;
+      })
+    })
+  }
+
+  fetchMessages(roomId) {
+    return new Promise((resolve, reject) => {
+      let params = {
+        "roomId":roomId,
+        "page":0,
+        "limit":10
+      }
+      this.dataService.getApi('fetchMessages', params).then(API => {
+        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
+          console.log(res.result);
+          resolve(res.result);
+        }, err => {
+          reject(err);
+        })
       })
     })
   }
 
   openChat(chat) {
+    console.log(chat);
     this.navCtrl.push("ChatPage", {chat:chat})
   }
 
