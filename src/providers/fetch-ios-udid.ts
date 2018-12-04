@@ -20,6 +20,7 @@ export class FetchiOSUDID {
       this.secureStorage.create('smartieKeys').then((ss: SecureStorageObject) => {
         /* remove == Illuminati (or us testing this) */
         ss.remove('userkey').then(async data => {
+          console.log('removed userkey success');
           ss.get('iOSUDID').then(data => {
             if (data.length == 36) {
               resolve(data);

@@ -146,7 +146,6 @@ export class SmartieApp {
         // this.statusBar.styleDefault();
         this.statusBar.styleLightContent();
         this.initGeolocation();
-        this.initFirebase(); // NB: calls sync/non-returning notificationHandler
         this.tosterService.internetListener();
         this.setUserName();
         this.getGalleryPermission();
@@ -157,10 +156,12 @@ export class SmartieApp {
 
         if (this.platform.is('ios')) {
           this.fetchiOSUDID.fetch().then(iOSUDID => {
+            this.initFirebase(iOSUDID); // NB: calls sync/non-returning notificationHandler
             this.initializeAppInner(iOSUDID);
           });
         } else {
           // android, persistant UDID
+          this.initFirebase(this.device.uuid);
           this.initializeAppInner(this.device.uuid);
         }
 
@@ -192,7 +193,7 @@ export class SmartieApp {
     });
   }
 
-  initFirebase(): Promise<any> {
+  initFirebase(UDID): Promise<any> {
     return new Promise((resolve, reject) => {
       this.firebase.getToken().then(token => {
         //console.log(`Firebase token is: ${token}`);
@@ -200,7 +201,7 @@ export class SmartieApp {
         this.dataService.getApi(
           'updateFcmToken',
           {
-            device: { cordova: this.device.cordova, isVirtual: this.device.isVirtual, manufacturer: this.device.manufacturer, model: this.device.model, platform: this.device.platform, serial: this.device.serial, uuid: this.device.uuid, version: this.device.version },
+            device: { cordova: this.device.cordova, isVirtual: this.device.isVirtual, manufacturer: this.device.manufacturer, model: this.device.model, platform: this.device.platform, serial: this.device.serial, uuid: UDID, version: this.device.version },
             token: token
           }
         ).then(API => {
