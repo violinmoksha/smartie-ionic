@@ -155,6 +155,7 @@ export class SmartieApp {
         Parse.serverURL = this.parseServerUrl;
 
         if (this.platform.is('ios')) {
+          console.log('Captured iOS platform, going into fetchUDID.');
           this.fetchiOSUDID.fetch().then(iOSUDID => {
             this.initFirebase(iOSUDID); // NB: calls sync/non-returning notificationHandler
             this.initializeAppInner(iOSUDID);
@@ -195,6 +196,7 @@ export class SmartieApp {
 
   initFirebase(UDID): Promise<any> {
     return new Promise((resolve, reject) => {
+      console.log('Attempting to enter getToken with UDID: '+UDID);
       this.firebase.getToken().then(token => {
         //console.log(`Firebase token is: ${token}`);
         console.log('Going to updateFcmToken with: ' + JSON.stringify(this.device));
