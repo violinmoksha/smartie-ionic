@@ -87,7 +87,7 @@ export class ChatRoomsPage {
       let params = {
         "roomId":roomId,
         "page":0,
-        "limit":10
+        "limit":5
       }
       this.dataService.getApi('fetchMessages', params).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {

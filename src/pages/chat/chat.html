@@ -7,10 +7,10 @@
 </ion-header>
 
 
-<ion-content #content (ionScroll)="onScroll($event)">
-  <!-- <ion-infinite-scroll (ionInfinite)="fetchMore($event)" position="top" threshold="10px">
+<ion-content #content (ionScroll)="onScroll($event)" >
+  <ion-infinite-scroll (ionInfinite)="fetchMore($event)" position="top" threshold="30px">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll> -->
+  </ion-infinite-scroll>
 
   <div *ngIf="!chatAccess" class="chat-warning">
     <h2>You are not able to send message to this User</h2>
@@ -18,22 +18,19 @@
   <div *ngIf="chatAccess" class="chatwindow">
     <ion-list no-lines>
       <ion-item *ngFor="let item of chatMessages;" text-wrap>
+        <div *ngIf="item.displayTime.messageDate" class="text-center">
+          <h4 class="msg-date">{{item.displayTime.messageDate}}</h4>
+        </div>
         <ion-avatar item-left *ngIf="(receiver.objectId == item.sender && receiver.objectId != item.receiver)">
           <img *ngIf="receiver.profilePhoto" [src]="receiver.profilePhoto">
-          <!-- <img *ngIf="role=='teacher' && item.teacher.profilePhoto" src="{{item.teacher.profilePhoto.url}}">
-          <img *ngIf="(role=='teacher' && !item.teacher.profilePhoto) || (role=='student' && !item.student.profilePhoto) " src="{{ photoURL }}"> -->
         </ion-avatar>
         <div class="bubble me" *ngIf="(receiver.objectId == item.sender && receiver.objectId != item.receiver)">
-          <h3>{{item.message}}</h3>
+          <h3 class="message-align">{{item.message}}</h3>
+          <span class="align-time">{{item.displayTime.sentTime}}</span>
         </div>
-        <!-- <ion-avatar item-right *ngIf="(receiver.objectId == item.receiver && receiver.objectId != item.sender)">
-          <img *ngIf="role=='student' && item.student.profilePhoto" src="{{item.student.profilePhoto.url}}">
-          <img *ngIf="role=='teacher' && item.teacher.profilePhoto" src="{{item.teacher.profilePhoto.url}}">
-          <img *ngIf="(role=='teacher' && !item.teacher.profilePhoto) || (role=='student' && !item.student.profilePhoto) " src="{{ photoURL }}">
-        </ion-avatar> -->
         <div class="bubble you" *ngIf="(receiver.objectId == item.receiver && receiver.objectId != item.sender)">
-          <h3>{{item.message}}</h3>
-          <!-- <img src="{{item.message}}" *ngIf="imgornot[i]"> -->
+          <h3 class="message-align">{{item.message}}</h3>
+          <span class="align-time">{{item.displayTime.sentTime}}</span>
         </div>
       </ion-item>
     </ion-list>
