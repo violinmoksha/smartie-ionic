@@ -101,7 +101,7 @@ export class SmartieApp {
         this.storage.get('UserProfile').then(user => {
           console.log('And made it back with a UserProfile obj called user: ' + JSON.stringify(user));
           if (user == null) {
-            if (response.result.provision.user && response.result.provision.profile) {
+            if (!response.result.provision.user && !response.result.provision.profile) {
               this.nav.setRoot("LoginPage", { role: response.result.provision.role });
               this.splashScreen.hide();
             } else {
