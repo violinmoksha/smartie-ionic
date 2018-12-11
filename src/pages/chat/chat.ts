@@ -133,7 +133,7 @@ export class ChatPage {
     this.dataService.getApi('sendMessage', messageBody).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
         console.log(res);
-        res.result.messages[0] = this.getSentTime(res.result.messages[0].sentAt, new Date().toISOString())
+        res.result.messages[0].displayTime = this.getSentTime(res.result.messages[0].sentAt, new Date().toISOString())
         this.chatMessages.push(res.result.messages[0]);
         this.newmessage = '';
       })
@@ -217,7 +217,7 @@ export class ChatPage {
       messageDate = null;
     }
     console.log(messageDate);
-    return { sentTime, messageDate };
+    return { "sentTime":sentTime, "messageDate":messageDate };
   }
 
   
