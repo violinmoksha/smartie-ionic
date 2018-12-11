@@ -98,6 +98,7 @@ export class SmartieApp {
     ).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
         this.storage.set("Provision", response.result);
+        console.log("And made it back with a Provision: "+response.result);
         this.storage.get('UserProfile').then(user => {
           console.log('And made it back with a UserProfile obj called user: ' + JSON.stringify(user));
           if (user == null) {
@@ -157,7 +158,7 @@ export class SmartieApp {
         if (this.platform.is('ios')) {
           console.log('Captured iOS platform, going into fetchUDID.');
           this.fetchiOSUDID.fetch().then(iOSUDID => {
-            this.initFirebase(iOSUDID); // NB: calls sync/non-returning notificationHandler
+            //this.initFirebase(iOSUDID); // NB: calls sync/non-returning notificationHandler
             this.initializeAppInner(iOSUDID);
           });
         } else {
