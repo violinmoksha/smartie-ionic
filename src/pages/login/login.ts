@@ -90,7 +90,7 @@ export class LoginPage {
           },
             (err) => {
               loading.dismiss();
-              Pro.monitoring.exception(err);
+              //Pro.monitoring.exception(err);
               console.log(err);
               this.loginFailed(err);
             });
