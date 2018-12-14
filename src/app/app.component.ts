@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, Events } from 'ionic-angular';
+import { Nav, Platform, Events, Tabs, App } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -20,9 +20,7 @@ const Parse = require('parse');
 })
 export class SmartieApp {
   @ViewChild(Nav) nav: Nav;
-
   rootPage: any;
-
   buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string, isTabs?: boolean }>;
 
   //private parseAppId: string = "80f6c155-d26e-4c23-a96b-007cb4cba8e1";
@@ -34,6 +32,7 @@ export class SmartieApp {
   // private parseServerUrl: string = "http://76.170.58.147:1337/parse";
   public userName: String;
   public roleColor: String;
+  public role: String;
 
   constructor(
       public platform: Platform,
@@ -84,9 +83,11 @@ export class SmartieApp {
       if (user && user.profileData) {
         this.userName = user.profileData.fullname
         this.roleColor = user.profileData.role == 'teacher' ? '#00BC5B' : '#0096D7';
+        this.role = user.profileData.role
       } else {
         this.userName = "Smartie"
         this.roleColor = 'black';
+        this.role = "student"
       }
     })
   }
@@ -98,11 +99,11 @@ export class SmartieApp {
     ).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
         this.storage.set("Provision", response.result);
-        console.log("And made it back with a Provision: "+response.result);
+        console.log("And made it back with a Provision: " + response.result);
         this.storage.get('UserProfile').then(user => {
           console.log('And made it back with a UserProfile obj called user: ' + JSON.stringify(user));
           if (user == null) {
-            //NOTE: if the provision 'reponse' has user n profile will redirect them to login
+            //NOTE: if the provision 'reponse' has user n profile will redirect user to login
             if (response.result.provision.user && response.result.provision.profile) {
               this.nav.setRoot("LoginPage", { role: response.result.provision.role });
               this.splashScreen.hide();
@@ -126,7 +127,7 @@ export class SmartieApp {
               });
             }
           } else {
-            this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
+            this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'SmartieSearch', role: user.profileData.role });
             this.splashScreen.hide();
           }
         }, err => {
@@ -240,6 +241,7 @@ export class SmartieApp {
           'getJobRequestById',
           { "jobRequestId": job.jobId }
         ).then(API => {
+
           this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
             this.nav.push("JobRequestPage", { params: response.result });
           }, err => {
@@ -250,7 +252,10 @@ export class SmartieApp {
           console.info('sub-0: ' + err);
         });
       } else if (notification.eventAction == "MESSAGE_RECEIVED") {
-        this.nav.parent.select(4);
+        if (this.role == 'teacher')
+          this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Messsages', role: this.role });
+        else
+          this.nav.parent.select(3);
       }
     }, err => {
       // TODO: ditto
@@ -278,24 +283,10 @@ export class SmartieApp {
           }
 
           this.nav.setRoot("TabsPage", params);
-          // this.nav.setRoot(page.pageName);
         })
       } else {
         this.nav.push(page.pageName);
       }
     }
   }
-  /*if (button.iconName == 'paper')
-    this.nav.push("FeedbackPage");
-  else if (button.iconName == 'settings')
-    this.nav.setRoot("TabsPage", { tabIndex: 1} );
-  else if (button.iconName == 'add-circle')
-    this.nav.push("CreateJobPage");
-  else if (button.iconName == 'card')
-    this.nav.push("PaymentDetailsPage");
-  else if (button.iconName == 'log-out') { // logout -->
-    this.storage.clear(); // dump ephemeral session
-    this.nav.setRoot("LoginPage"); // send to Login
-  }*/
-  //}
 }
