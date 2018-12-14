@@ -127,7 +127,7 @@ export class SmartieApp {
               });
             }
           } else {
-            this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'SmartieSearch', role: user.profileData.role });
+            this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
             this.splashScreen.hide();
           }
         }, err => {
