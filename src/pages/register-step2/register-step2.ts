@@ -9,7 +9,7 @@ import { Camera } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { DataService } from '../../app/app.data';
-
+import { FetchiOSUDID } from '../../providers/fetch-ios-udid';
 //import { Geoposition } from '@ionic-native/geolocation';
 
 declare let google;
@@ -77,7 +77,7 @@ export class RegisterStep2Page {
     dismissOnPageChange: true
   });
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public platform:Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public platform:Platform, public UDID: FetchiOSUDID) {
     this.analytics.setScreenName("Register-step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
 
@@ -270,6 +270,8 @@ export class RegisterStep2Page {
   }
 
   updateUserToProvision = async (userId, userProfileId) => {
+    let udid = this.UDID.getDeviceId();
+    console.log(udid);
     return await this.dataService.getApi(
       'addUserToProvision',
       { uuid: this.device.uuid, userId: userId, profileId: userProfileId }
