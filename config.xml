@@ -127,6 +127,10 @@
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <plugin name="cordova-plugin-advanced-http" spec="^2.0.1" />
     <plugin name="cordova-plugin-network-information" spec="2.0.1" />
+    <plugin name="cordova-fabric-plugin" spec="1.1.14-dev">
+        <variable name="FABRIC_API_KEY" value="2426b4a39da5e9ca081fc7a179629602c27e3644" />
+        <variable name="FABRIC_API_SECRET" value="ff3aa846eaca010cf8a04051345addbcc41f45b8ef2251e6e602afaa745ea3e6" />
+    </plugin>
     <engine name="android" spec="7.1.2" />
     <engine name="ios" spec="4.5.5" />
 </widget>

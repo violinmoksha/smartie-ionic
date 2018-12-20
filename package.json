@@ -30,6 +30,7 @@
     "@ionic-native/core": "^4.4.0",
     "@ionic-native/crop": "^4.5.3",
     "@ionic-native/device": "^4.9.0",
+    "@ionic-native/fabric": "^4.18.0",
     "@ionic-native/file": "^4.6.0",
     "@ionic-native/file-transfer": "^4.12.0",
     "@ionic-native/firebase": "^4.16.0",
@@ -52,6 +53,7 @@
     "cordova": "^8.1.2",
     "cordova-android": "7.1.2",
     "cordova-android-play-services-gradle-release": "^1.4.3",
+    "cordova-fabric-plugin": "1.1.14-dev",
     "cordova-ios": "4.5.5",
     "cordova-plugin-advanced-http": "^2.0.1",
     "cordova-plugin-camera": "^4.0.3",
@@ -145,7 +147,11 @@
       "cordova-plugin-secure-storage": {},
       "cordova-plugin-file-transfer": {},
       "cordova-plugin-advanced-http": {},
-      "cordova-plugin-network-information": {}
+      "cordova-plugin-network-information": {},
+      "cordova-fabric-plugin": {
+        "FABRIC_API_KEY": "2426b4a39da5e9ca081fc7a179629602c27e3644",
+        "FABRIC_API_SECRET": "ff3aa846eaca010cf8a04051345addbcc41f45b8ef2251e6e602afaa745ea3e6"
+      }
     },
     "platforms": [
       "android",

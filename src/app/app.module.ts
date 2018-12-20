@@ -37,6 +37,8 @@ import { DataService } from './app.data';
 import { ToasterServiceProvider } from '../providers/toaster-service';
 import { FetchiOSUDID } from '../providers/fetch-ios-udid';
 import { Network } from '@ionic-native/network'
+import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
+import { Crashlytics } from '@ionic-native/fabric';
 @NgModule({
   declarations: [
     SmartieApp
@@ -82,7 +84,9 @@ import { Network } from '@ionic-native/network'
     FileUploaderProvider,
     ToasterServiceProvider,
     FetchiOSUDID,
-    Network
+    Network,
+    FirebaseCrashlyticsProvider,
+    Crashlytics
     //IonicErrorHandler,
   ]
 })

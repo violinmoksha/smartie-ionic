@@ -12,6 +12,7 @@ import { DataService } from './app.data';
 import { ToasterServiceProvider } from '../providers/toaster-service';
 import { FetchiOSUDID } from '../providers/fetch-ios-udid';
 import { ImagePicker } from '@ionic-native/image-picker';
+import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
 // import Parse from 'parse';
 const Parse = require('parse');
 
@@ -46,7 +47,8 @@ export class SmartieApp {
       public dataService: DataService,
       public tosterService: ToasterServiceProvider,
       public imagePicker: ImagePicker,
-      public fetchiOSUDID: FetchiOSUDID) {
+      public fetchiOSUDID: FetchiOSUDID,
+      public crashlytics: FirebaseCrashlyticsProvider) {
 
     this.initializeApp();
     this.events.subscribe("buttonsLoad", eventData => {
@@ -83,7 +85,8 @@ export class SmartieApp {
       if (user && user.profileData) {
         this.userName = user.profileData.fullname
         this.roleColor = user.profileData.role == 'teacher' ? '#00BC5B' : '#0096D7';
-        this.role = user.profileData.role
+        this.role = user.profileData.role;
+        this.crashlytics.setUserInfo(user.profileData);
       } else {
         this.userName = "Smartie"
         this.roleColor = 'black';
@@ -168,7 +171,8 @@ export class SmartieApp {
           this.initFirebase(this.device.uuid);
           this.initializeAppInner(this.device.uuid);
         }
-
+        /** Crash test */
+       // this.crashlytics.forceCrash();
       } else {
         console.log('What on earth non-cordova land.');
         this.splashScreen.hide();
