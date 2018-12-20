@@ -8,6 +8,7 @@ import { DataService } from '../../app/app.data';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
+import { FetchiOSUDID } from '../../providers/fetch-ios-udid';
 
 declare let google;
 
@@ -95,7 +96,7 @@ export class RegisterStep3Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider) {    // this.submitInProgress = false;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, public UDID: FetchiOSUDID) {    // this.submitInProgress = false;
 
     this.analytics.setScreenName("Register-step3");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step3", "View"));
@@ -220,9 +221,11 @@ export class RegisterStep3Page {
   }
 
   updateUserToProvision = async (userId, userProfileId) => {
+    let udid = this.UDID.getDeviceId();
+    console.log(udid);
     return await this.dataService.getApi(
       'addUserToProvision',
-      { uuid: this.device.uuid, userId: userId, profileId: userProfileId }
+      { uuid: udid, userId: userId, profileId: userProfileId }
     ).then(async API => {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
         console.log("Getting updated provision");

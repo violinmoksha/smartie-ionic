@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
 import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
-
+import { Platform } from 'ionic-angular';
 /*
   Generated class for the FetchiOSUDID provider.
 
@@ -11,7 +11,7 @@ import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage
 @Injectable()
 export class FetchiOSUDID {
 
-  constructor(public device: Device, public secureStorage: SecureStorage) {}
+  constructor(public device: Device, public secureStorage: SecureStorage, public platform: Platform) {}
 
   fetch() {
     let newUDID = this.device.uuid;
@@ -50,5 +50,15 @@ export class FetchiOSUDID {
         //});
       });
     });
+  }
+
+  getDeviceId() {
+    if (this.platform.is('ios')) {
+      this.fetch().then(res => {
+        return res;
+      })
+    } else {
+      return this.device.uuid;
+    }
   }
 }
