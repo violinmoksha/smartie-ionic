@@ -46,9 +46,6 @@ export class LoginPage {
   }
 
   login(data) {
-      /** Crash test */
-      this.crashlytics.forceCrash();
-
     if (data.password !== '') {
 
       return new Promise(async (resolve) => {
