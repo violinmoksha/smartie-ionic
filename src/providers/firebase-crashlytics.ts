@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Crashlytics } from '@ionic-native/fabric';
+import { Platform } from 'ionic-angular';
 /*
   Generated class for the FirebaseCrashlyticsProvider provider.
 
@@ -10,7 +11,7 @@ import { Crashlytics } from '@ionic-native/fabric';
 @Injectable()
 export class FirebaseCrashlyticsProvider {
   
-  constructor(public crashlytics: Crashlytics) {
+  constructor(public crashlytics: Crashlytics, public platform: Platform) {
     console.log('Hello FirebaseCrashlyticsProvider Provider');
   }
 
@@ -21,7 +22,10 @@ export class FirebaseCrashlyticsProvider {
 
   logError(e, msg) {
     this.crashlytics.addLog(msg);
+    if (this.platform.is('android'))
     this.crashlytics.sendNonFatalCrash(e);
+    else if (this.platform.is("ios"))
+    this.crashlytics.recordError(e, -1);
   }
 
   setUserInfo(user) {
