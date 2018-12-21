@@ -13,6 +13,7 @@ import { ToasterServiceProvider } from '../providers/toaster-service';
 import { FetchiOSUDID } from '../providers/fetch-ios-udid';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
+import { runInThisContext } from 'vm';
 // import Parse from 'parse';
 const Parse = require('parse');
 
@@ -172,7 +173,8 @@ export class SmartieApp {
           this.initializeAppInner(this.device.uuid);
         }
         /** Crash test */
-       // this.crashlytics.forceCrash();
+        this.crashlytics.logError(new Error("Crash test"), "Test logs fopr crash");
+        //this.crashlytics.forceCrash();
       } else {
         console.log('What on earth non-cordova land.');
         this.splashScreen.hide();

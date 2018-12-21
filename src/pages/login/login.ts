@@ -6,6 +6,8 @@ import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
 import { Pro } from '@ionic/pro';
 import { AnalyticsProvider } from '../../providers/analytics';
+import { FirebaseCrashlyticsProvider } from '../../providers/firebase-crashlytics';
+
 // import { URLSearchParams } from '@angular/http';
 
 /**
@@ -26,7 +28,7 @@ export class LoginPage {
     profile: { fullname: '' }
   };
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public storage: Storage, public dataService: DataService, public loadingCtrl: LoadingController, public analytics: AnalyticsProvider, public menu: MenuController) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public storage: Storage, public dataService: DataService, public loadingCtrl: LoadingController, public analytics: AnalyticsProvider, public menu: MenuController, public crashlytics: FirebaseCrashlyticsProvider) {
     this.storage.get('Provision').then(provision => {
       this.provisionData = provision.provision;
     })
@@ -44,6 +46,9 @@ export class LoginPage {
   }
 
   login(data) {
+      /** Crash test */
+      this.crashlytics.forceCrash();
+
     if (data.password !== '') {
 
       return new Promise(async (resolve) => {
