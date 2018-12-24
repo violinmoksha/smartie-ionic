@@ -5,7 +5,7 @@ import { Device } from '@ionic-native/device';
 //import { ErrorHandler, IonicErrorHandler, SmartieErrorHandler } from './app.err';
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 
 import { SmartieApp } from './app.component';
@@ -37,6 +37,10 @@ import { DataService } from './app.data';
 import { ToasterServiceProvider } from '../providers/toaster-service';
 import { FetchiOSUDID } from '../providers/fetch-ios-udid';
 import { Network } from '@ionic-native/network'
+import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
+import { Crashlytics } from '@ionic-native/fabric';
+import { SmartieErrorHandler } from './app.err';
+
 @NgModule({
   declarations: [
     SmartieApp
@@ -58,7 +62,7 @@ import { Network } from '@ionic-native/network'
     SmartieApp
   ],
   providers: [
-    //[{provide: ErrorHandler, useClass: SmartieErrorHandler}],
+    [{provide: ErrorHandler, useClass: SmartieErrorHandler}],
     StatusBar,
     SplashScreen,
     Geolocation,
@@ -82,8 +86,9 @@ import { Network } from '@ionic-native/network'
     FileUploaderProvider,
     ToasterServiceProvider,
     FetchiOSUDID,
-    Network
-    //IonicErrorHandler,
+    Network,
+    FirebaseCrashlyticsProvider,
+    Crashlytics
   ]
 })
 export class AppModule { }

@@ -1,53 +1,23 @@
-//import { Pro } from '@ionic/pro';
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { IonicErrorHandler, AlertController } from 'ionic-angular';
+import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
 
 export { ErrorHandler, IonicErrorHandler };
 
-// TODO delete this one in prod
-/*
-const IonicPro = Pro.init('APP_ID', {
-  appVersion: "0.0.1"
-});
-*/
-
-// TODO uncomment this one for emails of errs in prod
-// const IonicPro = Pro.init('51a6d7d8', {
-//   appVersion: "0.0.1"
-// });
 
 @Injectable()
-export class SmartieErrorHandler implements ErrorHandler {
+export class SmartieErrorHandler extends ErrorHandler {
   ionicErrorHandler: IonicErrorHandler;
   alertCtrl: AlertController;
 
-  constructor(injector: Injector) {
-    try {
-      this.ionicErrorHandler = injector.get(IonicErrorHandler);
-    } catch(e) {
-      // Unable to get the IonicErrorHandler provider, ensure
-      // IonicErrorHandler has been added to the providers list below
-    }
+  constructor(injector: Injector, public crashlytics: FirebaseCrashlyticsProvider) {
+    super();
   }
 
-  handleError(err: any): void {
-    //IonicPro.monitoring.handleNewError(err);
-    // Remove this if you want to disable Ionic's auto exception handling
-    // in development mode.
+  handleError(err): void {
     console.info('App handleError() triggered.');
-    this.ionicErrorHandler && this.ionicErrorHandler.handleError(err);
-  }
-
-  showErrors(err){
-    let alert;
-    if (err.error.error.name == 'JsonWebTokenError') {
-      alert = this.alertCtrl.create({
-        title: 'Authentication Error',
-        subTitle: 'You are not authorized to use this service',
-        buttons: ['OK']
-      });
-      alert.present();
-    }
+    console.log(err);
+    this.crashlytics.logError(JSON.stringify(err), "Smartie Error on: " + new Date());
   }
 
 }
