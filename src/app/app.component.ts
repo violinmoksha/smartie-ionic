@@ -173,7 +173,7 @@ export class SmartieApp {
           this.initializeAppInner(this.device.uuid);
         }
         /** Crash test */
-        this.crashlytics.logError(new Error("Crash test"), "Test logs fopr crash");
+        this.crashlytics.logError(JSON.stringify(new Error("Crash test")), "Test logs for crashlytics");
         //this.crashlytics.forceCrash();
       } else {
         console.log('What on earth non-cordova land.');
