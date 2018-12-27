@@ -34,8 +34,6 @@ export class PaymentConfirmPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("PaymentConfirm", "View"));
 
     this.params = navParams.data.params
-    console.log("Payment Confirm Page");
-    console.log(this.params);
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
       if(UserProfile.profileData.stripeCustomer){
@@ -56,8 +54,6 @@ export class PaymentConfirmPage {
   }
 
   pay(amount){
-    console.log(amount);
-    console.log(this.stripeCustomer);
     this.body = {
       amountPayable: amount * 100, // in cents
       customerId: this.stripeCustomer,
@@ -78,7 +74,6 @@ export class PaymentConfirmPage {
         })
       });
     })
-    // this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
   }
 
 }

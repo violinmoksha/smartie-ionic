@@ -13,7 +13,7 @@ import { ToasterServiceProvider } from '../providers/toaster-service';
 import { FetchiOSUDID } from '../providers/fetch-ios-udid';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
-// import Parse from 'parse';
+
 const Parse = require('parse');
 
 @Component({
@@ -36,19 +36,19 @@ export class SmartieApp {
   public role: String;
 
   constructor(
-      public platform: Platform,
-      public events: Events,
-      public storage: Storage,
-      public statusBar: StatusBar,
-      public splashScreen: SplashScreen,
-      public geolocation: Geolocation,
-      public firebase: Firebase,
-      public device: Device,
-      public dataService: DataService,
-      public tosterService: ToasterServiceProvider,
-      public imagePicker: ImagePicker,
-      public fetchiOSUDID: FetchiOSUDID,
-      public crashlytics: FirebaseCrashlyticsProvider) {
+    public platform: Platform,
+    public events: Events,
+    public storage: Storage,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public geolocation: Geolocation,
+    public firebase: Firebase,
+    public device: Device,
+    public dataService: DataService,
+    public tosterService: ToasterServiceProvider,
+    public imagePicker: ImagePicker,
+    public fetchiOSUDID: FetchiOSUDID,
+    public crashlytics: FirebaseCrashlyticsProvider) {
 
     this.initializeApp();
     this.events.subscribe("buttonsLoad", eventData => {
@@ -171,9 +171,6 @@ export class SmartieApp {
           this.initFirebase(this.device.uuid);
           this.initializeAppInner(this.device.uuid);
         }
-        /** Crash test */
-        this.crashlytics.logError(JSON.stringify(new Error("Crash test")), "Test logs for crashlytics");
-        //this.crashlytics.forceCrash();
       } else {
         console.log('What on earth non-cordova land.');
         this.splashScreen.hide();
@@ -204,7 +201,7 @@ export class SmartieApp {
 
   initFirebase(UDID): Promise<any> {
     return new Promise((resolve, reject) => {
-      console.log('Attempting to enter getToken with UDID: '+UDID);
+      console.log('Attempting to enter getToken with UDID: ' + UDID);
       this.firebase.getToken().then(token => {
         //console.log(`Firebase token is: ${token}`);
         console.log('Going to updateFcmToken with: ' + JSON.stringify(this.device));

@@ -88,11 +88,9 @@ export class ChatPage {
   }
 
   sendMessage() {
-    console.log("sending message")
     if (this.navigateFrom == 'jobrequest') {
       this.dataService.getApi('getMyChatRoom', { roomId: this.teacherProfileId + '|' + this.studentProfileId }).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
-          console.log(res);
           this.pushMessage(res.result.roomId);
         }, err => {
           console.log(err);
@@ -109,7 +107,6 @@ export class ChatPage {
           }
           this.dataService.getApi("createChatRoom", chatRoomArg).then(API => {
             this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
-              console.log(res);
               this.chatMessages.push(res.result);
               this.newmessage = '';
             })
@@ -117,7 +114,6 @@ export class ChatPage {
         })
       })
     } else {
-      console.log("direct messaging goes here");
       this.pushMessage(this.chatRoom.roomId);
     }
   }
@@ -140,28 +136,6 @@ export class ChatPage {
     })
   }
 
-  // addmessage() {
-  //   this.dataService.getApi(
-  //     'addChatMessage',
-  //     { teacherProfileId: this.teacherProfileId, studentProfileId: this.studentProfileId, message: this.newmessage, viewed: false, role: this.role }
-  //   ).then(async API => {
-  //     return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-  //       this.content.scrollToBottom();
-  //       this.newmessage = '';
-  //       console.log(response);
-  //     }, err => {
-  //       console.log(err);
-  //     })
-  //   });
-  // }
-
-  // scrollto() {
-  //   setTimeout(() => {
-  //     console.log("Scroll to bottom");
-  //     this.content.scrollToBottom();
-  //   }, 1000);
-  // }
-
   fetchMessages(infiniteScroll) {
 
     this.dataService.getApi(
@@ -169,7 +143,6 @@ export class ChatPage {
       { roomId: this.roomId, page: this.pageNumber, limit: this.messageLimitPerPage }
     ).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
-        console.log(res);
         infiniteScroll.complete();
         if (res.result[0].messages.length > 0) {
           for (var i = 0; i < res.result[0].messages.length; i++) {
@@ -203,8 +176,6 @@ export class ChatPage {
       "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     function getMessageDate(){
-      console.log(sentDate.getMonth());
-      console.log(monthNames)
       return sentDate.getDate() +' '+ monthNames[10] +' '+ sentDate.getFullYear();
     }
     if (prevDate.getDate() < sentDate.getDate()) {
@@ -216,7 +187,6 @@ export class ChatPage {
     } else {
       messageDate = null;
     }
-    console.log(messageDate);
     return { "sentTime":sentTime, "messageDate":messageDate };
   }
 

@@ -98,8 +98,6 @@ export class AddBankAccountPage {
 
   addBankAccountError(errorMessage){
     let alert;
-    // let errorMessage = error.split(":");
-    // console.log(errorMessage);
 
     alert = this.alertCtrl.create({
       title: 'Identify Verification Failed !',

@@ -34,31 +34,16 @@ export class FeedbackPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public dataService: DataService, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
     this.analytics.setScreenName("Feedback");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Feedback", "View"));
-    //this.profileData = navParams.get("profileData");
+    
     this.storage.get('UserProfile').then(user => {
       if (user) {
         this.profileData = user.profileData;
         this.userData = user.userData;
-      } else {
-        // TODO: alertCtrl, we resolve(false)'d
       }
     }, error => {
       // TODO: alertCtrl, we reject(error)'d
+      console.log(error);
     })
-
-    /*if (this.profileData.role == 'teacher') {
-      this.genericAvatar = '/assets/imgs/user-img-teacher.png';
-    } else if (this.profileData.role == 'student') {
-      this.genericAvatar = '/assets/imgs/user-img-student.png';
-    } else if (this.profileData.role == 'parent') {
-      this.genericAvatar = '/assets/imgs/user-img-parent.png';
-    } else if (this.profileData.role == 'school') {
-      this.genericAvatar = '/assets/imgs/user-img-school.png';
-    }
-
-    this.storage.get("UserProfile").then(profile => {
-      this.role = profile.profileData.role;
-    })*/
 
     this.FeedbackForm = new FormGroup({
       userScreenshot: new FormControl(''),
@@ -101,13 +86,6 @@ export class FeedbackPage {
         for (let i = 0; i < this.userScreenshotsView.length; i++) {
           filePromises.push(this.fileUploader.uploadFile(this.userScreenshotsView[i], 'png'));
         }
-        /*** Upload to parse server */
-        // Promise.all(filePromises).then((results) => {
-        //   console.log(results);
-        //   params.attachment = results;
-        //   this.setFeedbackApi(params);
-        // });
-
         /** To S3 bucket */
         this.uploadToS3(this.userScreenshotsView).then(res => {
           params.attachment = res;
@@ -126,7 +104,6 @@ export class FeedbackPage {
         filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data, this.fileUploader.awsBucket.feedback));
       }
       Promise.all(filePromises).then((results) => {
-        console.log(results);
         resolve(results);
       })
     })

@@ -67,7 +67,6 @@ export class MobileVerificationPage {
 
       // TODO: actually wire this to beyondgdpr, for now we're going with plaintext this.device.uuid
       let params={
-        //"uuid": (this.platform.is('cordova')) ? deviceUUID :'123456',
         "uuid": (this.platform.is('cordova')) ? UDID :'123456',
         "device": { 'cordova': this.device.cordova, 'isVirtual': this.device.isVirtual, 'manufacturer': this.device.manufacturer, 'model': this.device.model, 'platform': this.device.platform, 'serial': this.device.serial, 'uuid': UDID, 'version': this.device.version },
         "role": this.role
@@ -85,12 +84,10 @@ export class MobileVerificationPage {
         ).then(async API => {
           this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response=>{
             loading.dismiss();
-            console.log("User provision: "+JSON.stringify(response))
             this.storage.set("Provision", response.result);
             this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
           },e=>{
             loading.dismiss();
-            console.log("Error api failed")
             console.log(e);
           })
         });

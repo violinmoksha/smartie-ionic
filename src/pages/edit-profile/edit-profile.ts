@@ -2,10 +2,9 @@ import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-// import { Parse } from 'parse';
-// import { ParseProvider } from '../../providers/parse';
+
 const Parse = require('parse');
-// import * as Parse from 'parse';
+
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 
@@ -49,7 +48,6 @@ export class EditProfilePage {
 
   next(form1Value){
     Parse.User.logIn(this.username, form1Value.password).then(user => {
-      console.log(user.getSessionToken());
       this.navCtrl.push("EditProfileStep2Page", { form1Value : form1Value, userRole: this.userRole, sessionToken: user.getSessionToken() });
     }).catch(err => {
       let alert = this.alertCtrl.create({

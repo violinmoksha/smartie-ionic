@@ -32,17 +32,14 @@ export class EditProfileStep3Page {
   private form2Values: any;
   @ViewChild(Slides) hourRate: Slides;
   private hourlyRate: any;
-  // private requiredLevel: any;
   // teacher-specific
   @ViewChild(Slides) yearExp: Slides;
   public TeacherFiles: any;
   public TeacherFilesView: any;
   public fileData: any;
   private yearExperience: any;
-  // private userCurrency: any;
   private startDate: any;
   private endDate: any;
-  // private teacherLevel: any;
   private startTime: any;
   private endTime: any;
   private userData: any;
@@ -131,10 +128,6 @@ export class EditProfileStep3Page {
 
     this.storage.get("UserProfile").then(roleProfile => {
       this.userData = roleProfile.userData;
-      // this.startDate = roleProfile.specificUser.defaultStartDate;
-      // this.endDate = roleProfile.specificUser.defaultEndDate;
-      // this.startTime = roleProfile.specificUser.defaultStartTime;
-      // this.endTime = roleProfile.specificUser.defaultEndTime;
       this.prefLocation = roleProfile.profileData.prefLocation;
       this.hourlyRate = roleProfile.profileData.prefPayRate;
       this.yrsExperience = roleProfile.specificUser.yrsExperience;
@@ -164,7 +157,6 @@ export class EditProfileStep3Page {
       return number;
     }
 
-    // return dateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
     return dateTime.getFullYear() +
         '-' + pad(dateTime.getMonth() + 1) +
         '-' + pad(dateTime.getDate()) +
@@ -307,10 +299,6 @@ export class EditProfileStep3Page {
 
     let UTCendTime = new Date(selectedEndDate[2], selectedEndDate[1] - 1, selectedEndDate[0], parseInt(selectedEndTime.split(':')[0]), parseInt(selectedEndTime.split(':')[1]));
 
-    console.log(form3Values);
-    console.log(UTCstartTime);
-    console.log(UTCendTime);
-
     if (this.userRole == 'teacher') {
       this.body = {
         role: this.userRole,
@@ -331,10 +319,6 @@ export class EditProfileStep3Page {
           specificUser: {
             yrsExperience: this.yearExperience,
             profileTitle: this.form2Values.profileTitle,
-            // defstartdate: this.startDate,
-            // defenddate: this.endDate,
-            // defstarttime: form3Values.startTime,
-            // defendtime: form3Values.endTime,
             defaultStartDateTime: UTCstartTime.toISOString(),
             defaultEndDateTime: UTCendTime.toISOString(),
             credentials: form3Values.credentials
@@ -408,7 +392,6 @@ export class EditProfileStep3Page {
 
   onChangeLevel(name: string, isChecked: boolean) {
     const knownLevel = <FormArray>this.EditProfilestep3Form.controls.teacherLevel;
-    console.log(knownLevel);
 
     if (isChecked) {
       knownLevel.push(new FormControl(name));

@@ -26,7 +26,6 @@ declare let google;
 })
 export class RegisterStep3Page {
 
-  // private submitInProgress: boolean;
   private loading: any;
   private form1Values: any;
   private form2Values: any;
@@ -96,7 +95,7 @@ export class RegisterStep3Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, public UDID: FetchiOSUDID) {    // this.submitInProgress = false;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, public UDID: FetchiOSUDID) {    
 
     this.analytics.setScreenName("Register-step3");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step3", "View"));
@@ -104,8 +103,6 @@ export class RegisterStep3Page {
     this.loading = this.loadingCtrl.create({
       content: 'Creating Account...'
     });
-    console.log("*** nav params reg 3***")
-    console.log(navParams);
     this.form1Values = navParams.data.form1Values;
     this.form2Values = navParams.data.form2Values;
     this.role = navParams.data.role;
@@ -114,18 +111,6 @@ export class RegisterStep3Page {
     this.startDate = this.today.getMonth() + 1 + '-' + this.today.getDate() + '-' + this.today.getFullYear();
     var defEndDate = new Date(this.today.setDate(this.today.getDate() + 365));
     this.endDate = defEndDate.getMonth() + 1 + '-' + defEndDate.getDate() + '-' + defEndDate.getFullYear();
-
-    /* let timeZoneStartTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), 10, 0, 0);
-    console.log(timeZoneStartTime);
-    this.event.timeStarts = timeZoneStartTime.toLocaleTimeString();
-
-    console.log(this.event.timeStarts);
-
-    let timeZoneEndTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), 23, 0, 0);
-    console.log(timeZoneEndTime);
-    this.event.timeEnds = timeZoneEndTime.toLocaleTimeString();
-
-    console.log(this.event.timeEnds); */
 
     //profilePhoto
     this.storage.get('profilePhotoDataUrl').then(profilePhoto => {
@@ -191,45 +176,37 @@ export class RegisterStep3Page {
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if (date) {
         this.endDate = date.months + '-' + date.date + '-' + date.years;
-        console.log(this.endDate);
       }
     })
   }
 
   public filterYear(years: number): void {
     // Handle what to do when a category is selected
-    console.log(years);
     this.yearExperience = years;
   }
 
   // Method executed when the slides are changed
   public yearChanged(): void {
     let currentIndex = this.yearExp.getActiveIndex();
-    console.log(currentIndex);
   }
 
   public filterRate(rate: number): void {
     // Handle what to do when a category is selected
-    console.log(typeof rate);
     this.hourlyRate = rate;
   }
 
   // Method executed when the slides are changed
   public rateChanged(): void {
     let currentIndex = this.hourRate.getActiveIndex();
-    console.log(currentIndex);
   }
 
   updateUserToProvision = async (userId, userProfileId) => {
     let udid = this.UDID.getDeviceId();
-    console.log(udid);
     return await this.dataService.getApi(
       'addUserToProvision',
       { uuid: udid, userId: userId, profileId: userProfileId }
     ).then(async API => {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-        console.log("Getting updated provision");
-        console.log(response);
         // TODO: have we done this correctly, we'll see, this simplification should again be correct
         this.storage.set('Provision', response.result);
         //this.dataService.updateProvisionStorage(response[0].result);
@@ -246,7 +223,6 @@ export class RegisterStep3Page {
         filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data, this.fileUploader.awsBucket.credential));
       }
       Promise.all(filePromises).then((results) => {
-        console.log(results);
         resolve(results);
       })
     })
@@ -267,8 +243,6 @@ export class RegisterStep3Page {
   }
 
   finalRegisterSubmit(form3Values) {
-    // this.submitInProgress = true;
-    //this.loading.present();
     form3Values.prefPayRate = this.hourlyRate;
     if (this.role == 'teacher') {
       form3Values.yrsExperience = this.yearExperience;
@@ -277,8 +251,6 @@ export class RegisterStep3Page {
 
       form3Values.defaultStartDateTime = UTCstartTime;
 
-      // form3Values.defaultUTCStartTime = UTCstartTime.getUTCHours()+':'+UTCstartTime.getUTCMinutes();
-
       let UTCendTime = new Date(this.endDate.split('-')[2], (this.endDate.split('-')[0] - 1), this.endDate.split('-')[1], parseInt(form3Values.endTime.split(':')[0]), parseInt(form3Values.endTime.split(':')[1]));
 
       form3Values.defaultEndDateTime = UTCendTime;
@@ -286,8 +258,6 @@ export class RegisterStep3Page {
       //Setting prefLocation from google autocomplete places
       form3Values.prefLocation = this.userLocation;
 
-      console.log(form3Values);
-      // form3Values.defaultUTCEndTime = UTCendTime.getUTCHours()+':'+UTCendTime.getUTCMinutes();
     }
       this.dataService.getApi(
         'signUpRole',
@@ -324,7 +294,6 @@ export class RegisterStep3Page {
                       this.loading.dismiss();
                       return await this.dataService.sanitizeNotifications(Notifications.result).then(notifications => {
                         this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
-                        //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
                         // TODO: do this via storage now
                         //this.dbService.setRegistrationData({step:3, role: this.role, form3: form3Values})
                       })
@@ -350,19 +319,12 @@ export class RegisterStep3Page {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RegisterStep3Page');
     let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
-    console.log("input address field");
-    console.log(input);
     let options = { componentRestrictions: { country: 'us' } };
-    console.log(options);
 
     let autocomplete = new google.maps.places.Autocomplete(input, options);
-    console.log("Auto complete here");
-    console.log(autocomplete);
     autocomplete.addListener("place_changed", () => {
       let place = autocomplete.getPlace();
-      console.log(place.formatted_address);
       this.userLocation = place.formatted_address;
     })
   }
@@ -373,7 +335,6 @@ export class RegisterStep3Page {
 
   uploadCv() {
     this.cameraService.getImage().then(async (files) => {
-      console.log(files);
       if (Array.isArray(files)) {
         for (let file of files) {
           this.cvFiles.push({ 'name': await this.cameraService.getFileName(), 'data': file });
