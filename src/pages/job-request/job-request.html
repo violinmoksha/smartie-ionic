@@ -18,7 +18,7 @@
     <div class="notification">
       <div class="left">
         <div class="avatar">
-          <img *ngIf="jobObject.profilePhoto !== undefined" (load)="loadImage()" src="{{ jobObject.profilePhoto.url }}">
+          <img *ngIf="jobObject.profilePhoto !== undefined" (load)="loadImage()" src="{{ jobObject.profilePhoto }}">
           <img *ngIf="jobObject.profilePhoto == undefined" src="{{ genericAvatar }}"/>
         </div>
         <div class="u-detail">

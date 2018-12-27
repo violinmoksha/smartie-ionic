@@ -38,6 +38,7 @@ export class JobRequestPage {
 
     this.params = navParams.get('params');
     this.jobObject = Object.assign({}, this.params);
+    console.log(this.jobObject);
     this.teacherObj = this.params.teacherProfile;
     this.otherObj = this.params.otherProfile;
     this.acceptState = this.jobObject.acceptState;

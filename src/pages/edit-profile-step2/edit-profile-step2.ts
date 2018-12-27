@@ -7,6 +7,8 @@ import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { FileUploaderProvider } from './../../providers/file-uploader';
 import { CameraServiceProvider } from './../../providers/camera-service';
+
+declare let google;
 /**
  * Generated class for the EditProfileStep2Page page.
  *
