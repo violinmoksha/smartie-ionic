@@ -10,9 +10,7 @@ import { AnalyticsProvider } from '../../providers/analytics';
 })
 export class RegisterPage {
 
-  constructor(public navCtrl: NavController, public analytics:AnalyticsProvider) {
-    //Pro.getApp().monitoring.log('Register.construct', { level: 'error' });
-  }
+  constructor(public navCtrl: NavController, public analytics:AnalyticsProvider) { }
 
   ionViewDidLoad(){
     this.analytics.setScreenName("Register");

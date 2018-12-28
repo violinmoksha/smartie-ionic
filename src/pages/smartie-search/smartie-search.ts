@@ -4,12 +4,8 @@ import { NavController, NavParams, AlertController, ModalController } from 'ioni
 import { DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
-// import { SmartieErrorHandler } from '../../app/app.err';
 import { AnalyticsProvider } from '../../providers/analytics';
-// import { ParseProvider } from '../../providers/parse';
-// import { Parse } from 'parse';
 const Parse = require('parse');
-// import * as Parse from 'parse';
 import { Globalization } from '@ionic-native/globalization';
 
 declare var google;
@@ -47,9 +43,6 @@ export class SmartieSearch {
   private radiusInKm: number = 50;
   private extendBound: boolean = false;
   private randomLocation: any;
-  //private searchData: any;
-  //private alertOpts: any;
-  // private infoWindow: any;
 
   public notifications: any;
   public accepteds: any;
@@ -69,7 +62,6 @@ export class SmartieSearch {
       selector: 'date and time'
     }
     this.globalization.getDatePattern(options).then(res => {
-      console.log(res);
       this.storage.set('userTimeZone', res.timezone);
       this.storage.set('utcOffset', res.utc_offset);
     }).catch(err => {
@@ -78,14 +70,11 @@ export class SmartieSearch {
 
     this.accepteds = [];
     this.fromWhere = navParams.get('fromWhere');
-    console.log(this.fromWhere);
   }
 
   addProfilePhoto(profile) {
     let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
-    console.log('trying to save the file');
     parseFile.save({ useMasterKey: true }).then(file => {
-      console.log('Saved the file');
       profile.set('profilePhoto', file);
       profile.save({ useMasterKey: true }).then(profile => {
         if (this.role == 'school') {
@@ -127,7 +116,6 @@ export class SmartieSearch {
       this.events.publish("buttonsLoad", this.role);
 
       this.storage.get('UserProfile').then(profile => {
-        console.log(profile);
         this.role = profile.profileData.role;
 
         if (profile == null) {
@@ -143,7 +131,6 @@ export class SmartieSearch {
                 return await this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
                   this.notifications = notifications;
                   return await this.storage.get('phoneLatLng').then(async phoneLatLng => {
-                    //console.log(phoneLatLng);
                     if (phoneLatLng !== undefined && phoneLatLng !== null) {
                       this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
                     } else {
@@ -311,7 +298,6 @@ export class SmartieSearch {
 
   findJobsSearch(searchLoc) {
     this.getGeoPoint(searchLoc).then(response => {
-      console.log(this.extendBound);
       this.smartieSearchResult(null, this.navParams.get("role"), response, this.extendBound);
     });
   }
@@ -394,59 +380,17 @@ export class SmartieSearch {
       'latitude': y + y0,
       'longitude': x + x0
     };
-
-    // return new google.maps.LatLng(this.toDeg(y + y0), this.toDeg(x + x0));
   }
 
   initJobRequestPopUp(locationData) {
     console.log(locationData);
     if (this.role !== 'teacher') {
       locationData.role = locationData.teacherProfile.role;
-
-      /* params = {
-        profilePhoto: locationData.teacherProfile.profilePhoto,
-        profileStripeAccount: locationData.teacherProfile.stripeCustomer,
-        fullname: locationData.teacherProfile.fullname,
-        role: locationData.teacherProfile.role,
-        prefPayRate: locationData.teacherProfile.prefPayRate,
-        yrsExperience: locationData.teacher.yrsExperience,
-        profileAbout: locationData.teacherProfile.profileAbout,
-        profileTitle: locationData.teacherProfile.profileTitle,
-        prefLocation: locationData.teacherProfile.prefLocation,
-        phone: locationData.teacherProfile.phone,
-        teacherProfileId: locationData.teacherProfile.objectId,
-        loggedRole: this.role,
-        hasUpcomings: this.hasUpcomings,
-        defaultStartDateTime: locationData.teacher.defaultStartDateTime,
-        defaultEndDateTime: locationData.teacher.defaultEndDateTime,
-      }; */
     } else {
       locationData.role = locationData.otherProfile.role;
-      /* params = {
-        profilePhoto: locationData.otherProfile.profilePhoto,
-        profileStripeAccount: locationData.otherProfile.stripeCustomer,
-        fullname: locationData.otherProfile.fullname,
-        role: locationData.otherProfile.role,
-        profileAbout: locationData.otherProfile.profileAbout,
-        profileTitle: locationData.otherProfile.profileTitle,
-        prefPayRate: locationData.otherProfile.prefPayRate,
-        prefLocation: locationData.otherProfile.prefLocation,
-        phone: locationData.otherProfile.phone,
-        otherProfileId: locationData.otherProfile.objectId,
-        loggedRole: this.role,
-        hasUpcomings: this.hasUpcomings,
-        schoolName: locationData.otherProfile.schoolName,
-        contactName: locationData.otherProfile.contactName
-      } */
     }
     let popover = this.popoverCtrl.create("JobRequestPage", { params: locationData });
     popover.present();
-    /* popover.onDidDismiss(() => {
-      // Popover should be gone at this point completely.
-      console.log("Popover completely removed");
-      this.ionViewDidLoad();
-    }); */
-    //this.navCtrl.push("JobRequestPage", { params: params });
   }
 
   public contentTitle() {
@@ -518,17 +462,8 @@ export class SmartieSearch {
       if (this.markerCount.length < 5) {
         this.extendBound = true;
         this.smartieSearchResult(latLng, searchRole, searchLoc, this.extendBound);
-      } else {
-        // console.log("test");
       }
     }
-    //let myPlace = new google.maps.LatLng(34.0522, -118.2437);
-    //this.bounds.extend(myPlace);
-
-    //this.marker.setMap(this.map);
-    //this.map.setZoom(5);
-    // map.setCenter(marker.getPosition());
-    // map.panTo(marker.getPosition())
     this.map.fitBounds(this.bounds);
   }
 

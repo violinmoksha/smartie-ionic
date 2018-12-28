@@ -27,7 +27,6 @@ export class NotificationFeedPage {
     this.analytics.setScreenName("NotificationFeed");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("NotificationFeed", "View"));
 
-    console.log(this.allAccepteds);
     this.loadNotifications();
   }
 
@@ -43,9 +42,6 @@ export class NotificationFeedPage {
       this.fetchAllRequested(this.profileId, this.userRole);
       this.fetchAllUpcomingsReq(this.profileId, this.userRole);
 
-      console.log(this.allAccepteds);
-      console.log(this.allRequesteds);
-      console.log(this.allUpcomings);
     })
   }
 
@@ -57,7 +53,6 @@ export class NotificationFeedPage {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async jobReq => {
         if (jobReq)
           this.allAccepteds = jobReq.result; // jobReq[0], jobReq.data[0]???
-        console.log(jobReq);
       }, (err) => {
         console.log(err);
       })
@@ -72,7 +67,6 @@ export class NotificationFeedPage {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async jobReq => {
         if (jobReq)
           this.allRequesteds = jobReq.result; // ???
-        console.log(jobReq);
       }, (err) => {
         console.log(err);
       })
@@ -87,8 +81,6 @@ export class NotificationFeedPage {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async jobReq => {
         if (jobReq)
           this.allUpcomings = jobReq.result; // ????
-
-        console.log(jobReq);
       }, (err) => {
         console.log(err);
       })
@@ -110,58 +102,10 @@ export class NotificationFeedPage {
   }
 
   showJobRequest(notification, requestState) {
-    console.log(notification);
     let navigationParams = Object.assign({}, ...notification);
-    console.log("navigate param");
-    console.log(navigationParams);
     navigationParams.role = this.userRole != 'teacher' ? notification.teacherProfile.role : notification.otherProfile.role;
     navigationParams.fromWhere = requestState;
     navigationParams.jobRequestId = navigationParams.objectId;
     this.navCtrl.push("JobRequestPage", { params: navigationParams });
-    // if(this.userRole != 'teacher'){
-    //   this.navCtrl.push("JobRequestPage", { params: {
-    //       jobRequestId: notification.objectId,
-    //       profilePhoto: notification.teacherProfile.profilePhoto,
-    //       profileStripeAccount: notification.teacherProfile.stripeCustomer,
-    //       fullname: notification.teacherProfile.fullname,
-    //       role: notification.teacherProfile.role,
-    //       profileTitle: notification.teacherProfile.profileTitle,
-    //       profileAbout: notification.teacherProfile.profileAbout,
-    //       prefLocation: notification.teacherProfile.prefLocation,
-    //       teacherProfileId: notification.teacherProfile.objectId,
-    //       otherProfileId: notification.otherProfile.objectId,
-    //       prefPayRate: notification.teacherProfile.prefPayRate,
-    //       // defaultStartDate: notification.teacher.defaultStartDate,
-    //       // defaultEndDate: notification.teacher.defaultEndDate,
-    //       // defaultStartTime: notification.teacher.defaultStartTime,
-    //       // defaultEndTime: notification.teacher.defaultEndTime,
-    //       fromWhere: requestState,
-    //       defaultStartDateTime: notification.teacher.defaultStartDateTime,
-    //       defaultEndDateTime: notification.teacher.defaultEndDateTime,
-    //     }
-    //   })
-    // }else{
-    //   this.navCtrl.push("JobRequestPage", { params: {
-    //       jobRequestId: notification.objectId,
-    //       profilePhoto: notification.otherProfile.profilePhoto,
-    //       profileStripeAccount: notification.otherProfile.stripeCustomer,
-    //       fullname: notification.otherProfile.fullname,
-    //       role: notification.otherProfile.role,
-    //       profileTitle: notification.otherProfile.profileTitle,
-    //       profileAbout: notification.otherProfile.profileAbout,
-    //       prefLocation: notification.otherProfile.prefLocation,
-    //       teacherProfileId: notification.teacherProfile.objectId,
-    //       otherProfileId: notification.otherProfile.objectId,
-    //       prefPayRate: notification.teacherProfile.prefPayRate,
-    //       // defaultStartDate: notification.teacher.defaultStartDate,
-    //       // defaultEndDate: notification.teacher.defaultEndDate,
-    //       // defaultStartTime: notification.teacher.defaultStartTime,
-    //       // defaultEndTime: notification.teacher.defaultEndTime,
-    //       fromWhere: requestState,
-    //       defaultStartDateTime: notification.teacher.defaultStartDateTime,
-    //       defaultEndDateTime: notification.teacher.defaultEndDateTime,
-    //     }
-    //   })
-    // }
   }
 }

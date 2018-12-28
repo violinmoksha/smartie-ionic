@@ -18,7 +18,6 @@ export class DataService {
   }
 
   httpPost(url, body, header) {
-    console.log("creating alert")
     return <any>new Promise((resolve, reject) => {
       if (this.toasterService.isInternetConnected) {
         this.http.post(url, body, header).then((res) => {
@@ -39,7 +38,6 @@ export class DataService {
             }
           }]
         });
-        console.log(internetAlert);
         internetAlert.present();
       }
     });
@@ -123,10 +121,6 @@ export class DataService {
             reject(error);
           })
         });
-        // }, error => {
-        //   console.log('here4 '+error);
-        //   return error;
-        // });
       });
     });
   }

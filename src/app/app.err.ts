@@ -15,7 +15,6 @@ export class SmartieErrorHandler extends ErrorHandler {
   }
 
   handleError(err): void {
-    console.info('App handleError() triggered.');
     console.log(err);
     this.crashlytics.logError(JSON.stringify(err), "Smartie Error on: " + new Date());
   }

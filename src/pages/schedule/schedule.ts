@@ -28,19 +28,8 @@ export class SchedulePage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Schedule", "View"));
 
     this.params = this.navParams.get("params");
-    console.log('Schedule Page');
-    console.log(this.params);
 
     this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
-
-    /* let UTCStartTime = new Date(Date.UTC(this.params.defaultStartDate.split('-')[2], this.params.defaultStartDate.split('-')[0], this.params.defaultStartDate.split('-')[1], this.params.defaultStartTime.split(':')[0], this.params.defaultStartTime.split(':')[1]));
-
-    let UTCEndTime = new Date(Date.UTC(this.params.defaultEndDate.split('-')[2], this.params.defaultEndDate.split('-')[0], this.params.defaultEndDate.split('-')[1], this.params.defaultEndTime.split(':')[0], this.params.defaultEndTime.split(':')[1]));
-      // let zone = userTimeZone;
-      // let GMT = zone.substring(4);
-
-    this.params.UTCStartTime = UTCStartTime.getHours() + ':' + UTCStartTime.getMinutes();
-    this.params.UTCEndTime = UTCEndTime.getHours() + ':' + UTCEndTime.getMinutes(); */
 
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
@@ -87,20 +76,6 @@ export class SchedulePage {
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if (date) {
         this.navCtrl.push("TimeSelectorMultiPage", { selectedDates: date, params: this.params, loggedRole: this.userRole });
-        /* let popover = this.popoverCtrl.create("TimeSelectorPage", { selectedDate: date.months + '-' + date.date + '-' + date.years, params: this.params, loggedRole: this.userRole });
-        popover.present();
-        popover.onDidDismiss( data => {
-          console.log('dismiss');
-          // console.log(data);
-          this.navCtrl.push("PaymentPage", {
-            totalHours: data.totalHours,
-            totalAmount: data.totalAmount,
-            apptDate: data.apptDate,
-            apptStartTime: data.apptStartTime,
-            apptEndTime: data.apptEndTime,
-            params: data.params
-          });
-        }) */
       }
     })
   }

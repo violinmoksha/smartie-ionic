@@ -29,9 +29,6 @@ export class PaymentPage {
   private body: any;
   private otherProfileId: any;
   private selectedDates: any;
-  // private apptDate: any;
-  // private apptStartTime: any;
-  // private apptEndTime: any;
   private loading: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider) {
@@ -41,15 +38,7 @@ export class PaymentPage {
     this.totalHours = navParams.get('totalHours');
     this.totalAmount = navParams.get('totalAmount');
     this.selectedDates = navParams.get('selectedDates');
-    // this.apptDate = navParams.get('apptDate');
-    // this.apptStartTime = navParams.get('apptStartTime');
-    // this.apptEndTime = navParams.get('apptEndTime');
     this.params = navParams.get('params')
-
-    console.log(this.params);
-    // console.log(this.selectedDates);
-    console.log(this.selectedDates[0].UTCstartTime);
-    console.log(typeof this.selectedDates[0].UTCstartTime);
 
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
@@ -91,16 +80,11 @@ export class PaymentPage {
 
   paymentConfirm() {
     this.navCtrl.push("PaymentConfirmPage", { totalAmount: this.totalAmount, params: this.params });
-    // this.navCtrl.push("PaymentPage");
   }
 
   pay(amount, cardValue) {
-    console.log(amount);
-    console.log(this.stripeCustomer);
-    console.log(this.stripeCustomerCard);
 
     if (this.stripeCustomerCard == undefined) {
-      console.log(cardValue);
 
       return new Promise(async (resolve) => {
         return await this.dataService.getApi(
@@ -136,9 +120,6 @@ export class PaymentPage {
       otherProfileId: this.otherProfileId,
       jobRequestId: this.params.jobRequestId,
       selectedDates: this.selectedDates,
-      // apptDate: this.apptDate,
-      // startTime: this.apptStartTime,
-      // endTime: this.apptEndTime
     };
     return new Promise(async (resolve) => {
       return await this.dataService.getApi(

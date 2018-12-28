@@ -33,7 +33,6 @@ export class RegisterStep1Page {
   }
 
   ionViewDidLoad() {
-    // console.log('ionViewDidLoad RegisterStep1Page');
     this.role = this.navParams.get('role');
 
     this.analytics.setScreenName("Register-step1");
@@ -74,7 +73,6 @@ export class RegisterStep1Page {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(
           async isNewEmail => {
             loading.dismiss();
-            console.log(isNewEmail);
             if (isNewEmail.result == true) {
 
               this.navCtrl.push("RegisterStep2Page", { form1Values : formParams, role: this.role });

@@ -37,18 +37,16 @@ export class JobRequestPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("JobRequest", "View"));
 
     this.params = navParams.get('params');
-    console.log("Job Request page");
     this.jobObject = Object.assign({}, this.params);
+    console.log(this.jobObject);
     this.teacherObj = this.params.teacherProfile;
     this.otherObj = this.params.otherProfile;
-    console.log(this.jobObject);
     this.acceptState = this.jobObject.acceptState;
     // this.jobObject = this.jobObject.role =='teacher' ? (Object.assign({}, ...this.params)this.params.teacherProfile) : this.params.otherProfile;
 
     this.appNavCtrl = app.getActiveNav();
 
     if (this.params.role == 'teacher') {
-      console.log(this.jobObject.teacher)
       if(this.jobObject.teacher.defaultStartDateTime.iso && this.jobObject.teacher.defaultEndDateTime.iso){
       // Converting defaultStartDateTime and defaultEndDateTime to current device TimeZone
       let availStartDateTime = new Date(this.jobObject.teacher.defaultStartDateTime.iso);
@@ -99,7 +97,6 @@ export class JobRequestPage {
           buttons: [{
             text: 'OK',
             handler: () => {
-              console.log(this.jobObject);
               this.navCtrl.push('SchedulePage', {
                 params: {
                   jobRequestId: this.jobObject.jobRequestId,
@@ -173,10 +170,8 @@ export class JobRequestPage {
 
     this.storage.get("UserProfile").then(profile => {
       if (this.userRole == 'teacher' && (profile.profileData.stripeCustomer == undefined || profile.profileData.stripeCustomer == '')) {
-        console.log("checking stripe");
         this.checkStripeAccount(profile);
       } else {
-        console.log("request job");
         if (profile.profileData.role == 'teacher') {
           this.body = {
             teacherProfileId: profile.profileData.objectId,
@@ -261,7 +256,6 @@ export class JobRequestPage {
             this.viewCtrl.dismiss();
             this.loading.dismiss();
             this.submitInProgress = false;
-            console.log("Job request accepted"+response);
             if (this.userRole !== 'teacher') {
               this.scheduleJob();
             }
@@ -333,7 +327,6 @@ export class JobRequestPage {
       receiver: this.userRole == 'teacher' ? this.otherObj : this.teacherObj,
       from: "jobrequest"
     }
-    console.log(params);
     this.navCtrl.push("ChatPage", params);
   }
 }

@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Crashlytics } from '@ionic-native/fabric';
 import { Platform } from 'ionic-angular';
@@ -32,7 +31,5 @@ export class FirebaseCrashlyticsProvider {
     this.crashlytics.setUserIdentifier(user.objectId);
     this.crashlytics.setUserName(user.fullname);
   }
-
-
 
 }

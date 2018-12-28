@@ -5,12 +5,10 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ActionSheetController, Slides, LoadingController, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
-// import { Crop } from '@ionic-native/crop';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { DataService } from '../../app/app.data';
 import { FetchiOSUDID } from '../../providers/fetch-ios-udid';
-//import { Geoposition } from '@ionic-native/geolocation';
 
 declare let google;
 /**
@@ -136,37 +134,7 @@ export class RegisterStep2Page {
       })
     }
 
-
-    /*if (this.globalization == undefined) {
-      this.globalization.getLocaleName().then((locale) => {
-        let LangAPI = this.smartieApi.getApi(
-          'getNationalLanguages',
-          { country: locale.value.split('-')[1] }
-        );
-
-        return new Promise(resolve => {
-          interface Response {
-            result: any;
-          };
-          this.smartieApi.http.post<Response>(LangAPI.apiUrl, LangAPI.apiBody, LangAPI.apiHeaders).subscribe(res => {
-          })
-        })
-      }).catch((error: any) => {
-        console.log(error);
-      });
-    } else {
-    }*/
   }
-
-  /* public filterpartOfSchool(result: string): void {
-    // Handle what to do when a category is selected
-    if(result){
-      this.Step2Form.get('associateSchoolName').setValidators([Validators.required]);
-    }else{
-      this.Step2Form.get('associateSchoolName').setValidators([]);
-    }
-    this.partOfSchool = result;
-  } */
 
   chooseUploadType(inputEvent, photoFor) {
     this.cameraService.getImage().then(imageData => {
@@ -176,87 +144,6 @@ export class RegisterStep2Page {
         this.photoSelected = false;
     });
   }
-    // let actionSheet = this.actionSheetCtrl.create({
-    //   title: 'How you like to upload your photos',
-    //   buttons: [
-    //     {
-    //       text: 'Take Picture',
-    //       role: 'destructive',
-    //       icon: 'camera',
-    //       handler: () => {
-    //         var options = {
-    //           sourceType: this.camera.PictureSourceType.CAMERA,
-    //           destinationType: this.camera.DestinationType.DATA_URL,
-    //           allowEdit: true,
-    //           targetWidth: 500,
-    //           targetHeight: 500,
-    //           quality: 100
-    //         };
-    //         this.camera.getPicture(options).then((imageData) => {
-    //           if (photoFor == 'prof') {
-    //             // console.log(imageData);
-    //             this.cameraData = 'data:image/jpeg;base64,' + imageData;
-    //             // localStorage.setItem('profilePhotoDataUrl', this.profileCameraData);
-    //             this.storage.set('profilePhotoDataUrl', imageData);
-    //             this.photoTaken = true;
-    //             this.photoSelected = false;
-    //           } else if (photoFor == 'school') {
-    //             this.schoolCameraData = 'data:image/jpeg;base64,' + imageData;
-    //             // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraData);
-    //             this.storage.set('schoolPhotoDataUrl', imageData);
-    //             this.schoolPhotoTaken = true;
-    //             this.schoolPhotoSelected = false;
-    //           }
-    //         }, (err) => {
-    //           // Handle error
-    //           console.log(err);
-    //         });
-    //       }
-    //     }, {
-    //       text: 'Open Gallery',
-    //       role: 'openGallery',
-    //       icon: 'image',
-    //       handler: () => {
-    //         let options = {
-    //           sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-    //           destinationType: this.camera.DestinationType.DATA_URL,
-    //           allowEdit: true,
-    //           targetWidth: 500,
-    //           targetHeight: 500,
-    //           quality: 75
-    //         };
-
-    //         this.camera.getPicture(options).then((imageData) => {
-    //           // imageData is either a base64 encoded string or a file URI
-    //           // If it's base64:
-    //           if (photoFor == 'prof') {
-    //             this.cameraUrl = "data:image/jpeg;base64," + imageData;
-    //             this.storage.set('profilePhotoDataUrl', imageData);
-    //             this.photoSelected = true;
-    //             this.photoTaken = false;
-    //           } else if (photoFor == 'school') {
-    //             this.schoolCameraUrl = "data:image/jpeg;base64," + imageData;
-    //             // localStorage.setItem('schoolPhotoDataUrl', this.schoolCameraUrl);
-    //             this.storage.set('schoolPhotoDataUrl', imageData);
-    //             this.schoolPhotoSelected = true;
-    //             this.schoolPhotoTaken = false;
-    //           }
-    //         }, (err) => {
-    //           // Handle error
-    //           console.log(err);
-    //         });
-    //       }
-    //     }, {
-    //       text: 'Cancel',
-    //       role: 'cancel',
-    //       icon: 'close',
-    //       handler: () => {
-    //         console.log('Cancel clicked');
-    //       }
-    //     }
-    //   ]
-    // });
-    // actionSheet.present();
 
   // Method executed when the slides are changed
   public rateChanged(): void {
@@ -281,7 +168,6 @@ export class RegisterStep2Page {
         return await this.storage.set('Provision', response.result).then(async prov => {
           return await prov;
         })
-        //return await this.data.updateProvisionStorage(response[0].result);
       }, err => {
         console.log(err);
       });
@@ -344,7 +230,6 @@ export class RegisterStep2Page {
                     this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
                       this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
                         this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
-                        //this.navCtrl.push("SmartieSearch", { role: this.role, fromWhere: 'signUp', loggedProfileId: signupResult.result.profileData.objectId, notifications: notifications });
                       })
                     }, err => {
                       console.log(err);
@@ -398,7 +283,6 @@ export class RegisterStep2Page {
       let geocoder = new google.maps.Geocoder();
 
       geocoder.geocode({ location: latLng }, function (results, status) {
-        console.log(results);
         let address: { country: string; formattedAddress: string; };
         for (let ac = 0; ac < results[0].address_components.length; ac++) {
           let component = results[0].address_components[ac];

@@ -29,7 +29,6 @@ export class PaymentDetailsPage {
   }
 
   ionViewDidLoad() {
-    //this.navCtrl.push("PaymentthankyouPage", { fromWhere: 'nonTeacherPayment'});
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
@@ -57,7 +56,6 @@ export class PaymentDetailsPage {
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           loading.dismiss();
-          console.log(response.result);
           if(response.result.url){ // ??? NB: everything is usually response.data.result now FYI using @ionic-native/http
             // loading.dismiss();
             // const options: ThemeableBrowserOptions = {

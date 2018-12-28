@@ -97,7 +97,6 @@ export class AddPaymentPage {
     console.log(data);
 
     if (this.userRole == 'teacher') {
-      // let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQogI2PEylvxAJTYTaxEwrLQQVMA5x&state=state&stripe_user[business_type]="+data.businessType+"&stripe_user[email]="+data.emailPayment+"&stripe_user[first_name]="+data.firstName;
 
       let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQIYkWpLrTkC9gAvq3gHcmBlUfLXBH&state=state&stripe_user[email]=" + data.emailPayment;
 
@@ -113,8 +112,6 @@ export class AddPaymentPage {
         },
         backButtonCanClose: true
       }
-
-      // const browser = this.iab.create(url,  '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
 
       const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_self', options);
 

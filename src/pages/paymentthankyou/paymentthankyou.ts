@@ -40,7 +40,6 @@ export class PaymentthankyouPage {
   }
 
   goTo(){
-    //console.log('Test');
     this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, payment: "success" });
   }
 
