@@ -52,7 +52,6 @@ export class FileUploaderProvider {
           }
          this.fileTransfer.upload(filePath, signedUrl.result, options)
             .then((data) => {
-              console.log(data);
               let filePath = signedUrl.result.split('?')[0];
               resolve(filePath);
             }, (err) => {
@@ -75,8 +74,6 @@ export class FileUploaderProvider {
       cred.set('file', fileUrl);
       cred.save({ useMasterKey: true }).then(credential => {
         resolve(credential);
-        console.log(credential);
-        console.log("Credentials saved successfully..!");
       }).fail((e) => {
         console.log(e);
         reject(e);

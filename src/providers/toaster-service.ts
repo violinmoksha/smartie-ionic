@@ -32,7 +32,6 @@ export class ToasterServiceProvider {
       closeButtonText: 'OK'
     });
     this.network.onDisconnect().subscribe(() => {
-      console.log('network was disconnected :-(');
       this.isInternetConnected = false;
       toast.present();
     });

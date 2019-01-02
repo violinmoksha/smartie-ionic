@@ -31,18 +31,7 @@ export class TimeSelectorMultiPage {
     this.params = this.navParams.get("params");
     this.loggedRole = this.navParams.get("loggedRole");
 
-    console.log(this.selectedDates);
-
     this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
-
-    this.storage.get("utcOffset").then(utcOffset => {
-      // console.log(utcOffset);
-      //let newDate = new Date();
-      //let utc = newDate.getTime();
-      //let zoneTime = new Date(utc + utcOffset);
-      // console.log(zoneTime);
-    })
-
 
     for(let selectedDate of this.selectedDates){
       let timeZoneStartTime = new Date(selectedDate.years, selectedDate.months, selectedDate.date, 10);
@@ -57,10 +46,6 @@ export class TimeSelectorMultiPage {
   }
 
   timeSet(date,i){
-    /* console.log(i);
-    console.log(date.months + '-' + date.date + '-' + date.years);
-    console.log(date.startTime);
-    console.log(date.endTime); */
 
     if((date.months + '-' + date.date + '-' + date.years) && (date.startTime > date.endTime) ){
       this.timeScheduleError(date.months + '-' + date.date + '-' + date.years, 1);
@@ -72,14 +57,9 @@ export class TimeSelectorMultiPage {
 
       date.UTCstartTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.startTime.split(':')[0]), parseInt(date.startTime.split(':')[1]));
 
-      // date.UTCstartTime = UTCstartTime;
-
       let timeEnds_ms = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1])).getTime();
 
       date.UTCendTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1]));
-
-
-      // date.UTCendTime = UTCendTime;
 
       date.diffMs = timeEnds_ms - timeStarts_ms;
       date.diffHrs = Math.floor((date.diffMs % 86400000) / 3600000) * 60;
@@ -87,9 +67,6 @@ export class TimeSelectorMultiPage {
 
       date.totalHours = (date.diffHrs + date.diffMins) / 60;
       date.totalAmount = date.totalHours * this.params.prefPayRate;
-      // console.log(date.diffMs);
-      // this.grossAmount += date.totalAmount;
-      // console.log(this.grossAmount);
       this.calGrossAmount();
       this.calGrossHours();
       this.readyToPay = true;
@@ -123,13 +100,11 @@ export class TimeSelectorMultiPage {
   }
 
   calGrossAmount(){
-    // console.log(this.selectedDates);
     this.grossAmount = 0;
     for(let selectedDate of this.selectedDates){
       if(selectedDate.totalAmount)
         this.grossAmount += selectedDate.totalAmount;
     }
-    // console.log(this.grossAmount)
   }
 
   calGrossHours(){
@@ -138,7 +113,6 @@ export class TimeSelectorMultiPage {
       if(selectedDate.totalHours)
         this.grossHours += selectedDate.totalHours;
     }
-    // console.log(this.grossHours)
   }
 
   parseMoney(val) {
@@ -160,10 +134,6 @@ export class TimeSelectorMultiPage {
   }
 
   goPay(){
-    console.log(this.selectedDates);
-    console.log(this.parseHours(this.grossHours));
-    console.log(this.smartieTotal(this.grossAmount));
-    console.log(this.params);
 
     this.navCtrl.push("PaymentPage", {
       selectedDates: this.selectedDates,

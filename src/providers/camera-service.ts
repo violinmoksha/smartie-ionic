@@ -60,10 +60,7 @@ export class CameraServiceProvider {
           });
         } else {
           this.imagePicker.requestReadPermission().then((res) => {
-            console.log('permission gallery')
-            console.log(res);
             this.imagePicker.getPictures(options).then((image) => {
-              console.log('pic resolve')
               resolve(image);
             }, (err) => {
               reject(err);
@@ -108,7 +105,6 @@ export class CameraServiceProvider {
             role: 'cancel',
             icon: 'close',
             handler: () => {
-              console.log('Cancel clicked');
               actionSheet.dismiss();
               return false;
             }
