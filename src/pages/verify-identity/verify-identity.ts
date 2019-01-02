@@ -52,8 +52,6 @@ export class VerifyIdentityPage {
   ionViewDidLoad() {
     this.storage.get('UserProfile').then(UserProfile => {
 
-      console.log(UserProfile);
-
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
       this.profileId = UserProfile.profileData.objectId;

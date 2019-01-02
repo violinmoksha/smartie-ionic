@@ -45,10 +45,6 @@ export class ViewProfilePage {
     })
   }
 
-  /* ionViewDidLoad() {
-    console.log('ionViewDidLoad ViewProfilePage');
-  } */
-
   viewReviews(){
     this.navCtrl.push("ReviewsPage", { params: this.params });
   }

@@ -44,7 +44,6 @@ export class WalletPage {
         ).then(async API => {
           return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders'] ).then(response => {
             loading.dismiss();
-            console.log(response.result);
             this.availableBalance = response.result.available[0].amount / 100;
             this.pendingBalance = response.result.pending[0].amount / 100;
           }, err => {
@@ -57,10 +56,6 @@ export class WalletPage {
   }
 
   initPayout(){
-    console.log(this.stripeCustomer.stripe_user_id);
-    console.log(this.profileData.objectId);
-    console.log(this.availableBalance * 100);
-
     let loading = this.loadingCtrl.create({
       content: 'Transaction being process..'
     });
@@ -73,7 +68,6 @@ export class WalletPage {
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders'] ).then(response => {
           loading.dismiss();
-            console.log(response.result);
         }, err => {
           loading.dismiss();
           console.log(err.error.error);
