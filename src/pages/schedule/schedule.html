@@ -33,7 +33,7 @@
     </div>
     <div *ngIf="params.UTCStartTime" class="job-availablity-details">
       <h3>Available Timings</h3>
-      <p style="margin-bottom:0">{{ params.UTCStartTime }} to {{ params.UTCEndTime}} ({{ timeZone }}) on {{ params.UTCstartDate}} to {{ params.UTCendDate}}</p>
+      <p style="margin-bottom:0">{{ params.UTCStartTime }} to {{ params.UTCEndTime}} ({{ timeZone }}) <span style="display:block; width: 100%; text-align: center;"> on {{ params.UTCstartDate}} to {{ params.UTCendDate}} </span></p>
     </div>
     <p style="margin-top:50px;margin-bottom:5px;">Select your schedule based on availability</p>
     <button class="button button-positive" ion-button full (click)="pickDateCalendar()">Select Schedule</button>
