@@ -95,7 +95,7 @@ export class RegisterStep3Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, public UDID: FetchiOSUDID) {    
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, public UDID: FetchiOSUDID) {
 
     this.analytics.setScreenName("Register-step3");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step3", "View"));
@@ -201,17 +201,18 @@ export class RegisterStep3Page {
   }
 
   updateUserToProvision = async (userId, userProfileId) => {
-    let udid = this.UDID.getDeviceId();
-    return await this.dataService.getApi(
-      'addUserToProvision',
-      { uuid: udid, userId: userId, profileId: userProfileId }
-    ).then(async API => {
-      return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-        // TODO: have we done this correctly, we'll see, this simplification should again be correct
-        this.storage.set('Provision', response.result);
-        //this.dataService.updateProvisionStorage(response[0].result);
-      }, err => {
-        console.log(err);
+    this.UDID.getDeviceId().then(async udid => {
+      return await this.dataService.getApi(
+        'addUserToProvision',
+        { uuid: udid, userId: userId, profileId: userProfileId }
+      ).then(async API => {
+        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+          // TODO: have we done this correctly, we'll see, this simplification should again be correct
+          this.storage.set('Provision', response.result);
+          //this.dataService.updateProvisionStorage(response[0].result);
+        }, err => {
+          console.log(err);
+        });
       });
     });
   }

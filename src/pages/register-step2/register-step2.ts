@@ -157,19 +157,20 @@ export class RegisterStep2Page {
   }
 
   updateUserToProvision = async (userId, userProfileId) => {
-    let udid = this.UDID.getDeviceId();
-    console.log(udid);
-    return await this.dataService.getApi(
-      'addUserToProvision',
-      { uuid: this.device.uuid, userId: userId, profileId: userProfileId }
-    ).then(async API => {
-      return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-        // TODO: needs to happen right here directly into storage?
-        return await this.storage.set('Provision', response.result).then(async prov => {
-          return await prov;
-        })
-      }, err => {
-        console.log(err);
+    this.UDID.getDeviceId().then(async udid => {
+      console.log(udid);
+      return await this.dataService.getApi(
+        'addUserToProvision',
+        { uuid: this.device.uuid, userId: userId, profileId: userProfileId }
+      ).then(async API => {
+        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+          // TODO: needs to happen right here directly into storage?
+          return await this.storage.set('Provision', response.result).then(async prov => {
+            return await prov;
+          })
+        }, err => {
+          console.log(err);
+        });
       });
     });
   }

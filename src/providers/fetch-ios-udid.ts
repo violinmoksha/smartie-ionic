@@ -19,46 +19,58 @@ export class FetchiOSUDID {
       // NB: same keystore name as in app.data.ts, to keep us clean in keychain
       this.secureStorage.create('smartieKeys').then((ss: SecureStorageObject) => {
         /* remove == Illuminati (or Us testing this) */
-        //ss.remove('userkey').then(async data => {
-          ss.get('iOSUDID').then(data => {
-            if (data.length == 36) {
-              resolve(data);
-            } else {
-              // isnt here yet, so gen and store it
-              ss.set('iOSUDID', newUDID).then(data => {
-                ss.get('iOSUDID').then(data => {
-                  resolve(data);
-                }, error => {
-                  reject(error);
-                });
-              }, error => {
-                reject(error);
-              })
-            }
-          }, error => {
-            // isnt here yet, so gen and store it
-            ss.set('iOSUDID', newUDID).then(data => {
-              ss.get('iOSUDID').then(data => {
-                resolve(data);
-              }, error => {
-                reject(error);
-              })
-            }, error => {
-              reject(error);
-            })
-          });
+        //ss.remove('iOSUDID').then(async data => {
+          this.fetchInner(ss, newUDID, resolve, reject);
+        //}, error => {
+          // nothing to remove because we were already testing Illuminati remove
+          //this.fetchInner(ss, newUDID, resolve, reject);
         //});
       });
     });
   }
 
-  getDeviceId() {
-    if (this.platform.is('ios')) {
-      this.fetch().then(res => {
-        return res;
+  fetchInner(ss, newUDID, resolve, reject) {
+    ss.get('iOSUDID').then(data => {
+      if (data.length == 36) {
+        resolve(data);
+      } else {
+        // isnt here yet, so gen and store it
+        ss.set('iOSUDID', newUDID).then(data => {
+          ss.get('iOSUDID').then(data => {
+            resolve(data);
+          }, error => {
+            reject(error);
+          });
+        }, error => {
+          reject(error);
+        })
+      }
+    }, error => {
+      // isnt here yet, so gen and store it
+      ss.set('iOSUDID', newUDID).then(data => {
+        ss.get('iOSUDID').then(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        })
+      }, error => {
+        reject(error);
       })
-    } else {
-      return this.device.uuid;
-    }
+    });
+  }
+
+  getDeviceId() {
+    // NB: non-async functions should not be calling async functions with expectation of a sync return
+    return new Promise((resolve, reject) => {
+      if (this.platform.is('ios')) {
+        this.fetch().then(res => {
+          resolve(res);
+        }, error => {
+          reject(error);
+        })
+      } else {
+        resolve(this.device.uuid);
+      }
+    });
   }
 }
