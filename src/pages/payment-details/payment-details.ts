@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
-//import { ThemeableBrowser, ThemeableBrowserOptions } from '@ionic-native/themeable-browser';
+import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the PaymentDetailsPage page.
@@ -23,7 +23,7 @@ export class PaymentDetailsPage {
   private registeredWithStripe: boolean = false;
   private stripeCustomerId: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, public themeableBrowser: ThemeableBrowser) {
     this.analytics.setScreenName("PaymentDetails");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("PaymentDetails", "View"));
   }
@@ -32,18 +32,18 @@ export class PaymentDetailsPage {
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
-      if(UserProfile.profileData.stripeCustomer !== undefined){
+      if (UserProfile.profileData.stripeCustomer !== undefined) {
         this.registeredWithStripe = true;
         this.stripeCustomerId = UserProfile.profileData.stripeCustomer.stripe_user_id;
       }
     });
   }
 
-  addPayment(){
+  addPayment() {
     this.navCtrl.push('AddPaymentPage', { fromWhere: 'teacher' });
   }
 
-  viewStripeDashboard(){
+  viewStripeDashboard() {
     let loading = this.loadingCtrl.create({
       content: 'Creating Stripe Account...'
     });
@@ -56,26 +56,36 @@ export class PaymentDetailsPage {
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           loading.dismiss();
-          if(response.result.url){ // ??? NB: everything is usually response.data.result now FYI using @ionic-native/http
-            // loading.dismiss();
-            // const options: ThemeableBrowserOptions = {
-            //   toolbar: {z
-            //     height: 44,
-            //     color: '#00BA63'
-            //   },
-            //   title: {
-            //     color: '#ffffff',
-            //     showPageTitle: true,
-            //     staticText: "Payment Details"
-            //   },
-            //   backButtonCanClose: true
-            // }
+          console.log("view dashboard")
+          console.log(response);
+          if (response.result.url) { // ??? NB: everything is usually response.data.result now FYI using @ionic-native/http
+            loading.dismiss();
+            const options: ThemeableBrowserOptions = {
+              toolbar: {
+                height: 44,
+                color: '#00BA63'
+              },
+              title: {
+                color: '#ffffff',
+                showPageTitle: true,
+                staticText: "Payment Details"
+              },
+              // closeButton: {
+              //   wwwImage: 'assets/imgs/close.png',
+              //   wwwImagePressed: 'assets/imgs/close.png',
+              //   align: 'left',
+              //   event: 'closePressed'
+              // },
+              backButtonCanClose: true
+            }
             // const browser = this.iab.create(response.result.url, '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
-            //const browser: ThemeableBrowserObject = this.themeableBrowser.create(response[0].result.url, '_self', options);
+            const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_self', options);
 
             /* browser.on('loadstop').subscribe(event => {
               console.log(event);
             }); */
+          } else {
+            console.log("result not found");
           }
           // may need to return here for Tests???
         }, err => {

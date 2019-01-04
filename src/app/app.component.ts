@@ -78,6 +78,9 @@ export class SmartieApp {
 
   ionViewDidLoad() {
     console.log("App loaded");
+    this.events.subscribe("login", () => {
+      this.setUserName();
+    })
   }
 
   setUserName() {

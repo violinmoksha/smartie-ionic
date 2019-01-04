@@ -43,7 +43,6 @@ export class ChatPage {
     this.receiver = navParams.get("receiver");
     this.navigateFrom = navParams.get("from");
     this.pageNumber = 0;
-      
     if (this.navigateFrom == "jobrequest") {
       if (!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined') {
         this.chatAccess = true;
@@ -107,7 +106,9 @@ export class ChatPage {
           }
           this.dataService.getApi("createChatRoom", chatRoomArg).then(API => {
             this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
-              this.chatMessages.push(res.result);
+              let message = res.result.messages[0];
+              message.displayTime = this.getSentTime(message.sentAt, new Date().toISOString());
+              this.chatMessages.push(message);
               this.newmessage = '';
             })
           })
@@ -128,7 +129,6 @@ export class ChatPage {
     }
     this.dataService.getApi('sendMessage', messageBody).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
-        console.log(res);
         res.result.messages[0].displayTime = this.getSentTime(res.result.messages[0].sentAt, new Date().toISOString())
         this.chatMessages.push(res.result.messages[0]);
         this.newmessage = '';
@@ -137,7 +137,6 @@ export class ChatPage {
   }
 
   fetchMessages(infiniteScroll) {
-
     this.dataService.getApi(
       'fetchMessages',
       { roomId: this.roomId, page: this.pageNumber, limit: this.messageLimitPerPage }
@@ -155,7 +154,6 @@ export class ChatPage {
           }
           if (res.result[0].messages.length < this.messageLimitPerPage) {
             infiniteScroll.enable(false);
-            console.log("message finished")
           }
         } else {
           console.log(res)
