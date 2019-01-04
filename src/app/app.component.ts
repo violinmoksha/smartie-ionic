@@ -163,7 +163,7 @@ export class SmartieApp {
         if (this.platform.is('ios')) {
           console.log('Captured iOS platform, going into fetchUDID.');
           this.fetchiOSUDID.fetch().then(iOSUDID => {
-            //this.initFirebase(iOSUDID); // NB: calls sync/non-returning notificationHandler
+            this.initFirebase(iOSUDID); // NB: calls sync/non-returning notificationHandler
             this.initializeAppInner(iOSUDID);
           });
         } else {

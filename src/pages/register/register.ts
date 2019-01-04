@@ -2,7 +2,6 @@ import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AnalyticsProvider } from '../../providers/analytics';
-//import { Pro } from '@ionic/pro';
 
 @IonicPage()@Component({
   selector: 'page-register',

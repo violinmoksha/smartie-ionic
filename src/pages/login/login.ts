@@ -4,7 +4,6 @@ import { NavController, AlertController, LoadingController, MenuController } fro
 import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
-import { Pro } from '@ionic/pro';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { FirebaseCrashlyticsProvider } from '../../providers/firebase-crashlytics';
 
