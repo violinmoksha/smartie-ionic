@@ -19,12 +19,12 @@
       <ion-label>Starting at:</ion-label>
       <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" minuteValues="[00,15,30,45]" (ionChange)="timeSet(selectedDate, i)" [(ngModel)]="selectedDate.startTime"></ion-datetime>
     </ion-item>
-    ({{ timeZone }})
+    <div style="width: 100%; display:inline-block; margin-bottom:10px; font-size:12px;">({{ timeZone }})</div>
     <ion-item *ngIf="selectedDate">
       <ion-label>Finishing at:</ion-label>
       <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" minuteValues="[00,15,30,45]" (ionChange)="timeSet(selectedDate, i)" [(ngModel)]="selectedDate.endTime"></ion-datetime>
     </ion-item>
-    ({{ timeZone }})
+    <div style="width: 100%; display:inline-block; margin-bottom:10px; font-size:12px;">({{ timeZone }})</div>
     <div *ngIf="selectedDate.totalHours !== undefined" class="left">
       <ion-label style="margin-top:6px">Total Hours: {{ parseHours(selectedDate.totalHours) }}</ion-label>
     </div>

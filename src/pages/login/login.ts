@@ -1,6 +1,6 @@
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, MenuController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, MenuController, Events } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
@@ -27,7 +27,7 @@ export class LoginPage {
     profile: { fullname: '' }
   };
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public storage: Storage, public dataService: DataService, public loadingCtrl: LoadingController, public analytics: AnalyticsProvider, public menu: MenuController, public crashlytics: FirebaseCrashlyticsProvider) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public storage: Storage, public dataService: DataService, public loadingCtrl: LoadingController, public analytics: AnalyticsProvider, public menu: MenuController, public crashlytics: FirebaseCrashlyticsProvider, public events: Events) {
     this.storage.get('Provision').then(provision => {
       this.provisionData = provision.provision;
     })
@@ -61,6 +61,8 @@ export class LoginPage {
             return await this.storage.set('UserProfile', data.result).then(async UserProfile => {
               this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: UserProfile.profileData.role, fromWhere: "login" });
 
+              //NOTE: emitting event for updating user name
+              this.events.publish("login");
               if (data) {
                 // TODO: do this directly though the firebase dependency, not some wrapper
                 //this.firebase.updateFcmToken(null, true);
