@@ -52,6 +52,17 @@
           <ion-label fixed>Password</ion-label>
           <ion-input type="password" formControlName="password"></ion-input>
         </ion-item>
+        <div class="item item-message" *ngIf="EditProfilestep2Form.get('password').invalid && EditProfilestep2Form.get('password').touched">
+          Password is required, Password must be longer than 6 characters
+        </div>
+        <ion-item>
+          <ion-label fixed> Confirm Password</ion-label>
+          <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
+        </ion-item>
+        <div class="item item-message" *ngIf="EditProfilestep2Form.get('confPassword').invalid && EditProfilestep2Form.get('confPassword').touched">
+          Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
+        </div>
+  
         <ion-item>
           <ion-label fixed>Email</ion-label>
           <ion-input [value]="email" type="text" formControlName="email"></ion-input>
