@@ -65,7 +65,7 @@
     "cordova-plugin-globalization": "^1.11.0",
     "cordova-plugin-inappbrowser": "^3.0.0",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
-    "cordova-plugin-ionic-webview": "^1.2.1",
+    "cordova-plugin-ionic-webview": "3.0.0",
     "cordova-plugin-network-information": "^2.0.1",
     "cordova-plugin-secure-storage": "^2.6.8",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -120,7 +120,6 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-device": {},
-      "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-geolocation": {
@@ -149,6 +148,9 @@
       "cordova-fabric-plugin": {
         "FABRIC_API_KEY": "2426b4a39da5e9ca081fc7a179629602c27e3644",
         "FABRIC_API_SECRET": "ff3aa846eaca010cf8a04051345addbcc41f45b8ef2251e6e602afaa745ea3e6"
+      },
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       }
     },
     "platforms": [
