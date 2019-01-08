@@ -1,7 +1,7 @@
 import { IonicPage } from 'ionic-angular';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, Slides, LoadingController } from 'ionic-angular';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
@@ -60,7 +60,8 @@ export class EditProfileStep2Page {
     if(this.userRole == 'school'){
       this.EditProfilestep2Form = new FormGroup({
         username: new FormControl('', Validators.required),
-        password: new FormControl(''),
+        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+        confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')]),
         email: new FormControl('', Validators.required),
         schoolName: new FormControl('', Validators.required),
         contactName: new FormControl('', Validators.required),
@@ -72,7 +73,8 @@ export class EditProfileStep2Page {
     } else if (this.userRole == 'teacher'){
       this.EditProfilestep2Form = new FormGroup({
         username: new FormControl('', Validators.required),
-        password: new FormControl(''),
+        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+        confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')]),
         email: new FormControl('', Validators.required),
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
@@ -83,7 +85,8 @@ export class EditProfileStep2Page {
     } else{
       this.EditProfilestep2Form = new FormGroup({
         username: new FormControl('', Validators.required),
-        password: new FormControl(''),
+        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+        confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')]),
         email: new FormControl('', Validators.required),
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
@@ -92,6 +95,7 @@ export class EditProfileStep2Page {
         othersSchoolName: new FormControl('')
       });
     }
+    
 
     this.storage.get("UserProfile").then(roleProfile => {
       if(roleProfile.profileData.schoolPhoto){
@@ -136,7 +140,19 @@ export class EditProfileStep2Page {
 
     this.form1Values = navParams.data.form1Value;
   }
-
+  equalTo(equalControlName): ValidatorFn {
+    return (control: AbstractControl): {
+      [key: string]: any
+    } => {
+      if (!control['_parent']) return null;
+      if (!control['_parent'].controls[equalControlName])
+      throw new TypeError('Form Control ' + equalControlName + ' does not exists.');
+      var controlMatch = control['_parent'].controls[equalControlName];
+      return controlMatch.value == control.value ? null : {
+        'equalTo': true
+      };
+    };
+  }
   chooseUploadType(inputEvent, photoFor) {
     this.cameraService.getImage().then(imageData => {
       this.cameraData = imageData[0];
