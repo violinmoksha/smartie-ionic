@@ -240,11 +240,13 @@ export class RegisterStep2Page {
               })
             }
           }, err => {
+            let signUpErrorMessage = JSON.parse(err.error);
             let alert = this.alertCtrl.create({
               title: 'Signup Failed!',
-              subTitle: JSON.stringify(err),
+              subTitle: JSON.stringify(signUpErrorMessage.error),
               buttons: ['OK']
             });
+            this.loading.dismiss();
             alert.present();
           })
         });

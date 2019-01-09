@@ -299,7 +299,7 @@ export class RegisterStep3Page {
                         //this.dbService.setRegistrationData({step:3, role: this.role, form3: form3Values})
                       })
                     }, err => {
-                      console.log(err);
+                      console.log(err.error.error);
                     });
                   });
 
@@ -308,9 +308,10 @@ export class RegisterStep3Page {
             }
           },
           err => {
+            let signUpErrorMessage = JSON.parse(err.error);
             let alert = this.alertCtrl.create({
               title: 'Signup Failed!',
-              subTitle: JSON.stringify(err),
+              subTitle: JSON.stringify(signUpErrorMessage.error),
               buttons: ['OK']
             });
             this.loading.dismiss();
