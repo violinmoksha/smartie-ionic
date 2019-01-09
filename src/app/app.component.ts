@@ -74,16 +74,19 @@ export class SmartieApp {
         ];
       }
     });
+
+    this.events.subscribe("login", () => {
+      this.setUserName();
+    })
+
   }
 
   ionViewDidLoad() {
     console.log("App loaded");
-    this.events.subscribe("login", () => {
-      this.setUserName();
-    })
   }
 
   setUserName() {
+    console.log("Setting user name for side menuu");
     this.storage.get('UserProfile').then(user => {
       if (user && user.profileData) {
         this.userName = user.profileData.fullname
