@@ -11,6 +11,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-navigation href="http://localhost:9634/*" />
     <allow-navigation href="https://api.ionicjs.com" />
     <allow-navigation href="https://maps.googleapis.com" />
     <allow-navigation href="https://csi.gstatic.com" />
@@ -26,6 +27,8 @@
     <preference name="SplashScreenDelay" value="5000" />
     <preference name="loadUrlTimeoutValue" value="70000" />
     <preference name="backgroundColor" value="0x00000000" />
+    <preference name="UseScheme" value="true" />
+    <preference name="WKPort" value="9634" />
     <platform name="android">
         <preference name="SplashScreen" value="none" />
         <hook src="hooks/versionConfig.js" type="after_prepare" />
