@@ -53,7 +53,7 @@ export class AddPaymentPage {
       this.fullName = UserProfile.profileData.fullname;
       this.email = UserProfile.userData.email;
       if(UserProfile.profileData.profilePhoto){
-        this.profilePhoto = UserProfile.profileData.profilePhoto.url;
+        this.profilePhoto = UserProfile.profileData.profilePhoto;
       }else{
         this.profilePhoto = './assets/imgs/user-img-teacher.png';
       }

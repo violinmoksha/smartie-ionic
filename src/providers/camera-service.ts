@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Injectable } from '@angular/core';
 import { ImagePicker } from '@ionic-native/image-picker';
-/*
+/* 
   Generated class for the CameraServiceProvider provider.
 
   See https://angular.io/guide/dependency-injection for more info on providers
@@ -83,6 +83,10 @@ export class CameraServiceProvider {
             icon: 'camera',
             handler: () => {
               this.camera.getPicture(this.getCameraOptions()).then((image) => {
+                console.log(image);
+                // //NOTE: converting(normalizing the URL due to cordova web view plugin upgrade)
+                // image = this.ionicWebView.convertFileSrc(image);
+                console.log(image);
                 let imageArray = [image];
                 resolve(imageArray);
               }, (err) => {
@@ -95,6 +99,7 @@ export class CameraServiceProvider {
             icon: 'image',
             handler: () => {
               this.choosePictures().then((pics) => {
+                console.log(pics)
                 resolve(pics);
               }, (err) => {
                 reject(err);
