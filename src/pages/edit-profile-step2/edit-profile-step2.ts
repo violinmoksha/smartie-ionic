@@ -28,6 +28,7 @@ export class EditProfileStep2Page {
   pageProfileSrc: string;
   schoolPicSrc:string;
   cameraData: string;
+  displayCameraImg: string;
   photoTaken: boolean;
   cameraUrl: string;
   private schoolCameraData: string;
@@ -154,8 +155,10 @@ export class EditProfileStep2Page {
     };
   }
   chooseUploadType(inputEvent, photoFor) {
-    this.cameraService.getImage().then(imageData => {
-      this.cameraData = imageData[0];
+    this.cameraService.getImage().then((imageData: any) => {
+      console.log(imageData)
+      this.cameraData = imageData.imageUrl[0];
+      this.displayCameraImg = imageData.normalizedUrl;
       this.storage.set('profilePhotoDataUrl', imageData[0]);
       this.photoTaken = true;
       this.photoSelected = false;
@@ -189,9 +192,11 @@ export class EditProfileStep2Page {
       }
       this.fileUploader.uploadFileToAWS(uploadContent, this.fileUploader.awsBucket.profile).then(res => {
         form2Values.profilePhoto = res;
+        this.loading.dismiss();
         this.next(form2Values);
       })
     }else{
+      this.loading.dismiss();
       this.next(form2Values);
     }
   }

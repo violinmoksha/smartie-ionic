@@ -105,8 +105,9 @@ export class CameraServiceProvider {
                 // this.returnFileAsDataURL(path, name).then(res => {
                 //   console.log(res);
                 // })
-                let imageArray = [normalizedFile];
-                resolve(imageArray);
+                let imageArray = [image];
+                let result = {imageUrl:imageArray, normalizedUrl:normalizedFile}
+                resolve(result);
               }, (err) => {
                 reject(err);
               });
@@ -118,8 +119,9 @@ export class CameraServiceProvider {
             handler: () => {
               this.choosePictures().then((pics) => {
                 console.log(pics)
-                let normalizedFile = window['Ionic']['WebView'].convertFileSrc(pics);
-                resolve(normalizedFile);
+                let normalizedFile = window['Ionic']['WebView'].convertFileSrc(pics[0]);
+                let result = {imageUrl:pics, normalizedUrl:normalizedFile}
+                resolve(result);
               }, (err) => {
                 reject(err);
               });
