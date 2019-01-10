@@ -12,11 +12,12 @@
 
 <ion-content [class]="getRole()" padding>
 
-  <!--<div>
+  <div>
     <h4>Debug</h4>
     <pre>Form : {{EditProfilestep2Form.value | json }}</pre>
     <pre>Form Status : {{EditProfilestep2Form.status }}</pre>
-  </div>-->
+    <pre>passwordChange : {{passwordChange }}</pre>
+  </div>
 
   <form [formGroup]="EditProfilestep2Form" name="EditProfilestep2Form" (ngSubmit)="submitStep2(EditProfilestep2Form.value)" novalidate>
     <!-- TODO: make these classes dynamic, like getRole() -->
@@ -50,14 +51,14 @@
         </ion-item>
         <ion-item>
           <ion-label fixed>Password</ion-label>
-          <ion-input type="password" formControlName="password"></ion-input>
+          <ion-input type="password" (change)="onPasswordChange()" formControlName="password"></ion-input>
         </ion-item>
         <div class="item item-message" *ngIf="EditProfilestep2Form.get('password').invalid && EditProfilestep2Form.get('password').touched">
           Password is required, Password must be longer than 6 characters
         </div>
         <ion-item>
           <ion-label fixed> Confirm Password</ion-label>
-          <ion-input placeholder="********" type="password" formControlName="confPassword"></ion-input>
+          <ion-input type="password" formControlName="confPassword"></ion-input>
         </ion-item>
         <div class="item item-message" *ngIf="EditProfilestep2Form.get('confPassword').invalid && EditProfilestep2Form.get('confPassword').touched">
           Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
@@ -137,29 +138,6 @@
         Profile About Message is required
       </div>
 
-      <div *ngIf="userRole == 'parent' || userRole == 'student'">
-        <h3>Are you part of a school?</h3>
-        <ion-slides id="student-school" slidesPerView="2">
-          <ion-slide (click)="filterpartOfSchool(true)" [ngClass]="{'active': partOfSchool == true}">
-            <p>Yes</p>
-          </ion-slide>
-          <ion-slide (click)="filterpartOfSchool(false)" [ngClass]="{'active': partOfSchool == false}">
-            <p>No</p>
-          </ion-slide>
-        </ion-slides>
-
-        <div [hidden]="partOfSchool != true" class="school-information">
-          <h2>School Information</h2>
-          <ion-item>
-            <ion-label fixed>Your School Name</ion-label>
-            <ion-input [value]="othersSchoolName" type="text" formControlName="othersSchoolName"></ion-input>
-          </ion-item>
-
-          <div *ngIf="!EditProfilestep2Form.controls['othersSchoolName'].valid && !EditProfilestep2Form.controls['othersSchoolName'].pristine" class="item item-message">
-            Your School Name is required
-          </div>
-        </div>
-      </div>
     </ion-list>
     <button class="button button-positive" [disabled]="!EditProfilestep2Form.valid" ion-button full>Next</button>
   </form>

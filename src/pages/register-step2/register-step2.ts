@@ -92,7 +92,6 @@ export class RegisterStep2Page {
         name: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
         profileAbout: new FormControl('', Validators.required),
-        schoolName: new FormControl('', Validators.required),
         contactName: new FormControl('', Validators.required),
         contactPosition: new FormControl('', Validators.required)
       })
