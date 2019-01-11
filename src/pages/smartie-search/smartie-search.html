@@ -9,10 +9,10 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+    <ion-title class="horizontal-logo"></ion-title>
     <ion-buttons end>
       <button [disabled]="!notifyCount" class="notification" (click)="pushAccepteds()"><span *ngIf="notifyCount">{{ notifyCount }}</span></button>
     </ion-buttons>
-    <ion-title class="horizontal-logo"></ion-title>
   </ion-toolbar>
 </ion-header>
 
