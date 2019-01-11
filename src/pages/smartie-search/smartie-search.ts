@@ -311,7 +311,9 @@ export class SmartieSearch {
   }
 
   findJobsSearch() {
+    console.log(this.userLocation);
     this.getGeoPoint(this.userLocation).then(response => {
+      console.log(response);
       this.smartieSearchResult(null, this.navParams.get("role"), response, this.extendBound);
     });
   }
@@ -355,6 +357,7 @@ export class SmartieSearch {
       }
 
       if (this.bounds.contains(new google.maps.LatLng(this.marker.position.lat(), this.marker.position.lng()))) {
+        console.log("bounds contains");
         this.markerCount.push(this.marker);
       } else {
         // console.log("Yes without bounds");
@@ -472,9 +475,11 @@ export class SmartieSearch {
       this.createMarkerLocation(searchResult);
     }
 
+    console.log(this.markerCount.length);
     if (this.markerCount) {
       if (this.markerCount.length < 5) {
         this.extendBound = true;
+        this.bounds = new google.maps.LatLngBounds();
         this.smartieSearchResult(latLng, searchRole, searchLoc, this.extendBound);
       }
     }

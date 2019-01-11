@@ -16,11 +16,10 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content class="smartie-search" [ngClass]="role">
   <div #map id="map"></div>
   <div class="bottom-search-box">
-    <ion-input class="item item-input" [(ngModel)]="userLocation" id="locationSearch" type="text" placeholder="{{reverseGeocodedLocation}}"></ion-input>
+    <ion-input class="item item-input" [(ngModel)]="userLocation" id="locationSearch" type="text"></ion-input>
     <button class="button button-positive" (click)="findJobsSearch()">
       <span *ngIf="role == 'teacher'">Find Jobs</span>
       <span *ngIf="role !== 'teacher'">Find Teachers</span>
