@@ -12,12 +12,12 @@
 
 <ion-content [class]="getRole()" padding>
 
-  <div>
+  <!-- <div>
     <h4>Debug</h4>
     <pre>Form : {{EditProfilestep2Form.value | json }}</pre>
     <pre>Form Status : {{EditProfilestep2Form.status }}</pre>
     <pre>passwordChange : {{passwordChange }}</pre>
-  </div>
+  </div> -->
 
   <form [formGroup]="EditProfilestep2Form" name="EditProfilestep2Form" (ngSubmit)="submitStep2(EditProfilestep2Form.value)" novalidate>
     <!-- TODO: make these classes dynamic, like getRole() -->

@@ -20,8 +20,8 @@
 <ion-content class="smartie-search" [ngClass]="role">
   <div #map id="map"></div>
   <div class="bottom-search-box">
-    <input class="item item-input" name="searchloc" type="text" placeholder="{{reverseGeocodedLocation}}" #searchloc>
-    <button class="button button-positive" (click)="findJobsSearch(searchloc.value, role)">
+    <ion-input class="item item-input" [(ngModel)]="userLocation" id="locationSearch" type="text" placeholder="{{reverseGeocodedLocation}}"></ion-input>
+    <button class="button button-positive" (click)="findJobsSearch()">
       <span *ngIf="role == 'teacher'">Find Jobs</span>
       <span *ngIf="role !== 'teacher'">Find Teachers</span>
     </button>
