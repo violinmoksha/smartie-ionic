@@ -54,13 +54,11 @@ export class EditProfileStep2Page {
     content: 'Loading...',
     dismissOnPageChange: true
   });
+  
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage,private analytics : AnalyticsProvider, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public loadingCtrl:LoadingController) {
     this.analytics.setScreenName("EditProfile_step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
     this.userRole = navParams.get("userRole");
-
-
-    // this.checkPasswordValid();
 
     if(this.userRole == 'school'){
       this.EditProfilestep2Form = new FormGroup({
@@ -119,9 +117,6 @@ export class EditProfileStep2Page {
           this.schoolPicSrc = './assets/img/school-img.png';
         }
       }
-
-      console.log("Phone number");
-      console.log(roleProfile);
 
       this.userName = roleProfile.userData.username;
       this.email = roleProfile.userData.email;
@@ -182,8 +177,6 @@ export class EditProfileStep2Page {
       this.EditProfilestep2Form.get('confPassword').clearValidators();
       this.EditProfilestep2Form.updateValueAndValidity();
     }
-    // this.passwordChange = true;
-    // this.checkPasswordValid();
   }
 
   public filterpartOfSchool(result: string): void {
@@ -195,17 +188,6 @@ export class EditProfileStep2Page {
     }
     this.partOfSchool = result;
   }
-
-  // public onPasswordEdit(){
-  //   let newPassword = this.EditProfilestep2Form.value.password;
-  //   if(newPassword != ""){
-  //     this.EditProfilestep2Form.get('password').setValidators([Validators.required, Validators.minLength(6)]);
-  //     this.EditProfilestep2Form.get('confPassword').setValidators([Validators.required, Validators.minLength(6), this.equalTo('password')]);
-  //   }else{
-  //     this.EditProfilestep2Form.get('password').setValidators([]);
-  //     this.EditProfilestep2Form.get('confPassword').setValidators([]);
-  //   }
-  // }
 
   getRole() {
     return this.userRole;

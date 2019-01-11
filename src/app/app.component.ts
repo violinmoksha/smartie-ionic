@@ -161,6 +161,7 @@ export class SmartieApp {
         this.tosterService.internetListener();
         this.setUserName();
         this.getGalleryPermission();
+        this.grantNotificationPermission();
 
         Parse._initialize(this.parseAppId, null, this.parseMasterKey);
         // Parse.initialize(this.parseAppId, null, this.parseMasterKey);
@@ -171,11 +172,13 @@ export class SmartieApp {
           this.fetchiOSUDID.fetch().then(iOSUDID => {
             this.initFirebase(iOSUDID); // NB: calls sync/non-returning notificationHandler
             this.initializeAppInner(iOSUDID);
+            this.onFcmTokenRefresh(iOSUDID);
           });
         } else {
           // android, persistant UDID
           this.initFirebase(this.device.uuid);
           this.initializeAppInner(this.device.uuid);
+          this.onFcmTokenRefresh(this.device.uuid);
         }
       } else {
         console.log('What on earth non-cordova land.');
@@ -205,32 +208,53 @@ export class SmartieApp {
     });
   }
 
+  grantNotificationPermission() {
+    if(this.platform.is("ios")){
+      this.firebase.grantPermission();
+    }
+  }
+
+  onFcmTokenRefresh(udid) {
+    this.firebase.onTokenRefresh().subscribe(newToken => {
+      console.log("Got new refreshed fcmtoken");
+      this.updateFcmtoServer(newToken, udid);
+    })
+  }
+
+  updateFcmtoServer(token, UDID) {
+    return new Promise((resolve, reject) => {
+      this.dataService.getApi(
+        'updateFcmToken',
+        {
+          device: { cordova: this.device.cordova, isVirtual: this.device.isVirtual, manufacturer: this.device.manufacturer, model: this.device.model, platform: this.device.platform, serial: this.device.serial, uuid: UDID, version: this.device.version },
+          token: token
+        }
+      ).then(API => {
+        console.log(API);
+        //console.info("http.post from here is: "+this.dataService.http.post);
+        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(data => {
+          this.notificationHandler();
+          resolve(token);
+        }, error => {
+          console.info('Error in updateFcmToken endpoint: ', error);
+          reject(error);
+        });
+      }, error => {
+        console.info('Failed to get updateFcmToken API object: ' + JSON.stringify(error));
+        reject(error);
+      });
+    })
+  }
+
   initFirebase(UDID): Promise<any> {
     return new Promise((resolve, reject) => {
       console.log('Attempting to enter getToken with UDID: ' + UDID);
       this.firebase.getToken().then(token => {
-        //console.log(`Firebase token is: ${token}`);
-        console.log('Going to updateFcmToken with: ' + JSON.stringify(this.device));
-        this.dataService.getApi(
-          'updateFcmToken',
-          {
-            device: { cordova: this.device.cordova, isVirtual: this.device.isVirtual, manufacturer: this.device.manufacturer, model: this.device.model, platform: this.device.platform, serial: this.device.serial, uuid: UDID, version: this.device.version },
-            token: token
-          }
-        ).then(API => {
-          console.log(API);
-          //console.info("http.post from here is: "+this.dataService.http.post);
-          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(data => {
-            this.notificationHandler();
-            resolve(token);
-          }, error => {
-            console.info('Error in updateFcmToken endpoint: ', error);
-            reject(error);
-          });
-        }, error => {
-          console.info('Failed to get updateFcmToken API object: ' + JSON.stringify(error));
-          reject(error);
-        });
+        this.updateFcmtoServer(token, UDID).then(res => {
+          resolve(res);
+        }, err => {
+          reject(err);
+        })
       }, error => {
         console.info('Error in Firebase getToken: ', JSON.stringify(error));
         reject(error);

@@ -8,7 +8,7 @@ import { AnalyticsProvider } from '../../providers/analytics';
 const Parse = require('parse');
 import { Globalization } from '@ionic-native/globalization';
 
-declare var google;
+declare let google;
 
 /**
  * Generated class for the SmartieSearchPage page.
@@ -47,6 +47,8 @@ export class SmartieSearch {
   public notifications: any;
   public accepteds: any;
 
+  public userLocation: any;
+
   private hasUpcomings: boolean = false;
   // TODO: autopopulate input with user's location
   // private reverseGeocodedLocation: string;
@@ -70,6 +72,7 @@ export class SmartieSearch {
 
     this.accepteds = [];
     this.fromWhere = navParams.get('fromWhere');
+
   }
 
   addProfilePhoto(profile) {
@@ -113,6 +116,18 @@ export class SmartieSearch {
 
   ionViewDidLoad() {
     try {
+
+      let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
+      console.log(input);
+      let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
+
+      let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);
+      console.log(autocomplete);
+      autocomplete.addListener("place_changed", () => {
+        let place = autocomplete.getPlace();
+        this.userLocation = place.formatted_address;
+      });
+
       this.events.publish("buttonsLoad", this.role);
 
       this.storage.get('UserProfile').then(profile => {
@@ -206,7 +221,6 @@ export class SmartieSearch {
     } catch (e) {
       console.log(e);
     }
-
   }
 
   getAllRequesteds() {
@@ -296,8 +310,10 @@ export class SmartieSearch {
     })
   }
 
-  findJobsSearch(searchLoc) {
-    this.getGeoPoint(searchLoc).then(response => {
+  findJobsSearch() {
+    console.log(this.userLocation);
+    this.getGeoPoint(this.userLocation).then(response => {
+      console.log(response);
       this.smartieSearchResult(null, this.navParams.get("role"), response, this.extendBound);
     });
   }
@@ -341,6 +357,7 @@ export class SmartieSearch {
       }
 
       if (this.bounds.contains(new google.maps.LatLng(this.marker.position.lat(), this.marker.position.lng()))) {
+        console.log("bounds contains");
         this.markerCount.push(this.marker);
       } else {
         // console.log("Yes without bounds");
@@ -458,9 +475,11 @@ export class SmartieSearch {
       this.createMarkerLocation(searchResult);
     }
 
+    console.log(this.markerCount.length);
     if (this.markerCount) {
       if (this.markerCount.length < 5) {
         this.extendBound = true;
+        this.bounds = new google.maps.LatLngBounds();
         this.smartieSearchResult(latLng, searchRole, searchLoc, this.extendBound);
       }
     }

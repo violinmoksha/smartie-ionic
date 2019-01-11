@@ -59,6 +59,8 @@
     <platform name="ios">
         <preference name="SplashScreen" value="screen" />
         <preference name="KeychainAccessibility" value="WhenUnlocked" />
+        <preference name="WKPort" value="8080" />
+        <preference name="UseScheme" value="false" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
