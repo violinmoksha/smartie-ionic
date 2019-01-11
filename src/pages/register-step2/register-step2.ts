@@ -31,6 +31,7 @@ export class RegisterStep2Page {
   private profilePicSrc: string;
   public schoolPicSrc: string = './assets/img/school-img.png';
   private cameraData: string;
+  public displayCameraImg: string;
   private schoolCameraData: string;
   private photoTaken: boolean;
   private schoolPhotoTaken: boolean;
@@ -91,7 +92,6 @@ export class RegisterStep2Page {
         name: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
         profileAbout: new FormControl('', Validators.required),
-        schoolName: new FormControl('', Validators.required),
         contactName: new FormControl('', Validators.required),
         contactPosition: new FormControl('', Validators.required)
       })
@@ -137,8 +137,11 @@ export class RegisterStep2Page {
   }
 
   chooseUploadType(inputEvent, photoFor) {
-    this.cameraService.getImage().then(imageData => {
-        this.cameraData = this.platform.is("ios") ? imageData[0].replace('file://', '') : imageData[0];
+    this.cameraService.getImage().then((imageData: any) => {
+        console.log(imageData);
+        // this.cameraData = this.platform.is("ios") ? imageData[0].replace('file://', '') : imageData[0];
+        this.cameraData = imageData.imageUrl[0];
+        this.displayCameraImg = imageData.normalizedUrl
         this.storage.set('profilePhotoDataUrl', imageData[0]);
         this.photoTaken = true;
         this.photoSelected = false;
@@ -251,6 +254,7 @@ export class RegisterStep2Page {
           })
         });
     } else {
+        this.loading.dismiss();
         this.navCtrl.push("RegisterStep3Page", { form1Values: this.form1Values, form2Values: form2Values, role: this.role });
 
         this.storage.get('Registration').then(registration => {

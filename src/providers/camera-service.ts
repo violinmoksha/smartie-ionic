@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Injectable } from '@angular/core';
 import { ImagePicker } from '@ionic-native/image-picker';
+import { File } from '@ionic-native/file';
 /* 
   Generated class for the CameraServiceProvider provider.
 
@@ -13,7 +14,7 @@ import { ImagePicker } from '@ionic-native/image-picker';
 @Injectable()
 export class CameraServiceProvider {
 
-  constructor(public camera: Camera, public actionSheetCtrl: ActionSheetController, public imagePicker: ImagePicker, public storage: Storage) {
+  constructor(public camera: Camera, public actionSheetCtrl: ActionSheetController, public imagePicker: ImagePicker, public storage: Storage, public fileService: File) {
     console.log('Hello CameraServiceProvider Provider');
   }
 
@@ -71,6 +72,17 @@ export class CameraServiceProvider {
     })
   }
 
+  returnFileAsDataURL(path, name) {
+    return new Promise((resolve, reject) => {
+      this.fileService.readAsDataURL(path, name).then(result => {
+        console.log(result);
+        resolve(result)
+      }, err => {
+        reject(err)
+      })
+    });
+  }
+
 
   getImage() {
     return new Promise((resolve, reject) => {
@@ -86,9 +98,16 @@ export class CameraServiceProvider {
                 console.log(image);
                 // //NOTE: converting(normalizing the URL due to cordova web view plugin upgrade)
                 // image = this.ionicWebView.convertFileSrc(image);
-                console.log(image);
+                let path = image.substring(0, image.lastIndexOf("/"));
+                let name = image.substring(image.lastIndexOf("/")+1);
+                let normalizedFile = window['Ionic']['WebView'].convertFileSrc(image);
+                console.log(normalizedFile)
+                // this.returnFileAsDataURL(path, name).then(res => {
+                //   console.log(res);
+                // })
                 let imageArray = [image];
-                resolve(imageArray);
+                let result = {imageUrl:imageArray, normalizedUrl:normalizedFile}
+                resolve(result);
               }, (err) => {
                 reject(err);
               });
@@ -100,7 +119,9 @@ export class CameraServiceProvider {
             handler: () => {
               this.choosePictures().then((pics) => {
                 console.log(pics)
-                resolve(pics);
+                let normalizedFile = window['Ionic']['WebView'].convertFileSrc(pics[0]);
+                let result = {imageUrl:pics, normalizedUrl:normalizedFile}
+                resolve(result);
               }, (err) => {
                 reject(err);
               });

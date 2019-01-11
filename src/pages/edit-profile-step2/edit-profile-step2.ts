@@ -28,6 +28,7 @@ export class EditProfileStep2Page {
   pageProfileSrc: string;
   schoolPicSrc:string;
   cameraData: string;
+  displayCameraImg: string;
   photoTaken: boolean;
   cameraUrl: string;
   private schoolCameraData: string;
@@ -35,6 +36,7 @@ export class EditProfileStep2Page {
   private schoolPhotoTaken: boolean;
   private schoolCameraUrl:string;
   photoSelected: boolean;
+  passwordChange: boolean = false;
   partOfSchool: string;
   @ViewChild(Slides) roleSchool: Slides;
 
@@ -57,11 +59,14 @@ export class EditProfileStep2Page {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
     this.userRole = navParams.get("userRole");
 
+
+    // this.checkPasswordValid();
+
     if(this.userRole == 'school'){
       this.EditProfilestep2Form = new FormGroup({
         username: new FormControl('', Validators.required),
-        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-        confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')]),
+        password: new FormControl(''),
+        confPassword: new FormControl(''),
         email: new FormControl('', Validators.required),
         schoolName: new FormControl('', Validators.required),
         contactName: new FormControl('', Validators.required),
@@ -73,8 +78,8 @@ export class EditProfileStep2Page {
     } else if (this.userRole == 'teacher'){
       this.EditProfilestep2Form = new FormGroup({
         username: new FormControl('', Validators.required),
-        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-        confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')]),
+        password: new FormControl(''),
+        confPassword: new FormControl(''),
         email: new FormControl('', Validators.required),
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
@@ -85,17 +90,16 @@ export class EditProfileStep2Page {
     } else{
       this.EditProfilestep2Form = new FormGroup({
         username: new FormControl('', Validators.required),
-        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-        confPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.equalTo('password')]),
+        password: new FormControl(''),
+        confPassword: new FormControl(''),
         email: new FormControl('', Validators.required),
         name: new FormControl('', Validators.required),
         phone: new FormControl('', Validators.required),
         profileTitle: new FormControl('', Validators.required),
-        profileAbout: new FormControl('', Validators.required),
-        othersSchoolName: new FormControl('')
+        profileAbout: new FormControl('', Validators.required)
       });
     }
-    
+   
 
     this.storage.get("UserProfile").then(roleProfile => {
       if(roleProfile.profileData.schoolPhoto){
@@ -115,6 +119,9 @@ export class EditProfileStep2Page {
           this.schoolPicSrc = './assets/img/school-img.png';
         }
       }
+
+      console.log("Phone number");
+      console.log(roleProfile);
 
       this.userName = roleProfile.userData.username;
       this.email = roleProfile.userData.email;
@@ -154,12 +161,29 @@ export class EditProfileStep2Page {
     };
   }
   chooseUploadType(inputEvent, photoFor) {
-    this.cameraService.getImage().then(imageData => {
-      this.cameraData = imageData[0];
+    this.cameraService.getImage().then((imageData: any) => {
+      console.log(imageData)
+      this.cameraData = imageData.imageUrl[0];
+      this.displayCameraImg = imageData.normalizedUrl;
       this.storage.set('profilePhotoDataUrl', imageData[0]);
       this.photoTaken = true;
       this.photoSelected = false;
     })
+  }
+
+  onPasswordChange(){
+    let newPassword = this.EditProfilestep2Form.get('password').value;
+    if(newPassword){
+      this.EditProfilestep2Form.get('password').setValidators([Validators.required, Validators.minLength(6)]);
+      this.EditProfilestep2Form.get('confPassword').setValidators([Validators.required, Validators.minLength(6), this.equalTo('password')])
+      this.EditProfilestep2Form.updateValueAndValidity();
+    }else{
+      this.EditProfilestep2Form.get('password').clearValidators();
+      this.EditProfilestep2Form.get('confPassword').clearValidators();
+      this.EditProfilestep2Form.updateValueAndValidity();
+    }
+    // this.passwordChange = true;
+    // this.checkPasswordValid();
   }
 
   public filterpartOfSchool(result: string): void {
@@ -171,6 +195,17 @@ export class EditProfileStep2Page {
     }
     this.partOfSchool = result;
   }
+
+  // public onPasswordEdit(){
+  //   let newPassword = this.EditProfilestep2Form.value.password;
+  //   if(newPassword != ""){
+  //     this.EditProfilestep2Form.get('password').setValidators([Validators.required, Validators.minLength(6)]);
+  //     this.EditProfilestep2Form.get('confPassword').setValidators([Validators.required, Validators.minLength(6), this.equalTo('password')]);
+  //   }else{
+  //     this.EditProfilestep2Form.get('password').setValidators([]);
+  //     this.EditProfilestep2Form.get('confPassword').setValidators([]);
+  //   }
+  // }
 
   getRole() {
     return this.userRole;
@@ -189,9 +224,11 @@ export class EditProfileStep2Page {
       }
       this.fileUploader.uploadFileToAWS(uploadContent, this.fileUploader.awsBucket.profile).then(res => {
         form2Values.profilePhoto = res;
+        this.loading.dismiss();
         this.next(form2Values);
       })
     }else{
+      this.loading.dismiss();
       this.next(form2Values);
     }
   }
