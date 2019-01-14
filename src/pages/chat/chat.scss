@@ -1,6 +1,7 @@
 page-chat {
     .newmessage{
         margin-left: 25px;
+        color: #111111;
     }
     .chat {
       width: 320px;
@@ -71,6 +72,12 @@ page-chat {
                 margin: 3px;
             }
         }
+    }
+    .chat-toolbar .toolbar-content-ios{
+        z-index: 9 !important;
+    }
+    .chat-toolbar .bar-buttons-ios[right]{
+        order: 2 !important;
     }
     .chat-warning{
         padding: 15px;

@@ -118,11 +118,9 @@ export class SmartieSearch {
     try {
 
       let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
-      console.log(input);
       let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
 
       let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);
-      console.log(autocomplete);
       autocomplete.addListener("place_changed", () => {
         let place = autocomplete.getPlace();
         this.userLocation = place.formatted_address;
@@ -147,6 +145,7 @@ export class SmartieSearch {
                   this.notifications = notifications;
                   return await this.storage.get('phoneLatLng').then(async phoneLatLng => {
                     if (phoneLatLng !== undefined && phoneLatLng !== null) {
+                      console.log("Phone")
                       this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
                     } else {
                       this.latLngUser = profile.profileData.latlng;
@@ -314,6 +313,7 @@ export class SmartieSearch {
     console.log(this.userLocation);
     this.getGeoPoint(this.userLocation).then(response => {
       console.log(response);
+      this.extendBound = false;
       this.smartieSearchResult(null, this.navParams.get("role"), response, this.extendBound);
     });
   }

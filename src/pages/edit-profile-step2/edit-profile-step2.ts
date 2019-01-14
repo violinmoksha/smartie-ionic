@@ -216,6 +216,7 @@ export class EditProfileStep2Page {
   }
 
   next(form2Value){
+    this.loading.dismiss();
     this.navCtrl.push("EditProfileStep3Page", { form1Value: this.form1Values, form2Value : form2Value, partOfSchool: this.partOfSchool, userRole: this.userRole });
   }
 
