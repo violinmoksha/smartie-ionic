@@ -145,6 +145,7 @@ export class SmartieSearch {
                   this.notifications = notifications;
                   return await this.storage.get('phoneLatLng').then(async phoneLatLng => {
                     if (phoneLatLng !== undefined && phoneLatLng !== null) {
+                      console.log("Phone")
                       this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
                     } else {
                       this.latLngUser = profile.profileData.latlng;
@@ -312,6 +313,7 @@ export class SmartieSearch {
     console.log(this.userLocation);
     this.getGeoPoint(this.userLocation).then(response => {
       console.log(response);
+      this.extendBound = false;
       this.smartieSearchResult(null, this.navParams.get("role"), response, this.extendBound);
     });
   }
