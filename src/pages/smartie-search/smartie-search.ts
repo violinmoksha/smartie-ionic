@@ -118,7 +118,6 @@ export class SmartieSearch {
     try {
 
       let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
-      console.log(input);
       let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
 
       let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);

@@ -31,13 +31,16 @@
         <p>Your Location</p>
       </div>
 
-      <ion-item>
-        <ion-label fixed>Prefered Location</ion-label>
-        <ion-input [value]="prefLocation" type="text" formControlName="prefLocation"></ion-input>
-      </ion-item>
-
-      <div *ngIf="!EditProfilestep3Form.controls['prefLocation'].valid && !EditProfilestep3Form.controls['prefLocation'].pristine" class="item item-message">
-        Enter your prefered location.
+      <div>
+        <ion-item>
+          <ion-label fixed>Prefered Location</ion-label>
+          <!-- <ion-input [value]="prefLocation" type="text" formControlName="prefLocation"></ion-input> -->
+          <ion-input class="item item-input" [(ngModel)]="prefLocation" formControlName="prefLocation" id="locationSearchEdit" type="text"></ion-input>
+        </ion-item>
+  
+        <div *ngIf="!EditProfilestep3Form.controls['prefLocation'].valid && !EditProfilestep3Form.controls['prefLocation'].pristine" class="item item-message">
+          Enter your prefered location.
+        </div>
       </div>
 
       <div *ngIf="userRole == 'teacher'">

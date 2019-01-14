@@ -11,6 +11,8 @@ import { AnalyticsProvider } from '../../providers/analytics';
 
 import Parse from 'parse';
 
+declare let google;
+
 /**
  * Generated class for the EditProfileStep3Page page.
  *
@@ -50,6 +52,7 @@ export class EditProfileStep3Page {
   public uploadedCvFiles: Array<any> = []
   public partOfSchool: boolean;
   public prefLocation: string;
+  // public userLocation:any;
   public hourRates = [
     { "value": 5, "text": '5' },
     { "value": 10, "text": '10' },
@@ -145,6 +148,19 @@ export class EditProfileStep3Page {
       for (var i = 0; i < roleProfile.specificUser.credentials.length; i++) {
         this.uploadedCvFiles.push({ name: "File" + i, data: roleProfile.specificUser.credentials[i] });
       }
+    });
+  }
+
+  ionViewDidLoad(){
+    console.log("Input did load");
+    let input = document.getElementById("locationSearchEdit").getElementsByTagName('input')[0];
+    console.log(input);
+    let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
+
+    let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);
+    autocomplete.addListener("place_changed", () => {
+      let place = autocomplete.getPlace();
+      this.prefLocation = place.formatted_address;
     });
   }
 
@@ -289,91 +305,99 @@ export class EditProfileStep3Page {
   }
 
   finalEditProfileSubmit(form3Values) {
-    this.submitInProgress = true;
-    this.loading.present();
-    let selectedStartDate = this.startDate.split('-');
-    let selectedEndDate = this.endDate.split('-');
-    let selectedStartTime = this.startTime.split('T')[1];
-    let selectedEndTime = this.endTime.split('T')[1];
-    let UTCstartTime = new Date(selectedStartDate[2], selectedStartDate[1] - 1, selectedStartDate[0], parseInt(selectedStartTime.split(':')[0]), parseInt(selectedStartTime.split(':')[1]));
+    try{
+      this.submitInProgress = true;
+      this.loading.present();
 
-    let UTCendTime = new Date(selectedEndDate[2], selectedEndDate[1] - 1, selectedEndDate[0], parseInt(selectedEndTime.split(':')[0]), parseInt(selectedEndTime.split(':')[1]));
+      if (this.userRole == 'teacher') {
 
-    if (this.userRole == 'teacher') {
-      this.body = {
-        role: this.userRole,
-        userData: this.userData,
-        password: this.form1Values.password,
-        editables: {
-          username: this.form2Values.username.toLowerCase(),
-          email: this.form2Values.email.toLowerCase(),
-          profile: {
-            profileAbout: this.form2Values.profileAbout,
-            profileTitle: this.form2Values.profileTitle,
-            prefPayRate: this.hourlyRate,
-            phone: this.form2Values.phone,
-            fullname: this.form2Values.name,
-            prefLocation: form3Values.prefLocation,
-            profilePhoto: this.form2Values.profilePhoto
-          },
-          specificUser: {
-            yrsExperience: this.yearExperience,
-            profileTitle: this.form2Values.profileTitle,
-            defaultStartDateTime: UTCstartTime.toISOString(),
-            defaultEndDateTime: UTCendTime.toISOString(),
-            credentials: form3Values.credentials
+        let selectedStartDate = this.startDate.split('-');
+        let selectedEndDate = this.endDate.split('-');
+        let selectedStartTime = this.startTime.split('T')[1];
+        let selectedEndTime = this.endTime.split('T')[1];
+        
+        let UTCstartTime = new Date(selectedStartDate[2], selectedStartDate[1] - 1, selectedStartDate[0], parseInt(selectedStartTime.split(':')[0]), parseInt(selectedStartTime.split(':')[1]));
+
+        let UTCendTime = new Date(selectedEndDate[2], selectedEndDate[1] - 1, selectedEndDate[0], parseInt(selectedEndTime.split(':')[0]), parseInt(selectedEndTime.split(':')[1]));
+
+        this.body = {
+          role: this.userRole,
+          userData: this.userData,
+          password: this.form1Values.password,
+          editables: {
+            username: this.form2Values.username.toLowerCase(),
+            email: this.form2Values.email.toLowerCase(),
+            profile: {
+              profileAbout: this.form2Values.profileAbout,
+              profileTitle: this.form2Values.profileTitle,
+              prefPayRate: this.hourlyRate,
+              phone: this.form2Values.phone,
+              fullname: this.form2Values.name,
+              prefLocation: form3Values.prefLocation,
+              profilePhoto: this.form2Values.profilePhoto
+            },
+            specificUser: {
+              yrsExperience: this.yearExperience,
+              profileTitle: this.form2Values.profileTitle,
+              defaultStartDateTime: UTCstartTime.toISOString(),
+              defaultEndDateTime: UTCendTime.toISOString(),
+              credentials: form3Values.credentials
+            }
+          }
+        }
+      } else if (this.userRole == 'student' || this.userRole == 'parent') {
+        this.body = {
+          role: this.userRole,
+          userData: this.userData,
+          password: this.form1Values.password,
+          editables: {
+            username: this.form2Values.username.toLowerCase(),
+            email: this.form2Values.email.toLowerCase(),
+            profile: {
+              profileAbout: this.form2Values.profileAbout,
+              profileTitle: this.form2Values.profileTitle,
+              prefPayRate: this.hourlyRate,
+              phone: this.form2Values.phone,
+              fullname: this.form2Values.name,
+              prefLocation: form3Values.prefLocation,
+              schoolname: this.form2Values.othersSchoolName,
+              profilePhoto: this.form2Values.profilePhoto
+            },
+            specificUser: {
+              partofschool:
+                (this.form2Values.othersSchoolName ? true : false)
+            }
+          }
+        }
+      } else { // school
+        this.body = {
+          role: this.userRole,
+          userData: this.userData,
+          password: this.form1Values.password,
+          editables: {
+            username: this.form2Values.username.toLowerCase(),
+            email: this.form2Values.email.toLowerCase(),
+            profile: {
+              profileAbout: this.form2Values.profileAbout,
+              profileTitle: this.form2Values.profileTitle,
+              prefPayRate: this.hourlyRate,
+              phone: this.form2Values.phone,
+              fullname: this.form2Values.name,
+              prefLocation: form3Values.prefLocation,
+              profilePhoto: this.form2Values.profilePhoto
+            },
+            specificUser: {
+              schoolname: this.form2Values.schoolName,
+              contactname: this.form2Values.contactName,
+              contactposition: this.form2Values.contactPosition
+            }
           }
         }
       }
-    } else if (this.userRole == 'student' || this.userRole == 'parent') {
-      this.body = {
-        role: this.userRole,
-        userData: this.userData,
-        password: this.form1Values.password,
-        editables: {
-          username: this.form2Values.username.toLowerCase(),
-          email: this.form2Values.email.toLowerCase(),
-          profile: {
-            profileAbout: this.form2Values.profileAbout,
-            profileTitle: this.form2Values.profileTitle,
-            prefPayRate: this.hourlyRate,
-            phone: this.form2Values.phone,
-            fullname: this.form2Values.name,
-            prefLocation: form3Values.prefLocation,
-            schoolname: this.form2Values.othersSchoolName,
-            profilePhoto: this.form2Values.profilePhoto
-          },
-          specificUser: {
-            partofschool:
-              (this.form2Values.othersSchoolName ? true : false)
-          }
-        }
-      }
-    } else { // school
-      this.body = {
-        role: this.userRole,
-        userData: this.userData,
-        password: this.form1Values.password,
-        editables: {
-          username: this.form2Values.username.toLowerCase(),
-          email: this.form2Values.email.toLowerCase(),
-          profile: {
-            profileAbout: this.form2Values.profileAbout,
-            profileTitle: this.form2Values.profileTitle,
-            prefPayRate: this.hourlyRate,
-            phone: this.form2Values.phone,
-            fullname: this.form2Values.name,
-            prefLocation: form3Values.prefLocation,
-            profilePhoto: this.form2Values.profilePhoto
-          },
-          specificUser: {
-            schoolname: this.form2Values.schoolName,
-            contactname: this.form2Values.contactName,
-            contactposition: this.form2Values.contactPosition
-          }
-        }
-      }
+    }catch(e){
+      console.log(e);
     }
+    
     return new Promise(async (resolve) => {
       return await this.dataService.getApi(
         'editUser',
