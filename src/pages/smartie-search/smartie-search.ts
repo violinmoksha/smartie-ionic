@@ -121,7 +121,6 @@ export class SmartieSearch {
       let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
 
       let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);
-      console.log(autocomplete);
       autocomplete.addListener("place_changed", () => {
         let place = autocomplete.getPlace();
         this.userLocation = place.formatted_address;
