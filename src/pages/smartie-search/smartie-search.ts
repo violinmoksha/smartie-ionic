@@ -145,7 +145,6 @@ export class SmartieSearch {
                   this.notifications = notifications;
                   return await this.storage.get('phoneLatLng').then(async phoneLatLng => {
                     if (phoneLatLng !== undefined && phoneLatLng !== null) {
-                      console.log("Phone")
                       this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
                     } else {
                       this.latLngUser = profile.profileData.latlng;
@@ -310,9 +309,7 @@ export class SmartieSearch {
   }
 
   findJobsSearch() {
-    console.log(this.userLocation);
     this.getGeoPoint(this.userLocation).then(response => {
-      console.log(response);
       this.extendBound = false;
       this.smartieSearchResult(null, this.navParams.get("role"), response, this.extendBound);
     });
@@ -449,9 +446,9 @@ export class SmartieSearch {
     if (latLng !== null) {
       mapCenter = latLng;
     } else if (searchLoc !== null) {
-      // TODO: this now needs to do a quick geocoder call (fixed)
       mapCenter = searchLoc;
     }
+    //console.log('smartieSearchResult debug: latLng == ' + JSON.stringify(latLng) + ' && searchLoc == ' + searchLoc);
 
     let mapOptions = {
       mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -475,8 +472,9 @@ export class SmartieSearch {
       this.createMarkerLocation(searchResult);
     }
 
-    console.log(this.markerCount.length);
-    if (this.markerCount) {
+    //console.log(this.markerCount.length);
+    // TODO: lot of rethinking needs to be done on this logic per scaling data conditions
+    if (this.markerCount && this.markerCount.length !== 0 && this.notifications.length > 5) {
       if (this.markerCount.length < 5) {
         this.extendBound = true;
         this.bounds = new google.maps.LatLngBounds();
