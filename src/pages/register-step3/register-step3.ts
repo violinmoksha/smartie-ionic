@@ -69,7 +69,8 @@ export class RegisterStep3Page {
     { "value": 17, "text": '17' },
     { "value": 18, "text": '18' },
     { "value": 19, "text": '19' },
-    { "value": 20, "text": '20 +' }
+    { "value": 20, "text": '20+' },
+    { "value": 21, "text": '' },
   ];
 
   public hourRates = [
@@ -92,7 +93,8 @@ export class RegisterStep3Page {
     { "text": '85', "value": 85 },
     { "text": '90', "value": 90 },
     { "text": '95', "value": 95 },
-    { "text": '100', "value": 100 }
+    { "text": '100', "value": 100 },
+    { "text": '', "value": 101 }
   ];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, public UDID: FetchiOSUDID) {
