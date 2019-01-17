@@ -21,12 +21,16 @@
       </div>
 
       <h3>Optimal hourly price range</h3>
-      <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="7">
+      <!-- <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="7">
         <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
           <p>{{ rate.text }}</p>
         </ion-slide>
-      </ion-slides>
-
+      </ion-slides> -->
+      <ion-scroll scrollX="true" style="height: 100px;">
+          <div style="width: 100%; display: flex;" >
+            <button *ngFor="let rate of hourRates" type="button" style="width: 10%;" ion-button outline="(hourlyRate == rate.value)" class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">{{rate.text}}</button>
+          </div>
+      </ion-scroll>
       <div class="tagline">
         <p>Your Location</p>
       </div>
@@ -124,6 +128,6 @@
         </div>
       </div>
     </ion-list>
-    <button class="button button-positive" [disabled]="!EditProfilestep3Form.valid || submitInProgress" ion-button full>Submit</button>
+    <button type="submit" class="button button-positive" [disabled]="!EditProfilestep3Form.valid || submitInProgress" ion-button full>Submit</button>
   </form>
 </ion-content>
