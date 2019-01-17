@@ -29,8 +29,11 @@
       <a href="javascript:" (click)="showUpcomingAlert()">{{ upcoming.otherProfile.fullname }} made payment and booked appointment for {{ [toTimeZone(upcoming.apptDate.iso)] }} from {{ upcoming.startTime }} to {{ upcoming.endTime }}!</a>
     </li>
 
-    <li class="requested" *ngIf="allAccepteds.length == 0 && allRequesteds.length == 0 && allUpcomings.length == 0">
+    <li class="requested" *ngIf="(allAccepteds.length == 0 && allRequesteds.length == 0 && allUpcomings.length == 0) && apiCompletedCount == 3">
       <a href="javascript:">Your job notifications will appear here.</a>
     </li>
   </ul>
+  <div class="text-center" *ngIf="apiCompletedCount < 3">
+    <p>Fetching notifications...</p>
+  </div>
 </ion-content>

@@ -21,6 +21,7 @@ export class NotificationFeedPage {
   public allUpcomings: Array<{}> = [];
   private userRole: any;
   private profileId: any;
+  public apiCompletedCount: number = 0;
 
   constructor(public navCtrl: NavController, private dataService: DataService, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController, private analytics: AnalyticsProvider) {
 
@@ -51,9 +52,11 @@ export class NotificationFeedPage {
       { profileId: profileId, role: role }
     ).then(async API => {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async jobReq => {
+        this.apiCompletedCount += 1; 
         if (jobReq)
           this.allAccepteds = jobReq.result; // jobReq[0], jobReq.data[0]???
       }, (err) => {
+        this.apiCompletedCount += 1; 
         console.log(err);
       })
     });
@@ -65,9 +68,11 @@ export class NotificationFeedPage {
       { profileId: profileId, role: role }
     ).then(async API => {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async jobReq => {
+        this.apiCompletedCount += 1; 
         if (jobReq)
           this.allRequesteds = jobReq.result; // ???
       }, (err) => {
+        this.apiCompletedCount += 1; 
         console.log(err);
       })
     });
@@ -79,9 +84,11 @@ export class NotificationFeedPage {
       { profileId: profileId, role: role }
     ).then(async API => {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async jobReq => {
+        this.apiCompletedCount += 1; 
         if (jobReq)
           this.allUpcomings = jobReq.result; // ????
       }, (err) => {
+        this.apiCompletedCount += 1; 
         console.log(err);
       })
     });
