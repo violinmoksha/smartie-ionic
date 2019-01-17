@@ -145,10 +145,10 @@ export class SmartieSearch {
                   this.notifications = notifications;
                   return await this.storage.get('phoneLatLng').then(async phoneLatLng => {
                     if (phoneLatLng !== undefined && phoneLatLng !== null) {
-                      this.smartieSearchResult(phoneLatLng, profile.profileData.role, null, this.extendBound);
+                      this.smartieSearchResult(phoneLatLng, profile.profileData.role, null);
                     } else {
                       this.latLngUser = profile.profileData.latlng;
-                      this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, this.extendBound);
+                      this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
                     }
 
                     //get all requested's
@@ -310,68 +310,67 @@ export class SmartieSearch {
 
   findJobsSearch() {
     this.getGeoPoint(this.userLocation).then(response => {
-      this.extendBound = false;
-      this.smartieSearchResult(null, this.navParams.get("role"), response, this.extendBound);
+      this.smartieSearchResult(null, this.navParams.get("role"), response);
     });
   }
 
-  createMarkerLocation(locationData) {
+  createMarkerLocation(extendBound) {
     // TODO: there shud be a way to wrap this
     // so we don't need to include the frontend
     // SDK directly in our index.html
     try {
       let latLng;
-      if (this.role == 'teacher') {
-        if (locationData.otherProfile) {
-          latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
-
-          this.randomLocation = this.randomGeo(locationData.otherProfile.latlng, 500);
-
-          if (locationData.otherProfile.role == 'teacher') {
-            this.userIcon = './assets/imgs/teacher-map-icon30px.png'
-          } else if (locationData.otherProfile.role == 'parent') {
-            this.userIcon = './assets/imgs/parent-map-icon30px.png'
-          } else if (locationData.otherProfile.role == 'school') {
-            this.userIcon = './assets/imgs/school-map-icon30px.png'
-          } else if (locationData.otherProfile.role == 'student') {
-            this.userIcon = './assets/imgs/student-map-icon30px.png'
+      for(let locationData of this.notifications){
+        if (this.role == 'teacher') {
+          if (locationData.otherProfile) {
+            latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
+  
+            this.randomLocation = this.randomGeo(locationData.otherProfile.latlng, 500);
+  
+            if (locationData.otherProfile.role == 'teacher') {
+              this.userIcon = './assets/imgs/teacher-map-icon30px.png'
+            } else if (locationData.otherProfile.role == 'parent') {
+              this.userIcon = './assets/imgs/parent-map-icon30px.png'
+            } else if (locationData.otherProfile.role == 'school') {
+              this.userIcon = './assets/imgs/school-map-icon30px.png'
+            } else if (locationData.otherProfile.role == 'student') {
+              this.userIcon = './assets/imgs/student-map-icon30px.png'
+            }
           }
+        } else {
+          latLng = new google.maps.LatLng(locationData.teacherProfile.latlng.latitude, locationData.teacherProfile.latlng.longitude);
+  
+          this.randomLocation = this.randomGeo(locationData.teacherProfile.latlng, 500);
+          this.userIcon = './assets/imgs/teacher-map-icon30px.png';
         }
-      } else {
-        latLng = new google.maps.LatLng(locationData.teacherProfile.latlng.latitude, locationData.teacherProfile.latlng.longitude);
 
-        this.randomLocation = this.randomGeo(locationData.teacherProfile.latlng, 500);
-        this.userIcon = './assets/imgs/teacher-map-icon30px.png';
-      }
-      this.marker = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
-        position: new google.maps.LatLng(this.randomLocation.latitude, this.randomLocation.longitude),
-        icon: this.userIcon
-      });
-      if (this.extendBound) {
+        this.marker = new google.maps.Marker({
+          map: this.map,
+          animation: google.maps.Animation.DROP,
+          position: new google.maps.LatLng(this.randomLocation.latitude, this.randomLocation.longitude),
+          icon: this.userIcon
+        });
+
         this.bounds.extend(latLng);
+
+        if (this.extendBound) {
+          let addonLatLng = new google.maps.LatLng(38.37050224570918,-75.11474514696198);
+          this.bounds.extend(addonLatLng);
+        }
+
+        if (locationData.profilePhoto) {
+          this.profilePhoto = locationData.profilePhoto.url;
+        } else {
+          this.profilePhoto = './assets/imgs/user-round-icon.png';
+        }
+
+        this.marker.addListener('click', () => {
+
+          this.ngZone.run(() => {
+            this.initJobRequestPopUp(locationData);
+          })
+        });
       }
-
-      if (this.bounds.contains(new google.maps.LatLng(this.marker.position.lat(), this.marker.position.lng()))) {
-        console.log("bounds contains");
-        this.markerCount.push(this.marker);
-      } else {
-        // console.log("Yes without bounds");
-      }
-
-      if (locationData.profilePhoto) {
-        this.profilePhoto = locationData.profilePhoto.url;
-      } else {
-        this.profilePhoto = './assets/imgs/user-round-icon.png';
-      }
-
-      this.marker.addListener('click', () => {
-
-        this.ngZone.run(() => {
-          this.initJobRequestPopUp(locationData);
-        })
-      });
     } catch (e) {
       console.log(e);
     }
@@ -441,7 +440,7 @@ export class SmartieSearch {
     return new google.maps.LatLng(this.toDeg(lat2), this.toDeg(lon2));
   }
 
-  smartieSearchResult(latLng, searchRole, searchLoc, extendBound) {
+  smartieSearchResult(latLng, searchRole, searchLoc) {
     let mapCenter;
     if (latLng !== null) {
       mapCenter = latLng;
@@ -454,33 +453,34 @@ export class SmartieSearch {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+   
+    this.bounds = new google.maps.LatLngBounds();
 
-    // map always should cover 200km radius from Profile user
-    // thus the actual applied trigonometry yaaaaaaay!!!!^$%^
-    // let radiusInKm = 50;
-    // console.log(this.radiusInKm);
-    if (extendBound) {
+    let locCount: number = 0;
+    for (let searchResult of this.notifications) {
+      let randomGeoUserLocation: any;
+      if(this.role == "teacher"){
+        randomGeoUserLocation = this.randomGeo(searchResult.otherProfile.latlng, 500);
+      }else{
+        randomGeoUserLocation = this.randomGeo(searchResult.teacherProfile.latlng, 500);
+      }
+      if(this.bounds.contains(new google.maps.LatLng(randomGeoUserLocation.latitude, randomGeoUserLocation.longitude))){
+        locCount++;
+      }
+    }
+
+    if(locCount < 5){
       this.bounds = new google.maps.LatLngBounds();
-    } else {
-      this.markerCount = [];
+      this.extendBound = true;
+      this.createMarkerLocation(this.extendBound);
+    }else{
       let pointSouthwest = this.destinationPoint(220, this.radiusInKm / 2, mapCenter);
       let pointNortheast = this.destinationPoint(45, this.radiusInKm / 2, mapCenter);
       this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
+      this.extendBound = false;
+      this.createMarkerLocation(this.extendBound);
     }
 
-    for (let searchResult of this.notifications) {
-      this.createMarkerLocation(searchResult);
-    }
-
-    //console.log(this.markerCount.length);
-    // TODO: lot of rethinking needs to be done on this logic per scaling data conditions
-    if (this.markerCount && this.markerCount.length !== 0 && this.notifications.length > 5) {
-      if (this.markerCount.length < 5) {
-        this.extendBound = true;
-        this.bounds = new google.maps.LatLngBounds();
-        this.smartieSearchResult(latLng, searchRole, searchLoc, this.extendBound);
-      }
-    }
     this.map.fitBounds(this.bounds);
   }
 
