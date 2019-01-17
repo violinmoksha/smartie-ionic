@@ -27,12 +27,15 @@ export class NotificationFeedPage {
 
     this.analytics.setScreenName("NotificationFeed");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("NotificationFeed", "View"));
-
-    this.loadNotifications();
   }
 
   ionViewDidLoad() {
     console.log("view loaded");
+  }
+
+  ionViewDidEnter() {
+    this.loadNotifications();
+    this.apiCompletedCount = 0;
   }
 
   loadNotifications() {
@@ -57,7 +60,6 @@ export class NotificationFeedPage {
           this.allAccepteds = jobReq.result; // jobReq[0], jobReq.data[0]???
       }, (err) => {
         this.apiCompletedCount += 1; 
-        console.log(err);
       })
     });
   }
