@@ -271,4 +271,14 @@ page-edit-profile-step3 {
     top: -15px !important;
     left: 43px;
   }
+
+  .rate-button{
+    border-radius: 40%;
+    border: none;
+    background-color: transparent;
+    color:black;
+  }
+  .rate-btn-selected{
+    border: 1px solid #00BC5B;
+  }
 }
