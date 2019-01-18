@@ -105,18 +105,18 @@ page-register-step3 {
       border-color: #00BC5B!important;
       padding: 0px 10px;
       color: #000;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      margin: auto;
-      z-index: 0;
-      max-width: 280px;
+      // position: absolute;
+      // top: 0;
+      // left: 0;
+      // right: 0;
+      // margin: auto;
+      // z-index: 0;
+      // max-width: 280px;
     }
     .input-label{
       width: 100%;
       color: #00BC5B;
-      padding-top: 60px;
+      // padding-top: 60px;
       font-size: 13px;
     }
 
@@ -280,6 +280,17 @@ page-register-step3 {
     top: -15px !important;
     left: 43px;
   }
+
+  .rate-button{
+    border-radius: 40%;
+    border: none;
+    background-color: transparent;
+    color:black;
+    box-shadow: none;
+  }
+  .rate-btn-selected{
+    border: 1px solid #00BC5B;
+  }
 }
 
 ion-calendar-modal{
@@ -323,5 +334,4 @@ ion-calendar-modal{
       }
     }
   }
-
 }
