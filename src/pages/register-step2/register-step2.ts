@@ -155,6 +155,7 @@ export class RegisterStep2Page {
   }
 
   public filterRate(rate: number): void {
+    console.log(rate);
     // Handle what to do when a category is selected
     this.hourlyRate = rate;
   }
@@ -164,7 +165,7 @@ export class RegisterStep2Page {
       console.log(udid);
       return await this.dataService.getApi(
         'addUserToProvision',
-        { uuid: this.device.uuid, userId: userId, profileId: userProfileId }
+        { uuid: udid, userId: userId, profileId: userProfileId }
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           // TODO: needs to happen right here directly into storage?
@@ -200,6 +201,8 @@ export class RegisterStep2Page {
   }
 
   next(form2Values) {
+    console.log("Check role");
+    console.log(this.role);
     if (this.role == 'student' || this.role == 'parent') {
       // TODO need to submit data here for students
       this.userInfo.prefLocation = this.userLocation;
@@ -254,10 +257,16 @@ export class RegisterStep2Page {
           })
         });
     } else {
+      console.log("form1values");
+      console.log(this.form1Values);
+      console.log("form1Values");
+      console.log(this.form1Values);
         this.loading.dismiss();
         this.navCtrl.push("RegisterStep3Page", { form1Values: this.form1Values, form2Values: form2Values, role: this.role });
 
         this.storage.get('Registration').then(registration => {
+          console.log("registration");
+          console.log(registration);
           if (registration) {
             registration.step = 2;
             registration.form2Values = form2Values;

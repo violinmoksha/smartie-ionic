@@ -105,9 +105,14 @@ export class RegisterStep3Page {
     this.loading = this.loadingCtrl.create({
       content: 'Creating Account...'
     });
-    this.form1Values = navParams.data.form1Values;
-    this.form2Values = navParams.data.form2Values;
-    this.role = navParams.data.role;
+    this.form1Values = navParams.get("form1Values");
+    this.form2Values = navParams.get("form2Values");
+    this.role = navParams.get("role");
+
+    console.log(this.form1Values);
+    console.log(this.form2Values);
+    console.log(this.role);
+
 
     this.today = new Date();
     this.startDate = this.today.getMonth() + 1 + '-' + this.today.getDate() + '-' + this.today.getFullYear();
@@ -183,6 +188,7 @@ export class RegisterStep3Page {
   }
 
   public filterYear(years: number): void {
+    console.log(years);
     // Handle what to do when a category is selected
     this.yearExperience = years;
   }
@@ -193,6 +199,7 @@ export class RegisterStep3Page {
   }
 
   public filterRate(rate: number): void {
+    console.log(rate);
     // Handle what to do when a category is selected
     this.hourlyRate = rate;
   }

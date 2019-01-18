@@ -15,10 +15,10 @@
 
 <ion-content class="{{ role }}" padding>
 
-   <!-- <div>
+   <!--<div>
     <h4>Debug</h4>
     <pre>Form : {{Step3Form.value | json }}</pre>
-    <pre>Form Status : {{Step3Form.status }}</pre>
+     <pre>Form Status : {{Step3Form.status }}</pre>
     <pre>Form End Time Status : {{Step3Form.get('endTime').value }}</pre>
     <pre>Form End Time Status : {{Step3Form.get('endTime').status }}</pre>
     <pre>Form StartDate Status : {{Step3Form.get('dates.endDate').value }}</pre>
@@ -30,11 +30,11 @@
       <div *ngIf="role == 'teacher'">
         <h3 padding>Years of Experience</h3>
 
-        <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
-          <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yearExperience == year.value}" *ngFor="let year of years">
-            <p>{{ year.text }}</p>
-          </ion-slide>
-        </ion-slides>
+        <ion-scroll scrollX="true" style="height: 50px;">
+          <div style="width: 100%; display: flex;" >
+            <button *ngFor="let year of years" type="button" style="width: 15%;" ion-button class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': yearExperience == year.value}" (click)="filterYear(year.value)">{{year.text}}</button>
+          </div>
+        </ion-scroll>
 
         <ion-list id="resume-list">
           <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
@@ -63,11 +63,12 @@
         <p>What's Your Fee?</p>
       </div>
       <h3>Preferred Hourly Rates</h3>
-      <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="6">
-        <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
-          <p>{{ rate.text }}</p>
-        </ion-slide>
-      </ion-slides>
+      
+      <ion-scroll scrollX="true" style="height: 50px;">
+        <div style="width: 100%; display: flex;" >
+          <button *ngFor="let rate of hourRates" type="button" style="width: 15%;" ion-button outline="(hourlyRate == rate.value)" class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">{{rate.text}}</button>
+        </div>
+      </ion-scroll>
 
       <div class="tagline">
         <p>Your Availability</p>
