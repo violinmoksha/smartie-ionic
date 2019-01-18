@@ -165,7 +165,7 @@ export class RegisterStep2Page {
       console.log(udid);
       return await this.dataService.getApi(
         'addUserToProvision',
-        { uuid: this.device.uuid, userId: userId, profileId: userProfileId }
+        { uuid: udid, userId: userId, profileId: userProfileId }
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           // TODO: needs to happen right here directly into storage?
