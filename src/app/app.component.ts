@@ -216,7 +216,6 @@ export class SmartieApp {
 
   onFcmTokenRefresh(udid) {
     this.firebase.onTokenRefresh().subscribe(newToken => {
-      console.log("Got new refreshed fcmtoken");
       this.updateFcmtoServer(newToken, udid);
     })
   }
@@ -230,8 +229,6 @@ export class SmartieApp {
           token: token
         }
       ).then(API => {
-        console.log(API);
-        //console.info("http.post from here is: "+this.dataService.http.post);
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(data => {
           this.notificationHandler();
           resolve(token);
@@ -248,7 +245,6 @@ export class SmartieApp {
 
   initFirebase(UDID): Promise<any> {
     return new Promise((resolve, reject) => {
-      console.log('Attempting to enter getToken with UDID: ' + UDID);
       this.firebase.getToken().then(token => {
         this.updateFcmtoServer(token, UDID).then(res => {
           resolve(res);
@@ -273,7 +269,6 @@ export class SmartieApp {
           'getJobRequestById',
           { "jobRequestId": job.jobId }
         ).then(API => {
-
           this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
             this.nav.push("JobRequestPage", { params: response.result });
           }, err => {
@@ -284,10 +279,20 @@ export class SmartieApp {
           console.info('sub-0: ' + err);
         });
       } else if (notification.eventAction == "MESSAGE_RECEIVED") {
-        if (this.role == 'teacher')
-          this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Messsages', role: this.role });
-        else
-          this.nav.parent.select(3);
+        if (notification.tap) { //App in background
+          if (this.role == 'teacher')
+            this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Messsages', role: this.role });
+          else
+            this.nav.setRoot("TabsPage", { tabIndex: 3, tabTitle: 'Messsages', role: this.role });
+        } else {
+          console.log(this.nav.getActive);
+          console.log(document.URL);
+          var appUrl = document.URL.toString();
+          if(appUrl.split("#")[1] == "/tabs/messages/chat")
+            this.events.publish("pullMessage", notification);
+        }
+        console.log("**** Received message ****");
+        console.log(notification);
       }
     }, err => {
       // TODO: ditto
