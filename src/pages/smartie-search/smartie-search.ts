@@ -129,6 +129,8 @@ export class SmartieSearch {
       this.events.publish("buttonsLoad", this.role);
 
       this.storage.get('UserProfile').then(profile => {
+        console.log("user profile");
+        console.log(profile);
         this.role = profile.profileData.role;
 
         if (profile == null) {
