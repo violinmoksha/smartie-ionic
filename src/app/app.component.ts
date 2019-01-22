@@ -261,6 +261,8 @@ export class SmartieApp {
   notificationHandler(): void {
     this.firebase.onNotificationOpen().subscribe((notification: any) => {
       //perform action based notification's action
+      console.log("**** Received message ****");
+      console.log(notification);
       if (notification.eventAction == "PaymentReminder") {
         this.nav.push("AddPaymentPage");
       } else if (notification.eventAction == "JobRequest") {
@@ -279,25 +281,26 @@ export class SmartieApp {
           console.info('sub-0: ' + err);
         });
       } else if (notification.eventAction == "MESSAGE_RECEIVED") {
-        if (notification.tap) { //App in background
+        if (notification.tap || notification.tap == 1) { //App in background
           if (this.role == 'teacher')
             this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Messsages', role: this.role });
           else
             this.nav.setRoot("TabsPage", { tabIndex: 3, tabTitle: 'Messsages', role: this.role });
         } else {
-          console.log(this.nav.getActive);
-          console.log(document.URL);
+          console.log("publishing message");
           var appUrl = document.URL.toString();
-          if(appUrl.split("#")[1] == "/tabs/messages/chat")
+          if (appUrl.split("#")[1] == "/tabs/messages/chat")
             this.events.publish("pullMessage", notification);
         }
-        console.log("**** Received message ****");
-        console.log(notification);
       }
     }, err => {
       // TODO: ditto
       console.info('1: ' + err);
     });
+  }
+
+  handleChatMessages(notification) {
+
   }
 
   pushPage(event, page) {
