@@ -6,6 +6,7 @@ var iOS_DIR = 'platforms/ios';
 
 removeForgroundNotification();
 
+// NB: if the filename of the plugin chgs then this replace will no longer work
 function removeForgroundNotification() {
     console.log("Removing foreground notification");
     fse.ensureDir(iOS_DIR + "/Smartie/Plugins/cordova-plugin-firebase/", err => {
