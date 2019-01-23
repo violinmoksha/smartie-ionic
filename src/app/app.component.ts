@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ɵConsole } from '@angular/core';
 import { Nav, Platform, Events, Tabs, App } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
@@ -13,6 +13,7 @@ import { ToasterServiceProvider } from '../providers/toaster-service';
 import { FetchiOSUDID } from '../providers/fetch-ios-udid';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
+import { async } from 'q';
 
 const Parse = require('parse');
 
@@ -88,6 +89,8 @@ export class SmartieApp {
   setUserName() {
     console.log("Setting user name for side menuu");
     this.storage.get('UserProfile').then(user => {
+      console.log("Login user page");
+      console.log(user);
       if (user && user.profileData) {
         this.userName = user.profileData.fullname
         this.roleColor = user.profileData.role == 'teacher' ? '#00BC5B' : '#0096D7';
@@ -216,7 +219,6 @@ export class SmartieApp {
 
   onFcmTokenRefresh(udid) {
     this.firebase.onTokenRefresh().subscribe(newToken => {
-      console.log("Got new refreshed fcmtoken");
       this.updateFcmtoServer(newToken, udid);
     })
   }
@@ -230,8 +232,6 @@ export class SmartieApp {
           token: token
         }
       ).then(API => {
-        console.log(API);
-        //console.info("http.post from here is: "+this.dataService.http.post);
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(data => {
           this.notificationHandler();
           resolve(token);
@@ -248,7 +248,6 @@ export class SmartieApp {
 
   initFirebase(UDID): Promise<any> {
     return new Promise((resolve, reject) => {
-      console.log('Attempting to enter getToken with UDID: ' + UDID);
       this.firebase.getToken().then(token => {
         this.updateFcmtoServer(token, UDID).then(res => {
           resolve(res);
@@ -265,6 +264,8 @@ export class SmartieApp {
   notificationHandler(): void {
     this.firebase.onNotificationOpen().subscribe((notification: any) => {
       //perform action based notification's action
+      console.log("**** Received message ****");
+      console.log(notification);
       if (notification.eventAction == "PaymentReminder") {
         this.nav.push("AddPaymentPage");
       } else if (notification.eventAction == "JobRequest") {
@@ -273,7 +274,6 @@ export class SmartieApp {
           'getJobRequestById',
           { "jobRequestId": job.jobId }
         ).then(API => {
-
           this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
             this.nav.push("JobRequestPage", { params: response.result });
           }, err => {
@@ -284,10 +284,17 @@ export class SmartieApp {
           console.info('sub-0: ' + err);
         });
       } else if (notification.eventAction == "MESSAGE_RECEIVED") {
-        if (this.role == 'teacher')
-          this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Messsages', role: this.role });
-        else
-          this.nav.parent.select(3);
+        if (notification.tap || notification.tap == 1) { //App in background
+          if (this.role == 'teacher')
+            this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Messsages', role: this.role });
+          else
+            this.nav.setRoot("TabsPage", { tabIndex: 3, tabTitle: 'Messsages', role: this.role });
+        } else {
+          console.log("publishing message");
+          var appUrl = document.URL.toString();
+          if (appUrl.split("#")[1] == "/tabs/messages/chat")
+            this.events.publish("pullMessage", notification);
+        }
       }
     }, err => {
       // TODO: ditto
@@ -295,8 +302,14 @@ export class SmartieApp {
     });
   }
 
+  handleChatMessages(notification) {
+
+  }
+
   pushPage(event, page) {
     if (page.iconName == 'log-out') { // logout -->
+      console.log("Remove user profile in logout");
+      // this.logOutUser();
       this.storage.remove('UserProfile'); // yes??
       //this.dbservice.deleteUser();
       this.nav.setRoot("LoginPage"); // send to Login
@@ -320,5 +333,28 @@ export class SmartieApp {
         this.nav.push(page.pageName);
       }
     }
+  }
+
+  logOutUser(){
+    return new Promise(async(resolve, reject) => {
+      this.storage.get("UserProfile").then(async userProfile => {
+        console.log(userProfile);
+        return await this.dataService.getApi(
+          'logoutUser', 
+          { sessionToken: userProfile.userData.sessionToken },
+        ).then(async API => {
+          console.log("******* API DATA ********")
+          console.log(API);
+          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async logoutData => {
+            console.log("********** logout data ***********");
+            console.log(logoutData);
+            if(logoutData){
+              this.storage.remove('UserProfile');
+              this.nav.setRoot("LoginPage");
+            }
+          })
+        })
+      });
+    })
   }
 }

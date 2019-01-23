@@ -58,8 +58,11 @@ page-register {
   }
 
   .item-md.item-block .item-inner {
-    padding: 0;
-    border: none;
+    /*padding: 0;
+    border: none;*/
+    padding-right: 8px !important;
+    border-bottom: 1px solid #dedede !important;
+    box-shadow: none !important;
   }
 
   .item-ios.item-block .item-inner {

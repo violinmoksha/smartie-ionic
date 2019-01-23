@@ -1,5 +1,5 @@
 import { FileTransfer } from '@ionic-native/file-transfer';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
@@ -37,7 +37,7 @@ export class ChatPage {
   messageLimitPerPage: Number = 5;
   roomId : String;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events, private dataService: DataService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events, private dataService: DataService, private changeRef: ChangeDetectorRef) {
     this.params = navParams.get("jobObject");
     this.sender = navParams.get("sender");
     this.receiver = navParams.get("receiver");
@@ -84,6 +84,15 @@ export class ChatPage {
 
   ionViewDidEnter() {
     console.log(this.chatAccess);
+    this.events.subscribe("pullMessage", (notification) => {
+      console.log("pulling message");
+      console.log(notification);
+      let message = JSON.parse(notification.extraData);
+      message.displayTime = this.getSentTime(message.sentAt, new Date().toISOString());
+      this.chatMessages.push(message);
+      this.changeRef.detectChanges();
+      this.content.scrollToBottom();
+    })
   }
 
   sendMessage() {
@@ -110,6 +119,7 @@ export class ChatPage {
               message.displayTime = this.getSentTime(message.sentAt, new Date().toISOString());
               this.chatMessages.push(message);
               this.newmessage = '';
+              this.content.scrollToBottom();
             })
           })
         })
@@ -132,6 +142,7 @@ export class ChatPage {
         res.result.messages[0].displayTime = this.getSentTime(res.result.messages[0].sentAt, new Date().toISOString())
         this.chatMessages.push(res.result.messages[0]);
         this.newmessage = '';
+        this.content.scrollToBottom();
       })
     })
   }

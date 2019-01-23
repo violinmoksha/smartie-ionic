@@ -142,11 +142,17 @@
           <p>Preferred Fee (Think Quality)?</p>
         </div>
         <h3>Preferred Hourly Rates</h3>
-        <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="6">
+        <!-- <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="6">
           <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
             <p>{{ rate.text }}</p>
           </ion-slide>
-        </ion-slides>
+        </ion-slides> -->
+
+        <ion-scroll scrollX="true" style="height: 50px;">
+          <div style="width: 100%; display: flex;" >
+            <button *ngFor="let rate of hourRates" type="button" style="width: 15%;" ion-button class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">{{rate.text}}</button>
+          </div>
+        </ion-scroll>
 
         <ion-item>
           <ion-label fixed>Preferred Learning Location</ion-label>

@@ -45,6 +45,10 @@ export class MobileVerificationPage {
   pushSignUp(){
     this.analytics.addEvent(this.analytics.getAnalyticEvent("MobileVerification", "Clicked_MobileVerifyButton"));
 
+    // Remove "Registration" and "UserProfile" keys from storage
+    this.storage.remove("Registration");
+    this.storage.remove("UserProfile");
+
     if (this.platform.is('ios')) {
       this.fetchiOSUDID.fetch().then(iOSUDID => {
         this.pushSignUpInner(iOSUDID);
