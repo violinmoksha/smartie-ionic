@@ -57,6 +57,7 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
+        <hook src="hooks/iosNotificationHandler.js" type="after_prepare" />
         <preference name="SplashScreen" value="screen" />
         <preference name="KeychainAccessibility" value="WhenUnlocked" />
         <preference name="WKPort" value="8080" />

@@ -88,10 +88,19 @@ export class ChatPage {
       console.log("pulling message");
       console.log(notification);
       let message = JSON.parse(notification.extraData);
-      message.displayTime = this.getSentTime(message.sentAt, new Date().toISOString());
-      this.chatMessages.push(message);
-      this.changeRef.detectChanges();
-      this.content.scrollToBottom();
+      if(message.messageId.includes(this.roomId)){
+        console.log("current Room"+this.roomId+'-'+message.messageId);
+        message.displayTime = this.getSentTime(message.sentAt, new Date().toISOString());
+        this.chatMessages.push(message);
+        this.changeRef.detectChanges();
+        try{
+          this.content.scrollToBottom();
+        }catch(e){
+          console.log(e);
+        }
+      } else {
+        console.log("wrong window");
+      }
     })
   }
 
