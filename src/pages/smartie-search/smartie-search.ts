@@ -124,13 +124,12 @@ export class SmartieSearch {
       autocomplete.addListener("place_changed", () => {
         let place = autocomplete.getPlace();
         this.userLocation = place.formatted_address;
+        this.findJobsSearch();
       });
 
       this.events.publish("buttonsLoad", this.role);
 
       this.storage.get('UserProfile').then(profile => {
-        console.log("user profile");
-        console.log(profile);
         this.role = profile.profileData.role;
 
         if (profile == null) {

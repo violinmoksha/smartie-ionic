@@ -31,8 +31,8 @@ export class PaymentDetailsPage {
   ionViewDidLoad() {
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
-      this.fullName = UserProfile.profileData.fullname;
-      if (UserProfile.profileData.stripeCustomer !== undefined) {
+      this.fullName = UserProfile.profileData.fullname;   
+      if (UserProfile.profileData.stripeCustomer !== undefined && UserProfile.profileData.stripeCustomer.stripe_user_id) {
         this.registeredWithStripe = true;
         this.stripeCustomerId = UserProfile.profileData.stripeCustomer.stripe_user_id;
       }

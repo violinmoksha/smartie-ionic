@@ -1,4 +1,4 @@
-import { Component, ViewChild, ɵConsole } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events, Tabs, App } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
@@ -13,7 +13,6 @@ import { ToasterServiceProvider } from '../providers/toaster-service';
 import { FetchiOSUDID } from '../providers/fetch-ios-udid';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
-import { async } from 'q';
 
 const Parse = require('parse');
 

@@ -84,6 +84,33 @@ export class AddPaymentPage {
     })
   } */
 
+  getURLHost(url){
+    return new Promise((resolve) => {
+      var parser = document.createElement('a'),
+          searchObject = {},
+          queries, split, i;
+      // Let the browser do the work
+      parser.href = url;
+      // Convert query string to object
+      queries = parser.search.replace(/^\?/, '').split('&');
+      for( i = 0; i < queries.length; i++ ) {
+          split = queries[i].split('=');
+          searchObject[split[0]] = split[1];
+      }
+      resolve(
+        {
+          protocol: parser.protocol,
+          host: parser.host,
+          hostname: parser.hostname,
+          port: parser.port,
+          pathname: parser.pathname,
+          search: parser.search,
+          searchObject: searchObject,
+          hash: parser.hash
+       });
+    });    
+  }
+
   addStripeAccount(data) {
 
     if (data.emailConfirm == 'yes') {
@@ -94,65 +121,36 @@ export class AddPaymentPage {
     data.businessType = 'individual';
 
     // ca_CZWQogI2PEylvxAJTYTaxEwrLQQVMA5x  --> CLIENT_ID
-    console.log("adding payment")
-    console.log(data);
-
     if (this.userRole == 'teacher') {
 
       let url = "https://connect.stripe.com/express/oauth/authorize?client_id=ca_CZWQIYkWpLrTkC9gAvq3gHcmBlUfLXBH&state=state&stripe_user[email]=" + data.emailPayment;
-      if (this.platform.is("ios")) {
-        console.log("laoding ios web browser");
-        let webBrowser = this.iaBrowser.create(url);
-        webBrowser.show();
-        webBrowser.on("loadstop").subscribe(e => {
-          console.log(e);
-          this.authenticationCode = this.dataService.getParameterByName('code', e.url);
-          console.log(this.authenticationCode)
-          if (this.authenticationCode) {
-            webBrowser.close();
 
-            this.body = { emailPayment: data.emailPayment, profileId: this.profileId, code: this.authenticationCode }
-            this.createStripeAccount('createStripeTeacherAccount', this.body);
-          }
-        });
-        webBrowser.on("loadstart").subscribe(e => {
-          console.log("load start");
-          console.log(e);
-        })
-      } else {
-        const options: ThemeableBrowserOptions = {
-          toolbar: {
-            height: 44,
-            color: '#00BA63'
-          },
-          title: {
-            color: '#ffffff',
-            showPageTitle: true,
-            staticText: "Add Stripe Payment"
-          },
-          // closeButton: {
-          //   wwwImage: './assets/imgs/close.svg',
-          //   wwwImagePressed: './assets/imgs/close.svg',
-          //   align: 'left',
-          //   event: 'closePressed'
-          // },
-          backButtonCanClose: true
-        }
-        console.log("themable browser android")
-        const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_self', options);
+      const options: ThemeableBrowserOptions = {
+        toolbar: {
+          height: 44,
+          color: '#00BA63'
+        },
+        title: {
+          color: '#ffffff',
+          showPageTitle: true,
+          staticText: "Add Stripe Payment"
+        },
+        backButtonCanClose: true
+      }
 
-        browser.on('loadstop').subscribe(event => {
-          console.log(event.url);
-          this.authenticationCode = this.dataService.getParameterByName('code', event.url);
-          console.log(this.authenticationCode)
-          if (this.authenticationCode) {
+      const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', options);
+      browser.show();
+      browser.on('loadstart').subscribe(e => {
+        this.getURLHost(e.url).then((hostName: any) => {
+          if (hostName.host == 'localhost:9634') {
+            this.authenticationCode = hostName.searchObject.code;
             browser.close();
 
             this.body = { emailPayment: data.emailPayment, profileId: this.profileId, code: this.authenticationCode }
             this.createStripeAccount('createStripeTeacherAccount', this.body);
           }
         });
-      }
+      });
     } else {
       this.body = { emailPayment: data.emailPayment, userIP: this.userIP, profileId: this.profileId };
       this.createStripeAccount('createCustomer', this.body);
