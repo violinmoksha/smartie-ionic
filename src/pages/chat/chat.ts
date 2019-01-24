@@ -124,7 +124,7 @@ export class ChatPage {
           }
           this.dataService.getApi("createChatRoom", chatRoomArg).then(API => {
             this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
-              let message = res.result.messages[0];
+              let message = res.result.messages.messages[0];
               message.displayTime = this.getSentTime(message.sentAt, new Date().toISOString());
               this.chatMessages.push(message);
               this.newmessage = '';

@@ -41,4 +41,17 @@ export class ToasterServiceProvider {
     })
   }
 
+  showToast(msg, closeButtonTxt = "close", closeCallback = undefined) {
+    const toast = this.toastCtrl.create({
+      message: msg,
+      showCloseButton: closeButtonTxt ? true : false,
+      closeButtonText: closeButtonTxt
+    });
+    toast.onDidDismiss(() => {
+      if(closeCallback)
+      closeCallback();
+    });
+    toast.present();
+  }
+
 }

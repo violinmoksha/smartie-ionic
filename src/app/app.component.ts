@@ -87,10 +87,7 @@ export class SmartieApp {
   }
 
   setUserName() {
-    console.log("Setting user name for side menuu");
     this.storage.get('UserProfile').then(user => {
-      console.log("Login user page");
-      console.log(user);
       if (user && user.profileData) {
         this.userName = user.profileData.fullname
         this.roleColor = user.profileData.role == 'teacher' ? '#00BC5B' : '#0096D7';
@@ -111,9 +108,7 @@ export class SmartieApp {
     ).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
         this.storage.set("Provision", response.result);
-        console.log("And made it back with a Provision: " + response.result);
         this.storage.get('UserProfile').then(user => {
-          console.log('And made it back with a UserProfile obj called user: ' + JSON.stringify(user));
           if (user == null) {
             //NOTE: if the provision 'reponse' has user n profile will redirect user to login
             if (response.result.provision.user && response.result.provision.profile) {
@@ -171,7 +166,6 @@ export class SmartieApp {
         Parse.serverURL = this.parseServerUrl;
 
         if (this.platform.is('ios')) {
-          console.log('Captured iOS platform, going into fetchUDID.');
           this.fetchiOSUDID.fetch().then(iOSUDID => {
             this.initFirebase(iOSUDID); // NB: calls sync/non-returning notificationHandler
             this.initializeAppInner(iOSUDID);
@@ -265,14 +259,12 @@ export class SmartieApp {
     var notificationId = "0";
     this.firebase.onNotificationOpen().subscribe((notification: any) => {
       //perform action based notification's action
-      console.log(notification)
+      console.log("Received chat notification");
+      console.log(notification);
       if (notification["gcm.message_id"] == notificationId) {
         notificationId = notification["gcm.message_id"];
-        console.log("id matched"+notificationId+'--'+notification["gcm.message_id"])
         return false;
       } else {
-        console.log("**** Received message ****");
-        console.log(notification);
         if (notification.eventAction == "PaymentReminder") {
           this.nav.push("AddPaymentPage");
         } else if (notification.eventAction == "JobRequest") {
@@ -297,15 +289,19 @@ export class SmartieApp {
             else
               this.nav.setRoot("TabsPage", { tabIndex: 3, tabTitle: 'Messsages', role: this.role });
           } else {
-            console.log("publishing message");
             var appUrl = document.URL.toString();
             if (appUrl.split("#")[1] == "/tabs/messages/chat")
               this.events.publish("pullMessage", notification);
             else if (appUrl.split("#")[1] == "/tabs/messages/chat-rooms") {
-              if (this.role == 'teacher')
-                this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Messsages', role: this.role });
-              else
-                this.nav.setRoot("TabsPage", { tabIndex: 3, tabTitle: 'Messsages', role: this.role });
+              this.tosterService.showToast(notification.title, "Go", function() {
+                console.log("goto chat page");
+              })
+              // this.localNotification.schedule({
+              //   id: notification["gcm.message_id"],
+              //   title: notification.title,
+              //   text: notification.body,
+              //   data: { "extraData": notification.extraData}
+              // })
             }
           }
         }
