@@ -288,7 +288,8 @@ export class RegisterStep3Page {
                   handler: data => {
                     this.navCtrl.push("LoginPage");
                   }
-                }]
+                }],
+                enableBackdropDismiss: false
               });
               this.loading.dismiss();
               alert.present();
