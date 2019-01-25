@@ -36,6 +36,9 @@ export class ChatPage {
   pageNumber = 0;
   messageLimitPerPage: Number = 5;
   roomId : String;
+  notification: any;
+  notificationData: any;
+  loadingChats: Boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events, private dataService: DataService, private changeRef: ChangeDetectorRef) {
     this.params = navParams.get("jobObject");
@@ -55,7 +58,30 @@ export class ChatPage {
         this.studentProfileId = this.params.otherProfile.objectId;
       }
       this.roomId = this.teacherProfileId + '|' + this.studentProfileId;
-    }else{
+    } else if(this.navigateFrom == "toaster") {
+      this.chatAccess = true;
+      this.notification = navParams.get("notification");
+      this.notificationData = JSON.parse(this.notification.extraData);
+      this.roomId = this.notificationData.roomId;
+      this.loadingChats = true;
+      this.dataService.getApi(
+        'getProfileById',
+        { profileId: this.notificationData.sender }
+      ).then(API => {
+        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
+          console.log(res);
+          if (res.result.profilePhoto == undefined) {
+            res.result.profilePhoto = './assets/imgs/user-round-icon.png';
+          }
+          this.receiver = res.result;
+          this.loadingChats = false;
+          this.fetchMessages();
+        }, err => {
+          this.loadingChats = false;
+          console.log(err);
+        })
+      })
+    } else {
       this.chatAccess = true;
       this.chatRoom = navParams.get('chat');
       this.receiver = this.chatRoom.receiver
@@ -156,13 +182,16 @@ export class ChatPage {
     })
   }
 
-  fetchMessages(infiniteScroll) {
+  fetchMessages(infiniteScroll = null) { //NB: to reuse this function added infinitescroll as optional param
     this.dataService.getApi(
       'fetchMessages',
       { roomId: this.roomId, page: this.pageNumber, limit: this.messageLimitPerPage }
     ).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
+        
+        if(infiniteScroll)
         infiniteScroll.complete();
+
         if (res.result[0].messages.length > 0) {
           for (var i = 0; i < res.result[0].messages.length; i++) {
             if(i == 0)
@@ -173,6 +202,7 @@ export class ChatPage {
             this.chatMessages.splice(0, 0, res.result[0].messages[i]);
           }
           if (res.result[0].messages.length < this.messageLimitPerPage) {
+            if(infiniteScroll)
             infiniteScroll.enable(false);
           }
         } else {
@@ -180,6 +210,7 @@ export class ChatPage {
         }
       }, err => {
         console.log(err);
+        if(infiniteScroll)
         infiniteScroll.complete();
       })
     })
