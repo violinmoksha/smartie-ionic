@@ -133,7 +133,7 @@ export class EditProfileStep3Page {
       this.userData = roleProfile.userData;
       this.prefLocation = roleProfile.profileData.prefLocation;
       this.hourlyRate = roleProfile.profileData.prefPayRate;
-      this.yrsExperience = roleProfile.specificUser.yrsExperience;
+      this.yearExperience = roleProfile.specificUser.yrsExperience;
       let availStartDateTime = new Date(roleProfile.specificUser.defaultStartDateTime.iso);
       let availEndDateTime = new Date(roleProfile.specificUser.defaultEndDateTime.iso);
 
@@ -315,7 +315,7 @@ export class EditProfileStep3Page {
         let selectedEndDate = this.endDate.split('-');
         let selectedStartTime = this.startTime.split('T')[1];
         let selectedEndTime = this.endTime.split('T')[1];
-        
+
         let UTCstartTime = new Date(selectedStartDate[2], selectedStartDate[1] - 1, selectedStartDate[0], parseInt(selectedStartTime.split(':')[0]), parseInt(selectedStartTime.split(':')[1]));
 
         let UTCendTime = new Date(selectedEndDate[2], selectedEndDate[1] - 1, selectedEndDate[0], parseInt(selectedEndTime.split(':')[0]), parseInt(selectedEndTime.split(':')[1]));
@@ -397,7 +397,7 @@ export class EditProfileStep3Page {
     }catch(e){
       console.log(e);
     }
-    
+
     return new Promise(async (resolve) => {
       return await this.dataService.getApi(
         'editUser',

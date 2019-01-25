@@ -28,9 +28,10 @@
       </ion-slides> -->
       <ion-scroll scrollX="true" style="height: 100px;">
           <div style="width: 100%; display: flex;" >
-            <button *ngFor="let rate of hourRates" type="button" style="width: 10%;" ion-button outline="(hourlyRate == rate.value)" class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">{{rate.text}}</button>
+            <button *ngFor="let rate of hourRates" type="button" style="width: 15%;" ion-button outline="(hourlyRate == rate.value)" class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">{{rate.text}}</button>
           </div>
       </ion-scroll>
+
       <div class="tagline">
         <p>Your Location</p>
       </div>
@@ -41,7 +42,7 @@
           <!-- <ion-input [value]="prefLocation" type="text" formControlName="prefLocation"></ion-input> -->
           <ion-input class="item item-input" [(ngModel)]="prefLocation" formControlName="prefLocation" id="locationSearchEdit" type="text"></ion-input>
         </ion-item>
-  
+
         <div *ngIf="!EditProfilestep3Form.controls['prefLocation'].valid && !EditProfilestep3Form.controls['prefLocation'].pristine" class="item item-message">
           Enter your prefered location.
         </div>
@@ -49,11 +50,17 @@
 
       <div *ngIf="userRole == 'teacher'">
         <h3 padding-top>Years of Experience</h3>
-        <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
+        <!-- <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
           <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yrsExperience == year.value}" *ngFor="let year of years">
             <p>{{ year.text }}</p>
           </ion-slide>
-        </ion-slides>
+        </ion-slides> -->
+
+        <ion-scroll scrollX="true" style="height: 100px;">
+          <div style="width: 100%; display: flex;" >
+            <button *ngFor="let year of years" type="button" style="width: 15%;" ion-button class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': yearExperience == year.value}" (click)="filterYear(year.value)">{{year.text}}</button>
+          </div>
+        </ion-scroll>
 
         <!-- <ion-list>
           <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
