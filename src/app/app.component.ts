@@ -260,10 +260,8 @@ export class SmartieApp {
       //perform action based notification's action
       console.log("Received chat notification");
       console.log(notification);
-      if (notification["gcm.message_id"] == notificationId) {
-        notificationId = notification["gcm.message_id"];
-        return false;
-      } else {
+
+      var actionHandler = () => { //NB: To reuse this function due to ios triggers event twice
         if (notification.eventAction == "PaymentReminder") {
           this.nav.push("AddPaymentPage");
         } else if (notification.eventAction == "JobRequest") {
@@ -291,20 +289,26 @@ export class SmartieApp {
             var appUrl = document.URL.toString();
             if (appUrl.split("#")[1] == "/tabs/messages/chat")
               this.events.publish("pullMessage", notification);
-            else if (appUrl.split("#")[1] == "/tabs/messages/chat-rooms") {
-              this.tosterService.showToast(notification.title, "Go", function() {
+            else {
+              this.tosterService.showToast(notification.title, "Go", () => {
                 console.log("goto chat page");
+                this.nav.push("ChatPage", { from: "toaster", jobObject:"", receiver:"", sender:"", notification: notification });
               })
-              // this.localNotification.schedule({
-              //   id: notification["gcm.message_id"],
-              //   title: notification.title,
-              //   text: notification.body,
-              //   data: { "extraData": notification.extraData}
-              // })
             }
           }
         }
-        notificationId = notification["gcm.message_id"];
+      }
+
+      if (this.platform.is("ios")) {
+        if (notification["gcm.message_id"] == notificationId) {
+          notificationId = notification["gcm.message_id"];
+          return false;
+        } else {
+          actionHandler();
+          notificationId = notification["gcm.message_id"];
+        }
+      } else {
+        actionHandler();
       }
     }, err => {
       // TODO: ditto
@@ -312,9 +316,6 @@ export class SmartieApp {
     });
   }
 
-  handleChatMessages(notification) {
-
-  }
 
   pushPage(event, page) {
     if (page.iconName == 'log-out') { // logout -->
