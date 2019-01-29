@@ -43,6 +43,7 @@ export class RegisterStep3Page {
   private today: any;
   public userLocation: any;
   public cvFiles: Array<any> = []
+  public licenseFiles: Array<any> = []
 
   public event = {
     timeStarts: '10:00',
@@ -226,11 +227,14 @@ export class RegisterStep3Page {
     });
   }
 
-  uploadToS3(files) {
+  uploadToS3(files, bucketName) {
+    console.log("uploadToS3:  coming...");
+    console.log(files);
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data, this.fileUploader.awsBucket.credential));
+        console.log(files[i]);
+        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl, bucketName));
       }
       Promise.all(filePromises).then((results) => {
         resolve(results);
@@ -240,15 +244,22 @@ export class RegisterStep3Page {
 
   signupRole(form3Values) {
     this.loading.present();
-    if (this.cvFiles.length > 0 && this.role == "teacher"){
-      this.uploadToS3(this.cvFiles).then(res => {
-        form3Values.credentials = res;
-        this.finalRegisterSubmit(form3Values);
-      }, err => {
-        console.log(err);
-      })
-    }else{
-      this.finalRegisterSubmit(form3Values);
+    if(this.licenseFiles.length > 0) {
+      this.uploadToS3(this.licenseFiles, this.fileUploader.awsBucket.drivingLicense).then(license => {
+        form3Values.drivingLicense = license;
+        if (this.cvFiles.length > 0 && this.role == "teacher"){
+          this.uploadToS3(this.cvFiles, this.fileUploader.awsBucket.credential).then(res => {
+            form3Values.credentials = res;
+            this.finalRegisterSubmit(form3Values);
+          }, err => {
+            console.log(err);
+          })
+        }else{
+          this.finalRegisterSubmit(form3Values);
+        }
+      }, (error) => {
+        console.log(error);
+      });
     }
   }
 
@@ -341,8 +352,11 @@ export class RegisterStep3Page {
     })
   }
 
-  removeFile(i) {
-    this.cvFiles.splice(i, 1);
+  removeFile(i, source) {
+    if(source == 'creds')
+      this.cvFiles.splice(i, 1);
+    if(source == 'license')
+      this.licenseFiles.splice(i,1);
   }
 
   uploadCv() {
@@ -357,6 +371,21 @@ export class RegisterStep3Page {
     }, (err) => {
       console.log(err);
     })
+  }
+
+  uploadDL(){
+    this.cameraService.getImage().then(async (license) => {
+      console.log(license);
+      if (Array.isArray(license)) {
+        for (let lic of license) {
+          this.licenseFiles.push({ 'name': await this.cameraService.getFileName(), 'data': lic });
+        }
+      } else {
+        this.licenseFiles.push({ 'name': await this.cameraService.getFileName(), 'data': license });
+      }
+    }, (err) => {
+      console.log(err);
+    });
   }
 
 }
