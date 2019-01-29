@@ -154,6 +154,24 @@
           </div>
         </ion-scroll>
 
+        <div class="teacher-cv">
+          <button type="button" class="button button-cv" (click)=uploadDL()>Upload your driving license</button>
+          <span class="input-label">License verifiable via phone camera</span>
+          <div *ngIf="licenseFiles.length > 0">
+            <ion-item *ngFor="let licenseFile of licenseFiles" class="list-files">
+              <ion-icon name="image" class="" item-start></ion-icon>
+              <h4 class="file-name font-14">{{licenseFile.name}} </h4>
+              <span item-end>
+                <ion-icon name="close" (click)="removeFile($index,'license')"></ion-icon>
+              </span>
+            </ion-item>
+          </div>
+        </div>
+
+        <div *ngIf="Step2Form.valid && licenseFiles?.length == 0" class="item item-message">
+          Please upload your license
+        </div>
+
         <ion-item>
           <ion-label fixed>Preferred Learning Location</ion-label>
           <ion-input placeholder="Location Name" [(ngModel)]="userLocation" id="locationSearch" type="text" formControlName="prefLocation"></ion-input>
@@ -165,7 +183,7 @@
       </div>
 
       <button *ngIf="role != 'student'" class="button button-positive" [disabled]="Step2Form.invalid" ion-button full>Next </button>
-      <button *ngIf="role == 'student'" class="button button-positive" [disabled]="Step2Form.invalid" ion-button full>Submit </button>
+      <button *ngIf="role == 'student'" class="button button-positive" [disabled]="Step2Form.invalid || licenseFiles?.length == 0" ion-button full>Submit </button>
     </div>
 
 

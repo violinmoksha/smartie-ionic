@@ -5,7 +5,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Injectable } from '@angular/core';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { File } from '@ionic-native/file';
-/* 
+/*
   Generated class for the CameraServiceProvider provider.
 
   See https://angular.io/guide/dependency-injection for more info on providers
@@ -106,7 +106,7 @@ export class CameraServiceProvider {
                 //   console.log(res);
                 // })
                 let imageArray = [image];
-                let result = {imageUrl:imageArray, normalizedUrl:normalizedFile}
+                let result = {imageUrl:imageArray[0], normalizedUrl:normalizedFile}
                 resolve(result);
               }, (err) => {
                 reject(err);
@@ -120,7 +120,7 @@ export class CameraServiceProvider {
               this.choosePictures().then((pics) => {
                 console.log(pics)
                 let normalizedFile = window['Ionic']['WebView'].convertFileSrc(pics[0]);
-                let result = {imageUrl:pics, normalizedUrl:normalizedFile}
+                let result = {imageUrl:pics[0], normalizedUrl:normalizedFile}
                 resolve(result);
               }, (err) => {
                 reject(err);

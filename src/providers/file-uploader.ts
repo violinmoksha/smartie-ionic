@@ -17,7 +17,7 @@ export class FileUploaderProvider {
   constructor(private transfer: FileTransfer, public dataService: DataService) {
     console.log('Hello FileUploaderProvider Provider');
     this.fileTransfer = this.transfer.create();
-    this.awsBucket = {"feedback":"Feedbacks", "credential":"Credentials", "profile":"Profile"}
+    this.awsBucket = {"feedback":"Feedbacks", "credential":"Credentials", "profile":"Profile", "drivingLicense": "DrivingLicense"}
   }
 
   uploadFile(file, format) {
@@ -33,11 +33,14 @@ export class FileUploaderProvider {
 
   uploadFileToAWS(filePath, bucketFolder) {
     //let file = filePath.substr(0, filePath.lastIndexOf('/'));
+    console.log(filePath);
     return new Promise((resolve, reject) => {
       let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
+      console.log(fileName);
 
       this.dataService.getApi('getAWSCredential', { 'fileName': fileName, 'folder':bucketFolder }).then(async API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (signedUrl) => {
+          console.log(signedUrl);
           let options: FileUploadOptions = {
             fileKey: 'file',
             fileName: fileName,

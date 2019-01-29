@@ -273,7 +273,7 @@ export class EditProfileStep3Page {
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data, this.fileUploader.awsBucket.credential));
+        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl, this.fileUploader.awsBucket.credential));
       }
       Promise.all(filePromises).then((results) => {
         resolve(results);

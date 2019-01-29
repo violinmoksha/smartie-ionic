@@ -17,17 +17,21 @@
 
    <!--<div>
     <h4>Debug</h4>
-    <pre>Form : {{Step3Form.value | json }}</pre>
-     <pre>Form Status : {{Step3Form.status }}</pre>
+    <pre>Form : {{ Step3Form.value | json }}</pre>
+    <pre>Form Status : {{ Step3Form.status }}</pre>
+    <pre>License : {{ licenseFiles.length }}</pre>
     <pre>Form End Time Status : {{Step3Form.get('endTime').value }}</pre>
     <pre>Form End Time Status : {{Step3Form.get('endTime').status }}</pre>
     <pre>Form StartDate Status : {{Step3Form.get('dates.endDate').value }}</pre>
-  </div> -->
+  </div>-->
   <form [formGroup]="Step3Form" name="Step3Form" (ngSubmit)="signupRole(Step3Form.value)" novalidate>
 
     <div class="list list-inset registration teacher step3">
 
       <div *ngIf="role == 'teacher'">
+        <div class="tagline">
+          <p>Experience</p>
+        </div>
         <h3 padding>Years of Experience</h3>
 
         <ion-scroll scrollX="true" style="height: 50px;">
@@ -51,7 +55,7 @@
               <ion-icon name="image" class="" item-start></ion-icon>
               <h4 class="file-name font-14">{{files.name}} </h4>
               <span item-end>
-                <ion-icon name="close" (click)="removeFile($index)"></ion-icon>
+                <ion-icon name="close" (click)="removeFile($index, 'creds')"></ion-icon>
               </span>
             </ion-item>
           </div>
@@ -60,11 +64,34 @@
       </div>
 
       <div class="tagline">
+        <p>Verification</p>
+      </div>
+      <h3>License*</h3>
+
+      <div class="teacher-cv">
+        <button type="button" class="button button-cv" (click)=uploadDL()>Upload your driving license</button>
+        <span class="input-label">License verifiable via phone camera</span>
+        <div *ngIf="licenseFiles.length > 0">
+          <ion-item *ngFor="let licenseFile of licenseFiles" class="list-files">
+            <ion-icon name="image" class="" item-start></ion-icon>
+            <h4 class="file-name font-14">{{licenseFile.name}} </h4>
+            <span item-end>
+              <ion-icon name="close" (click)="removeFile($index,'license')"></ion-icon>
+            </span>
+          </ion-item>
+        </div>
+      </div>
+
+      <div *ngIf="Step3Form.valid && licenseFiles?.length == 0" class="item item-message">
+        Please upload your license
+      </div>
+
+      <div class="tagline">
         <p>What's Your Fee?</p>
       </div>
       <h3>Preferred Hourly Rates</h3>
-      
-      <ion-scroll scrollX="true" style="height: 50px;">
+
+      <ion-scroll scrollX="true" style="height: 70px;">
         <div style="width: 100%; display: flex;" >
           <button *ngFor="let rate of hourRates" type="button" style="width: 15%;" ion-button outline="(hourlyRate == rate.value)" class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">{{rate.text}}</button>
         </div>
@@ -85,7 +112,7 @@
       </ion-item>
 
       <div *ngIf="!Step3Form.controls['prefLocation'].valid && Step3Form.controls['prefLocation'].touched" class="item item-message">
-        Preferred Location
+        Preferred Location is required
       </div>
 
       <h3 *ngIf="role == 'teacher'">Available Timings</h3>
@@ -130,7 +157,7 @@
         <div class="clear"></div>
       </div>
 
-          <button class="button button-positive" [disabled]="!Step3Form.valid" ion-button full>Submit</button>
+          <button class="button button-positive" [disabled]="!Step3Form.valid || licenseFiles?.length == 0" ion-button full>Submit</button>
     </div>
 
 

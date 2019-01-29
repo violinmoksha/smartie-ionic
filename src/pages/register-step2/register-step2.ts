@@ -48,6 +48,7 @@ export class RegisterStep2Page {
   public userLocation: any;
   public nextText: string = '';
   private userInfo: any = { prefLocation: '', prefPayRate: '' };
+  public licenseFiles: Array<any> = [];
 
   public hourRates = [
     { "text": '5', "value": 5 },
@@ -208,54 +209,61 @@ export class RegisterStep2Page {
       this.userInfo.prefLocation = this.userLocation;
       this.userInfo.prefPayRate = this.hourlyRate;
 
-       this.dataService.getApi(
-          'signUpRole',
-          { role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo) }
-        ).then(API => {
-          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async signupResult => {
-            this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
+      if(this.licenseFiles.length > 0){
+        this.uploadToS3(this.licenseFiles, this.fileUploader.awsBucket.drivingLicense).then(license => {
+          form2Values.drivingLicense = license;
+          this.dataService.getApi(
+             'signUpRole',
+             { role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo) }
+           ).then(API => {
+             this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async signupResult => {
+               this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
 
-            if (!signupResult.result.userData.emailVerified) {
-              let alert = this.alertCtrl.create({
-                title: 'Email not yet verified.',
-                subTitle: "Please check your email to confirm your email address. Be sure to check your spam folder for our confirmation as this can happen with some email providers!",
-                buttons: [{
-                  text: 'Ok',
-                  role: 'Ok',
-                  handler: data => {
-                    this.navCtrl.push("LoginPage");
-                  }
-                }]
-              });
-              alert.present();
-            } else {
-              this.storage.set("UserProfile", signupResult.result).then(() => {
-                  this.dataService.getApi(
-                    'fetchMarkers',
-                    { profileId: signupResult.result.profileData.objectId, role: this.role }
-                  ).then(async API => {
-                    this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
-                      this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
-                        this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
-                      })
-                    }, err => {
-                      console.log(err);
-                      // TODO: hm shud this return, find out in Unit tests
-                    });
-                  });
-              })
-            }
-          }, err => {
-            let signUpErrorMessage = JSON.parse(err.error);
-            let alert = this.alertCtrl.create({
-              title: 'Signup Failed!',
-              subTitle: JSON.stringify(signUpErrorMessage.error),
-              buttons: ['OK']
-            });
-            this.loading.dismiss();
-            alert.present();
-          })
-        });
+               if (!signupResult.result.userData.emailVerified) {
+                 let alert = this.alertCtrl.create({
+                   title: 'Email not yet verified.',
+                   subTitle: "Please check your email to confirm your email address. Be sure to check your spam folder for our confirmation as this can happen with some email providers!",
+                   buttons: [{
+                     text: 'Ok',
+                     role: 'Ok',
+                     handler: data => {
+                       this.navCtrl.push("LoginPage");
+                     }
+                   }]
+                 });
+                 alert.present();
+               } else {
+                 this.storage.set("UserProfile", signupResult.result).then(() => {
+                     this.dataService.getApi(
+                       'fetchMarkers',
+                       { profileId: signupResult.result.profileData.objectId, role: this.role }
+                     ).then(async API => {
+                       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
+                         this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
+                           this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
+                         })
+                       }, err => {
+                         console.log(err);
+                         // TODO: hm shud this return, find out in Unit tests
+                       });
+                     });
+                 })
+               }
+             }, err => {
+               let signUpErrorMessage = JSON.parse(err.error);
+               let alert = this.alertCtrl.create({
+                 title: 'Signup Failed!',
+                 subTitle: JSON.stringify(signUpErrorMessage.error),
+                 buttons: ['OK']
+               });
+               this.loading.dismiss();
+               alert.present();
+             })
+           });
+        }, (err) => {
+          console.log(err);
+        })
+      }//-------
     } else {
       console.log("form1values");
       console.log(this.form1Values);
@@ -313,6 +321,36 @@ export class RegisterStep2Page {
         };
       })
     })
+  }
+
+  uploadToS3(files, bucketName) {
+    console.log("uploadToS3:  coming...");
+    console.log(files);
+    return new Promise((resolve, reject) => {
+      let filePromises = [];
+      for (let i = 0; i < files.length; i++) {
+        console.log(files[i]);
+        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl, bucketName));
+      }
+      Promise.all(filePromises).then((results) => {
+        resolve(results);
+      })
+    })
+  }
+
+  uploadDL(){
+    this.cameraService.getImage().then(async (license) => {
+      console.log(license);
+      if (Array.isArray(license)) {
+        for (let lic of license) {
+          this.licenseFiles.push({ 'name': await this.cameraService.getFileName(), 'data': lic });
+        }
+      } else {
+        this.licenseFiles.push({ 'name': await this.cameraService.getFileName(), 'data': license });
+      }
+    }, (err) => {
+      console.log(err);
+    });
   }
 
 }
