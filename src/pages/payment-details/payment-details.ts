@@ -31,7 +31,7 @@ export class PaymentDetailsPage {
   ionViewDidLoad() {
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
-      this.fullName = UserProfile.profileData.fullname;   
+      this.fullName = UserProfile.profileData.fullname;
       if (UserProfile.profileData.stripeCustomer !== undefined && UserProfile.profileData.stripeCustomer.stripe_user_id) {
         this.registeredWithStripe = true;
         this.stripeCustomerId = UserProfile.profileData.stripeCustomer.stripe_user_id;
@@ -79,7 +79,7 @@ export class PaymentDetailsPage {
               backButtonCanClose: true
             }
             // const browser = this.iab.create(response.result.url, '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
-            const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_self', options);
+            const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_blank', options);
 
             /* browser.on('loadstop').subscribe(event => {
               console.log(event);

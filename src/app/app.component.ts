@@ -351,7 +351,7 @@ export class SmartieApp {
       this.storage.get("UserProfile").then(async userProfile => {
         console.log(userProfile);
         return await this.dataService.getApi(
-          'logoutUser', 
+          'logoutUser',
           { sessionToken: userProfile.userData.sessionToken },
         ).then(async API => {
           console.log("******* API DATA ********")
