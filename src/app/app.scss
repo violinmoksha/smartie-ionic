@@ -63,6 +63,13 @@ position: initial !important;
     margin-top: 8px;
   }
 }
+.toolbar .bar-button-menutoggle{
+  position: absolute;
+  z-index: 9;
+  @media screen and (max-width: 321px) {
+    margin-top: 8px;
+  }
+}
 
 h4 {
   font-size:1.2em!important;
@@ -397,6 +404,9 @@ h4 {
   margin: auto;
   background:url(./../assets/imgs/smartie-horzontal-logo.png) no-repeat center bottom !important;
   background-size:160px !important;
+  position: absolute;
+  width: 100%;
+  top: 10px;
 }
 
 .font-14{
