@@ -38,7 +38,7 @@ export class PaymentPage {
     this.totalHours = navParams.get('totalHours');
     this.totalAmount = navParams.get('totalAmount');
     this.selectedDates = navParams.get('selectedDates');
-    this.params = navParams.get('params')
+    this.params = navParams.get('params');
 
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;

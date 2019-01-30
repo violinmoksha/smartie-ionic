@@ -59,9 +59,9 @@ position: initial !important;
 .toolbar .back-button{
   position: absolute;
   z-index: 9;
-  @media screen and (max-width: 321px) {
-    margin-top: 8px;
-  }
+  // @media screen and (max-width: 321px) {
+  //   margin-top: 8px;
+  // }
 }
 .toolbar .bar-button-menutoggle{
   position: absolute;
