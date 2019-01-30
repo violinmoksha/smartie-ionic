@@ -316,61 +316,84 @@ export class SmartieSearch {
   }
 
   createMarkerLocation(extendBound) {
+    console.log("coming into createMarkerLocation");
+    console.log(extendBound);
     // TODO: there shud be a way to wrap this
     // so we don't need to include the frontend
     // SDK directly in our index.html
     try {
       let latLng;
-      for(let locationData of this.notifications){
-        if (this.role == 'teacher') {
-          if (locationData.otherProfile) {
-            latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
-  
-            this.randomLocation = this.randomGeo(locationData.otherProfile.latlng, 500);
-  
-            if (locationData.otherProfile.role == 'teacher') {
-              this.userIcon = './assets/imgs/teacher-map-icon30px.png'
-            } else if (locationData.otherProfile.role == 'parent') {
-              this.userIcon = './assets/imgs/parent-map-icon30px.png'
-            } else if (locationData.otherProfile.role == 'school') {
-              this.userIcon = './assets/imgs/school-map-icon30px.png'
-            } else if (locationData.otherProfile.role == 'student') {
-              this.userIcon = './assets/imgs/student-map-icon30px.png'
+      if(this.notifications.length > 0){
+        for(let locationData of this.notifications){
+          if (this.role == 'teacher') {
+            if (locationData.otherProfile) {
+              latLng = new google.maps.LatLng(locationData.otherProfile.latlng.latitude, locationData.otherProfile.latlng.longitude);
+
+              this.randomLocation = this.randomGeo(locationData.otherProfile.latlng, 500);
+
+              if (locationData.otherProfile.role == 'teacher') {
+                this.userIcon = './assets/imgs/teacher-map-icon30px.png'
+              } else if (locationData.otherProfile.role == 'parent') {
+                this.userIcon = './assets/imgs/parent-map-icon30px.png'
+              } else if (locationData.otherProfile.role == 'school') {
+                this.userIcon = './assets/imgs/school-map-icon30px.png'
+              } else if (locationData.otherProfile.role == 'student') {
+                this.userIcon = './assets/imgs/student-map-icon30px.png'
+              }
+            }
+          } else {
+            latLng = new google.maps.LatLng(locationData.teacherProfile.latlng.latitude, locationData.teacherProfile.latlng.longitude);
+
+            this.randomLocation = this.randomGeo(locationData.teacherProfile.latlng, 500);
+            this.userIcon = './assets/imgs/teacher-map-icon30px.png';
+          }
+
+          this.marker = new google.maps.Marker({
+            map: this.map,
+            animation: google.maps.Animation.DROP,
+            position: new google.maps.LatLng(this.randomLocation.latitude, this.randomLocation.longitude),
+            icon: this.userIcon
+          });
+
+          this.bounds.extend(latLng);
+
+          if(extendBound) {
+            // Extends our bounds to show US map
+            var USBoundLocation = [
+              [39.952583, -75.165222],
+              [34.052235, -118.243683]
+            ];
+
+            for (var i = 0; i < USBoundLocation.length; i++) {
+              let addonLatLng = new google.maps.LatLng(USBoundLocation[i][0], USBoundLocation[i][1]);
+              this.bounds.extend(addonLatLng);
             }
           }
-        } else {
-          latLng = new google.maps.LatLng(locationData.teacherProfile.latlng.latitude, locationData.teacherProfile.latlng.longitude);
-  
-          this.randomLocation = this.randomGeo(locationData.teacherProfile.latlng, 500);
-          this.userIcon = './assets/imgs/teacher-map-icon30px.png';
+
+          if (locationData.profilePhoto) {
+            this.profilePhoto = locationData.profilePhoto.url;
+          } else {
+            this.profilePhoto = './assets/imgs/user-round-icon.png';
+          }
+
+          this.marker.addListener('click', () => {
+
+            this.ngZone.run(() => {
+              this.initJobRequestPopUp(locationData);
+            })
+          });
         }
+      }else{
+        // Extends our bounds to show US map
+        var USBoundLocation = [
+          [39.952583, -75.165222],
+          [34.052235, -118.243683]
+        ];
 
-        this.marker = new google.maps.Marker({
-          map: this.map,
-          animation: google.maps.Animation.DROP,
-          position: new google.maps.LatLng(this.randomLocation.latitude, this.randomLocation.longitude),
-          icon: this.userIcon
-        });
-
-        this.bounds.extend(latLng);
-
-        if (this.extendBound) {
-          let addonLatLng = new google.maps.LatLng(38.37050224570918,-75.11474514696198);
+        for (var i = 0; i < USBoundLocation.length; i++) {
+          let addonLatLng = new google.maps.LatLng(USBoundLocation[i][0], USBoundLocation[i][1]);
           this.bounds.extend(addonLatLng);
         }
-
-        if (locationData.profilePhoto) {
-          this.profilePhoto = locationData.profilePhoto.url;
-        } else {
-          this.profilePhoto = './assets/imgs/user-round-icon.png';
-        }
-
-        this.marker.addListener('click', () => {
-
-          this.ngZone.run(() => {
-            this.initJobRequestPopUp(locationData);
-          })
-        });
       }
     } catch (e) {
       console.log(e);
@@ -454,7 +477,7 @@ export class SmartieSearch {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-   
+
     this.bounds = new google.maps.LatLngBounds();
 
     let locCount: number = 0;
@@ -471,8 +494,10 @@ export class SmartieSearch {
     }
 
     if(locCount < 5){
+      console.log("its coming here : " + locCount);
       this.bounds = new google.maps.LatLngBounds();
       this.extendBound = true;
+      console.log(this.extendBound);
       this.createMarkerLocation(this.extendBound);
     }else{
       let pointSouthwest = this.destinationPoint(220, this.radiusInKm / 2, mapCenter);
