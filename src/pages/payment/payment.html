@@ -16,7 +16,7 @@
   <div class="profile-data">
     <div class="left">
       <div class="avatar">
-        <img *ngIf="params.profilePhoto !== undefined" src="{{ params.profilePhoto.url }}">
+        <img *ngIf="params.profilePhoto !== undefined" src="{{ params.profilePhoto }}">
         <img *ngIf="params.profilePhoto == undefined" src="{{ genericAvatar }}" />
       </div>
       <div class="u-detail">

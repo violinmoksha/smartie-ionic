@@ -108,7 +108,7 @@ export class AddPaymentPage {
           searchObject: searchObject,
           hash: parser.hash
        });
-    });    
+    });
   }
 
   addStripeAccount(data) {
@@ -139,7 +139,7 @@ export class AddPaymentPage {
       }
 
       const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', options);
-      browser.show();
+      // browser.show();
       browser.on('loadstart').subscribe(e => {
         this.getURLHost(e.url).then((hostName: any) => {
           if (hostName.host == 'localhost:9634') {
