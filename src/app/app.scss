@@ -56,10 +56,12 @@ position: initial !important;
   text-align: center;
 }
 
-.toolbar-content-md, .toolbar-content-ios{
+.toolbar .back-button{
   position: absolute;
-  width: 100%;
-  z-index: -1;
+  z-index: 9;
+  @media screen and (max-width: 321px) {
+    margin-top: 8px;
+  }
 }
 
 h4 {
