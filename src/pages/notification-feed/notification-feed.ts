@@ -61,6 +61,8 @@ export class NotificationFeedPage {
         this.apiCompletedCount += 1;
         if (jobReq)
           this.allAccepteds = jobReq.result; // jobReq[0], jobReq.data[0]???
+          console.log("All Accepted");
+          console.log(this.allAccepteds);
       }, (err) => {
         this.apiCompletedCount += 1;
       })
@@ -76,6 +78,8 @@ export class NotificationFeedPage {
         this.apiCompletedCount += 1;
         if (jobReq)
           this.allRequesteds = jobReq.result; // ???
+          console.log("All Requested");
+          console.log(this.allRequesteds);
       }, (err) => {
         this.apiCompletedCount += 1;
         console.log(err);
@@ -92,6 +96,8 @@ export class NotificationFeedPage {
         this.apiCompletedCount += 1;
         if (jobReq)
           this.allUpcomings = jobReq.result; // ????
+          console.log("All Upcomings");
+          console.log(this.allUpcomings);
       }, (err) => {
         this.apiCompletedCount += 1;
         console.log(err);

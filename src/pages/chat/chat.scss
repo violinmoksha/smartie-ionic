@@ -6,7 +6,7 @@ page-chat {
     .chat {
       width: 320px;
     }
-  
+
     .bubble{
         background-color: #F2F2F2;
         border-radius: 5px;
@@ -21,7 +21,7 @@ page-chat {
     .message-align{
         margin-bottom: 10px;
     }
-  
+
     .bubble::before {
         background-color: #F2F2F2;
         content: "\00a0";
@@ -36,27 +36,29 @@ page-chat {
             -webkit-transform: rotate( 29deg ) skew( -35deg );
         width:  20px;
     }
-  
+
     .me {
         float: left;
         margin: 5px 45px 5px 20px;
+        max-width: 90%;
     }
-  
+
     .me::before {
         box-shadow: -2px 2px 2px 0 rgba( 178, 178, 178, .4 );
         left: -9px;
     }
-  
+
     .you {
         float: right;
         margin: 5px 20px 5px 45px;
+        max-width: 90%;
     }
-  
+
     .you::before {
         box-shadow: 2px -2px 2px 0 rgba( 178, 178, 178, .4 );
         right: -9px;
     }
-  
+
     .chatwindow {
         padding-bottom: 20px;
         height: 100%;
@@ -108,5 +110,7 @@ page-chat {
         margin-bottom: 15px;
         margin-top: 15px;
     }
+    .chat-button button span .icon-ios{
+      font-size: 35px;
+    }
   }
-  

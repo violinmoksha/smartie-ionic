@@ -54,4 +54,18 @@ export class ToasterServiceProvider {
     toast.present();
   }
 
+  chatToast(msg, closeButtonTxt = "close", closeCallback = undefined) {
+    const toast = this.toastCtrl.create({
+      message: '',
+      showCloseButton: closeButtonTxt ? true : false,
+      closeButtonText: msg +' '+' | '+ closeButtonTxt,
+      cssClass:"custom-chat-toast"
+    });
+    toast.onDidDismiss(() => {
+      if(closeCallback)
+      closeCallback();
+    });
+    toast.present();
+  }
+
 }
