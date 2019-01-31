@@ -290,7 +290,8 @@ export class SmartieApp {
             if (appUrl.split("#")[1] == "/tabs/messages/chat")
               this.events.publish("pullMessage", notification);
             else {
-              this.tosterService.showToast(notification.title, "Go", () => {
+              let toasterTitle = this.platform.is('ios') ? notification.aps.alert.title : notification.title;
+              this.tosterService.chatToast(toasterTitle, "Go", () => {
                 console.log("goto chat page");
                 this.nav.push("ChatPage", { from: "toaster", jobObject:"", receiver:"", sender:"", notification: notification });
               })
