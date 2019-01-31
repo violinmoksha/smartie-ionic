@@ -14,10 +14,14 @@
 </ion-header>
 
 <ion-content class="{{userRole}}">
+
   <ul>
     <li class="accepted" *ngFor="let accepted of allAccepteds">
-      <a *ngIf="userRole == 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">{{ accepted.otherProfile.fullname }} has Accepted!</a>
-      <a *ngIf="userRole != 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">{{ accepted.teacherProfile.fullname }} has Accepted!</a>
+      <a *ngIf="profileId == accepted?.profileOwner.objectId && userRole == 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">You accepted a Job Request, Awaiting Scheduling</a>
+      <a *ngIf="profileId != accepted?.profileOwner.objectId && userRole == 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">{{ accepted.otherProfile.fullname }} accepted a Job Request, Awaiting Scheduling</a>
+
+      <a *ngIf="profileId != accepted?.profileOwner.objectId && userRole != 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">You accepted a Job Request, Tap here to Schedule</a>
+      <a *ngIf="profileId == accepted?.profileOwner.objectId && userRole != 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">{{ accepted.teacherProfile.fullname }} accepted a Job Request, Tap here to Schedule</a>
     </li>
 
     <li class="requested" *ngFor="let requested of allRequesteds">
