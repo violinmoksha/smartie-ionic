@@ -39,7 +39,7 @@
 <ion-footer ion-fixed>
   <ion-toolbar class="no-border chat-toolbar" color="white">
     <!-- <ion-input [(ngModel)]="newmessage" class="newmessage" placeholder="Write your message ..." [disabled]="!newmessage"></ion-input> -->
-    <ion-input [(ngModel)]="newmessage" class="newmessage" placeholder="Write your message ..." ></ion-input>
+    <ion-textarea [(ngModel)]="newmessage" rows="4" class="newmessage" placeholder="Write your message ..." ></ion-textarea>
     <ion-buttons right>
       <button ion-button (click)="sendMessage()">
         <ion-icon name="send" color="primary"></ion-icon>
