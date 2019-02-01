@@ -288,8 +288,10 @@ export class SmartieApp {
             else
               this.nav.setRoot("TabsPage", { tabIndex: 3, tabTitle: 'Messsages', role: this.role });
           } else {
-            var appUrl = document.URL.toString();
-            if (appUrl.split("#")[1] == "/tabs/messages/chat")
+            console.log(this.nav.getActive().name);
+            // var appUrl = document.URL.toString(); NB: Not providing exact page location
+
+            if (this.dataService.currentPage == "ChatPage")
               this.events.publish("pullMessage", notification);
             else {
               let toasterTitle = this.platform.is('ios') ? notification.aps.alert.title : notification.title;

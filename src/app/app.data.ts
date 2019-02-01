@@ -13,6 +13,7 @@ export class DataService {
   applicationId: string;
   contentType: string;
   hostname: string;
+  currentPage: string = "Root";
 
   constructor(public storage: Storage, public secureStorage: SecureStorage, public http: HTTP, public toasterService: ToasterServiceProvider, public alertCtrl: AlertController) {
   }

@@ -1,8 +1,8 @@
 <ion-header>
 
-  <ion-toolbar>
+  <ion-navbar>
     <ion-title>{{ receiver.fullname }}</ion-title>
-  </ion-toolbar>
+  </ion-navbar>
 
 </ion-header>
 
@@ -25,11 +25,11 @@
           <img *ngIf="receiver.profilePhoto" [src]="receiver.profilePhoto">
         </ion-avatar>
         <div class="bubble me" *ngIf="(receiver.objectId == item.sender && receiver.objectId != item.receiver)">
-          <h3 class="message-align">{{item.message}}</h3>
+          <h3 class="message-align whitespace-pre">{{item.message}}</h3>
           <span class="align-time">{{item.displayTime.sentTime}}</span>
         </div>
         <div class="bubble you" *ngIf="(receiver.objectId == item.receiver && receiver.objectId != item.sender)">
-          <h3 class="message-align">{{item.message}}</h3>
+          <h3 class="message-align whitespace-pre">{{item.message}}</h3>
           <span class="align-time">{{item.displayTime.sentTime}}</span>
         </div>
       </ion-item>
