@@ -49,7 +49,7 @@ export class ChatPage {
     if (this.navigateFrom == "jobrequest") {
       if (!this.params.teacherProfile.stripeCustomer || this.params.teacherProfile.stripeCustomer == 'undefined') {
         this.chatAccess = true;
-      }  
+      }
       if (this.params.role != 'teacher') {
         this.studentProfileId = this.params.objectId;
         this.teacherProfileId = this.params.teacherProfile.objectId;
@@ -63,6 +63,7 @@ export class ChatPage {
       this.notification = navParams.get("notification");
       this.notificationData = JSON.parse(this.notification.extraData);
       this.roomId = this.notificationData.roomId;
+      this.chatRoom.roomId = this.roomId;
       this.loadingChats = true;
       this.dataService.getApi(
         'getProfileById',
@@ -74,6 +75,7 @@ export class ChatPage {
             res.result.profilePhoto = './assets/imgs/user-round-icon.png';
           }
           this.receiver = res.result;
+          this.chatRoom.receiver = this.receiver;
           this.loadingChats = false;
           this.fetchMessages();
         }, err => {
@@ -188,7 +190,7 @@ export class ChatPage {
       { roomId: this.roomId, page: this.pageNumber, limit: this.messageLimitPerPage }
     ).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
-        
+
         if(infiniteScroll)
         infiniteScroll.complete();
 
@@ -239,5 +241,5 @@ export class ChatPage {
     return { "sentTime":sentTime, "messageDate":messageDate };
   }
 
-  
+
 }

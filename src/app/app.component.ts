@@ -157,7 +157,6 @@ export class SmartieApp {
         this.initGeolocation();
         this.tosterService.internetListener();
         this.setUserName();
-        this.getGalleryPermission();
         this.grantNotificationPermission();
 
         Parse._initialize(this.parseAppId, null, this.parseMasterKey);
@@ -185,7 +184,8 @@ export class SmartieApp {
   }
 
   getGalleryPermission() {
-    this.imagePicker.requestReadPermission()
+    console.log("permision for Gallery");
+    this.imagePicker.requestReadPermission();
   }
 
   initGeolocation(): Promise<any> {
@@ -197,9 +197,11 @@ export class SmartieApp {
           console.info('Error storing phoneGeoposition: ', JSON.stringify(error));
           reject(error);
         });
+        this.getGalleryPermission(); //For asking permision one by one;
       }, error => {
         console.info('Error setting phoneGeoposition: ', JSON.stringify(error));
         reject(error);
+        this.getGalleryPermission();
       });
     });
   }
