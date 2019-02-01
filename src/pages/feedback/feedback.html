@@ -23,12 +23,13 @@
       <div class="feedback-bottom text-center">
         <button class="button button-positive button-cv width-50" type="button" (click)="addUserScreenShot()">Upload file</button>
       </div>
+
       <div *ngIf="userScreenshotsView.length > 0">
         <h5 class="font-14 font-regular">Attached Files</h5>
 
         <ion-item *ngFor="let files of userScreenshotsView" class="list-files">
           <ion-icon name="image" class="" item-start></ion-icon>
-          <h4 class="file-name font-14">{{files.displayName}} </h4>
+          <h4 class="file-name font-14">{{files.name}} </h4>
           <span item-end>
             <ion-icon name="close" (click)="removeFile($index)"></ion-icon>
           </span>
