@@ -31,7 +31,7 @@ export class ChatPage {
   userId: any;
   sender: any;
   receiver: any;
-  chatRoom:any;
+  chatRoom:any = {};
   userProfileId:String;
   pageNumber = 0;
   messageLimitPerPage: Number = 5;
@@ -63,7 +63,8 @@ export class ChatPage {
       this.notification = navParams.get("notification");
       this.notificationData = JSON.parse(this.notification.extraData);
       this.roomId = this.notificationData.roomId;
-      this.chatRoom.roomId = this.roomId;
+      this.chatRoom = Object.assign({}, ...this.chatRoom, {"roomId":this.roomId});
+      console.log(this.chatRoom);
       this.loadingChats = true;
       this.dataService.getApi(
         'getProfileById',
@@ -75,7 +76,7 @@ export class ChatPage {
             res.result.profilePhoto = './assets/imgs/user-round-icon.png';
           }
           this.receiver = res.result;
-          this.chatRoom.receiver = this.receiver;
+          this.chatRoom['receiver'] = this.receiver;
           this.loadingChats = false;
           this.fetchMessages();
         }, err => {
