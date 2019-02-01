@@ -49,7 +49,7 @@ export class SmartieApp {
     public imagePicker: ImagePicker,
     public fetchiOSUDID: FetchiOSUDID,
     public crashlytics: FirebaseCrashlyticsProvider) {
-
+    this.dataService.currentPage = "Root"  
     this.initializeApp();
     this.events.subscribe("buttonsLoad", eventData => {
       //Tabs index 0 is always set to search

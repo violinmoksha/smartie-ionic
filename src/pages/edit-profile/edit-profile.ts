@@ -2,7 +2,7 @@ import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
+import { DataService } from '../../app/app.data';
 const Parse = require('parse');
 
 import { Storage } from '@ionic/storage';
@@ -27,7 +27,7 @@ export class EditProfilePage {
 
   private EditProfileForm : FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController,private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController,private analytics : AnalyticsProvider, public dataService: DataService) {
     this.analytics.setScreenName("EditProfile");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile", "View"));
 
@@ -40,6 +40,10 @@ export class EditProfilePage {
       this.email = roleProfile.userData.email;
       this.username = roleProfile.userData.username;
     })
+  }
+
+  ionViewDidEnter() {
+    this.dataService.currentPage = "EditProfilePage";
   }
 
   getRole() {
