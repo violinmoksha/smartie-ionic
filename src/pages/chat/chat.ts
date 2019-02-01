@@ -41,7 +41,6 @@ export class ChatPage {
   loadingChats: Boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events, private dataService: DataService, private changeRef: ChangeDetectorRef) {
-    this.dataService.currentPage = "ChatPage"
     this.params = navParams.get("jobObject");
     this.sender = navParams.get("sender");
     this.receiver = navParams.get("receiver");
@@ -113,7 +112,7 @@ export class ChatPage {
   }
 
   ionViewDidEnter() {
-    console.log(this.chatAccess);
+    this.dataService.currentPage = "ChatPage"
     this.events.subscribe("pullMessage", (notification) => {
       console.log("pulling message");
       console.log(notification);
@@ -132,6 +131,10 @@ export class ChatPage {
         console.log("wrong window");
       }
     })
+  }
+
+  ionViewWillLeave() {
+    this.dataService.currentPage = "Root"
   }
 
   sendMessage() {

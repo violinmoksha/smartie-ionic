@@ -44,6 +44,11 @@ export class LoginPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Login", "View"));
   }
 
+  ionViewDidEnter() {
+    this.dataService.currentPage = "LoginPage";
+    this.menu.swipeEnable(false);
+  }
+
   login(data) {
     if (data.password !== '') {
 
@@ -135,9 +140,6 @@ export class LoginPage {
     this.navCtrl.push("ForgotPassword");
   }
 
-  ionViewDidEnter() {
-    this.menu.swipeEnable(false);
-  }
 
   ionViewWillLeave() {
     this.menu.swipeEnable(true);

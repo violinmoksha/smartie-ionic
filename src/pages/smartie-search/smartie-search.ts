@@ -54,6 +54,7 @@ export class SmartieSearch {
   // private reverseGeocodedLocation: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private dataService: DataService, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone, private analytics: AnalyticsProvider) {
+    this.dataService.currentPage = "SmartieSearch";
     this.analytics.setScreenName("Smartie-search");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Smartie-search", "View"));
 

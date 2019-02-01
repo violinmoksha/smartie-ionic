@@ -24,7 +24,7 @@ export class NotificationFeedPage {
   public apiCompletedCount: number = 0;
 
   constructor(public navCtrl: NavController, private dataService: DataService, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController, private analytics: AnalyticsProvider) {
-
+    this.dataService.currentPage = "NotificationFeedPage";
     this.analytics.setScreenName("NotificationFeed");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("NotificationFeed", "View"));
   }

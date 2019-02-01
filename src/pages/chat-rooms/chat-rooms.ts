@@ -23,7 +23,6 @@ export class ChatRoomsPage {
   public userDefaultImg: String = './assets/imgs/user-round-icon.png';
   public chatLoader: Boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public dataService: DataService) {
-    this.dataService.currentPage = "ChatRoomsPage"
     this.userRole = navParams.get("role");
     this.chats = [];
   }
@@ -33,6 +32,7 @@ export class ChatRoomsPage {
   }
 
   ionViewDidEnter() {
+    this.dataService.currentPage = "ChatRoomsPage"
     this.loadUserData().then(res => {
       this.fetchChatRooms();
     })
