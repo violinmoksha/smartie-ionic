@@ -17,8 +17,14 @@
 
   <ul>
     <li class="accepted" *ngFor="let accepted of allAccepteds">
-      <a *ngIf="userRole == 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">You accepted a Job Request, Awaiting Scheduling</a>
-      <a *ngIf="userRole != 'teacher'" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">You accepted a Job Request, Tap here to Schedule</a>
+
+      <a *ngIf="userRole == 'teacher' && (profileId == accepted?.sentBy.objectId && accepted?.profileOwner.objectId != accepted?.sentBy.objectId)" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">{{ accepted.otherProfile.fullname }} accepted a Job Request, Awaiting Scheduling</a>
+      <a *ngIf="userRole == 'teacher' && (profileId != accepted?.sentBy.objectId && accepted?.profileOwner.objectId == accepted?.sentBy.objectId)" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">You accepted a Job Request, Awaiting Scheduling</a>
+
+      <a *ngIf="userRole != 'teacher' && (accepted?.profileOwner.objectId != accepted?.sentBy.objectId)" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">You accepted a Job Request, Tap here to Schedule</a>
+      <a *ngIf="userRole != 'teacher' && profileId == accepted?.sentBy.objectId && accepted?.profileOwner.objectId == accepted?.sentBy.objectId" href="javascript:" (click)="showJobRequest(accepted,'acceptedJobs')">{{ accepted.teacherProfile.fullname }} accepted a Job Request, Tap here to Schedule</a>
+
+
     </li>
 
     <li class="requested" *ngFor="let requested of allRequesteds">
