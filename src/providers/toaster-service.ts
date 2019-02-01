@@ -58,7 +58,7 @@ export class ToasterServiceProvider {
     const toast = this.toastCtrl.create({
       message: '',
       showCloseButton: closeButtonTxt ? true : false,
-      closeButtonText: msg +' '+' | '+ closeButtonTxt,
+      closeButtonText: msg,
       cssClass:"custom-chat-toast"
     });
     toast.onDidDismiss(() => {

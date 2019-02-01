@@ -2,6 +2,7 @@ page-chat {
     .newmessage{
         margin-left: 25px;
         color: #111111;
+        padding-top: 12px;
     }
     .chat {
       width: 320px;
@@ -112,5 +113,11 @@ page-chat {
     }
     .chat-button button span .icon-ios{
       font-size: 35px;
+    }
+    .whitespace-pre{
+      white-space: pre;
+    }
+    .chat-toolbar .bar-buttons-md[right]{
+      order: 3 !important;
     }
   }

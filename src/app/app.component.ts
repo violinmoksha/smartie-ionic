@@ -157,7 +157,6 @@ export class SmartieApp {
         this.initGeolocation();
         this.tosterService.internetListener();
         this.setUserName();
-        this.getGalleryPermission();
         this.grantNotificationPermission();
 
         Parse._initialize(this.parseAppId, null, this.parseMasterKey);
@@ -185,7 +184,8 @@ export class SmartieApp {
   }
 
   getGalleryPermission() {
-    this.imagePicker.requestReadPermission()
+    console.log("permision for Gallery");
+    this.imagePicker.requestReadPermission();
   }
 
   initGeolocation(): Promise<any> {
@@ -197,9 +197,11 @@ export class SmartieApp {
           console.info('Error storing phoneGeoposition: ', JSON.stringify(error));
           reject(error);
         });
+        this.getGalleryPermission(); //For asking permision one by one;
       }, error => {
         console.info('Error setting phoneGeoposition: ', JSON.stringify(error));
         reject(error);
+        this.getGalleryPermission();
       });
     });
   }
@@ -286,8 +288,10 @@ export class SmartieApp {
             else
               this.nav.setRoot("TabsPage", { tabIndex: 3, tabTitle: 'Messsages', role: this.role });
           } else {
-            var appUrl = document.URL.toString();
-            if (appUrl.split("#")[1] == "/tabs/messages/chat")
+            console.log(this.nav.getActive().name);
+            // var appUrl = document.URL.toString(); NB: Not providing exact page location
+
+            if (this.dataService.currentPage == "ChatPage")
               this.events.publish("pullMessage", notification);
             else {
               let toasterTitle = this.platform.is('ios') ? notification.aps.alert.title : notification.title;
