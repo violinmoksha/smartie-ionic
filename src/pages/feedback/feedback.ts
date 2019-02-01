@@ -34,7 +34,7 @@ export class FeedbackPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public dataService: DataService, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, private loadingCtrl: LoadingController, public alertCtrl: AlertController) {
     this.analytics.setScreenName("Feedback");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Feedback", "View"));
-    
+
     this.storage.get('UserProfile').then(user => {
       if (user) {
         this.profileData = user.profileData;
@@ -63,9 +63,11 @@ export class FeedbackPage {
   addUserScreenShot() {
     this.cameraService.getImage().then(async (files) => {
       if (Array.isArray(files)) {
-        for (var i = 0; i < files.length; i++) {
-          this.userScreenshotsView.push({ 'displayName': "file" + this.userScreenshotsView.length, 'name': await this.cameraService.getFileName(), 'data': files[i] });
+        for (let file of files) {
+          this.userScreenshotsView.push({ 'name': await this.cameraService.getFileName(), 'data': file });
         }
+      } else {
+        this.userScreenshotsView.push({ 'name': await this.cameraService.getFileName(), 'data': files });
       }
     }, (err) => {
       console.log(err);
@@ -83,9 +85,9 @@ export class FeedbackPage {
 
       if (this.userScreenshotsView.length > 0) {
         let filePromises = [];
-        for (let i = 0; i < this.userScreenshotsView.length; i++) {
+        /*for (let i = 0; i < this.userScreenshotsView.length; i++) {
           filePromises.push(this.fileUploader.uploadFile(this.userScreenshotsView[i], 'png'));
-        }
+        }*/
         /** To S3 bucket */
         this.uploadToS3(this.userScreenshotsView).then(res => {
           params.attachment = res;
@@ -101,7 +103,7 @@ export class FeedbackPage {
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data, this.fileUploader.awsBucket.feedback));
+        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl, this.fileUploader.awsBucket.feedback));
       }
       Promise.all(filePromises).then((results) => {
         resolve(results);
