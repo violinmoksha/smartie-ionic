@@ -142,7 +142,7 @@ export class SmartieApp {
       }, err => {
         console.log('No provision from server (yet): ' + JSON.stringify(err));
         this.splashScreen.hide();
-        this.rootPage = 'LandingPage';
+        this.rootPage = 'RegisterStep3Page';
       })
     });
   }

@@ -273,13 +273,25 @@ page-edit-profile-step3 {
   }
 
   .rate-button{
-    border-radius: 40%;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 15px;
     border: none;
     background-color: transparent;
     color:black;
     box-shadow: none;
+    padding: 0px;
   }
   .rate-btn-selected{
     border: 1px solid #00BC5B;
+  }
+  .rate-display{
+    display: inline-flex;
+  }
+  .rate-scroll{
+    height: 70px;
+    .scroll-content{
+      padding: 2px !important;
+    }
   }
 }

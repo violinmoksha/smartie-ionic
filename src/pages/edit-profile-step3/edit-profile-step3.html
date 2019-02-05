@@ -26,9 +26,9 @@
           <p>{{ rate.text }}</p>
         </ion-slide>
       </ion-slides> -->
-      <ion-scroll scrollX="true" style="height: 100px;">
-          <div style="width: 100%; display: flex;" >
-            <button *ngFor="let rate of hourRates" type="button" style="width: 15%;" ion-button outline="(hourlyRate == rate.value)" class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">{{rate.text}}</button>
+      <ion-scroll scrollX="true" class="rate-scroll">
+          <div class="rate-display text-center">
+            <button *ngFor="let rate of hourRates" type="button" ion-button outline="(hourlyRate == rate.value)" class="button button-clear rate-button text-center" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">{{rate.text}}</button>
           </div>
       </ion-scroll>
 
@@ -56,9 +56,9 @@
           </ion-slide>
         </ion-slides> -->
 
-        <ion-scroll scrollX="true" style="height: 100px;">
-          <div style="width: 100%; display: flex;" >
-            <button *ngFor="let year of years" type="button" style="width: 15%;" ion-button class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': yearExperience == year.value}" (click)="filterYear(year.value)">{{year.text}}</button>
+        <ion-scroll scrollX="true" class="rate-scroll">
+          <div class="rate-display text-center">
+            <button *ngFor="let year of years" type="button" style="width: 15%;" ion-button class="button button-clear rate-button text-center" [ngClass]="{'rate-btn-selected': yearExperience == year.value}" (click)="filterYear(year.value)">{{year.text}}</button>
           </div>
         </ion-scroll>
 
