@@ -49,7 +49,7 @@ export class SmartieApp {
     public imagePicker: ImagePicker,
     public fetchiOSUDID: FetchiOSUDID,
     public crashlytics: FirebaseCrashlyticsProvider) {
-    this.dataService.currentPage = "Root"  
+    this.dataService.currentPage = "Root"
     this.initializeApp();
     this.events.subscribe("buttonsLoad", eventData => {
       //Tabs index 0 is always set to search
@@ -267,20 +267,17 @@ export class SmartieApp {
         if (notification.eventAction == "PaymentReminder") {
           this.nav.push("AddPaymentPage");
         } else if (notification.eventAction == "JobRequest") {
-          let job = JSON.parse(notification.extraData);
-          this.dataService.getApi(
-            'getJobRequestById',
-            { "jobRequestId": job.jobId }
-          ).then(API => {
-            this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
-              this.nav.push("JobRequestPage", { params: response.result });
-            }, err => {
-              // TODO: handle this in UI
-              console.info('0: ' + err);
+          if(notification.tap || notification.tap == 1){ //App in background
+            this.pushJobRequestPage(notification);
+          }else{
+            let toasterTitle = this.platform.is('ios') ? notification.aps.alert.body : notification.body;
+            console.log(toasterTitle);
+            this.tosterService.chatToast(toasterTitle, "Go", () => {
+              console.log("goto jobRequest page");
+              this.pushJobRequestPage(notification);
             })
-          }, err => {
-            console.info('sub-0: ' + err);
-          });
+          }
+
         } else if (notification.eventAction == "MESSAGE_RECEIVED") {
           if (notification.tap || notification.tap == 1) { //App in background
             if (this.role == 'teacher')
@@ -318,6 +315,28 @@ export class SmartieApp {
     }, err => {
       // TODO: ditto
       console.info('1: ' + err);
+    });
+  }
+
+
+  pushJobRequestPage(notification){
+    let job = JSON.parse(notification.extraData);
+    console.log("####### Getting notification ######");
+    console.log(job);
+    this.dataService.getApi(
+      'getJobRequestById',
+      { "jobRequestId": job.jobId }
+    ).then(API => {
+      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
+        console.log("#### Job Request Response ####");
+        console.log(response);
+        this.nav.push("JobRequestPage", { params: response.result });
+      }, err => {
+        // TODO: handle this in UI
+        console.info('0: ' + err);
+      })
+    }, err => {
+      console.info('sub-0: ' + err);
     });
   }
 
