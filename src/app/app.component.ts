@@ -142,7 +142,7 @@ export class SmartieApp {
       }, err => {
         console.log('No provision from server (yet): ' + JSON.stringify(err));
         this.splashScreen.hide();
-        this.rootPage = 'RegisterStep3Page';
+        this.rootPage = 'LandingPage';
       })
     });
   }
@@ -321,15 +321,11 @@ export class SmartieApp {
 
   pushJobRequestPage(notification){
     let job = JSON.parse(notification.extraData);
-    console.log("####### Getting notification ######");
-    console.log(job);
     this.dataService.getApi(
       'getJobRequestById',
       { "jobRequestId": job.jobId }
     ).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
-        console.log("#### Job Request Response ####");
-        console.log(response);
         this.nav.push("JobRequestPage", { params: response.result });
       }, err => {
         // TODO: handle this in UI
