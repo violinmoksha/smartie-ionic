@@ -1,14 +1,16 @@
 <ion-tabs [selectedIndex]="myIndex" *ngIf="role == 'teacher'" #smartieTabs>
-  <ion-tab [root]="tab0Root" [rootParams]="rootParams" tabTitle="Search" tabIcon="search"></ion-tab>
-  <ion-tab [root]="tab1Root" tabTitle="Payment" tabIcon="card"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="Edit Profile" tabIcon="settings"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="Notifications" tabIcon="md-notifications"></ion-tab>
-  <ion-tab [root]="tab4Root" tabTitle="Messages" tabIcon="chatbubbles" [rootParams]="role"></ion-tab>
+  <ion-tab [root]="tab0Root" tabTitle="Smartie" tabIcon="list-box"></ion-tab>
+  <ion-tab [root]="tab1Root" [rootParams]="rootParams" tabTitle="Search" tabIcon="search"></ion-tab>
+  <ion-tab [root]="tab2Root" tabTitle="Payment" tabIcon="card"></ion-tab>
+  <ion-tab [root]="tab3Root" tabTitle="Edit Profile" tabIcon="settings"></ion-tab>
+  <ion-tab [root]="tab4Root" tabTitle="Notifications" tabIcon="md-notifications"></ion-tab>
+  <ion-tab [root]="tab5Root" tabTitle="Messages" tabIcon="chatbubbles" [rootParams]="role"></ion-tab>
 </ion-tabs>
 
 <ion-tabs [selectedIndex]="myIndex" *ngIf="role != 'teacher'" #smartieTabs>
-  <ion-tab [root]="tab0Root" [rootParams]="rootParams" tabTitle="Search" tabIcon="search"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="Edit Profile" tabIcon="settings"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="Notifications" tabIcon="md-notifications"></ion-tab>
-  <ion-tab [root]="tab4Root" tabTitle="Messages" tabIcon="chatbubbles" [rootParams]="role"></ion-tab>
+  <ion-tab [root]="tab0Root" tabTitle="Smartie" tabIcon="list-box"></ion-tab>
+  <ion-tab [root]="tab1Root" [rootParams]="rootParams" tabTitle="Search" tabIcon="search"></ion-tab>
+  <ion-tab [root]="tab3Root" tabTitle="Edit Profile" tabIcon="settings"></ion-tab>
+  <ion-tab [root]="tab4Root" tabTitle="Notifications" tabIcon="md-notifications"></ion-tab>
+  <ion-tab [root]="tab5Root" tabTitle="Messages" tabIcon="chatbubbles" [rootParams]="role"></ion-tab>
 </ion-tabs>
