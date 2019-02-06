@@ -1,0 +1,44 @@
+<!--
+  Generated template for the ListPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="{{role}}">
+
+  <ion-toolbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Smartie</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content class="{{role}}">
+  <div class="row tagline padding-none">
+    <div class="col col-70">
+      <p>{{smartieList.length}} {{role == 'teacher' ? 'Teachers' : 'Students' }}</p>
+    </div>
+    <div class="col col-33">
+      <button ion-button icon-left class="button button-clear">
+        <ion-icon name="star"></ion-icon>
+        Filter
+      </button>
+    </div>
+  </div>
+  <ion-list>
+    <ion-item *ngFor="let lists of smartieList">
+        <ion-avatar item-start>
+          <img *ngIf="lists.profilePhoto" [src]="lists.profilePhoto" />
+          <!-- <img *ngIf="!lists.profilePhoto" [src]="./assets/imgs/user-round-icon.png" /> -->
+        </ion-avatar>
+        <h2 class="chat-title">{{lists.fullname}}</h2>
+        <p>{{lists.profileTitle}}</p>
+        <div item-end>
+          <p class="role-txt-color">{{lists.prefPayRate}}$ <br/> <span color="lightgrey">per hour</span></p>
+        </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

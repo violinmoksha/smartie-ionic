@@ -9,12 +9,12 @@ import { Storage } from '@ionic/storage';
   // providers: [ SmartieSearch ]
 })
 export class TabsPage {
-
-  tab0Root: any = 'SmartieSearch';
-  tab1Root: any = 'PaymentDetailsPage';
-  tab2Root: any = 'EditProfilePage';
-  tab3Root: any = 'NotificationFeedPage';
-  tab4Root: any = 'ChatRoomsPage';
+  tab0Root: any = 'ListPage';
+  tab1Root: any = 'SmartieSearch';
+  tab2Root: any = 'PaymentDetailsPage';
+  tab3Root: any = 'EditProfilePage';
+  tab4Root: any = 'NotificationFeedPage';
+  tab5Root: any = 'ChatRoomsPage';
   private role: string;
 
   myIndex: number;
