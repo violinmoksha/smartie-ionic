@@ -38,7 +38,6 @@ export class JobRequestPage {
 
     this.params = navParams.get('params');
     this.jobObject = Object.assign({}, this.params);
-    console.log(this.jobObject);
     this.teacherObj = this.params.teacherProfile;
     this.otherObj = this.params.otherProfile;
     this.acceptState = this.jobObject.acceptState;
@@ -61,7 +60,7 @@ export class JobRequestPage {
       this.jobObject.UTCendDate = (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
 
       this.jobObject = Object.assign(this.jobObject, { ...this.teacherObj });
-      if(!this.jobObject.jobRequestId){
+      if(!this.jobObject.jobRequestId && this.params.requestSent){
         this.jobObject.jobRequestId = this.params.objectId;
         this.jobObject.fromWhere = "requestSentJobs";
       }
@@ -70,7 +69,7 @@ export class JobRequestPage {
       }
     } else {
       this.jobObject = Object.assign(this.jobObject, { ...this.otherObj });
-      if(!this.jobObject.jobRequestId){
+      if(!this.jobObject.jobRequestId && this.params.requestSent){
         this.jobObject.jobRequestId = this.params.objectId;
         this.jobObject.fromWhere = "requestSentJobs";
       }
