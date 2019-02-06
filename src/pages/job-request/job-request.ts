@@ -61,11 +61,19 @@ export class JobRequestPage {
       this.jobObject.UTCendDate = (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getDate() + '-' + availEndDateTime.getFullYear();
 
       this.jobObject = Object.assign(this.jobObject, { ...this.teacherObj });
+      if(!this.jobObject.jobRequestId){
+        this.jobObject.jobRequestId = this.params.objectId;
+        this.jobObject.fromWhere = "requestSentJobs";
+      }
       }else{
         console.log("No iso time found")
       }
     } else {
       this.jobObject = Object.assign(this.jobObject, { ...this.otherObj });
+      if(!this.jobObject.jobRequestId){
+        this.jobObject.jobRequestId = this.params.objectId;
+        this.jobObject.fromWhere = "requestSentJobs";
+      }
     }
 
     if (this.jobObject.fromWhere && this.jobObject.fromWhere == 'requestSentJobs') {
@@ -87,6 +95,21 @@ export class JobRequestPage {
 
   ionViewDidLoad() {
     this.storage.get("UserProfile").then(roleProfile => {
+      // Flip viewed status to True once enter
+      return new Promise(async (resolve) => {
+        this.dataService.getApi(
+          'jobRequestViewed',
+          { jobRequestId: this.jobObject.jobRequestId }
+        ).then(async (API) => {
+          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (response) => {
+            console.log("Job Request viewed");
+            console.log(response);
+          }, (err) => {
+            console.log(err);
+          })
+        })
+      });
+
       this.userRole = roleProfile.profileData.role;
 
       if (this.userRole !== 'teacher' && this.params.fromWhere == 'acceptedJobs') {

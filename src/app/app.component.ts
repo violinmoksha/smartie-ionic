@@ -270,12 +270,17 @@ export class SmartieApp {
           if(notification.tap || notification.tap == 1){ //App in background
             this.pushJobRequestPage(notification);
           }else{
-            let toasterTitle = this.platform.is('ios') ? notification.aps.alert.body : notification.body;
-            console.log(toasterTitle);
-            this.tosterService.chatToast(toasterTitle, "Go", () => {
-              console.log("goto jobRequest page");
-              this.pushJobRequestPage(notification);
-            })
+            if(this.dataService.currentPage == "NotificationFeedPage"){
+              if (this.role == 'teacher')
+                this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Notifications', role: this.role });
+              else
+                this.nav.setRoot("TabsPage", { tabIndex: 3, tabTitle: 'Notifications', role: this.role });
+            }else{
+              let toasterTitle = this.platform.is('ios') ? notification.aps.alert.body : notification.body;
+              this.tosterService.chatToast(toasterTitle, "Go", () => {
+                this.pushJobRequestPage(notification);
+              });
+            }
           }
 
         } else if (notification.eventAction == "MESSAGE_RECEIVED") {
