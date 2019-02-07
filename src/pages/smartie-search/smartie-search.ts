@@ -46,6 +46,7 @@ export class SmartieSearch {
 
   public notifications: any;
   public accepteds: any;
+  private currentProfile: any;
 
   public userLocation: any;
 
@@ -99,7 +100,6 @@ export class SmartieSearch {
   }
 
   ionViewDidEnter() {
-    console.log("Did enter");
     // send proper buttons into side-menu from here
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
@@ -118,7 +118,6 @@ export class SmartieSearch {
 
 
   ionViewDidLoad() {
-    console.log("Did load");
     try {
 
       let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
@@ -135,6 +134,8 @@ export class SmartieSearch {
 
       this.storage.get('UserProfile').then(profile => {
         this.role = profile.profileData.role;
+        this.currentProfile = profile.profileData;
+        console.log(this.currentProfile);
 
         if (profile == null) {
           this.navCtrl.setRoot("LoginPage");
@@ -260,9 +261,11 @@ export class SmartieSearch {
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           if (response.result.length > 0) {
-            console.log("## All Accepteds ##");
-            console.log(response.result);
-            this.notifyCount = this.notifyCount + response.result.length;
+            for(let result of response.result){
+              if(result.viewed != 0 && this.currentProfile.objectid == response.result.sentBy.objectid){
+                this.notifyCount = this.notifyCount ++
+              }
+            }
             this.storage.set("userAllAccepteds", response.result);
           }
           resolve('success');

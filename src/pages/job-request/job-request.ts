@@ -38,8 +38,6 @@ export class JobRequestPage {
 
     this.params = navParams.get('params');
     this.jobObject = Object.assign({}, this.params);
-    console.log("#### JOB OBJECT ####");
-    console.log(this.jobObject);
     this.teacherObj = this.params.teacherProfile;
     this.otherObj = this.params.otherProfile;
     this.acceptState = this.jobObject.acceptState;
@@ -104,19 +102,18 @@ export class JobRequestPage {
         viewed = 2;
       }
 
-      return new Promise(async (resolve) => {
-        this.dataService.getApi(
-          'jobRequestViewed',
-          { jobRequestId: this.jobObject.jobRequestId, viewed: viewed }
-        ).then(async (API) => {
-          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (response) => {
-            console.log("Job Request viewed");
-            console.log(response);
-          }, (err) => {
-            console.log(err);
-          })
+      // return new Promise(async (resolve) => {
+      this.dataService.getApi(
+        'jobRequestViewed',
+        { jobRequestId: this.jobObject.jobRequestId, viewed: viewed }
+      ).then(async (API) => {
+        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (response) => {
+          console.log(response);
+        }, (err) => {
+          console.log(err);
         })
-      });
+      })
+      // })
 
       this.userRole = roleProfile.profileData.role;
 
@@ -169,12 +166,12 @@ export class JobRequestPage {
         this.genericAvatar = './assets/imgs/user-img-school.png';
       }
 
-      return new Promise(async (resolve) => {
-        return await this.dataService.getApi(
+      // return new Promise(async (resolve) => {
+        this.dataService.getApi(
           'getRequestedJobRequest',
           this.body
         ).then(async API => {
-          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
             if (response.result && response.result.length > 0) {
               this.requestSent = true;
             } else {
@@ -184,7 +181,7 @@ export class JobRequestPage {
             console.log(err);
           })
         });
-      })
+      // })
     })
   }
 

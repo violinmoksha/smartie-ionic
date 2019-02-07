@@ -274,6 +274,8 @@ export class SmartieApp {
           if(notification.tap || notification.tap == 1){ //App in background
             this.pushJobRequestPage(notification);
           }else{
+            console.log("### Accepted Notification ####");
+            console.log(notification);
             if(this.dataService.currentPage == "NotificationFeedPage"){
               if (this.role == 'teacher')
                 this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Notifications', role: this.role });
