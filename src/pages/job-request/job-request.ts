@@ -38,6 +38,8 @@ export class JobRequestPage {
 
     this.params = navParams.get('params');
     this.jobObject = Object.assign({}, this.params);
+    console.log("#### JOB OBJECT ####");
+    console.log(this.jobObject);
     this.teacherObj = this.params.teacherProfile;
     this.otherObj = this.params.otherProfile;
     this.acceptState = this.jobObject.acceptState;
@@ -95,10 +97,17 @@ export class JobRequestPage {
   ionViewDidLoad() {
     this.storage.get("UserProfile").then(roleProfile => {
       // Flip viewed status to True once enter
+      let viewed;
+      if(this.jobObject.sentBy.objectId != roleProfile.profileData.objectId){
+        viewed = 1;
+      }else{
+        viewed = 2;
+      }
+
       return new Promise(async (resolve) => {
         this.dataService.getApi(
           'jobRequestViewed',
-          { jobRequestId: this.jobObject.jobRequestId }
+          { jobRequestId: this.jobObject.jobRequestId, viewed: viewed }
         ).then(async (API) => {
           this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (response) => {
             console.log("Job Request viewed");
