@@ -62,7 +62,6 @@ export class JobRequestPage {
       this.jobObject = Object.assign(this.jobObject, { ...this.teacherObj });
       if(!this.jobObject.jobRequestId && this.params.requestSent){
         this.jobObject.jobRequestId = this.params.objectId;
-        this.jobObject.fromWhere = "requestSentJobs";
       }
       }else{
         console.log("No iso time found")
@@ -71,7 +70,6 @@ export class JobRequestPage {
       this.jobObject = Object.assign(this.jobObject, { ...this.otherObj });
       if(!this.jobObject.jobRequestId && this.params.requestSent){
         this.jobObject.jobRequestId = this.params.objectId;
-        this.jobObject.fromWhere = "requestSentJobs";
       }
     }
 

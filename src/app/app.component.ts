@@ -274,8 +274,6 @@ export class SmartieApp {
           if(notification.tap || notification.tap == 1){ //App in background
             this.pushJobRequestPage(notification);
           }else{
-            console.log("### Accepted Notification ####");
-            console.log(notification);
             if(this.dataService.currentPage == "NotificationFeedPage"){
               if (this.role == 'teacher')
                 this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Notifications', role: this.role });
@@ -337,6 +335,12 @@ export class SmartieApp {
       { "jobRequestId": job.jobId }
     ).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
+        if(response.result.acceptState == true){
+          response.result.fromWhere = "acceptedJobs";
+          response.result.role = "teacher";
+        }else if(response.result.requestSent == true){
+          response.result.fromWhere = "requestSentJobs";
+        }
         this.nav.push("JobRequestPage", { params: response.result });
       }, err => {
         // TODO: handle this in UI
