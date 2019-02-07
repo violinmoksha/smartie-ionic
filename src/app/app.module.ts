@@ -40,6 +40,7 @@ import { Network } from '@ionic-native/network'
 import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
 import { Crashlytics } from '@ionic-native/fabric';
 import { SmartieErrorHandler } from './app.err';
+import { UtilsProvider } from '../providers/utils';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { SmartieErrorHandler } from './app.err';
     FetchiOSUDID,
     Network,
     FirebaseCrashlyticsProvider,
-    Crashlytics
+    Crashlytics,
+    UtilsProvider
   ]
 })
 export class AppModule { }

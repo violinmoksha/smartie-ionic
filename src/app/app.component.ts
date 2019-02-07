@@ -13,6 +13,7 @@ import { ToasterServiceProvider } from '../providers/toaster-service';
 import { FetchiOSUDID } from '../providers/fetch-ios-udid';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
+import { UtilsProvider } from '../providers/utils';
 
 const Parse = require('parse');
 
@@ -48,7 +49,8 @@ export class SmartieApp {
     public tosterService: ToasterServiceProvider,
     public imagePicker: ImagePicker,
     public fetchiOSUDID: FetchiOSUDID,
-    public crashlytics: FirebaseCrashlyticsProvider) {
+    public crashlytics: FirebaseCrashlyticsProvider,
+    private utilsService: UtilsProvider) {
     this.dataService.currentPage = "Root"
     this.initializeApp();
     this.events.subscribe("buttonsLoad", eventData => {
@@ -77,6 +79,7 @@ export class SmartieApp {
 
     this.events.subscribe("login", () => {
       this.setUserName();
+      this.utilsService.getSelectedCity();
     })
 
   }
@@ -157,6 +160,7 @@ export class SmartieApp {
         this.initGeolocation();
         this.tosterService.internetListener();
         this.setUserName();
+        this.utilsService.getSelectedCity();
         this.grantNotificationPermission();
 
         Parse._initialize(this.parseAppId, null, this.parseMasterKey);

@@ -17,13 +17,17 @@ import { DataService } from '../../app/app.data';
 export class ListPage {
 
   smartieList: Array<any> = [];
+  smartieListAlias:any;
   userData: any;
   role: any;
+  cityName: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService) {
     this.storage.get("UserProfile").then(user => {
       console.log(user);
       this.userData = user;
       this.role = user.profileData.role;
+      this.cityName = user.profileData.cityName;
       this.fetchSmartieList(user);
     });
     this.role = navParams.get("role");
@@ -33,6 +37,19 @@ export class ListPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ListPage');
   }
+
+  filterBysubject(e) {
+    this.smartieListAlias = this.smartieList;
+    var searchValue = e.target.value;
+    this.smartieListAlias = this.smartieListAlias.filter(subject => {
+       return (subject.profileTitle.toLowerCase().indexOf(searchValue.toLowerCase()) > -1 || subject.profileAbout.toLowerCase().indexOf(searchValue.toLowerCase()) > -1);
+    })
+  }
+
+  // submitSearch(e) {
+  //   console.log("submit search");
+  //   console.log(e);
+  // }
 
   fetchSmartieList(user) {
     return new Promise(async (resolve) => {
@@ -52,7 +69,8 @@ export class ListPage {
                 this.smartieList.push(notifications[k].teacherProfile);
               }
             }
-            console.log(this.smartieList)
+            console.log(this.smartieList);
+            this.smartieListAlias = this.smartieList;
           })
         }, err => {
           console.log(err.error.error);
