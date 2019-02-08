@@ -62,7 +62,6 @@ export class JobRequestPage {
       this.jobObject = Object.assign(this.jobObject, { ...this.teacherObj });
       if(!this.jobObject.jobRequestId && this.params.requestSent){
         this.jobObject.jobRequestId = this.params.objectId;
-        this.jobObject.fromWhere = "requestSentJobs";
       }
       }else{
         console.log("No iso time found")
@@ -71,7 +70,6 @@ export class JobRequestPage {
       this.jobObject = Object.assign(this.jobObject, { ...this.otherObj });
       if(!this.jobObject.jobRequestId && this.params.requestSent){
         this.jobObject.jobRequestId = this.params.objectId;
-        this.jobObject.fromWhere = "requestSentJobs";
       }
     }
 
@@ -95,19 +93,25 @@ export class JobRequestPage {
   ionViewDidLoad() {
     this.storage.get("UserProfile").then(roleProfile => {
       // Flip viewed status to True once enter
-      return new Promise(async (resolve) => {
-        this.dataService.getApi(
-          'jobRequestViewed',
-          { jobRequestId: this.jobObject.jobRequestId }
-        ).then(async (API) => {
-          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (response) => {
-            console.log("Job Request viewed");
-            console.log(response);
-          }, (err) => {
-            console.log(err);
-          })
+      let viewed;
+      if(this.jobObject.sentBy.objectId != roleProfile.profileData.objectId){
+        viewed = 1;
+      }else{
+        viewed = 2;
+      }
+
+      // return new Promise(async (resolve) => {
+      this.dataService.getApi(
+        'jobRequestViewed',
+        { jobRequestId: this.jobObject.jobRequestId, viewed: viewed }
+      ).then(async (API) => {
+        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (response) => {
+          console.log(response);
+        }, (err) => {
+          console.log(err);
         })
-      });
+      })
+      // })
 
       this.userRole = roleProfile.profileData.role;
 
@@ -160,12 +164,12 @@ export class JobRequestPage {
         this.genericAvatar = './assets/imgs/user-img-school.png';
       }
 
-      return new Promise(async (resolve) => {
-        return await this.dataService.getApi(
+      // return new Promise(async (resolve) => {
+        this.dataService.getApi(
           'getRequestedJobRequest',
           this.body
         ).then(async API => {
-          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
             if (response.result && response.result.length > 0) {
               this.requestSent = true;
             } else {
@@ -175,7 +179,7 @@ export class JobRequestPage {
             console.log(err);
           })
         });
-      })
+      // })
     })
   }
 

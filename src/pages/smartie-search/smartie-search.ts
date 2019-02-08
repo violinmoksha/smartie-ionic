@@ -46,6 +46,7 @@ export class SmartieSearch {
 
   public notifications: any;
   public accepteds: any;
+  private currentProfile: any;
 
   public userLocation: any;
 
@@ -115,6 +116,7 @@ export class SmartieSearch {
     }
   }
 
+
   ionViewDidLoad() {
     try {
 
@@ -132,6 +134,8 @@ export class SmartieSearch {
 
       this.storage.get('UserProfile').then(profile => {
         this.role = profile.profileData.role;
+        this.currentProfile = profile.profileData;
+        console.log(this.currentProfile);
 
         if (profile == null) {
           this.navCtrl.setRoot("LoginPage");
@@ -181,9 +185,9 @@ export class SmartieSearch {
                             text: 'OK',
                             handler: () => {
                               if (this.role !== 'teacher') {
-                                this.navCtrl.parent.select(2);
-                              } else {
                                 this.navCtrl.parent.select(3);
+                              } else {
+                                this.navCtrl.parent.select(4);
                               }
                             }
                           }]
@@ -197,9 +201,9 @@ export class SmartieSearch {
                             text: 'OK',
                             handler: () => {
                               if (this.role !== 'teacher') {
-                                this.navCtrl.parent.select(2);
-                              } else {
                                 this.navCtrl.parent.select(3);
+                              } else {
+                                this.navCtrl.parent.select(4);
                               }
                             }
                           }]
@@ -232,7 +236,13 @@ export class SmartieSearch {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
           this.notifyCount = '';
           if (response.result.length > 0) {
-            this.notifyCount = response.result.length;//response[0].result.length;
+            for(let result of response.result){
+              if(result.viewed == 0){
+                this.notifyCount++;
+              }
+            }
+            console.log(this.notifyCount);
+            // this.notifyCount = response.result.length;//response[0].result.length;
             this.storage.set("userAllRequesteds", response.result);
           }
           resolve('success');
@@ -251,7 +261,11 @@ export class SmartieSearch {
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           if (response.result.length > 0) {
-            this.notifyCount = this.notifyCount + response.result.length;
+            for(let result of response.result){
+              if(result.viewed != 0 && this.currentProfile.objectid == response.result.sentBy.objectid){
+                this.notifyCount = this.notifyCount ++
+              }
+            }
             this.storage.set("userAllAccepteds", response.result);
           }
           resolve('success');
@@ -270,6 +284,9 @@ export class SmartieSearch {
           if (response.result.length > 0) {
             this.hasUpcomings = true;
             this.upcomingsCount = response.result.length;
+            console.log("## All Upcomings ##");
+            console.log(response.result);
+
             this.notifyCount = this.notifyCount + response.result.length;
             this.storage.set("userAllUpcomings", response.result);
           }

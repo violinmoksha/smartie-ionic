@@ -323,6 +323,11 @@ export class RegisterStep2Page {
     })
   }
 
+  removeFile(i, source) {
+    if(source == 'license')
+      this.licenseFiles.splice(i,1);
+  }
+
   uploadToS3(files, bucketName) {
     console.log("uploadToS3:  coming...");
     console.log(files);

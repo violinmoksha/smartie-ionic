@@ -122,6 +122,7 @@ export class NotificationFeedPage {
   showJobRequest(notification, requestState) {
     console.log("#### notification ####");
     console.log(notification);
+    console.log(this.profileId);
     let navigationParams = Object.assign({}, ...notification);
     navigationParams.role = this.userRole != 'teacher' ? notification.teacherProfile.role : notification.otherProfile.role;
     navigationParams.fromWhere = requestState;
