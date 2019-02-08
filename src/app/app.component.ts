@@ -79,7 +79,7 @@ export class SmartieApp {
 
     this.events.subscribe("login", () => {
       this.setUserName();
-      this.utilsService.getSelectedCity();
+      // this.utilsService.getSelectedCity();
     })
 
   }

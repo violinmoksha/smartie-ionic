@@ -1,0 +1,37 @@
+<!--
+  Generated template for the GooglePlacePickerPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+
+  <ion-navbar>
+    <ion-title>Smartie Location</ion-title>
+  </ion-navbar>
+
+</ion-header> -->
+
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-buttons left>
+            <button ion-button (click)="close()">Cancel</button>
+        </ion-buttons>
+        <ion-buttons right>
+            <button [disabled]="saveDisabled" ion-button (click)="save()">Next</button>
+        </ion-buttons>
+    </ion-navbar>
+
+    <ion-toolbar>
+        <ion-searchbar [(ngModel)]="query" (ionInput)="searchPlace()"></ion-searchbar>
+    </ion-toolbar>
+
+    <ion-list>
+        <ion-item *ngFor="let place of places" (touchstart)="selectPlace(place)">{{place.description}}</ion-item>
+    </ion-list>
+
+</ion-header>
+
+<ion-content padding>
+
+</ion-content>

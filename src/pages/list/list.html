@@ -18,32 +18,19 @@
 
 <ion-content class="{{role}}">
   <div>
-    <!-- <div class="row tagline padding-none">
-      <div class="col col-70 txt-left">
-        <p>{{smartieList.length}} {{role == 'teacher' ? 'Teachers' : 'Students' }}</p>
-      </div>
-      <div class="col col-33 txt-right">
-        <button ion-button icon-left class="button button-clear bg-transparent">
-          <ion-icon name="custom-filter" style="width: 20px;"></ion-icon>
-          Filter
-        </button>
-      </div>
-    </div> -->
     <div class="row">
       <div class="col padding-none">
-        <ion-searchbar (ionInput)="filterBysubject($event)" (search)="submitSearch($event)" placeholder="Search your favourite subject!"></ion-searchbar>
-        <button ion-button class="button button-block button-clear bg-transparent role-txt-color no-box-shadow">
-          <p class="role-txt-color">{{this.cityName}} <span style="text-align: right"><ion-icon name="pin" style="width: 20px;"></ion-icon></span></p>
-        </button>
+        <ion-searchbar  (ionInput)="filterBysubject($event)" (search)="submitSearch($event)" placeholder="{{searchText}}"></ion-searchbar>
+        <div>
+          <button ion-button class="button button-block button-clear bg-transparent role-txt-color no-box-shadow" (click)="editLocation(this.cityName)">
+            <p class="role-txt-color">{{this.cityName}} <span style="text-align: right"><ion-icon name="pin" style="width: 20px;"></ion-icon></span></p>
+          </button>
+        </div>
+        <div>
+          <ion-input class="item item-input" [(ngModel)]="selectedLocation" id="locationSearch" type="text" placeholder="Search location"></ion-input>
+        </div>
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col col-80 padding-none text-center">
-      </div>
-      <div class="col col-20 padding-none">
-
-      </div>
-    </div> -->
   </div>
 
   <ion-list>
