@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
+import { UtilsProvider } from '../../providers/utils';
+
+declare let google;
+
 /**
  * Generated class for the ListPage page.
  *
@@ -21,21 +25,53 @@ export class ListPage {
   userData: any;
   role: any;
   cityName: string;
+  searchText: string;
+  selectedLocation: any;
+  editModeLocation: boolean = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private events: Events, private utils: UtilsProvider) {
+    this.role = navParams.get("role");
+    this.searchText = this.role == 'teacher' ? 'Search students by subjects!' : 'Search teachers by your favourite subjects!';
+    console.log(this.role);
+  }
+
+  ionViewDidEnter() {
+    this.events.publish("buttonsLoad", this.role);
     this.storage.get("UserProfile").then(user => {
       console.log(user);
       this.userData = user;
       this.role = user.profileData.role;
-      this.cityName = user.profileData.cityName;
+      if (!user.profileData.cityName) {
+        console.log("no city? getting city")
+        this.cityName = user.profileData.cityName;
+        // this.utils.getSelectedCity().then((cityName: any) => {
+        //   console.log("cityName", cityName)
+        //   this.cityName = cityName;
+        // })
+      } else {
+        this.cityName = user.profileData.cityName;
+      }
       this.fetchSmartieList(user);
     });
-    this.role = navParams.get("role");
-    console.log(this.role);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ListPage');
+    let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
+    let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
+
+    let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);
+    autocomplete.addListener("place_changed", () => {
+      let place = autocomplete.getPlace();
+      console.log(place)
+      this.cityName = place.name;
+    });
+  }
+
+  editLocation(location) {
+    console.log(this.editModeLocation)
+    this.editModeLocation = false;
+    this.selectedLocation = location;
   }
 
   filterBysubject(e) {
