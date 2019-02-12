@@ -136,7 +136,6 @@ export class SmartieSearch {
       this.storage.get('UserProfile').then(profile => {
         this.role = profile.profileData.role;
         this.currentProfile = profile.profileData;
-        console.log(this.currentProfile);
 
         if (profile == null) {
           this.navCtrl.setRoot("LoginPage");
@@ -248,7 +247,6 @@ export class SmartieSearch {
                 this.requestedsCount++;
               }
             }
-            console.log(this.requestedsCount);
             // this.notifyCount = response.result.length;//response[0].result.length;
             this.storage.set("userAllRequesteds", response.result);
           }
@@ -270,7 +268,7 @@ export class SmartieSearch {
           this.acceptedsCount = 0;
           if (response.result.length > 0) {
             for(let result of response.result){
-              if(result.viewed != 0 && this.currentProfile.objectid == response.result.sentBy.objectid){
+              if(result.viewed != 0 && this.currentProfile.objectId == result.sentBy.objectId){
                 this.acceptedsCount++
               }
             }
@@ -517,10 +515,8 @@ export class SmartieSearch {
     }
 
     if(locCount < 5){
-      console.log("its coming here : " + locCount);
       this.bounds = new google.maps.LatLngBounds();
       this.extendBound = true;
-      console.log(this.extendBound);
       this.createMarkerLocation(this.extendBound);
     }else{
       let pointSouthwest = this.destinationPoint(220, this.radiusInKm / 2, mapCenter);
@@ -535,9 +531,9 @@ export class SmartieSearch {
 
   pushAccepteds() {
     if (this.role !== 'teacher') {
-      this.navCtrl.parent.select(2);
-    } else {
       this.navCtrl.parent.select(3);
+    } else {
+      this.navCtrl.parent.select(4);
     }
   }
 }
