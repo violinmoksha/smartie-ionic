@@ -21,37 +21,37 @@ declare let google;
 export class ListPage {
 
   smartieList: Array<any> = [];
-  smartieListAlias:any;
+  smartieListAlias:Array<any> = [];
   userData: any;
   role: any;
   cityName: string;
   searchText: string;
   selectedLocation: any;
-  editModeLocation: boolean = true;
+  editModeLocation = false;
+  editModeButton = true;
+  fetchingData: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private events: Events, private utils: UtilsProvider) {
     this.role = navParams.get("role");
-    this.searchText = this.role == 'teacher' ? 'Search students by subjects!' : 'Search teachers by your favourite subjects!';
-    console.log(this.role);
+    this.searchText = this.role == 'teacher' ? 'Search students by subjects!' : 'Search your favourite subjects!';
   }
 
   ionViewDidEnter() {
     this.events.publish("buttonsLoad", this.role);
     this.storage.get("UserProfile").then(user => {
-      console.log(user);
       this.userData = user;
       this.role = user.profileData.role;
       if (!user.profileData.cityName) {
-        console.log("no city? getting city")
-        this.cityName = user.profileData.cityName;
-        // this.utils.getSelectedCity().then((cityName: any) => {
-        //   console.log("cityName", cityName)
-        //   this.cityName = cityName;
-        // })
+        this.utils.getSelectedCity().then((cityName: any) => {
+          console.log("cityName", cityName)
+          this.cityName = cityName;
+          this.fetchJRbyLocation(cityName);
+        })
       } else {
         this.cityName = user.profileData.cityName;
+        this.fetchJRbyLocation(user.profileData.cityName);
       }
-      this.fetchSmartieList(user);
+      //this.fetchSmartieList(user);
     });
   }
 
@@ -63,14 +63,16 @@ export class ListPage {
     let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);
     autocomplete.addListener("place_changed", () => {
       let place = autocomplete.getPlace();
-      console.log(place)
       this.cityName = place.name;
+      this.fetchJRbyLocation(place.name);
+      this.editModeButton = true;
     });
   }
 
   editLocation(location) {
     console.log(this.editModeLocation)
-    this.editModeLocation = false;
+    this.editModeLocation = true;
+    this.editModeButton = false;
     this.selectedLocation = location;
   }
 
@@ -86,10 +88,41 @@ export class ListPage {
   //   console.log("submit search");
   //   console.log(e);
   // }
-
+  fetchJRbyLocation(location) {
+    this.fetchingData = true;
+    this.dataService.getApi(
+      'usersByPrefLocation',
+      { profileId: this.userData.profileData.objectId, role: this.userData.profileData.role, location:location }
+    ).then(async API => {
+      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
+      this.fetchingData = false;
+        if (Notifications.result[0].length > 0) {
+          this.dataService.sanitizeNotifications(Notifications.result[0]).then((notifications: Array<any>) => {
+            console.log(notifications);
+            this.smartieList = [];
+            if (this.userData.profileData.role == "teacher") {
+              for(let k=0; k<notifications.length; k++) {
+                this.smartieList.push(notifications[k].otherProfile);
+              }
+            } else {
+              for(let k=0; k<notifications.length; k++) {
+                this.smartieList.push(notifications[k].teacherProfile);
+              }
+            }
+            console.log(this.smartieList);
+            this.smartieListAlias = this.smartieList;
+          })
+        } else {
+          this.smartieListAlias = [];
+        }
+      }, err => {
+        this.fetchingData = false;
+        console.log(err.error.error);
+      });
+    });
+  }
   fetchSmartieList(user) {
-    return new Promise(async (resolve) => {
-      return await this.dataService.getApi(
+      this.dataService.getApi(
         'fetchMarkers',
         { profileId: user.profileData.objectId, role: user.profileData.role }
       ).then(async API => {
@@ -112,7 +145,6 @@ export class ListPage {
           console.log(err.error.error);
         });
       });
-    });
   }
 
 }
