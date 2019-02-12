@@ -21,14 +21,18 @@
     <div class="row">
       <div class="col padding-none">
         <ion-searchbar  (ionInput)="filterBysubject($event)" (search)="submitSearch($event)" placeholder="{{searchText}}"></ion-searchbar>
-        <div>
+        <!-- <div *ngIf="editModeButton">
           <button ion-button class="button button-block button-clear bg-transparent role-txt-color no-box-shadow" (click)="editLocation(this.cityName)">
             <p class="role-txt-color">{{this.cityName}} <span style="text-align: right"><ion-icon name="pin" style="width: 20px;"></ion-icon></span></p>
           </button>
         </div>
-        <div>
+        <div *ngIf="editModeLocation">
           <ion-input class="item item-input" [(ngModel)]="selectedLocation" id="locationSearch" type="text" placeholder="Search location"></ion-input>
-        </div>
+        </div> -->
+        <button ion-button class="button button-block button-clear bg-transparent role-txt-color no-box-shadow" (click)="editLocation(this.cityName)">
+          <p class="role-txt-color">{{this.cityName}} <span style="text-align: right"><ion-icon name="pin" style="width: 20px;"></ion-icon></span></p>
+        </button>
+          <ion-searchbar class="item item-input" [(ngModel)]="selectedLocation" id="locationSearch" type="text" placeholder="Search location" ></ion-searchbar>
       </div>
     </div>
   </div>
@@ -46,4 +50,10 @@
         </div>
     </ion-item>
   </ion-list>
+  <div class="text-center" *ngIf="fetchingData">
+    <p>Fetching data...</p>
+  </div>
+  <div class="text-center" *ngIf="smartieListAlias.length == 0">
+    <p>No Smartie users found on this location.</p>
+  </div>
 </ion-content>
