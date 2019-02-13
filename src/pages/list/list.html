@@ -4,22 +4,23 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header class="{{role}}">
-
+<ion-header [ngClass]="role">
   <ion-toolbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Smartie</ion-title>
+    <ion-title class="horizontal-logo"></ion-title>
+    <!-- <ion-buttons end>
+      <button [disabled]="notifyCount == 0" class="notification" (click)="pushAccepteds()"><span *ngIf="notifyCount">{{ notifyCount }}</span></button>
+    </ion-buttons> -->
   </ion-toolbar>
-
 </ion-header>
 
 
 <ion-content class="{{role}}">
   <div>
     <div class="row">
-      <div class="col padding-none">
+      <div class="col padding-none search-filters">
         <ion-searchbar  (ionInput)="filterBysubject($event)" (search)="submitSearch($event)" placeholder="{{searchText}}"></ion-searchbar>
         <!-- <div *ngIf="editModeButton">
           <button ion-button class="button button-block button-clear bg-transparent role-txt-color no-box-shadow" (click)="editLocation(this.cityName)">
@@ -29,19 +30,18 @@
         <div *ngIf="editModeLocation">
           <ion-input class="item item-input" [(ngModel)]="selectedLocation" id="locationSearch" type="text" placeholder="Search location"></ion-input>
         </div> -->
-        <button ion-button class="button button-block button-clear bg-transparent role-txt-color no-box-shadow" (click)="editLocation(this.cityName)">
+        <!-- <button ion-button class="button button-block button-clear bg-transparent role-txt-color no-box-shadow" (click)="editLocation(this.cityName)">
           <p class="role-txt-color">{{this.cityName}} <span style="text-align: right"><ion-icon name="pin" style="width: 20px;"></ion-icon></span></p>
-        </button>
-          <ion-searchbar class="item item-input" [(ngModel)]="selectedLocation" id="locationSearch" type="text" placeholder="Search location" ></ion-searchbar>
+        </button> -->
+          <ion-searchbar [(ngModel)]="selectedLocation" id="locationSearch" type="text" placeholder="Search location" ></ion-searchbar>
       </div>
     </div>
   </div>
 
   <ion-list>
-    <ion-item *ngFor="let lists of smartieListAlias">
+    <ion-item *ngFor="let lists of smartieListAlias" (click)="openJobRequst(lists)">
         <ion-avatar item-start>
           <img *ngIf="lists.profilePhoto" [src]="lists.profilePhoto" />
-          <!-- <img *ngIf="!lists.profilePhoto" [src]="./assets/imgs/user-round-icon.png" /> -->
         </ion-avatar>
         <h2 class="chat-title">{{lists.fullname}}</h2>
         <p>{{lists.profileTitle}}</p>

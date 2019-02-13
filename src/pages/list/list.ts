@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, PopoverController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
 import { UtilsProvider } from '../../providers/utils';
@@ -31,7 +31,7 @@ export class ListPage {
   editModeButton = true;
   fetchingData: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private events: Events, private utils: UtilsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private events: Events, private utils: UtilsProvider, public popoverCtrl: PopoverController) {
     this.role = navParams.get("role");
     this.searchText = this.role == 'teacher' ? 'Search students by subjects!' : 'Search your favourite subjects!';
   }
@@ -45,13 +45,11 @@ export class ListPage {
         this.utils.getSelectedCity().then((cityName: any) => {
           console.log("cityName", cityName)
           this.cityName = cityName;
-          this.fetchJRbyLocation(cityName);
         })
       } else {
         this.cityName = user.profileData.cityName;
-        this.fetchJRbyLocation(user.profileData.cityName);
       }
-      //this.fetchSmartieList(user);
+      this.fetchSmartieList(user);
     });
   }
 
@@ -64,16 +62,26 @@ export class ListPage {
     autocomplete.addListener("place_changed", () => {
       let place = autocomplete.getPlace();
       this.cityName = place.name;
-      this.fetchJRbyLocation(place.name);
-      this.editModeButton = true;
+      this.sortByLocation(place.name);
     });
   }
 
-  editLocation(location) {
-    console.log(this.editModeLocation)
-    this.editModeLocation = true;
-    this.editModeButton = false;
-    this.selectedLocation = location;
+  sortByLocation(location) {
+    this.smartieListAlias = this.smartieList;
+    let locationList = [];
+    this.smartieListAlias.forEach((value, key) => {
+      console.log(value);
+      console.log(value.prefLocation);
+      if (value.prefLocation.includes(location)) {
+        locationList.splice(0, 0, value);
+        console.log("splice");
+      } else {
+        locationList.push(value);
+        console.log("push");
+      }
+    });
+    console.log(locationList);
+    this.smartieListAlias = locationList;
   }
 
   filterBysubject(e) {
@@ -131,10 +139,14 @@ export class ListPage {
             console.log(notifications);
             if (this.userData.profileData.role == "teacher") {
               for(let k=0; k<notifications.length; k++) {
-                this.smartieList.push(notifications[k].otherProfile);
+                notifications[k] = Object.assign({}, notifications[k], ...notifications[k].otherProfile);
+                notifications[k].profilePhoto = notifications[k].otherProfile.profilePhoto ? notifications[k].otherProfile.profilePhoto : './assets/imgs/user-round-icon.png';
+                this.smartieList.push(notifications[k]);
               }
             } else {
               for(let k=0; k<notifications.length; k++) {
+                notifications[k] = Object.assign({}, notifications[k], ...notifications[k].teacherProfile);
+                notifications[k].profilePhoto = notifications[k].teacherProfile.profilePhoto ? notifications[k].teacherProfile.profilePhoto : './assets/imgs/user-round-icon.png';
                 this.smartieList.push(notifications[k].teacherProfile);
               }
             }
@@ -145,6 +157,16 @@ export class ListPage {
           console.log(err.error.error);
         });
       });
+  }
+
+  openJobRequst(job) {
+    if (this.role !== 'teacher') {
+      job.role = job.teacherProfile.role;
+    } else {
+      job.role = job.otherProfile.role;
+    }
+    let popover = this.popoverCtrl.create("JobRequestPage", { params: job });
+    popover.present();
   }
 
 }

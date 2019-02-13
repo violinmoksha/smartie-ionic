@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { DataService } from '../../app/app.data';
 
 /**
  * Generated class for the TimeSelectorMultiPage page.
@@ -26,18 +27,24 @@ export class TimeSelectorMultiPage {
   grossHours: number = 0;
   timeZone: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, private dataService: DataService) {
     this.selectedDates = this.navParams.get("selectedDates");
     this.params = this.navParams.get("params");
     this.loggedRole = this.navParams.get("loggedRole");
+
+    if(this.navParams.get("scheduled")){
+      this.calGrossAmount();
+      this.calGrossHours();
+      this.readyToPay = true;
+    }
 
     this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
     for(let selectedDate of this.selectedDates){
       let timeZoneStartTime = new Date(selectedDate.years, selectedDate.months, selectedDate.date, 10);
       let timeZoneEndTime = new Date(selectedDate.years, selectedDate.months, selectedDate.date, 23);
-      selectedDate.startTime = timeZoneStartTime.toLocaleTimeString();
-      selectedDate.endTime = timeZoneEndTime.toLocaleTimeString();
+      selectedDate.startTime = selectedDate.startTime? selectedDate.startTime : timeZoneStartTime.toLocaleTimeString();
+      selectedDate.endTime = selectedDate.endTime? selectedDate.endTime : timeZoneEndTime.toLocaleTimeString();
     }
   }
 
@@ -135,11 +142,16 @@ export class TimeSelectorMultiPage {
 
   goPay(){
 
-    this.navCtrl.push("PaymentPage", {
-      selectedDates: this.selectedDates,
-      totalHours: this.parseHours(this.grossHours),
-      totalAmount: this.smartieTotal(this.grossAmount),
-      params: this.params
-    })
+    this.storage.get("UserProfile").then(profile => {
+      profile.profileData.scheduleDetails = {'scheduled': true, 'selectedDates': this.selectedDates, 'totalHours': this.parseHours(this.grossHours), 'totalAmount': this.smartieTotal(this.grossAmount)}
+      this.dataService.updateUserProfileStorage(profile.profileData);
+
+      this.navCtrl.push("PaymentPage", {
+        selectedDates: this.selectedDates,
+        totalHours: this.parseHours(this.grossHours),
+        totalAmount: this.smartieTotal(this.grossAmount),
+        params: this.params
+      });
+    });
   }
 }
