@@ -65,15 +65,16 @@ export class ListPage {
       let place = autocomplete.getPlace();
       this.cityName = place.name;
       this.fetchJRbyLocation(place.name);
-      this.editModeButton = true;
+      this.sortByLocation(place.name);
     });
   }
 
-  editLocation(location) {
-    console.log(this.editModeLocation)
-    this.editModeLocation = true;
-    this.editModeButton = false;
-    this.selectedLocation = location;
+  sortByLocation(location) {
+    this.smartieListAlias = this.smartieList;
+    this.smartieListAlias.forEach((value, key) => {
+      console.log(value);
+      console.log(key);
+    })
   }
 
   filterBysubject(e) {
