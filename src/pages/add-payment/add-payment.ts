@@ -172,7 +172,7 @@ export class AddPaymentPage {
           console.log(response.result);
           this.dataService.updateUserProfileStorage(response.result).then(profile => {
             loading.dismiss();
-            //this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.result });
+            this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.result });
           })
         }, err => {
           loading.dismiss();

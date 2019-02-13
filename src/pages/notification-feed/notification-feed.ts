@@ -22,11 +22,13 @@ export class NotificationFeedPage {
   private userRole: any;
   private profileId: any;
   public apiCompletedCount: number = 0;
+  private params: any;
 
   constructor(public navCtrl: NavController, private dataService: DataService, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController, private analytics: AnalyticsProvider) {
     this.dataService.currentPage = "NotificationFeedPage";
     this.analytics.setScreenName("NotificationFeed");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("NotificationFeed", "View"));
+    this.params = navParams.get('params');
   }
 
   ionViewDidLoad() {
@@ -120,9 +122,6 @@ export class NotificationFeedPage {
   }
 
   showJobRequest(notification, requestState) {
-    console.log("#### notification ####");
-    console.log(notification);
-    console.log(this.profileId);
     let navigationParams = Object.assign({}, ...notification);
     navigationParams.role = this.userRole != 'teacher' ? notification.teacherProfile.role : notification.otherProfile.role;
     navigationParams.fromWhere = requestState;

@@ -92,6 +92,43 @@ export class JobRequestPage {
 
   ionViewDidLoad() {
     this.storage.get("UserProfile").then(roleProfile => {
+
+      console.log(roleProfile);
+      console.log(this.params.fromWhere);
+
+      this.userRole = roleProfile.profileData.role;
+
+      if(this.userRole !== 'teacher' && roleProfile.profileData.scheduleDetails && this.params.fromWhere !== "smartieSearch"){
+        let alert = this.alertCtrl.create({
+          title: 'Time to Pay!',
+          subTitle: `You have already scheduled your session! Tap OK to view your schedule!`,
+          buttons: [{
+            text: 'OK',
+            handler: () => {
+              this.navCtrl.push('TimeSelectorMultiPage', {
+                selectedDates: roleProfile.profileData.scheduleDetails.selectedDates,
+                scheduled: roleProfile.profileData.scheduleDetails.scheduled,
+                params: {
+                  jobRequestId: this.jobObject.jobRequestId,
+                  profilePhoto: this.jobObject.profilePhoto,
+                  profileStripeAccount: this.jobObject.stripeCustomer,
+                  fullname: this.jobObject.fullname,
+                  teacherProfileId: this.jobObject.teacherProfile.objectId,
+                  role: this.jobObject.role,
+                  prefPayRate: this.jobObject.prefPayRate,
+                  prefLocation: this.jobObject.prefLocation,
+                  UTCstartDate: this.jobObject.UTCstartDate,
+                  UTCendDate: this.jobObject.UTCendDate,
+                  UTCStartTime: this.jobObject.UTCStartTime,
+                  UTCEndTime: this.jobObject.UTCEndTime
+                },
+                loggedRole: this.userRole
+              })
+            }
+          }]
+        });
+        alert.present();
+      }
       // Flip viewed status to True once enter
       let viewed;
       if(this.jobObject.sentBy.objectId != roleProfile.profileData.objectId){
@@ -113,9 +150,7 @@ export class JobRequestPage {
       })
       // })
 
-      this.userRole = roleProfile.profileData.role;
-
-      if (this.userRole !== 'teacher' && this.params.fromWhere == 'acceptedJobs') {
+      if (this.userRole !== 'teacher' && this.params.fromWhere == 'acceptedJobs' && !roleProfile.profileData.scheduleDetails) {
         // this.scheduleJob();
         let alert = this.alertCtrl.create({
           title: 'Time to schedule!',

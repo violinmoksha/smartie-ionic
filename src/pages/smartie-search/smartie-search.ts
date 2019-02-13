@@ -268,7 +268,7 @@ export class SmartieSearch {
           this.acceptedsCount = 0;
           if (response.result.length > 0) {
             for(let result of response.result){
-              if(result.viewed != 0 && this.currentProfile.objectId == result.sentBy.objectId){
+              if(result.viewed != 0 && this.currentProfile.objectId == result.sentBy.objectId && result.viewed != 2){
                 this.acceptedsCount++
               }
             }
@@ -290,8 +290,6 @@ export class SmartieSearch {
           if (response.result.length > 0) {
             this.hasUpcomings = true;
             this.upcomingsCount = response.result.length;
-            console.log("## All Upcomings ##");
-            console.log(response.result);
 
             this.notifyCount = this.notifyCount + response.result.length;
             this.storage.set("userAllUpcomings", response.result);
@@ -444,8 +442,10 @@ export class SmartieSearch {
   initJobRequestPopUp(locationData) {
     if (this.role !== 'teacher') {
       locationData.role = locationData.teacherProfile.role;
+      locationData.fromWhere = "smartieSearch";
     } else {
       locationData.role = locationData.otherProfile.role;
+      locationData.fromWhere = "smartieSearch";
     }
     let popover = this.popoverCtrl.create("JobRequestPage", { params: locationData });
     popover.present();
