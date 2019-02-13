@@ -45,13 +45,11 @@ export class ListPage {
         this.utils.getSelectedCity().then((cityName: any) => {
           console.log("cityName", cityName)
           this.cityName = cityName;
-          this.fetchJRbyLocation(cityName);
         })
       } else {
         this.cityName = user.profileData.cityName;
-        this.fetchJRbyLocation(user.profileData.cityName);
       }
-      //this.fetchSmartieList(user);
+      this.fetchSmartieList(user);
     });
   }
 
@@ -64,7 +62,6 @@ export class ListPage {
     autocomplete.addListener("place_changed", () => {
       let place = autocomplete.getPlace();
       this.cityName = place.name;
-      this.fetchJRbyLocation(place.name);
       this.sortByLocation(place.name);
     });
   }

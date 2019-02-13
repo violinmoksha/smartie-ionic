@@ -209,9 +209,9 @@ export class RegisterStep2Page {
       this.userInfo.prefLocation = this.userLocation;
       this.userInfo.prefPayRate = this.hourlyRate;
 
-      if(this.licenseFiles.length > 0){
-        this.uploadToS3(this.licenseFiles, this.fileUploader.awsBucket.drivingLicense).then(license => {
-          form2Values.drivingLicense = license;
+    //  if(this.licenseFiles.length > 0){
+        // this.uploadToS3(this.licenseFiles, this.fileUploader.awsBucket.drivingLicense).then(license => {
+          // form2Values.drivingLicense = license;
           this.dataService.getApi(
              'signUpRole',
              { role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo) }
@@ -260,10 +260,10 @@ export class RegisterStep2Page {
                alert.present();
              })
            });
-        }, (err) => {
-          console.log(err);
-        })
-      }//-------
+        // }, (err) => {
+        //   console.log(err);
+        // })
+      //}//-------
     } else {
       console.log("form1values");
       console.log(this.form1Values);
