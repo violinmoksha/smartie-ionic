@@ -24,17 +24,22 @@ export class ReviewsPage {
   private profileData: any;
   profilePhoto: any;
   reviews: any = [];
+  public genericAvatar: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public dataService: DataService, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("Reviews");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Reviews", "View"));
 
-    this.params = navParams.data.params;
+    this.params = navParams.get('params');
 
     if (this.params.role != 'teacher') {
       this.reviewedProfileId = this.params.otherProfile.objectId;
+      this.profileData = this.params.otherProfile;
+        this.genericAvatar = '/assets/imgs/user-img-student.png';
     } else {
       this.reviewedProfileId = this.params.teacherProfile.objectId;
+      this.profileData = this.params.teacherProfile;
+      this.genericAvatar = '/assets/imgs/user-img-teacher.png';
     }
 
     this.storage.get("UserProfile").then(profile => {
@@ -50,20 +55,20 @@ export class ReviewsPage {
         { reviewedProfileId: this.reviewedProfileId }
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-          let userReviews = response.result;
-          this.reviewCount = userReviews.reviews.length;
-          this.profileData = userReviews.reviewedProfile;
+          this.reviews = response.result;
+          this.reviewCount = this.reviews.length;
+          /*this.profileData = userReviews.reviewedProfile;
 
           for (let review of userReviews.reviews) {
             this.getReviewingProfileData(review);
-          }
+          }*/
 
         })
       });
     })
   }
 
-  async getReviewingProfileData(review) {
+  /*async getReviewingProfileData(review) {
     return new Promise(async (resolve) => {
       return await await this.dataService.getApi(
         'getReviewingProfile',
@@ -79,7 +84,7 @@ export class ReviewsPage {
         })
       });
     })
-  }
+  }*/
 
   addReview() {
     this.navCtrl.push("SetReviewPage", { profileData: this.profileData });

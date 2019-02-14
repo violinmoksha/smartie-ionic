@@ -33,6 +33,8 @@ export class SetReviewPage {
     this.profileData = navParams.get("profileData");
     this.reviewedProfileId = this.profileData.objectId;
 
+    console.log("SetReview page");
+
     if (this.profileData.role == 'teacher') {
       this.genericAvatar = '/assets/imgs/user-img-teacher.png';
     } else if (this.profileData.role == 'student') {
