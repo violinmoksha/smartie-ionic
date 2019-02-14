@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-// import { SmartieAPI } from '../../providers/api/smartie';
+import { DataService } from '../../app/app.data';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 
@@ -26,12 +26,14 @@ export class SetReviewPage {
   private reviewingProfileId: any;
   genericAvatar: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,public storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,public storage: Storage, private dataService: DataService) {
     this.analytics.setScreenName("SetReview");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("SetReview", "View"));
 
     this.profileData = navParams.get("profileData");
     this.reviewedProfileId = this.profileData.objectId;
+
+    console.log("SetReview page");
 
     if (this.profileData.role == 'teacher') {
       this.genericAvatar = '/assets/imgs/user-img-teacher.png';
@@ -54,25 +56,18 @@ export class SetReviewPage {
   }
 
   ratingChanged(event){
-    console.log(event);
     this.rating = event;
   }
 
   submitReview(){
-    console.log(this.rating);
-    console.log(this.review);
-
-    /*let API = this.smartieApi.getApi(
+    this.dataService.getApi(
       'setReview',
       { reviewedProfileId: this.reviewedProfileId, reviewingProfileId: this.reviewingProfileId, reviewStars: this.rating, reviewFeedback: this.review }
-    );
-    interface Response {
-      result: any
-    }
-    this.smartieApi.http.post<Response>(API.apiUrl, API.apiBody, API.apiHeaders ).subscribe(response => {
-      console.log(response.result);
-    })*/
-
+    ).then(API => {
+      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(reviews => {
+        this.navCtrl.setRoot("TabsPage", { tabIndex: 1, tabTitle: "SmartieSearch", role: this.role });
+      })
+    });
   }
 
 }

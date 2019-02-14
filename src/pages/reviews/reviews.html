@@ -19,15 +19,16 @@
 
   <div *ngIf="reviewCount > 0">
     <div class="review-title">{{ reviewCount }} Reviews</div>
-  
+
       <ion-item *ngFor="let review of reviews">
         <div class="notification-wrapper review-pop-search" id="profile-info">
           <div class="notification">
             <div class="left">
-              <div class="avatar"><img src="{{ review.profilePhoto }}"></div>
+              <div *ngIf="review.reviewingProfile.profilePhoto" class="avatar"><img src="{{ review.reviewingProfile.profilePhoto }}"></div>
+              <div *ngIf="!review.reviewingProfile.profilePhoto" class="avatar"><img src="{{ genericAvatar }}"></div>
               <div class="u-detail">
-                <div class="name">{{ review.fullname }}</div>
-                <div class="profile-type">{{ review.role }}</div>
+                <div class="name">{{ review.reviewingProfile.fullname }}</div>
+                <div class="profile-type">{{ review.reviewingProfile.role }}</div>
               </div>
             </div>
             <div *ngIf="review.reviewStars == 1" class="right">
@@ -38,7 +39,7 @@
               <div class="star"></div>
               <div class="star"></div>
             </div>
-  
+
             <div *ngIf="review.reviewStars == 2" class="right">
               <!-- <div>{{ review.reviewStars }}</div> -->
               <div class="star orange"></div>
@@ -47,7 +48,7 @@
               <div class="star"></div>
               <div class="star"></div>
             </div>
-  
+
             <div *ngIf="review.reviewStars == 3" class="right">
               <!-- <div>{{ review.reviewStars }}</div> -->
               <div class="star orange"></div>
@@ -56,7 +57,7 @@
               <div class="star"></div>
               <div class="star"></div>
             </div>
-  
+
             <div *ngIf="review.reviewStars == 4" class="right">
               <!-- <div>{{ review.reviewStars }}</div> -->
               <div class="star orange"></div>
@@ -65,7 +66,7 @@
               <div class="star orange"></div>
               <div class="star"></div>
             </div>
-  
+
             <div *ngIf="review.reviewStars == 5" class="right">
               <!-- <div>{{ review.reviewStars }}</div> -->
               <div class="star orange"></div>
@@ -74,7 +75,7 @@
               <div class="star orange"></div>
               <div class="star orange"></div>
             </div>
-  
+
             <div class="clear"></div>
           </div>
           <div class="review-content">
@@ -84,10 +85,10 @@
             </div>
           </div>
         </div>
-  
+
       </ion-item>
     </div>
-  
-      
+
+
   <button class="button button-positive" (click)="addReview()" ion-button full>Your Review</button>
 </ion-content>

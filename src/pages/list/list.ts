@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, PopoverController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
 import { UtilsProvider } from '../../providers/utils';
+import { JobRequstProvider } from '../../providers/job-requst';
 
 declare let google;
 
@@ -30,8 +31,10 @@ export class ListPage {
   editModeLocation = false;
   editModeButton = true;
   fetchingData: boolean = false;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private events: Events, private utils: UtilsProvider, public popoverCtrl: PopoverController) {
+  notifyCount: number = 0;
+  hasUpcomings: boolean = false;
+  body: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private events: Events, private utils: UtilsProvider, public popoverCtrl: PopoverController, private jobRequestProvider: JobRequstProvider, public alertCtrl: AlertController) {
     this.role = navParams.get("role");
     this.searchText = this.role == 'teacher' ? 'Search students by subjects!' : 'Search your favourite subjects!';
   }
@@ -41,20 +44,23 @@ export class ListPage {
     this.storage.get("UserProfile").then(user => {
       this.userData = user;
       this.role = user.profileData.role;
+      this.body = {
+        profileId: user.profileData.objectId,
+        role: user.profileData.role
+      };
       if (!user.profileData.cityName) {
         this.utils.getSelectedCity().then((cityName: any) => {
-          console.log("cityName", cityName)
           this.cityName = cityName;
         })
       } else {
         this.cityName = user.profileData.cityName;
       }
       this.fetchSmartieList(user);
+      this.getNotificationCounts();
     });
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ListPage');
     let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
     let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
 
@@ -70,17 +76,12 @@ export class ListPage {
     this.smartieListAlias = this.smartieList;
     let locationList = [];
     this.smartieListAlias.forEach((value, key) => {
-      console.log(value);
-      console.log(value.prefLocation);
       if (value.prefLocation.includes(location)) {
         locationList.splice(0, 0, value);
-        console.log("splice");
       } else {
         locationList.push(value);
-        console.log("push");
       }
     });
-    console.log(locationList);
     this.smartieListAlias = locationList;
   }
 
@@ -92,51 +93,48 @@ export class ListPage {
     })
   }
 
-  // submitSearch(e) {
-  //   console.log("submit search");
-  //   console.log(e);
+  //NOTE: Commented due to changes in fetching users from all of the locations
+  // fetchJRbyLocation(location) {
+  //   this.fetchingData = true;
+  //   this.dataService.getApi(
+  //     'usersByPrefLocation',
+  //     { profileId: this.userData.profileData.objectId, role: this.userData.profileData.role, location:location }
+  //   ).then(async API => {
+  //     this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
+  //     this.fetchingData = false;
+  //       if (Notifications.result[0].length > 0) {
+  //         this.dataService.sanitizeNotifications(Notifications.result[0]).then((notifications: Array<any>) => {
+  //           console.log(notifications);
+  //           this.smartieList = [];
+  //           if (this.userData.profileData.role == "teacher") {
+  //             for(let k=0; k<notifications.length; k++) {
+  //               this.smartieList.push(notifications[k].otherProfile);
+  //             }
+  //           } else {
+  //             for(let k=0; k<notifications.length; k++) {
+  //               this.smartieList.push(notifications[k].teacherProfile);
+  //             }
+  //           }
+  //           this.smartieListAlias = this.smartieList;
+  //         })
+  //       } else {
+  //         this.smartieListAlias = [];
+  //       }
+  //     }, err => {
+  //       this.fetchingData = false;
+  //       console.log(err.error.error);
+  //     });
+  //   });
   // }
-  fetchJRbyLocation(location) {
-    this.fetchingData = true;
-    this.dataService.getApi(
-      'usersByPrefLocation',
-      { profileId: this.userData.profileData.objectId, role: this.userData.profileData.role, location:location }
-    ).then(async API => {
-      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
-      this.fetchingData = false;
-        if (Notifications.result[0].length > 0) {
-          this.dataService.sanitizeNotifications(Notifications.result[0]).then((notifications: Array<any>) => {
-            console.log(notifications);
-            this.smartieList = [];
-            if (this.userData.profileData.role == "teacher") {
-              for(let k=0; k<notifications.length; k++) {
-                this.smartieList.push(notifications[k].otherProfile);
-              }
-            } else {
-              for(let k=0; k<notifications.length; k++) {
-                this.smartieList.push(notifications[k].teacherProfile);
-              }
-            }
-            console.log(this.smartieList);
-            this.smartieListAlias = this.smartieList;
-          })
-        } else {
-          this.smartieListAlias = [];
-        }
-      }, err => {
-        this.fetchingData = false;
-        console.log(err.error.error);
-      });
-    });
-  }
+
   fetchSmartieList(user) {
+    this.smartieList = [];
       this.dataService.getApi(
         'fetchMarkers',
         { profileId: user.profileData.objectId, role: user.profileData.role }
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
           return await this.dataService.sanitizeNotifications(Notifications.result).then((notifications: Array<any>) => {
-            console.log(notifications);
             if (this.userData.profileData.role == "teacher") {
               for(let k=0; k<notifications.length; k++) {
                 notifications[k] = Object.assign({}, notifications[k], ...notifications[k].otherProfile);
@@ -150,7 +148,6 @@ export class ListPage {
                 this.smartieList.push(notifications[k].teacherProfile);
               }
             }
-            console.log(this.smartieList);
             this.smartieListAlias = this.smartieList;
           })
         }, err => {
@@ -167,6 +164,61 @@ export class ListPage {
     }
     let popover = this.popoverCtrl.create("JobRequestPage", { params: job });
     popover.present();
+  }
+
+  getNotificationCounts(){
+    this.jobRequestProvider.getNotificationCounts(this.body).then((values: any) => {
+      this.notifyCount = values.notifyCount;
+      this.hasUpcomings = values.hasUpcomings;
+      if (this.hasUpcomings == true) {
+        let title, subTitle;
+        if (values.upcomingsCount == 1) {
+          title = "You have an upcoming appointment!";
+          subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
+        } else {
+          title = "You have upcoming appointments";
+          subTitle = `You have ${values.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
+        }
+        let alert = this.alertCtrl.create({
+          title: title,
+          subTitle: subTitle,
+          buttons: [{
+            text: 'OK',
+            handler: () => {
+              if (this.role !== 'teacher') {
+                this.navCtrl.parent.select(3);
+              } else {
+                this.navCtrl.parent.select(4);
+              }
+            }
+          }]
+        });
+        alert.present();
+      } else if (this.notifyCount > 0) {
+        let alert = this.alertCtrl.create({
+          title: 'Wow, check it out!',
+          subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
+          buttons: [{
+            text: 'OK',
+            handler: () => {
+              if (this.role !== 'teacher') {
+                this.navCtrl.parent.select(3);
+              } else {
+                this.navCtrl.parent.select(4);
+              }
+            }
+          }]
+        });
+        alert.present();
+      }
+    })
+  }
+  pushAccepteds() {
+    if (this.role !== 'teacher') {
+      this.navCtrl.parent.select(3);
+    } else {
+      this.navCtrl.parent.select(4);
+    }
   }
 
 }
