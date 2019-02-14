@@ -41,6 +41,7 @@ import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
 import { Crashlytics } from '@ionic-native/fabric';
 import { SmartieErrorHandler } from './app.err';
 import { UtilsProvider } from '../providers/utils';
+import { JobRequstProvider } from '../providers/job-requst';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { UtilsProvider } from '../providers/utils';
     Network,
     FirebaseCrashlyticsProvider,
     Crashlytics,
-    UtilsProvider
+    UtilsProvider,
+    JobRequstProvider
   ]
 })
 export class AppModule { }
