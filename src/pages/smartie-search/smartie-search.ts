@@ -115,8 +115,6 @@ export class SmartieSearch {
       });
       alert.present();
     }
-
-    this.getNotificationCounts();
   }
 
   ionViewDidLoad() {
@@ -164,7 +162,7 @@ export class SmartieSearch {
                       role: profile.profileData.role
                     };
 
-                    this.getNotificationCounts();
+                    this.notifyCount = this.jobRequestProvider.notifyCount;
 
                   });
                 })
@@ -180,128 +178,6 @@ export class SmartieSearch {
     } catch (e) {
       console.log(e);
     }
-  }
-
-  getNotificationCounts(){
-    this.jobRequestProvider.getNotificationCounts(this.body);
-    Promise.all([
-      this.getAllRequesteds(),
-      this.getAllAccepteds(),
-      this.getAllUpcomings()
-    ]).then(value => {
-      this.notifyCount = this.acceptedsCount + this.requestedsCount;
-      if (this.hasUpcomings == true) {
-        let title, subTitle;
-        if (this.upcomingsCount == 1) {
-          title = "You have an upcoming appointment!";
-          subTitle = `You have one upcoming appointment. Be sure to show up on time! :)`;
-        } else {
-          title = "You have upcoming appointments";
-          subTitle = `You have ${this.upcomingsCount} upcoming appointments! Be sure to show up on time!!`;
-        }
-        let alert = this.alertCtrl.create({
-          title: title,
-          subTitle: subTitle,
-          buttons: [{
-            text: 'OK',
-            handler: () => {
-              if (this.role !== 'teacher') {
-                this.navCtrl.parent.select(3);
-              } else {
-                this.navCtrl.parent.select(4);
-              }
-            }
-          }]
-        });
-        alert.present();
-      } else if (this.notifyCount > 0) {
-        let alert = this.alertCtrl.create({
-          title: 'Wow, check it out!',
-          subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
-          buttons: [{
-            text: 'OK',
-            handler: () => {
-              if (this.role !== 'teacher') {
-                this.navCtrl.parent.select(3);
-              } else {
-                this.navCtrl.parent.select(4);
-              }
-            }
-          }]
-        });
-        alert.present();
-      }
-    });
-  }
-
-
-  getAllRequesteds() {
-    return new Promise(async (resolve) => {
-      return await this.dataService.getApi(
-        'getAllRequesteds',
-        this.body
-      ).then(async API => {
-        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
-          this.requestedsCount = '';
-          if (response.result.length > 0) {
-            for(let result of response.result){
-              if(result.viewed == 0){
-                this.requestedsCount++;
-              }
-            }
-            // this.notifyCount = response.result.length;//response[0].result.length;
-            this.storage.set("userAllRequesteds", response.result);
-          }
-          resolve('success');
-        }, err => {
-          console.log(err);
-        })
-      });
-    })
-  }
-
-  getAllAccepteds() {
-    return new Promise(async (resolve) => {
-      return await this.dataService.getApi(
-        'getAllAccepteds',
-        this.body
-      ).then(async API => {
-        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-          this.acceptedsCount = 0;
-          if (response.result.length > 0) {
-            for(let result of response.result){
-              if(result.viewed != 0 && this.currentProfile.objectId == result.sentBy.objectId && result.viewed != 2){
-                this.acceptedsCount++
-              }
-            }
-            this.storage.set("userAllAccepteds", response.result);
-          }
-          resolve('success');
-        })
-      });
-    })
-  }
-
-  getAllUpcomings() {
-    return new Promise(async (resolve) => {
-      return await this.dataService.getApi(
-        'getAllUpcomings',
-        this.body
-      ).then(async API => {
-        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-          if (response.result.length > 0) {
-            this.hasUpcomings = true;
-            this.upcomingsCount = response.result.length;
-
-            this.notifyCount = this.notifyCount + response.result.length;
-            this.storage.set("userAllUpcomings", response.result);
-          }
-          resolve('success');
-        }, err => {
-          console.log(err);
-        })
-      });
-    })
   }
 
   getGeoPoint(searchLoc) {

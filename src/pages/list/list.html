@@ -10,9 +10,9 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title class="horizontal-logo"></ion-title>
-    <!-- <ion-buttons end>
+    <ion-buttons end>
       <button [disabled]="notifyCount == 0" class="notification" (click)="pushAccepteds()"><span *ngIf="notifyCount">{{ notifyCount }}</span></button>
-    </ion-buttons> -->
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -22,17 +22,6 @@
     <div class="row">
       <div class="col padding-none search-filters">
         <ion-searchbar  (ionInput)="filterBysubject($event)" (search)="submitSearch($event)" placeholder="{{searchText}}"></ion-searchbar>
-        <!-- <div *ngIf="editModeButton">
-          <button ion-button class="button button-block button-clear bg-transparent role-txt-color no-box-shadow" (click)="editLocation(this.cityName)">
-            <p class="role-txt-color">{{this.cityName}} <span style="text-align: right"><ion-icon name="pin" style="width: 20px;"></ion-icon></span></p>
-          </button>
-        </div>
-        <div *ngIf="editModeLocation">
-          <ion-input class="item item-input" [(ngModel)]="selectedLocation" id="locationSearch" type="text" placeholder="Search location"></ion-input>
-        </div> -->
-        <!-- <button ion-button class="button button-block button-clear bg-transparent role-txt-color no-box-shadow" (click)="editLocation(this.cityName)">
-          <p class="role-txt-color">{{this.cityName}} <span style="text-align: right"><ion-icon name="pin" style="width: 20px;"></ion-icon></span></p>
-        </button> -->
           <ion-searchbar [(ngModel)]="selectedLocation" id="locationSearch" type="text" placeholder="Search location" ></ion-searchbar>
       </div>
     </div>

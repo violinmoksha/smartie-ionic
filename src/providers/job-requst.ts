@@ -10,22 +10,24 @@ import { DataService } from '../app/app.data';
 */
 @Injectable()
 export class JobRequstProvider {
-  requestedsCount: number = 0;
-  acceptedsCount: number = 0;
-
+  notifyCount: number = 0;
+  hasUpcomings: boolean = false;
+  upcomingCount: number = 0;
   constructor(public http: HttpClient, public dataService: DataService) {
     console.log('Hello JobRequstProvider Provider');
   }
 
   getNotificationCounts(body) {
-    Promise.all(
-      [this.getAllAccepteds(body),
-      this.getAllUpcomings(body),
-      this.getAllRequesteds(body)]
-    ).then(values => {
-      console.log(values)
-    },  err => {
-      console.log(err);
+    return new Promise((resolve, reject) => {
+      Promise.all(
+        [this.getAllAccepteds(body),
+        this.getAllUpcomings(body),
+        this.getAllRequesteds(body)]
+      ).then(values => {
+        resolve({"notifyCount": this.notifyCount, "hasUpcomings": this.hasUpcomings, "upcomingsCount": this.upcomingCount});
+      }, err => {
+        reject(err);
+      })
     })
   }
   getAllRequesteds(body) {
@@ -35,16 +37,14 @@ export class JobRequstProvider {
         body
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
-          this.requestedsCount = 0;
           if (response.result.length > 0) {
             for(let result of response.result){
               if(result.viewed == 0){
-                this.requestedsCount++;
+                this.notifyCount++;
               }
             }
-            resolve(this.requestedsCount);
           }
-
+          resolve(response.result);
         }, err => {
           console.log(err);
         })
@@ -59,15 +59,14 @@ export class JobRequstProvider {
         body
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-          this.acceptedsCount = 0;
           if (response.result.length > 0) {
             for(let result of response.result){
               if(result.viewed != 0 && body.profileId == result.sentBy.objectId && result.viewed != 2){
-                this.acceptedsCount++
+                this.notifyCount++
               }
             }
-            resolve(this.acceptedsCount);
           }
+          resolve(this.notifyCount);
         })
       });
     })
@@ -81,10 +80,11 @@ export class JobRequstProvider {
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           if (response.result.length > 0) {
-            resolve(response.result.length);
-          } else {
-            reject(response);
+            this.upcomingCount = response.result.length; 
+            this.notifyCount += response.result.length;
+            this.hasUpcomings = true;
           }
+          resolve(response.result.length);
         }, err => {
           console.log(err);
         })
