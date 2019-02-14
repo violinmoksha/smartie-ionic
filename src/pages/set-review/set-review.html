@@ -16,7 +16,7 @@
     <div class="profile-column">
       <div class="pr-review-top">
         <span class="reveiwer-image">
-          <img *ngIf="profileData.profilePhoto !== undefined" src="{{ profileData.profilePhoto.url }}">
+          <img *ngIf="profileData.profilePhoto !== undefined" src="{{ profileData.profilePhoto }}">
           <img *ngIf="profileData.profilePhoto == undefined" src="{{ genericAvatar }}">
         </span>
         <span class="reviewer-name">{{ profileData.fullname }}</span>
@@ -31,10 +31,10 @@
       <div class="pr-review-bottom">
         <label for="">Your Feedback</label>
         <ion-textarea [(ngModel)]="review" placeholder="Put any comment..."></ion-textarea>
-        
+
       </div>
       <button class="button button-positive" [disabled]="review == '' || rating ==''" (click)="submitReview()" ion-button full>Submit Your Rating</button>
     </div>
-    
+
 
 </ion-content>
