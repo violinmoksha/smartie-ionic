@@ -65,7 +65,6 @@ export class ChatPage {
       this.notificationData = JSON.parse(this.notification.extraData);
       this.roomId = this.notificationData.roomId;
       this.chatRoom = Object.assign({}, ...this.chatRoom, {"roomId":this.roomId});
-      console.log(this.chatRoom);
       this.loadingChats = true;
       this.dataService.getApi(
         'getProfileById',
@@ -115,11 +114,8 @@ export class ChatPage {
   ionViewDidEnter() {
     this.dataService.currentPage = "ChatPage"
     this.events.subscribe("pullMessage", (notification) => {
-      console.log("pulling message");
-      console.log(notification);
       let message = JSON.parse(notification.extraData);
       if(message.messageId.includes(this.roomId)){
-        console.log("current Room"+this.roomId+'-'+message.messageId);
         message.displayTime = this.getSentTime(message.sentAt, new Date().toISOString());
         this.chatMessages.push(message);
         this.changeRef.detectChanges();
@@ -173,7 +169,7 @@ export class ChatPage {
   }
 
   pushMessage(roomId) {
-    if(this.contactPattern.allowedInput(this.newmessage)) {
+    if(!this.contactPattern.allowedInput(this.newmessage)) {
       this.newmessage = "********";
     }
     let messageBody = {

@@ -7,7 +7,7 @@ import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
 const Parse = require('parse');
 import { Globalization } from '@ionic-native/globalization';
-import { JobRequstProvider } from '../../providers/job-requst'
+import { JobRequstProvider } from '../../providers/job-request'
 
 declare let google;
 

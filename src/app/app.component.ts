@@ -312,12 +312,13 @@ export class SmartieApp {
 
       if (this.platform.is("ios")) {
         if (notification["gcm.message_id"] == notificationId) {
-          notificationId = notification["gcm.message_id"];
           return false;
+          console.log("Stopped duplicate id");
         } else {
           actionHandler();
-          notificationId = notification["gcm.message_id"];
+          console.log("Diff notification id, Calling action handler");
         }
+        notificationId = notification["gcm.message_id"];
       } else {
         actionHandler();
       }
