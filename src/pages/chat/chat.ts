@@ -3,6 +3,7 @@ import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
+import { ContactPatterns } from '../../providers/contact-patterns';
 
 /**
  * Generated class for the ChatPage page.
@@ -40,7 +41,7 @@ export class ChatPage {
   notificationData: any;
   loadingChats: Boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events, private dataService: DataService, private changeRef: ChangeDetectorRef) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events, private dataService: DataService, private changeRef: ChangeDetectorRef, public contactPattern: ContactPatterns) {
     this.params = navParams.get("jobObject");
     this.sender = navParams.get("sender");
     this.receiver = navParams.get("receiver");
@@ -64,7 +65,6 @@ export class ChatPage {
       this.notificationData = JSON.parse(this.notification.extraData);
       this.roomId = this.notificationData.roomId;
       this.chatRoom = Object.assign({}, ...this.chatRoom, {"roomId":this.roomId});
-      console.log(this.chatRoom);
       this.loadingChats = true;
       this.dataService.getApi(
         'getProfileById',
@@ -114,11 +114,8 @@ export class ChatPage {
   ionViewDidEnter() {
     this.dataService.currentPage = "ChatPage"
     this.events.subscribe("pullMessage", (notification) => {
-      console.log("pulling message");
-      console.log(notification);
       let message = JSON.parse(notification.extraData);
       if(message.messageId.includes(this.roomId)){
-        console.log("current Room"+this.roomId+'-'+message.messageId);
         message.displayTime = this.getSentTime(message.sentAt, new Date().toISOString());
         this.chatMessages.push(message);
         this.changeRef.detectChanges();
@@ -172,6 +169,9 @@ export class ChatPage {
   }
 
   pushMessage(roomId) {
+    if(!this.contactPattern.allowedInput(this.newmessage)) {
+      this.newmessage = "********";
+    }
     let messageBody = {
       "roomId": roomId,
       "message": this.newmessage,

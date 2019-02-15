@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, Events, PopoverController, AlertCo
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
 import { UtilsProvider } from '../../providers/utils';
-import { JobRequstProvider } from '../../providers/job-requst';
+import { JobRequstProvider } from '../../providers/job-request';
 
 declare let google;
 
@@ -145,7 +145,7 @@ export class ListPage {
               for(let k=0; k<notifications.length; k++) {
                 notifications[k] = Object.assign({}, notifications[k], ...notifications[k].teacherProfile);
                 notifications[k].profilePhoto = notifications[k].teacherProfile.profilePhoto ? notifications[k].teacherProfile.profilePhoto : './assets/imgs/user-round-icon.png';
-                this.smartieList.push(notifications[k].teacherProfile);
+                this.smartieList.push(notifications[k]);
               }
             }
             this.smartieListAlias = this.smartieList;

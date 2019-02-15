@@ -90,5 +90,5 @@
     </div>
 
 
-  <button class="button button-positive" (click)="addReview()" ion-button full>Your Review</button>
+  <button *ngIf="!params.profileData" class="button button-positive" (click)="addReview()" ion-button full>Your Review</button>
 </ion-content>

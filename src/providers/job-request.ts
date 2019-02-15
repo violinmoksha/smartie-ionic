@@ -18,6 +18,7 @@ export class JobRequstProvider {
   }
 
   getNotificationCounts(body) {
+    this.notifyCount = 0;
     return new Promise((resolve, reject) => {
       Promise.all(
         [this.getAllAccepteds(body),
@@ -80,7 +81,7 @@ export class JobRequstProvider {
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           if (response.result.length > 0) {
-            this.upcomingCount = response.result.length; 
+            this.upcomingCount = response.result.length;
             this.notifyCount += response.result.length;
             this.hasUpcomings = true;
           }

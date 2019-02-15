@@ -28,7 +28,7 @@ export class PaymentDetailsPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("PaymentDetails", "View"));
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.storage.get('UserProfile').then(UserProfile => {
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;

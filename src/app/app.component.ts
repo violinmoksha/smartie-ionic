@@ -61,6 +61,7 @@ export class SmartieApp {
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage', isTabs: false },
+          { iconName: 'paper', text: 'Reviews', pageName: 'ReviewsPage' },
           { iconName: 'add-circle', text: 'Create a Job', pageName: '' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
@@ -72,6 +73,7 @@ export class SmartieApp {
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 2, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage' },
+          { iconName: 'paper', text: 'Reviews', pageName: 'ReviewsPage' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
       }
@@ -312,12 +314,13 @@ export class SmartieApp {
 
       if (this.platform.is("ios")) {
         if (notification["gcm.message_id"] == notificationId) {
-          notificationId = notification["gcm.message_id"];
           return false;
+          console.log("Stopped duplicate id");
         } else {
           actionHandler();
-          notificationId = notification["gcm.message_id"];
+          console.log("Diff notification id, Calling action handler");
         }
+        notificationId = notification["gcm.message_id"];
       } else {
         actionHandler();
       }
@@ -363,6 +366,10 @@ export class SmartieApp {
       //this.firebase.updateFcmToken(null, false);
     } else if (page.text == 'Wallet') {
       this.nav.push("WalletPage");
+    } else if (page.text == 'Reviews'){
+      this.storage.get("UserProfile").then(userProfile => {
+        this.nav.push("ReviewsPage", { params: { "profileData": userProfile.profileData, "role": userProfile.profileData.role } });
+      });
     } else {
       if (page.isTabs) {
         this.storage.get("UserProfile").then(userProfile => {
