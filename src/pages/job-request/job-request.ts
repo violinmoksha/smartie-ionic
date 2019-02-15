@@ -284,7 +284,7 @@ export class JobRequestPage {
       buttons: [{
         text: 'OK',
         handler: () => {
-          this.appNavCtrl.parent.select(1);
+          this.appNavCtrl.parent.select(2);
         }
       }]
     });

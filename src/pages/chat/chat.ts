@@ -3,6 +3,7 @@ import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
+import { ContactPatterns } from '../../providers/contact-patterns';
 
 /**
  * Generated class for the ChatPage page.
@@ -40,7 +41,7 @@ export class ChatPage {
   notificationData: any;
   loadingChats: Boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events, private dataService: DataService, private changeRef: ChangeDetectorRef) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events, private dataService: DataService, private changeRef: ChangeDetectorRef, public contactPattern: ContactPatterns) {
     this.params = navParams.get("jobObject");
     this.sender = navParams.get("sender");
     this.receiver = navParams.get("receiver");
@@ -172,6 +173,9 @@ export class ChatPage {
   }
 
   pushMessage(roomId) {
+    if(this.contactPattern.allowedInput(this.newmessage)) {
+      this.newmessage = "********";
+    }
     let messageBody = {
       "roomId": roomId,
       "message": this.newmessage,

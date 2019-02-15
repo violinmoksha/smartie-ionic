@@ -15,7 +15,7 @@
   <h4 *ngIf="jobObject.fromWhere == 'acceptedJobs'" style="color:red">Congratulations, Your Job Request Has Been ACCEPTED!</h4>
 
   <div class="notification-wrapper totles-pop-search" id="profile-info">
-    <div class="notification">
+    <div class="notification-container">
       <div class="left">
         <div class="avatar">
           <img *ngIf="jobObject.profilePhoto !== undefined" (load)="loadImage()" src="{{ jobObject.profilePhoto }}">
