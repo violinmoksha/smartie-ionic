@@ -31,15 +31,23 @@ export class ReviewsPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Reviews", "View"));
 
     this.params = navParams.get('params');
+    console.log("### Getting params ####");
+    console.log(this.params);
 
     if (this.params.role != 'teacher') {
       this.reviewedProfileId = this.params.otherProfile.objectId;
       this.profileData = this.params.otherProfile;
         this.genericAvatar = '/assets/imgs/user-img-student.png';
     } else {
-      this.reviewedProfileId = this.params.teacherProfile.objectId;
-      this.profileData = this.params.teacherProfile;
-      this.genericAvatar = '/assets/imgs/user-img-teacher.png';
+      if(this.params.profileData){
+        this.reviewedProfileId = this.params.profileData.objectId;
+        this.profileData = this.params.profileData;
+        this.genericAvatar = '/assets/imgs/user-img-teacher.png';
+      }else{
+        this.reviewedProfileId = this.params.teacherProfile.objectId;
+        this.profileData = this.params.teacherProfile;
+        this.genericAvatar = '/assets/imgs/user-img-teacher.png';
+      }
     }
 
     this.storage.get("UserProfile").then(profile => {
