@@ -243,9 +243,9 @@ export class RegisterStep3Page {
 
   signupRole(form3Values) {
     this.loading.present();
-    if(this.licenseFiles.length > 0) {
-      this.uploadToS3(this.licenseFiles, this.fileUploader.awsBucket.drivingLicense).then(license => {
-        form3Values.drivingLicense = license;
+    // if(this.licenseFiles.length > 0) {
+    //   this.uploadToS3(this.licenseFiles, this.fileUploader.awsBucket.drivingLicense).then(license => {
+    //     form3Values.drivingLicense = license;
         if (this.cvFiles.length > 0 && this.role == "teacher"){
           this.uploadToS3(this.cvFiles, this.fileUploader.awsBucket.credential).then(res => {
             form3Values.credentials = res;
@@ -256,10 +256,10 @@ export class RegisterStep3Page {
         }else{
           this.finalRegisterSubmit(form3Values);
         }
-      }, (error) => {
-        console.log(error);
-      });
-    }
+      // }, (error) => {
+      //   console.log(error);
+      // });
+    //}
   }
 
   finalRegisterSubmit(form3Values) {

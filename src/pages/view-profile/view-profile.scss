@@ -4,7 +4,7 @@ page-view-profile {
       padding:0 10px ;
       border-bottom: 1px solid #cfcfcf;
       .notification {
-  
+
         padding-top: 8px;
         padding-bottom: 8px;
         min-height: 60px;
@@ -40,7 +40,7 @@ page-view-profile {
               line-height: 15px;
             }
           }
-  
+
         }
         .right {
           width: 30%;
@@ -62,15 +62,15 @@ page-view-profile {
         }
       }
     }
-  
-  
-  
-  
-  
+
+
+
+
+
     .jobprofile-content{
       padding:30px 15px;
       overflow-y: auto;
-  
+
       h2{
         font-size: 18px;
         font-weight: 400;
@@ -90,7 +90,7 @@ page-view-profile {
           margin-top: 0;
           margin-bottom: 10px;
           line-height: 17px;
-  
+
         }
       }
       .job-phone-details{
@@ -106,7 +106,7 @@ page-view-profile {
           margin-top: 0;
           margin-bottom: 10px;
           line-height: 17px;
-  
+
         }
       }
     }
@@ -129,8 +129,8 @@ page-view-profile {
         }
       }
     }
-  
-  
+
+
     .alert-button-group{
       padding: 8px;
       .alert-button-default-md{
@@ -150,7 +150,7 @@ page-view-profile {
         }
       }
     }
-  
+
     .jobprofile-content{
       h3{
         text-align: left;
@@ -171,8 +171,8 @@ page-view-profile {
       }
       padding: 15px;
     }
-  
-  
+
+
     .jobprofile-details{
       border-bottom: 1px solid #cfcfcf;
       margin-bottom: 15px;
@@ -180,12 +180,18 @@ page-view-profile {
     .job-availablity-details{
       border-bottom: 1px solid #cfcfcf;
       margin-bottom: 15px;
+      border-radius: 5px;
+      padding-top: 15px;
+
+      h3, p {
+        color: #fff;
+        text-align: center;
+      }
     }
     .job-lang-details{
       border-bottom: 1px solid #cfcfcf;
       margin-bottom: 15px;
     }
-  
-  
+
+
   }
-  
