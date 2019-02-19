@@ -266,8 +266,6 @@ export class SmartieApp {
     var notificationId = "0";
     this.firebase.onNotificationOpen().subscribe((notification: any) => {
       //perform action based notification's action
-      console.log("Received chat notification");
-      console.log(notification);
 
       var actionHandler = () => { //NB: To reuse this function due to ios triggers event twice
         if (notification.eventAction == "PaymentReminder") {
@@ -304,7 +302,6 @@ export class SmartieApp {
             else {
               let toasterTitle = this.platform.is('ios') ? notification.aps.alert.title : notification.title;
               this.tosterService.chatToast(toasterTitle, "Go", () => {
-                console.log("goto chat page");
                 this.nav.push("ChatPage", { from: "toaster", jobObject:"", receiver:"", sender:"", notification: notification });
               })
             }
@@ -391,16 +388,11 @@ export class SmartieApp {
   logOutUser(){
     return new Promise(async(resolve, reject) => {
       this.storage.get("UserProfile").then(async userProfile => {
-        console.log(userProfile);
         return await this.dataService.getApi(
           'logoutUser',
           { sessionToken: userProfile.userData.sessionToken },
         ).then(async API => {
-          console.log("******* API DATA ********")
-          console.log(API);
           return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async logoutData => {
-            console.log("********** logout data ***********");
-            console.log(logoutData);
             if(logoutData){
               this.storage.remove('UserProfile');
               this.nav.setRoot("LoginPage");

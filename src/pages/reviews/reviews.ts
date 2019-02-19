@@ -31,8 +31,6 @@ export class ReviewsPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Reviews", "View"));
 
     this.params = navParams.get('params');
-    console.log("### Getting params ####");
-    console.log(this.params);
 
     if (this.params.role != 'teacher') {
       this.reviewedProfileId = this.params.otherProfile.objectId;
@@ -65,34 +63,10 @@ export class ReviewsPage {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           this.reviews = response.result;
           this.reviewCount = this.reviews.length;
-          /*this.profileData = userReviews.reviewedProfile;
-
-          for (let review of userReviews.reviews) {
-            this.getReviewingProfileData(review);
-          }*/
-
         })
       });
     })
   }
-
-  /*async getReviewingProfileData(review) {
-    return new Promise(async (resolve) => {
-      return await await this.dataService.getApi(
-        'getReviewingProfile',
-        { reviewingProfileId: review.reviewingProfileId }
-      ).then(async API => {
-        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-          if (response.result.reviewingProfile.profilePhoto) { /// ???
-            this.profilePhoto = response.result.reviewingProfile.profilePhoto.url;
-          } else {
-            this.profilePhoto = "./assets/img/user-round-icon.png";
-          }
-          this.reviews.push({ 'fullname': response.result.reviewingProfile.fullname, 'role': response.result.reviewingProfile.role, 'reviewStars': review.reviewStars, 'reviewFeedback': review.reviewFeedback, profilePhoto: this.profilePhoto })
-        })
-      });
-    })
-  }*/
 
   addReview() {
     this.navCtrl.push("SetReviewPage", { profileData: this.profileData });
