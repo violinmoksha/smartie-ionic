@@ -12,13 +12,6 @@
 
 <ion-content [class]="getRole()" padding>
 
-  <!-- <div>
-    <h4>Debug</h4>
-    <pre>Form : {{EditProfilestep2Form.value | json }}</pre>
-    <pre>Form Status : {{EditProfilestep2Form.status }}</pre>
-    <pre>passwordChange : {{passwordChange }}</pre>
-  </div> -->
-
   <form [formGroup]="EditProfilestep2Form" name="EditProfilestep2Form" (ngSubmit)="submitStep2(EditProfilestep2Form.value)" novalidate>
     <!-- TODO: make these classes dynamic, like getRole() -->
     <ion-list class="list-inset registration teacher step2">
@@ -63,7 +56,7 @@
         <div class="item item-message" *ngIf="EditProfilestep2Form.get('confPassword').invalid && EditProfilestep2Form.get('confPassword').touched">
           Confirm Password is required, Confirm Password must be longer than 6 characters, Password mismatch
         </div>
-  
+
         <ion-item>
           <ion-label fixed>Email</ion-label>
           <ion-input [value]="email" type="text" formControlName="email"></ion-input>

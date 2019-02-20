@@ -71,7 +71,6 @@ export class ChatPage {
         { profileId: this.notificationData.sender }
       ).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
-          console.log(res);
           if (res.result.profilePhoto == undefined) {
             res.result.profilePhoto = './assets/imgs/user-round-icon.png';
           }
@@ -124,10 +123,12 @@ export class ChatPage {
         }catch(e){
           console.log(e);
         }
+        this.scanMessageContent();
       } else {
         console.log("wrong window");
       }
-    })
+    });
+    this.scanMessageContent();
   }
 
   ionViewWillLeave() {
@@ -159,6 +160,7 @@ export class ChatPage {
               this.chatMessages.push(message);
               this.newmessage = '';
               this.content.scrollToBottom();
+              this.scanMessageContent();
             })
           })
         })
@@ -168,10 +170,19 @@ export class ChatPage {
     }
   }
 
-  pushMessage(roomId) {
-    if(!this.contactPattern.allowedInput(this.newmessage)) {
-      this.newmessage = "********";
+  scanMessageContent() {
+    for (let i=0; i<this.chatMessages.length; i++) {
+      this.contactPattern.allowedInput(this.chatMessages[i].message).then(allowedText => {
+        if (!allowedText) {
+          this.chatMessages[i].sourceMessage = this.chatMessages[i].message;
+          this.chatMessages[i].message = "*** Content blocked by Smartie. ***";
+        }
+      })
     }
+
+  }
+
+  pushMessage(roomId) {
     let messageBody = {
       "roomId": roomId,
       "message": this.newmessage,
@@ -185,6 +196,7 @@ export class ChatPage {
         this.chatMessages.push(res.result.messages[0]);
         this.newmessage = '';
         this.content.scrollToBottom();
+        this.scanMessageContent();
       })
     })
   }
@@ -212,8 +224,10 @@ export class ChatPage {
             if(infiniteScroll)
             infiniteScroll.enable(false);
           }
+          this.scanMessageContent();
         } else {
-          console.log(res)
+          if(infiniteScroll)
+          infiniteScroll.enable(false);
         }
       }, err => {
         console.log(err);

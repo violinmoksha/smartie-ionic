@@ -31,7 +31,6 @@ export class VerifyIdentityPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("VerifyIdentity", "View"));
 
     this.params = navParams.data;
-    console.log(this.params.stripeAccount.stripeCustomer.id);
 
     this.VerifyIdentityForm = new FormGroup({
       legalAddressCity: new FormControl('', Validators.required),
@@ -84,7 +83,6 @@ export class VerifyIdentityPage {
           //});
         }, err => {
           loading.dismiss();
-          console.log(err.error.error.message);
           this.verifyIdentityError(err.error.error.message);
         })
       });

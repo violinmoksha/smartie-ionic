@@ -28,7 +28,7 @@ export class ChatRoomsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ChatRoomsPage');
+    // console.log('ionViewDidLoad ChatRoomsPage');
   }
 
   ionViewDidEnter() {

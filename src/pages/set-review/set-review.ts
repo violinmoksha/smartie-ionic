@@ -33,8 +33,6 @@ export class SetReviewPage {
     this.profileData = navParams.get("profileData");
     this.reviewedProfileId = this.profileData.objectId;
 
-    console.log("SetReview page");
-
     if (this.profileData.role == 'teacher') {
       this.genericAvatar = '/assets/imgs/user-img-teacher.png';
     } else if (this.profileData.role == 'student') {
@@ -49,10 +47,6 @@ export class SetReviewPage {
       this.role = profile.profileData.role;
       this.reviewingProfileId = profile.profileData.objectId;
     })
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SetReviewPage');
   }
 
   ratingChanged(event){

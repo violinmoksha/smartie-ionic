@@ -144,7 +144,6 @@ export class EditProfileStep3Page {
 
       this.startDate = availStartDateTime.getDate() + '-' + (availStartDateTime.getMonth() + 1) + '-' + availStartDateTime.getFullYear();
       this.endDate = availEndDateTime.getDate() + '-' + (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getFullYear();
-
       for (var i = 0; i < roleProfile.specificUser.credentials.length; i++) {
         this.uploadedCvFiles.push({ name: "File" + i, data: roleProfile.specificUser.credentials[i] });
       }
@@ -152,9 +151,7 @@ export class EditProfileStep3Page {
   }
 
   ionViewDidLoad(){
-    console.log("Input did load");
     let input = document.getElementById("locationSearchEdit").getElementsByTagName('input')[0];
-    console.log(input);
     let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
 
     let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);

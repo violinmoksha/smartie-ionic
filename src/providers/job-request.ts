@@ -14,7 +14,6 @@ export class JobRequstProvider {
   hasUpcomings: boolean = false;
   upcomingCount: number = 0;
   constructor(public http: HttpClient, public dataService: DataService) {
-    console.log('Hello JobRequstProvider Provider');
   }
 
   getNotificationCounts(body) {

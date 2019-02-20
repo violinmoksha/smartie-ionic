@@ -56,8 +56,6 @@ export class PaymentDetailsPage {
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           loading.dismiss();
-          console.log("view dashboard")
-          console.log(response);
           if (response.result.url) { // ??? NB: everything is usually response.data.result now FYI using @ionic-native/http
             loading.dismiss();
             const options: ThemeableBrowserOptions = {
@@ -85,7 +83,7 @@ export class PaymentDetailsPage {
               console.log(event);
             }); */
           } else {
-            console.log("result not found");
+            // console.log("result not found");
           }
           // may need to return here for Tests???
         }, err => {

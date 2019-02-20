@@ -25,13 +25,5 @@ export class SignupPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Signup", "View"));
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SignupPage');
-    //let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
-    //let options = {componentRestrictions: {country: 'us'}};
-
-    // TODO: I presume we were intending to use this somewhere??
-    //let autocomplete = new google.maps.places.Autocomplete(input, options);
-  }
 
 }

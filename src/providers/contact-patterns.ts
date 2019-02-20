@@ -93,7 +93,7 @@ export class ContactPatterns {
         })
       );
 
-      Promise.all(myMaps).then(() => {
+      Promise.all(myMaps).then((value) => {
         resolve(true);
       });
     });

@@ -19,7 +19,7 @@ export class LauncherPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LauncherPage');
+    // console.log('ionViewDidLoad LauncherPage');
   }
 
 }

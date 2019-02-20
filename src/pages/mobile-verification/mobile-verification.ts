@@ -37,7 +37,6 @@ export class MobileVerificationPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MobileVerificationPage');
     this.analytics.setScreenName("MobileVerification");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("MobileVerification", "View"));
   }

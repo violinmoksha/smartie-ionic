@@ -9,9 +9,8 @@ import { Platform } from 'ionic-angular';
 */
 @Injectable()
 export class FirebaseCrashlyticsProvider {
-  
+
   constructor(public crashlytics: Crashlytics, public platform: Platform) {
-    console.log('Hello FirebaseCrashlyticsProvider Provider');
   }
 
   forceCrash() {
