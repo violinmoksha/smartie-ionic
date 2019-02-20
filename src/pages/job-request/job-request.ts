@@ -64,7 +64,7 @@ export class JobRequestPage {
         this.jobObject.jobRequestId = this.params.objectId;
       }
       }else{
-        console.log("No iso time found")
+        console.log("No iso time found");
       }
     } else {
       this.jobObject = Object.assign(this.jobObject, { ...this.otherObj });
@@ -92,9 +92,6 @@ export class JobRequestPage {
 
   ionViewDidLoad() {
     this.storage.get("UserProfile").then(roleProfile => {
-
-      console.log(roleProfile);
-      console.log(this.params.fromWhere);
 
       this.userRole = roleProfile.profileData.role;
 
@@ -143,7 +140,7 @@ export class JobRequestPage {
         { jobRequestId: this.jobObject.jobRequestId, viewed: viewed }
       ).then(async (API) => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (response) => {
-          console.log(response);
+          // console.log(response);
         }, (err) => {
           console.log(err);
         })

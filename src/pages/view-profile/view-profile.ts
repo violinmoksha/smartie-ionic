@@ -26,7 +26,6 @@ export class ViewProfilePage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("ViewProfile", "View"));
 
     this.params = navParams.get("params");
-    console.log(this.params);
 
     this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 

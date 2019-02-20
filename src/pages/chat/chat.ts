@@ -71,7 +71,6 @@ export class ChatPage {
         { profileId: this.notificationData.sender }
       ).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
-          console.log(res);
           if (res.result.profilePhoto == undefined) {
             res.result.profilePhoto = './assets/imgs/user-round-icon.png';
           }
@@ -213,7 +212,7 @@ export class ChatPage {
             infiniteScroll.enable(false);
           }
         } else {
-          console.log(res)
+          // console.log(res);
         }
       }, err => {
         console.log(err);

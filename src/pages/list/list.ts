@@ -93,40 +93,6 @@ export class ListPage {
     })
   }
 
-  //NOTE: Commented due to changes in fetching users from all of the locations
-  // fetchJRbyLocation(location) {
-  //   this.fetchingData = true;
-  //   this.dataService.getApi(
-  //     'usersByPrefLocation',
-  //     { profileId: this.userData.profileData.objectId, role: this.userData.profileData.role, location:location }
-  //   ).then(async API => {
-  //     this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
-  //     this.fetchingData = false;
-  //       if (Notifications.result[0].length > 0) {
-  //         this.dataService.sanitizeNotifications(Notifications.result[0]).then((notifications: Array<any>) => {
-  //           console.log(notifications);
-  //           this.smartieList = [];
-  //           if (this.userData.profileData.role == "teacher") {
-  //             for(let k=0; k<notifications.length; k++) {
-  //               this.smartieList.push(notifications[k].otherProfile);
-  //             }
-  //           } else {
-  //             for(let k=0; k<notifications.length; k++) {
-  //               this.smartieList.push(notifications[k].teacherProfile);
-  //             }
-  //           }
-  //           this.smartieListAlias = this.smartieList;
-  //         })
-  //       } else {
-  //         this.smartieListAlias = [];
-  //       }
-  //     }, err => {
-  //       this.fetchingData = false;
-  //       console.log(err.error.error);
-  //     });
-  //   });
-  // }
-
   fetchSmartieList(user) {
     this.smartieList = [];
       this.dataService.getApi(

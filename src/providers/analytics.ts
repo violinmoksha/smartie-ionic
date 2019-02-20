@@ -10,7 +10,7 @@ import { Firebase } from '@ionic-native/firebase';
 export class AnalyticsProvider {
 
   constructor(public firebase:Firebase) {
-    console.log('Hello AnalyticsProvider Provider');
+    // console.log('Hello AnalyticsProvider Provider');
   }
 
   async setScreenName(name){

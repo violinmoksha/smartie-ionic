@@ -48,10 +48,6 @@ export class TimeSelectorMultiPage {
     }
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TimeSelectorMultiPage');
-  }
-
   timeSet(date,i){
 
     if((date.months + '-' + date.date + '-' + date.years) && (date.startTime > date.endTime) ){

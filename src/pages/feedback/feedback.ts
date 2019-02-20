@@ -57,7 +57,7 @@ export class FeedbackPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad FeedbackPage');
+    // console.log('ionViewDidLoad FeedbackPage');
   }
 
   addUserScreenShot() {

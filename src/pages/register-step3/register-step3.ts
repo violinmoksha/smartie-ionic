@@ -109,11 +109,6 @@ export class RegisterStep3Page {
     this.form2Values = navParams.get("form2Values");
     this.role = navParams.get("role");
 
-    console.log(this.form1Values);
-    console.log(this.form2Values);
-    console.log(this.role);
-
-
     this.today = new Date();
     this.startDate = this.today.getMonth() + 1 + '-' + this.today.getDate() + '-' + this.today.getFullYear();
     var defEndDate = new Date(this.today.setDate(this.today.getDate() + 365));
@@ -165,7 +160,6 @@ export class RegisterStep3Page {
     myCalendar.onDidDismiss((date: CalendarResult, type: string) => {
       if (date) {
         this.startDate = date.months + '-' + date.date + '-' + date.years;
-        console.log(this.startDate);
       }
     })
   }
@@ -188,7 +182,6 @@ export class RegisterStep3Page {
   }
 
   public filterYear(years: number): void {
-    console.log(years);
     // Handle what to do when a category is selected
     this.yearExperience = years;
   }
@@ -199,7 +192,6 @@ export class RegisterStep3Page {
   }
 
   public filterRate(rate: number): void {
-    console.log(rate);
     // Handle what to do when a category is selected
     this.hourlyRate = rate;
   }
@@ -227,12 +219,9 @@ export class RegisterStep3Page {
   }
 
   uploadToS3(files, bucketName) {
-    console.log("uploadToS3:  coming...");
-    console.log(files);
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        console.log(files[i]);
         filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl, bucketName));
       }
       Promise.all(filePromises).then((results) => {
@@ -374,7 +363,6 @@ export class RegisterStep3Page {
 
   uploadDL(){
     this.cameraService.getImage().then(async (license) => {
-      console.log(license);
       if (Array.isArray(license)) {
         for (let lic of license) {
           this.licenseFiles.push({ 'name': await this.cameraService.getFileName(), 'data': lic });

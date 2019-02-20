@@ -74,10 +74,6 @@ export class PaymentPage {
     });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PaymentPage');
-  }
-
   paymentConfirm() {
     this.navCtrl.push("PaymentConfirmPage", { totalAmount: this.totalAmount, params: this.params });
   }

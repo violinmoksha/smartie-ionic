@@ -15,12 +15,6 @@
 
 <ion-content class="{{ role }}" padding>
 
-  <!--<div>
-    <h4>Debug</h4>
-    <pre>Form : {{Step2Form.value | json }}</pre>
-    <pre>Form Status : {{Step2Form.status }}</pre>
-  </div>-->
-
   <form [formGroup]="Step2Form" name="Step2Form" (ngSubmit)="submitStep2(Step2Form.value)" novalidate>
 
     <div class="list list-inset registration {{ role }} step2">

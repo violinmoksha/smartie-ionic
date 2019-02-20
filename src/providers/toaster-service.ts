@@ -13,7 +13,6 @@ export class ToasterServiceProvider {
   public isInternetConnected: Boolean = true;
 
   constructor(public toastCtrl: ToastController, private network: Network) {
-    console.log('Hello ToasterServiceProvider Provider');
   }
 
   presentToast() {

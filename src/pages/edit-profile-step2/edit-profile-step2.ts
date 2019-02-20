@@ -157,7 +157,6 @@ export class EditProfileStep2Page {
   }
   chooseUploadType(inputEvent, photoFor) {
     this.cameraService.getImage().then((imageData: any) => {
-      console.log(imageData)
       this.cameraData = imageData.imageUrl;
       this.displayCameraImg = imageData.normalizedUrl;
       this.storage.set('profilePhotoDataUrl', imageData[0]);

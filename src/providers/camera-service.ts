@@ -15,7 +15,6 @@ import { File } from '@ionic-native/file';
 export class CameraServiceProvider {
 
   constructor(public camera: Camera, public actionSheetCtrl: ActionSheetController, public imagePicker: ImagePicker, public storage: Storage, public fileService: File) {
-    console.log('Hello CameraServiceProvider Provider');
   }
 
   getCameraOptions() {
@@ -75,7 +74,6 @@ export class CameraServiceProvider {
   returnFileAsDataURL(path, name) {
     return new Promise((resolve, reject) => {
       this.fileService.readAsDataURL(path, name).then(result => {
-        console.log(result);
         resolve(result)
       }, err => {
         reject(err)
@@ -95,13 +93,11 @@ export class CameraServiceProvider {
             icon: 'camera',
             handler: () => {
               this.camera.getPicture(this.getCameraOptions()).then((image) => {
-                console.log(image);
                 // //NOTE: converting(normalizing the URL due to cordova web view plugin upgrade)
                 // image = this.ionicWebView.convertFileSrc(image);
                 let path = image.substring(0, image.lastIndexOf("/"));
                 let name = image.substring(image.lastIndexOf("/")+1);
                 let normalizedFile = window['Ionic']['WebView'].convertFileSrc(image);
-                console.log(normalizedFile)
                 // this.returnFileAsDataURL(path, name).then(res => {
                 //   console.log(res);
                 // })
@@ -118,7 +114,6 @@ export class CameraServiceProvider {
             icon: 'image',
             handler: () => {
               this.choosePictures().then((pics) => {
-                console.log(pics)
                 let normalizedFile = window['Ionic']['WebView'].convertFileSrc(pics[0]);
                 let result = {imageUrl:pics[0], normalizedUrl:normalizedFile}
                 resolve(result);

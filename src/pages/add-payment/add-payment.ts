@@ -169,7 +169,6 @@ export class AddPaymentPage {
         body
       ).then(async API => {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-          console.log(response.result);
           this.dataService.updateUserProfileStorage(response.result).then(profile => {
             loading.dismiss();
             this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.result });

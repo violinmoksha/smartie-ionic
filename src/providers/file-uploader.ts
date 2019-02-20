@@ -15,7 +15,6 @@ export class FileUploaderProvider {
   fileTransfer:FileTransferObject;
   public awsBucket;
   constructor(private transfer: FileTransfer, public dataService: DataService) {
-    console.log('Hello FileUploaderProvider Provider');
     this.fileTransfer = this.transfer.create();
     this.awsBucket = {"feedback":"Feedbacks", "credential":"Credentials", "profile":"Profile", "drivingLicense": "DrivingLicense"}
   }

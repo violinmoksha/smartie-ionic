@@ -152,9 +152,7 @@ export class EditProfileStep3Page {
   }
 
   ionViewDidLoad(){
-    console.log("Input did load");
     let input = document.getElementById("locationSearchEdit").getElementsByTagName('input')[0];
-    console.log(input);
     let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
 
     let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);

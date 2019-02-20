@@ -12,17 +12,14 @@ import { DataService } from '../app/app.data';
 export class UtilsProvider {
 
   constructor(public http: HttpClient, private storage: Storage, private dataService: DataService) {
-    console.log('Hello UtilsProvider Provider');
   }
 
   getSelectedCity() {
-    console.log("fetching city name");
     return new Promise((resolve, reject) => {
       this.storage.get("UserProfile").then(user => {
         if(user && user.profileData){
           this.dataService.getApi("getCityByLatlng", {latlng:[user.profileData.latlng.latitude, user.profileData.latlng.longitude]}).then(API => {
               this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
-                console.log(resp);
                 if(resp.result){
                   for (var i=0; i<resp.result.address_components.length; i++) {
                     if(resp.result.address_components[i].types[0] == 'locality'){

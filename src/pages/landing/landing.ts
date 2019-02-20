@@ -20,7 +20,6 @@ export class LandingPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LandingPage');
     this.analytics.setScreenName("Landing");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Landing", "View"));
 

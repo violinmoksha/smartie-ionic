@@ -139,7 +139,6 @@ export class RegisterStep2Page {
 
   chooseUploadType(inputEvent, photoFor) {
     this.cameraService.getImage().then((imageData: any) => {
-        console.log(imageData);
         // this.cameraData = this.platform.is("ios") ? imageData[0].replace('file://', '') : imageData[0];
         this.cameraData = imageData.imageUrl;
         this.displayCameraImg = imageData.normalizedUrl
@@ -156,14 +155,12 @@ export class RegisterStep2Page {
   }
 
   public filterRate(rate: number): void {
-    console.log(rate);
     // Handle what to do when a category is selected
     this.hourlyRate = rate;
   }
 
   updateUserToProvision = async (userId, userProfileId) => {
     this.UDID.getDeviceId().then(async udid => {
-      console.log(udid);
       return await this.dataService.getApi(
         'addUserToProvision',
         { uuid: udid, userId: userId, profileId: userProfileId }
@@ -192,7 +189,6 @@ export class RegisterStep2Page {
         uploadContent = this.schoolCameraData;
       }
       this.fileUploader.uploadFileToAWS(uploadContent, this.fileUploader.awsBucket.profile).then(res => {
-        console.log(res);
         form2Values.profilePhoto = res;
         this.next(form2Values);
       })
@@ -202,8 +198,6 @@ export class RegisterStep2Page {
   }
 
   next(form2Values) {
-    console.log("Check role");
-    console.log(this.role);
     if (this.role == 'student' || this.role == 'parent') {
       // TODO need to submit data here for students
       this.userInfo.prefLocation = this.userLocation;
@@ -265,16 +259,10 @@ export class RegisterStep2Page {
         // })
       //}//-------
     } else {
-      console.log("form1values");
-      console.log(this.form1Values);
-      console.log("form1Values");
-      console.log(this.form1Values);
         this.loading.dismiss();
         this.navCtrl.push("RegisterStep3Page", { form1Values: this.form1Values, form2Values: form2Values, role: this.role });
 
         this.storage.get('Registration').then(registration => {
-          console.log("registration");
-          console.log(registration);
           if (registration) {
             registration.step = 2;
             registration.form2Values = form2Values;
@@ -329,12 +317,9 @@ export class RegisterStep2Page {
   }
 
   uploadToS3(files, bucketName) {
-    console.log("uploadToS3:  coming...");
-    console.log(files);
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        console.log(files[i]);
         filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl, bucketName));
       }
       Promise.all(filePromises).then((results) => {
@@ -345,7 +330,6 @@ export class RegisterStep2Page {
 
   uploadDL(){
     this.cameraService.getImage().then(async (license) => {
-      console.log(license);
       if (Array.isArray(license)) {
         for (let lic of license) {
           this.licenseFiles.push({ 'name': await this.cameraService.getFileName(), 'data': lic });

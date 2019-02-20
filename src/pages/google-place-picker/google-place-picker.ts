@@ -19,7 +19,7 @@ export class GooglePlacePickerPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad GooglePlacePickerPage');
+    // console.log('ionViewDidLoad GooglePlacePickerPage');
   }
 
 }
