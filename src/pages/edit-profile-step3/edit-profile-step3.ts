@@ -144,7 +144,6 @@ export class EditProfileStep3Page {
 
       this.startDate = availStartDateTime.getDate() + '-' + (availStartDateTime.getMonth() + 1) + '-' + availStartDateTime.getFullYear();
       this.endDate = availEndDateTime.getDate() + '-' + (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getFullYear();
-
       for (var i = 0; i < roleProfile.specificUser.credentials.length; i++) {
         this.uploadedCvFiles.push({ name: "File" + i, data: roleProfile.specificUser.credentials[i] });
       }
