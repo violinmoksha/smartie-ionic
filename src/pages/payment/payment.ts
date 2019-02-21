@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
 /**
@@ -68,11 +68,31 @@ export class PaymentPage {
 
     this.CardForm = new FormGroup({
       cardnumber: new FormControl('', [Validators.required]),
-      monthexp: new FormControl('', [Validators.required, Validators.pattern('^[1-12]+$')]),
-      yearexp: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      monthexp: new FormControl('', [Validators.required, this.monthValidator(1, 12)]),
+      yearexp: new FormControl('', [Validators.required, Validators.minLength(4), this.yearValidator()]),
       cvv: new FormControl('', [Validators.required, Validators.minLength(3)])
     });
   }
+
+
+ yearValidator(): ValidatorFn {
+   return (control: AbstractControl): { [key: string]: boolean } | null => {
+       if (control.value !== undefined && (isNaN(control.value) || control.value < new Date().getFullYear())) {
+           return { 'yearValidation': true };
+       }
+       return null;
+   };
+ }
+
+  monthValidator(min: 1, max: 12): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+        if (control.value !== undefined && (isNaN(control.value) || control.value < min || control.value > max)) {
+            return { 'monthRange': true };
+        }
+        return null;
+    };
+
+}
 
   paymentConfirm() {
     this.navCtrl.push("PaymentConfirmPage", { totalAmount: this.totalAmount, params: this.params });

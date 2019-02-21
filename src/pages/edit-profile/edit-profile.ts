@@ -44,6 +44,9 @@ export class EditProfilePage {
 
   ionViewDidEnter() {
     this.dataService.currentPage = "EditProfilePage";
+
+    this.EditProfileForm.setValue({ password: "" });
+    this.EditProfileForm.reset();
   }
 
   getRole() {

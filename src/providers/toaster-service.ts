@@ -54,6 +54,14 @@ export class ToasterServiceProvider {
   }
 
   chatToast(msg, closeButtonTxt = "close", closeCallback = undefined) {
+    var toasters = document.getElementsByClassName("custom-chat-toast");
+    console.log(toasters);
+    if (toasters.length > 0){
+        for (var i=1; i<=toasters.length; i++){
+          toasters[i].remove();
+        }
+    }
+
     const toast = this.toastCtrl.create({
       message: '',
       showCloseButton: closeButtonTxt ? true : false,
