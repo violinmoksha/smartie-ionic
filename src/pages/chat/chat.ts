@@ -116,14 +116,15 @@ export class ChatPage {
       let message = JSON.parse(notification.extraData);
       if(message.messageId.includes(this.roomId)){
         message.displayTime = this.getSentTime(message.sentAt, new Date().toISOString());
-        this.chatMessages.push(message);
-        this.changeRef.detectChanges();
+        this.scratchMessage(message).then(modifiedMessage => {
+          this.chatMessages.push(modifiedMessage);
+          this.changeRef.detectChanges();
+        })
         try{
           this.content.scrollToBottom();
         }catch(e){
           console.log(e);
         }
-        this.scanMessageContent();
       } else {
         console.log("wrong window");
       }
@@ -157,10 +158,11 @@ export class ChatPage {
             this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
               let message = res.result.messages.messages[0];
               message.displayTime = this.getSentTime(message.sentAt, new Date().toISOString());
-              this.chatMessages.push(message);
+              this.scratchMessage(message).then(modifiedMessage => {
+                this.chatMessages.push(modifiedMessage);
+              })
               this.newmessage = '';
               this.content.scrollToBottom();
-              this.scanMessageContent();
             })
           })
         })
@@ -176,10 +178,22 @@ export class ChatPage {
         if (!allowedText) {
           this.chatMessages[i].sourceMessage = this.chatMessages[i].message;
           this.chatMessages[i].message = "*** Content blocked by Smartie. ***";
+          this.changeRef.detectChanges();
         }
       })
     }
+  }
 
+  scratchMessage(messageObj) {
+      return new Promise(resolve => {
+        this.contactPattern.allowedInput(messageObj.message).then(allowedText => {
+          if (!allowedText) {
+            messageObj.sourceMessage = messageObj.message;
+            messageObj.message = "*** Content blocked by Smartie. ***";
+          }
+          resolve(messageObj);
+        })
+      });
   }
 
   pushMessage(roomId) {
@@ -193,10 +207,11 @@ export class ChatPage {
     this.dataService.getApi('sendMessage', messageBody).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(res => {
         res.result.messages[0].displayTime = this.getSentTime(res.result.messages[0].sentAt, new Date().toISOString())
-        this.chatMessages.push(res.result.messages[0]);
+        this.scratchMessage(res.result.messages[0]).then(modifiedMessage => {
+          this.chatMessages.push(modifiedMessage);
+        })
         this.newmessage = '';
         this.content.scrollToBottom();
-        this.scanMessageContent();
       })
     })
   }
