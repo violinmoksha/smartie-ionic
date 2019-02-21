@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
-import { resolve, reject } from 'q';
+import { ContactPatterns } from '../../providers/contact-patterns'
 
 /**
  * Generated class for the ChatRoomsPage page.
@@ -22,7 +22,7 @@ export class ChatRoomsPage {
   public userRole: String;
   public userDefaultImg: String = './assets/imgs/user-round-icon.png';
   public chatLoader: Boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public dataService: DataService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public dataService: DataService, public contactPattern: ContactPatterns) {
     this.userRole = navParams.get("role");
     this.chats = [];
   }
@@ -63,7 +63,13 @@ export class ChatRoomsPage {
           }
           this.fetchMessages(res.result[i].roomId).then(messages => {
             res.result[i].messages = messages[0].messages;
-            this.chats.push(res.result[i]);
+            this.contactPattern.allowedInput(res.result[i].messages[0].message).then(isAllowed => {
+              if(!isAllowed){
+                res.result[i].messages[0].sourceMessage = res.result[i].messages[0].message;
+                res.result[i].messages[0].message = "*** Content blocked by smartie ***";
+              }
+              this.chats.push(res.result[i]);
+            })
             this.chatLoader = false;
           }, err => {
             res.result[i].messages = [];
