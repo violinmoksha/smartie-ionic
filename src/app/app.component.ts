@@ -290,9 +290,9 @@ export class SmartieApp {
         } else if (notification.eventAction == "MESSAGE_RECEIVED") {
           if (notification.tap || notification.tap == 1) { //App in background
             if (this.role == 'teacher')
-              this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Messsages', role: this.role });
+              this.nav.setRoot("TabsPage", { tabIndex: 5, tabTitle: 'Messsages', role: this.role });
             else
-              this.nav.setRoot("TabsPage", { tabIndex: 3, tabTitle: 'Messsages', role: this.role });
+              this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Messsages', role: this.role });
           } else {
             console.log(this.nav.getActive().name);
             // var appUrl = document.URL.toString(); NB: Not providing exact page location
