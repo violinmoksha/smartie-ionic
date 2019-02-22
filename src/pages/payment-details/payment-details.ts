@@ -68,12 +68,12 @@ export class PaymentDetailsPage {
                 showPageTitle: true,
                 staticText: "Payment Details"
               },
-              // closeButton: {
-              //   wwwImage: 'assets/imgs/close.png',
-              //   wwwImagePressed: 'assets/imgs/close.png',
-              //   align: 'left',
-              //   event: 'closePressed'
-              // },
+              closeButton: {
+                wwwImage: 'assets/imgs/close-white.png',
+                wwwImagePressed: 'assets/imgs/close-white.png',
+                align: 'left',
+                event: 'closePressed'
+              },
               backButtonCanClose: true
             }
             // const browser = this.iab.create(response.result.url, '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
