@@ -265,7 +265,6 @@ export class SmartieApp {
   notificationHandler(): void {
     var notificationId = "0";
     this.firebase.onNotificationOpen().subscribe((notification: any) => {
-      //perform action based notification's action
 
       var actionHandler = () => { //NB: To reuse this function due to ios triggers event twice
         if (notification.eventAction == "PaymentReminder") {
@@ -305,6 +304,13 @@ export class SmartieApp {
                 this.nav.push("ChatPage", { from: "toaster", jobObject:"", receiver:"", sender:"", notification: notification });
               })
             }
+          }
+        } else if (notification.eventAction == "PaymentReceived") {
+          if (notification.tap || notification.tap == 1) { //App in background
+            if (this.role == 'teacher')
+              this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: this.role });
+            else
+              this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: this.role });
           }
         }
       }
