@@ -1,12 +1,14 @@
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, MenuController, Events } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, MenuController, Events, Platform } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { FirebaseCrashlyticsProvider } from '../../providers/firebase-crashlytics';
-
+import { UtilsProvider } from '../../providers/utils';
+import { FetchiOSUDID } from '../../providers/fetch-ios-udid';
+import { Device } from '@ionic-native/device';
 // import { URLSearchParams } from '@angular/http';
 
 /**
@@ -27,7 +29,7 @@ export class LoginPage {
     profile: { fullname: '' }
   };
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public storage: Storage, public dataService: DataService, public loadingCtrl: LoadingController, public analytics: AnalyticsProvider, public menu: MenuController, public crashlytics: FirebaseCrashlyticsProvider, public events: Events) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public storage: Storage, public dataService: DataService, public loadingCtrl: LoadingController, public analytics: AnalyticsProvider, public menu: MenuController, public crashlytics: FirebaseCrashlyticsProvider, public events: Events, public utilsService: UtilsProvider, public fetchiOSUDID: FetchiOSUDID, public platform: Platform, public device: Device) {
     this.storage.get('Provision').then(provision => {
       this.provisionData = provision.provision;
     })
@@ -68,6 +70,14 @@ export class LoginPage {
 
               //NOTE: emitting event for updating user name
               this.events.publish("login");
+              //NOTE: updating fcm token to active status;
+              if (this.platform.is('ios')) {
+                this.fetchiOSUDID.fetch().then(iOSUDID => {
+                  this.utilsService.updateFcmStatus(iOSUDID, 1);
+                });
+              } else {
+                this.utilsService.updateFcmStatus(this.device.uuid, 1);
+              }
               if (data) {
                 // TODO: do this directly though the firebase dependency, not some wrapper
                 //this.firebase.updateFcmToken(null, true);

@@ -1,0 +1,23 @@
+page-view-appointment {
+  .appontment-wrap{
+    border-bottom: 1px solid #cfcfcf;
+    width: 100%;
+    h3{
+      font-size: 17px;
+      color: #333;
+      font-weight: bold;
+      text-align: center;
+    }
+    .appointment-date{
+      background-color: #cfcfcf;
+      padding: 10px;
+      line-height: 12px;
+      font-size: 15px;
+      color: #fff;
+      text-align: center;
+    }
+    .appointment-time{
+      padding: 0 25px;
+    }
+  }
+}

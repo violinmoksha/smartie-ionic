@@ -62,6 +62,7 @@ export class SmartieApp {
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage', isTabs: false },
           { iconName: 'paper', text: 'Reviews', pageName: 'ReviewsPage' },
+          { iconName: 'paper', text: 'Appointments', pageName: 'ViewAppointmentPage' },
           { iconName: 'add-circle', text: 'Create a Job', pageName: '' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
@@ -74,6 +75,7 @@ export class SmartieApp {
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 2, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage' },
           { iconName: 'paper', text: 'Reviews', pageName: 'ReviewsPage' },
+          { iconName: 'paper', text: 'Appointments', pageName: 'ViewAppointmentPage' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
       }
