@@ -35,6 +35,7 @@ export class SmartieApp {
   public userName: String;
   public roleColor: String;
   public role: String;
+  public profileId: any = null;
 
   constructor(
     public platform: Platform,
@@ -140,6 +141,7 @@ export class SmartieApp {
           } else {
             this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
             this.splashScreen.hide();
+            this.profileId = user.profileData.objectId;
           }
         }, err => {
           console.log('Strange err: ' + err);
@@ -314,18 +316,21 @@ export class SmartieApp {
           }
         }
       }
-
-      if (this.platform.is("ios")) {
-        if (notification["gcm.message_id"] == notificationId) {
-          return false;
-          console.log("Stopped duplicate id");
+      if (this.profileId) {
+        if (this.platform.is("ios")) {
+          if (notification["gcm.message_id"] == notificationId) {
+            return false;
+            console.log("Stopped duplicate id");
+          } else {
+            actionHandler();
+            console.log("Diff notification id, Calling action handler");
+          }
+          notificationId = notification["gcm.message_id"];
         } else {
           actionHandler();
-          console.log("Diff notification id, Calling action handler");
         }
-        notificationId = notification["gcm.message_id"];
       } else {
-        actionHandler();
+        console.log("No user/profile found");
       }
     }, err => {
       // TODO: ditto
