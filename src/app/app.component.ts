@@ -361,7 +361,6 @@ export class SmartieApp {
   pushPage(event, page) {
     if (page.iconName == 'log-out') { // logout -->
       this.logOutUser();
-      this.storage.remove('UserProfile'); // yes??
       //this.dbservice.deleteUser();
       this.nav.setRoot("LoginPage"); // send to Login
       // NB: wait why are we doing this?
@@ -393,11 +392,18 @@ export class SmartieApp {
   logOutUser(){
     if (this.platform.is('ios')) {
       this.fetchiOSUDID.fetch().then(iOSUDID => {
-        this.utilsService.updateFcmStatus(iOSUDID, 0);
+        this.utilsService.updateFcmStatus(iOSUDID, 0).then(res => {
+          this.storage.remove('UserProfile'); // yes??
+        }, err => {
+          this.storage.remove('UserProfile'); // yes??
+        });
       });
     } else {
-      // android, persistant UDID
-      this.utilsService.updateFcmStatus(this.device.uuid, 0);
+      this.utilsService.updateFcmStatus(this.device.uuid, 0).then(res => {
+        this.storage.remove('UserProfile'); // yes??
+      }, err => {
+        this.storage.remove('UserProfile'); // yes??
+      });
     }
   }
 
