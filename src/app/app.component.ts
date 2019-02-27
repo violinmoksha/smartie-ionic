@@ -35,7 +35,6 @@ export class SmartieApp {
   public userName: String;
   public roleColor: String;
   public role: String;
-  public profileId: any = null;
 
   constructor(
     public platform: Platform,
@@ -63,6 +62,7 @@ export class SmartieApp {
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage', isTabs: false },
           { iconName: 'paper', text: 'Reviews', pageName: 'ReviewsPage' },
+          { iconName: 'paper', text: 'Appointments', pageName: 'ViewAppointmentPage' },
           { iconName: 'add-circle', text: 'Create a Job', pageName: '' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
@@ -75,6 +75,7 @@ export class SmartieApp {
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 2, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage' },
           { iconName: 'paper', text: 'Reviews', pageName: 'ReviewsPage' },
+          { iconName: 'paper', text: 'Appointments', pageName: 'ViewAppointmentPage' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
       }
@@ -141,7 +142,6 @@ export class SmartieApp {
           } else {
             this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
             this.splashScreen.hide();
-            this.profileId = user.profileData.objectId;
           }
         }, err => {
           console.log('Strange err: ' + err);
@@ -316,21 +316,18 @@ export class SmartieApp {
           }
         }
       }
-      if (this.profileId) {
-        if (this.platform.is("ios")) {
-          if (notification["gcm.message_id"] == notificationId) {
-            return false;
-            console.log("Stopped duplicate id");
-          } else {
-            actionHandler();
-            console.log("Diff notification id, Calling action handler");
-          }
-          notificationId = notification["gcm.message_id"];
+
+      if (this.platform.is("ios")) {
+        if (notification["gcm.message_id"] == notificationId) {
+          return false;
+          console.log("Stopped duplicate id");
         } else {
           actionHandler();
+          console.log("Diff notification id, Calling action handler");
         }
+        notificationId = notification["gcm.message_id"];
       } else {
-        console.log("No user/profile found");
+        actionHandler();
       }
     }, err => {
       // TODO: ditto
@@ -365,7 +362,9 @@ export class SmartieApp {
 
   pushPage(event, page) {
     if (page.iconName == 'log-out') { // logout -->
-      this.logOutUser();
+      console.log("Remove user profile in logout");
+      // this.logOutUser();
+      this.storage.remove('UserProfile'); // yes??
       //this.dbservice.deleteUser();
       this.nav.setRoot("LoginPage"); // send to Login
       // NB: wait why are we doing this?
@@ -395,21 +394,20 @@ export class SmartieApp {
   }
 
   logOutUser(){
-    if (this.platform.is('ios')) {
-      this.fetchiOSUDID.fetch().then(iOSUDID => {
-        this.utilsService.updateFcmStatus(iOSUDID, 0).then(res => {
-          this.storage.remove('UserProfile'); // yes??
-        }, err => {
-          this.storage.remove('UserProfile'); // yes??
-        });
+    return new Promise(async(resolve, reject) => {
+      this.storage.get("UserProfile").then(async userProfile => {
+        return await this.dataService.getApi(
+          'logoutUser',
+          { sessionToken: userProfile.userData.sessionToken },
+        ).then(async API => {
+          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async logoutData => {
+            if(logoutData){
+              this.storage.remove('UserProfile');
+              this.nav.setRoot("LoginPage");
+            }
+          })
+        })
       });
-    } else {
-      this.utilsService.updateFcmStatus(this.device.uuid, 0).then(res => {
-        this.storage.remove('UserProfile'); // yes??
-      }, err => {
-        this.storage.remove('UserProfile'); // yes??
-      });
-    }
+    })
   }
-
 }

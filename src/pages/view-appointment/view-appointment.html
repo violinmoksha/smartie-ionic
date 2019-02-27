@@ -1,0 +1,30 @@
+<!--
+  Generated template for the ViewAppointmentPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Appointments</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content >
+
+  <div *ngFor="let appointment of appointments; let i=index">
+    <div class="appontment-wrap">
+      <h3 *ngIf="role == 'student'">{{ appointment.teacherProfile.fullname}}</h3>
+      <h3 *ngIf="role == 'teacher'">{{ appointment.otherProfile.fullname}}</h3>
+      <div class="appointment-date"> {{ appointment.startDate }} </div>
+      <div class="appointment-time">
+        <p><strong>Start Time:</strong> {{ appointment.startTime }}</p>
+        <p><strong>End Time:</strong> {{ appointment.endTime }}</p>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
