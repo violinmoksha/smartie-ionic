@@ -40,4 +40,19 @@ export class UtilsProvider {
     })
   }
 
+  updateFcmStatus(deviceId, status){
+    return new Promise(async(resolve, reject) => {
+        return await this.dataService.getApi(
+          'updateFcmStatus',
+          { deviceId: deviceId, status: status},
+        ).then(async API => {
+          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(fcm => {
+            resolve(fcm);
+          }, err => {
+            reject(err);
+          })
+        })
+      });
+  }
+
 }

@@ -35,6 +35,7 @@ export class SmartieApp {
   public userName: String;
   public roleColor: String;
   public role: String;
+  public profileId: any = null;
 
   constructor(
     public platform: Platform,
@@ -140,6 +141,7 @@ export class SmartieApp {
           } else {
             this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: user.profileData.role });
             this.splashScreen.hide();
+            this.profileId = user.profileData.objectId;
           }
         }, err => {
           console.log('Strange err: ' + err);
@@ -314,18 +316,21 @@ export class SmartieApp {
           }
         }
       }
-
-      if (this.platform.is("ios")) {
-        if (notification["gcm.message_id"] == notificationId) {
-          return false;
-          console.log("Stopped duplicate id");
+      if (this.profileId) {
+        if (this.platform.is("ios")) {
+          if (notification["gcm.message_id"] == notificationId) {
+            return false;
+            console.log("Stopped duplicate id");
+          } else {
+            actionHandler();
+            console.log("Diff notification id, Calling action handler");
+          }
+          notificationId = notification["gcm.message_id"];
         } else {
           actionHandler();
-          console.log("Diff notification id, Calling action handler");
         }
-        notificationId = notification["gcm.message_id"];
       } else {
-        actionHandler();
+        console.log("No user/profile found");
       }
     }, err => {
       // TODO: ditto
@@ -360,9 +365,7 @@ export class SmartieApp {
 
   pushPage(event, page) {
     if (page.iconName == 'log-out') { // logout -->
-      console.log("Remove user profile in logout");
-      // this.logOutUser();
-      this.storage.remove('UserProfile'); // yes??
+      this.logOutUser();
       //this.dbservice.deleteUser();
       this.nav.setRoot("LoginPage"); // send to Login
       // NB: wait why are we doing this?
@@ -392,20 +395,21 @@ export class SmartieApp {
   }
 
   logOutUser(){
-    return new Promise(async(resolve, reject) => {
-      this.storage.get("UserProfile").then(async userProfile => {
-        return await this.dataService.getApi(
-          'logoutUser',
-          { sessionToken: userProfile.userData.sessionToken },
-        ).then(async API => {
-          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async logoutData => {
-            if(logoutData){
-              this.storage.remove('UserProfile');
-              this.nav.setRoot("LoginPage");
-            }
-          })
-        })
+    if (this.platform.is('ios')) {
+      this.fetchiOSUDID.fetch().then(iOSUDID => {
+        this.utilsService.updateFcmStatus(iOSUDID, 0).then(res => {
+          this.storage.remove('UserProfile'); // yes??
+        }, err => {
+          this.storage.remove('UserProfile'); // yes??
+        });
       });
-    })
+    } else {
+      this.utilsService.updateFcmStatus(this.device.uuid, 0).then(res => {
+        this.storage.remove('UserProfile'); // yes??
+      }, err => {
+        this.storage.remove('UserProfile'); // yes??
+      });
+    }
   }
+
 }
