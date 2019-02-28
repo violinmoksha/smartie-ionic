@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content >
+<ion-content [class]="getRole()">
 
   <div *ngFor="let appointment of appointments; let i=index">
     <div class="appontment-wrap">

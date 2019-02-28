@@ -70,6 +70,10 @@ export class ViewAppointmentPage {
         'Z';
   }
 
+  getRole() {
+    return this.role;
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ViewAppointmentPage');
   }
