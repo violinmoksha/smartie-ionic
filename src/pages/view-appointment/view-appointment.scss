@@ -9,7 +9,6 @@ page-view-appointment {
       text-align: center;
     }
     .appointment-date{
-      background-color: #cfcfcf;
       padding: 10px;
       line-height: 12px;
       font-size: 15px;
@@ -18,6 +17,17 @@ page-view-appointment {
     }
     .appointment-time{
       padding: 0 25px;
+    }
+  }
+
+  .student{
+    .appointment-date{
+      background-color: #0096D7;
+    }
+  }
+  .teacher{
+    .appointment-date{
+      background-color: #00BC5B;
     }
   }
 }

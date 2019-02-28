@@ -58,11 +58,11 @@ export class TimeSelectorMultiPage {
 
       let timeStarts_ms = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.startTime.split(':')[0]), parseInt(date.startTime.split(':')[1])).getTime();
 
-      date.UTCstartTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.startTime.split(':')[0]), parseInt(date.startTime.split(':')[1]));
+      date.UTCstartTime = new Date(parseInt(date.years), parseInt(date.months)-1, parseInt(date.date), parseInt(date.startTime.split(':')[0]), parseInt(date.startTime.split(':')[1]));
 
       let timeEnds_ms = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1])).getTime();
 
-      date.UTCendTime = new Date(parseInt(date.years), parseInt(date.months), parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1]));
+      date.UTCendTime = new Date(parseInt(date.years), parseInt(date.months)-1, parseInt(date.date), parseInt(date.endTime.split(':')[0]), parseInt(date.endTime.split(':')[1]));
 
       date.diffMs = timeEnds_ms - timeStarts_ms;
       date.diffHrs = Math.floor((date.diffMs % 86400000) / 3600000) * 60;
