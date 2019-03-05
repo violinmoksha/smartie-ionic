@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../app/app.data';
+import { LoadingController } from 'ionic-angular';
+import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 /*
   Generated class for the UtilsProvider provider.
 
@@ -11,7 +13,7 @@ import { DataService } from '../app/app.data';
 @Injectable()
 export class UtilsProvider {
 
-  constructor(public http: HttpClient, private storage: Storage, private dataService: DataService) {
+  constructor(public http: HttpClient, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, public themeableBrowser: ThemeableBrowser,) {
   }
 
   getSelectedCity() {
@@ -53,6 +55,54 @@ export class UtilsProvider {
           })
         })
       });
+  }
+
+  openStripeDashboard() {
+    this.storage.get("UserProfile").then(user => {
+      if (user.profileData) {
+        var stripeCustomerId = user.profileData.stripeCustomer.stripe_user_id;
+        let loading = this.loadingCtrl.create({
+          content: 'Creating Stripe Account...'
+        });
+        loading.present();
+    
+        this.dataService.getApi(
+          'createStripeLoginLink',
+          { stripeAccountId: stripeCustomerId }
+        ).then(async API => {
+          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+            loading.dismiss();
+            if (response.result.url) { // ??? NB: everything is usually response.data.result now FYI using @ionic-native/http
+              const options: ThemeableBrowserOptions = {
+                toolbar: {
+                  height: 44,
+                  color: '#00BA63'
+                },
+                title: {
+                  color: '#ffffff',
+                  showPageTitle: true,
+                  staticText: "Payment Details"
+                },
+                closeButton: {
+                  wwwImage: 'assets/imgs/close-white.png',
+                  wwwImagePressed: 'assets/imgs/close-white.png',
+                  align: 'left',
+                  event: 'closePressed'
+                },
+                backButtonCanClose: true
+              }
+              setTimeout(()=>{
+                const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_blank', options);
+              },500);
+            }
+            // may need to return here for Tests???
+          }, err => {
+            console.log(err);
+            return err;
+          });
+        });
+      }
+    })
   }
 
 }

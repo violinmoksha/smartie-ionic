@@ -37,10 +37,6 @@ export class PaymentDetailsPage {
         this.stripeCustomerId = UserProfile.profileData.stripeCustomer.stripe_user_id;
       }
     });
-
-    this.events.subscribe("PaymentReceived", () => {
-      this.viewStripeDashboard();
-    })
   }
 
 
@@ -82,7 +78,6 @@ export class PaymentDetailsPage {
               },
               backButtonCanClose: true
             }
-            // const browser = this.iab.create(response.result.url, '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
             const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_blank', options);
 
             /* browser.on('loadstop').subscribe(event => {
