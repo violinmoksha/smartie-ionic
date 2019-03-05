@@ -34,6 +34,11 @@ export class ViewAppointmentPage {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
           this.appointments = response.result;
           for(let appointment of this.appointments){
+            if(this.role == 'teacher'){
+              this.appointments.owner = appointment.otherProfile.fullname;
+            }else{
+              this.appointments.owner = appointment.teacherProfile.fullname;
+            }
             let apptStartDate = new Date(appointment.apptStartDateTime.iso);
             let apptStartTime = this.formatTime(apptStartDate).split('T')[1];
             let apptEndDate = new Date(appointment.apptEndDateTime.iso);
@@ -46,6 +51,8 @@ export class ViewAppointmentPage {
             appointment.startTime = parseInt(apptStartTime.split(':')[0]) +':'+ parseInt(apptStartTime.split(':')[1]);
             appointment.endTime = parseInt(apptEndTime.split(':')[0]) +':'+ parseInt(apptEndTime.split(':')[1]);
           }
+
+          console.log(this.appointments.owner);
         });
       })
     });

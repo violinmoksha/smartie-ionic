@@ -309,11 +309,18 @@ export class SmartieApp {
           }
         } else if (notification.eventAction == "PaymentReceived") {
           if (notification.tap || notification.tap == 1) { //App in background
-            if (this.role == 'teacher')
-              this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: this.role });
-            else
-              this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: this.role });
+            if (this.role == 'teacher') {
+              //this.nav.setRoot("TabsPage", { tabIndex: 2, tabTitle: 'Payment', role: this.role });
+              setTimeout(()=>{
+                this.utilsService.openStripeDashboard();
+              },500);
+            }
           }
+        } else if (notification.eventAction == "New_Teachers" || notification.eventAction == "New_Students") {
+          if (this.role == 'teacher')
+            this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: this.role });
+          else
+            this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: this.role });
         }
       }
 
@@ -363,7 +370,7 @@ export class SmartieApp {
   pushPage(event, page) {
     if (page.iconName == 'log-out') { // logout -->
       console.log("Remove user profile in logout");
-      // this.logOutUser();
+      this.logOutUser();
       this.storage.remove('UserProfile'); // yes??
       //this.dbservice.deleteUser();
       this.nav.setRoot("LoginPage"); // send to Login
@@ -394,20 +401,13 @@ export class SmartieApp {
   }
 
   logOutUser(){
-    return new Promise(async(resolve, reject) => {
-      this.storage.get("UserProfile").then(async userProfile => {
-        return await this.dataService.getApi(
-          'logoutUser',
-          { sessionToken: userProfile.userData.sessionToken },
-        ).then(async API => {
-          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async logoutData => {
-            if(logoutData){
-              this.storage.remove('UserProfile');
-              this.nav.setRoot("LoginPage");
-            }
-          })
-        })
+    if (this.platform.is('ios')) {
+      this.fetchiOSUDID.fetch().then(iOSUDID => {
+        this.utilsService.updateFcmStatus(iOSUDID, 0);
       });
-    })
+    } else {
+      // android, persistant UDID
+      this.utilsService.updateFcmStatus(this.device.uuid, 0);
+    }
   }
 }

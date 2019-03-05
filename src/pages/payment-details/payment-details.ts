@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
@@ -23,7 +23,7 @@ export class PaymentDetailsPage {
   private registeredWithStripe: boolean = false;
   private stripeCustomerId: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, public themeableBrowser: ThemeableBrowser) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, public themeableBrowser: ThemeableBrowser, public events: Events) {
     this.analytics.setScreenName("PaymentDetails");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("PaymentDetails", "View"));
   }
@@ -38,6 +38,8 @@ export class PaymentDetailsPage {
       }
     });
   }
+
+
 
   addPayment() {
     this.navCtrl.push('AddPaymentPage', { fromWhere: 'teacher' });
@@ -76,7 +78,6 @@ export class PaymentDetailsPage {
               },
               backButtonCanClose: true
             }
-            // const browser = this.iab.create(response.result.url, '_self', { location:'no', toolbar: 'no', hardwareback: 'no'});
             const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_blank', options);
 
             /* browser.on('loadstop').subscribe(event => {
