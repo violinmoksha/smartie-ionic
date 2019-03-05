@@ -310,10 +310,11 @@ export class SmartieApp {
         } else if (notification.eventAction == "PaymentReceived") {
           if (notification.tap || notification.tap == 1) { //App in background
             if (this.role == 'teacher') {
-              this.nav.setRoot("TabsPage", { tabIndex: 2, tabTitle: 'Payment', role: this.role });
-              this.events.publish("PaymentReceived");
+              //this.nav.setRoot("TabsPage", { tabIndex: 2, tabTitle: 'Payment', role: this.role });
+              setTimeout(()=>{
+                this.utilsService.openStripeDashboard();
+              },500);
             }
-
           }
         } else if (notification.eventAction == "New_Teachers" || notification.eventAction == "New_Students") {
           if (this.role == 'teacher')
