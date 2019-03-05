@@ -309,11 +309,17 @@ export class SmartieApp {
           }
         } else if (notification.eventAction == "PaymentReceived") {
           if (notification.tap || notification.tap == 1) { //App in background
-            if (this.role == 'teacher')
-              this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: this.role });
-            else
-              this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: this.role });
+            if (this.role == 'teacher') {
+              this.nav.setRoot("TabsPage", { tabIndex: 2, tabTitle: 'Payment', role: this.role });
+              this.events.publish("PaymentReceived");
+            }
+
           }
+        } else if (notification.eventAction == "New_Teachers" || notification.eventAction == "New_Students") {
+          if (this.role == 'teacher')
+            this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: this.role });
+          else
+            this.nav.setRoot("TabsPage", { tabIndex: 0, tabTitle: 'SmartieSearch', role: this.role });
         }
       }
 

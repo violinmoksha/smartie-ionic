@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
@@ -23,7 +23,7 @@ export class PaymentDetailsPage {
   private registeredWithStripe: boolean = false;
   private stripeCustomerId: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, public themeableBrowser: ThemeableBrowser) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, public themeableBrowser: ThemeableBrowser, public events: Events) {
     this.analytics.setScreenName("PaymentDetails");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("PaymentDetails", "View"));
   }
@@ -37,7 +37,13 @@ export class PaymentDetailsPage {
         this.stripeCustomerId = UserProfile.profileData.stripeCustomer.stripe_user_id;
       }
     });
+
+    this.events.subscribe("PaymentReceived", () => {
+      this.viewStripeDashboard();
+    })
   }
+
+
 
   addPayment() {
     this.navCtrl.push('AddPaymentPage', { fromWhere: 'teacher' });
