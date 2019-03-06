@@ -5,6 +5,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ModalController, Slides, LoadingController } from 'ionic-angular';
 import { AbstractControl, FormArray, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { DataService } from '../../app/app.data';
+import { UtilsProvider } from '../../providers/utils';
 import { Storage } from '@ionic/storage';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { AnalyticsProvider } from '../../providers/analytics';
@@ -102,7 +103,7 @@ export class EditProfileStep3Page {
   //TODO post-<snip><snip> RE registration is: add back currency
   //In V2, but it must be done correctly next time with calculated pre-conversions
   //or maybe even plugged into an AI bot that knows the forex
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage, private analytics: AnalyticsProvider, public fileUploader: FileUploaderProvider, public cameraService: CameraServiceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private modalCtrl: ModalController, private loadingCtrl: LoadingController, private storage: Storage, private analytics: AnalyticsProvider, public fileUploader: FileUploaderProvider, public cameraService: CameraServiceProvider, private utilsService: UtilsProvider) {
     this.analytics.setScreenName("EditProfile_step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
 
@@ -139,8 +140,8 @@ export class EditProfileStep3Page {
 
       this.timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
 
-      this.startTime = this.formatTime(availStartDateTime);
-      this.endTime = this.formatTime(availEndDateTime);
+      this.startTime = this.utilsService.formatTime(availStartDateTime);
+      this.endTime = this.utilsService.formatTime(availEndDateTime);
 
       this.startDate = availStartDateTime.getDate() + '-' + (availStartDateTime.getMonth() + 1) + '-' + availStartDateTime.getFullYear();
       this.endDate = availEndDateTime.getDate() + '-' + (availEndDateTime.getMonth() + 1) + '-' + availEndDateTime.getFullYear();
@@ -159,25 +160,6 @@ export class EditProfileStep3Page {
       let place = autocomplete.getPlace();
       this.prefLocation = place.formatted_address;
     });
-  }
-
-  formatTime(dateTime) {
-
-    function pad(number) {
-      if (number < 10) {
-        return '0' + number;
-      }
-      return number;
-    }
-
-    return dateTime.getFullYear() +
-        '-' + pad(dateTime.getMonth() + 1) +
-        '-' + pad(dateTime.getDate()) +
-        'T' + pad(dateTime.getHours()) +
-        ':' + pad(dateTime.getMinutes()) +
-        ':' + pad(dateTime.getSeconds()) +
-        '.' + (dateTime.getMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-        'Z';
   }
 
   gretarThan(equalControlName): ValidatorFn {

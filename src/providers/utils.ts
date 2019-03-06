@@ -65,7 +65,7 @@ export class UtilsProvider {
           content: 'Creating Stripe Account...'
         });
         loading.present();
-    
+
         this.dataService.getApi(
           'createStripeLoginLink',
           { stripeAccountId: stripeCustomerId }
@@ -105,4 +105,22 @@ export class UtilsProvider {
     })
   }
 
+  formatTime(dateTime) {
+
+    function pad(number) {
+      if (number < 10) {
+        return '0' + number;
+      }
+      return number;
+    }
+
+    return dateTime.getFullYear() +
+        '-' + pad(dateTime.getMonth() + 1) +
+        '-' + pad(dateTime.getDate()) +
+        'T' + pad(dateTime.getHours()) +
+        ':' + pad(dateTime.getMinutes()) +
+        ':' + pad(dateTime.getSeconds()) +
+        '.' + (dateTime.getMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+        'Z';
+  }
 }

@@ -56,23 +56,29 @@ export class ToasterServiceProvider {
   chatToast(msg, closeButtonTxt = "close", closeCallback = undefined) {
     var toasters = document.getElementsByClassName("custom-chat-toast");
     console.log(toasters);
-    if (toasters.length > 0){
-        for (var i=1; i<=toasters.length; i++){
-          toasters[i].remove();
-        }
+    try{
+      if (toasters.length >= 1){
+          for (var i=toasters.length-2; i>=0; i--){
+            console.log("toaster index", i);
+            toasters[i].remove();
+          }
+      }
+
+      const toast = this.toastCtrl.create({
+        message: '',
+        showCloseButton: closeButtonTxt ? true : false,
+        closeButtonText: msg,
+        cssClass:"custom-chat-toast"
+      });
+      toast.onDidDismiss(() => {
+        if(closeCallback)
+        closeCallback();
+      });
+      toast.present();
+    }catch(e){
+      console.log(e);
     }
 
-    const toast = this.toastCtrl.create({
-      message: '',
-      showCloseButton: closeButtonTxt ? true : false,
-      closeButtonText: msg,
-      cssClass:"custom-chat-toast"
-    });
-    toast.onDidDismiss(() => {
-      if(closeCallback)
-      closeCallback();
-    });
-    toast.present();
   }
 
 }
