@@ -58,7 +58,7 @@ export class ToasterServiceProvider {
     console.log(toasters);
     try{
       if (toasters.length >= 1){
-          for (var i=toasters.length-1; i>0; i--){
+          for (var i=toasters.length-2; i>=0; i--){
             console.log("toaster index", i);
             toasters[i].remove();
           }
