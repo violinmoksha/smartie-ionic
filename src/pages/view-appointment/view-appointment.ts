@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
+import { UtilsProvider } from '../../providers/utils';
 import { AnalyticsProvider } from '../../providers/analytics';
 /**
  * Generated class for the ViewAppointmentPage page.
@@ -20,7 +21,7 @@ export class ViewAppointmentPage {
   private role: any;
   public appointments: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public loadingCtrl: LoadingController, private dataService: DataService, private analytics : AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public loadingCtrl: LoadingController, private dataService: DataService, private analytics : AnalyticsProvider, private utilsService: UtilsProvider) {
     this.analytics.setScreenName("ViewAppointment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("ViewAppointment", "View"));
 
@@ -40,9 +41,9 @@ export class ViewAppointmentPage {
               this.appointments.owner = appointment.teacherProfile.fullname;
             }
             let apptStartDate = new Date(appointment.apptStartDateTime.iso);
-            let apptStartTime = this.formatTime(apptStartDate).split('T')[1];
+            let apptStartTime = this.utilsService.formatTime(apptStartDate).split('T')[1];
             let apptEndDate = new Date(appointment.apptEndDateTime.iso);
-            let apptEndTime = this.formatTime(apptEndDate).split('T')[1];
+            let apptEndTime = this.utilsService.formatTime(apptEndDate).split('T')[1];
 
             appointment.startDate = apptStartDate.getDate() + '-' + (apptStartDate.getMonth() + 1) + '-' + apptStartDate.getFullYear();
 
@@ -56,25 +57,6 @@ export class ViewAppointmentPage {
         });
       })
     });
-  }
-
-  formatTime(dateTime) {
-
-    function pad(number) {
-      if (number < 10) {
-        return '0' + number;
-      }
-      return number;
-    }
-
-    return dateTime.getFullYear() +
-        '-' + pad(dateTime.getMonth() + 1) +
-        '-' + pad(dateTime.getDate()) +
-        'T' + pad(dateTime.getHours()) +
-        ':' + pad(dateTime.getMinutes()) +
-        ':' + pad(dateTime.getSeconds()) +
-        '.' + (dateTime.getMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-        'Z';
   }
 
   getRole() {
