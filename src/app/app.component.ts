@@ -272,15 +272,18 @@ export class SmartieApp {
         if (notification.eventAction == "PaymentReminder") {
           this.nav.push("AddPaymentPage");
         } else if (notification.eventAction == "JobRequest") {
+          console.log("Received inside jobRequest");
           if(notification.tap || notification.tap == 1){ //App in background
             this.pushJobRequestPage(notification);
           }else{
+            console.log("Received inside jobRequest FOREGROUND");
             if(this.dataService.currentPage == "NotificationFeedPage"){
               if (this.role == 'teacher')
                 this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Notifications', role: this.role });
               else
                 this.nav.setRoot("TabsPage", { tabIndex: 3, tabTitle: 'Notifications', role: this.role });
             }else{
+              console.log("Coming inside jobrequest toaster");
               let toasterTitle = this.platform.is('ios') ? notification.aps.alert.body : notification.body;
               this.tosterService.chatToast(toasterTitle, "Go", () => {
                 this.pushJobRequestPage(notification);
