@@ -148,9 +148,9 @@ export class SmartieSearch {
               return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
                 return await this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
                   this.notifications = notifications;
-                  return await this.storage.get('phoneLatLng').then(async phoneLatLng => {
+                  return await this.storage.get('phoneGeoposition').then(async phoneLatLng => {
                     if (phoneLatLng !== undefined && phoneLatLng !== null) {
-                      this.smartieSearchResult(phoneLatLng, profile.profileData.role, null);
+                      this.smartieSearchResult({ latitude: phoneLatLng.coords.latitude, longitude: phoneLatLng.coords.longitude }, profile.profileData.role, null);
                     } else {
                       this.latLngUser = profile.profileData.latlng;
                       this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
