@@ -179,9 +179,11 @@ export class SmartieApp {
           });
         } else {
           // android, persistant UDID
-          this.initFirebase(this.device.uuid);
+          this.initFirebase(this.device.uuid).then(result => {
+            console.log("On initFirebase return");
+            this.onFcmTokenRefresh(this.device.uuid);
+          });
           this.initializeAppInner(this.device.uuid);
-          this.onFcmTokenRefresh(this.device.uuid);
         }
       } else {
         console.log('What on earth non-cordova land.');
@@ -192,7 +194,6 @@ export class SmartieApp {
   }
 
   getGalleryPermission() {
-    console.log("permision for Gallery");
     this.imagePicker.requestReadPermission();
   }
 
@@ -235,6 +236,7 @@ export class SmartieApp {
           token: token
         }
       ).then(API => {
+        console.log(API);
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(data => {
           this.notificationHandler();
           resolve(token);

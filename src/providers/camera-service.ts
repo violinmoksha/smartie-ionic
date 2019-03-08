@@ -113,10 +113,14 @@ export class CameraServiceProvider {
             role: 'openGallery',
             icon: 'image',
             handler: () => {
-              this.choosePictures().then((pics) => {
-                let normalizedFile = window['Ionic']['WebView'].convertFileSrc(pics[0]);
-                let result = {imageUrl:pics[0], normalizedUrl:normalizedFile}
-                resolve(result);
+              this.choosePictures().then((pics: any) => {
+                if(pics.length > 0){
+                  let normalizedFile = window['Ionic']['WebView'].convertFileSrc(pics[0]);
+                  let result = {imageUrl:pics[0], normalizedUrl:normalizedFile}
+                  resolve(result);
+                }else{
+                  reject(pics);
+                }
               }, (err) => {
                 reject(err);
               });
