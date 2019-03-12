@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../app/app.data';
 import { LoadingController } from 'ionic-angular';
+import { Geolocation } from '@ionic-native/geolocation';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 /*
   Generated class for the UtilsProvider provider.
@@ -13,33 +14,78 @@ import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } fro
 @Injectable()
 export class UtilsProvider {
 
-  constructor(public http: HttpClient, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, public themeableBrowser: ThemeableBrowser,) {
+  constructor(public http: HttpClient, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, public themeableBrowser: ThemeableBrowser, public geoService: Geolocation) {
   }
 
   getSelectedCity() {
     return new Promise((resolve, reject) => {
       this.storage.get("UserProfile").then(user => {
-        if(user && user.profileData){
-          this.dataService.getApi("getCityByLatlng", {latlng:[user.profileData.latlng.latitude, user.profileData.latlng.longitude]}).then(API => {
-              this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
-                if(resp.result){
-                  for (var i=0; i<resp.result.address_components.length; i++) {
-                    if(resp.result.address_components[i].types[0] == 'locality'){
-                      user.profileData.cityName = resp.result.address_components[i].long_name;
-                      this.storage.set("UserProfile", user);
-                      resolve(resp.result.address_components[i].long_name);
+        this.getGeoCodeData(user.profileData.latlng.latitude, user.profileData.latlng.longitude).then((result: any) => {
+          if(user && user.profileData){
+                  console.log(result)
+                  if(result){
+                    for (var i=0; i<result.address_components.length; i++) {
+                      if(result.address_components[i].types[0] == 'locality'){
+                        user.profileData.cityName = result.address_components[i].long_name;
+                        this.storage.set("UserProfile", user);
+                        resolve(result.address_components[i].long_name);
+                      }
                     }
+                  } else {
+                    resolve(user.profileData.prefLocation);
                   }
-                } else {
-                  resolve(user.profileData.prefLocation);
-                }
-              })
-          })
-        } else {
-          reject("Error: No user found");
-        }
+          } else {
+            reject("Error: No user found");
+          }
+        }, err => {
+          reject(err);
+        })
       })
     })
+  }
+
+  getGeoCodeData(lat, lng) {
+    return new Promise((resolve, reject) => {
+      this.dataService.getApi("getCityByLatlng", {latlng:[lat, lng]}).then(API => {
+          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
+            console.log(resp);
+            if(resp.result){
+              resolve(resp.result)
+            } else {
+              reject(resp);
+            }
+          }, err => {
+            reject(err);
+          })
+      })
+    })
+  }
+
+  checkCountryCodeToBlock() {
+    return new Promise((resolve, reject) => {
+      this.geoService.getCurrentPosition().then(location => {
+        console.log(location);
+        this.getGeoCodeData(location.coords.latitude, location.coords.longitude).then((result: any) => {
+          console.log(result);
+          if(result.address_components.length>0){
+            for (var i=0; i<result.address_components.length; i++) {
+              if(result.address_components[i].types[0] == 'country'){
+                if(result.address_components[i].short_name == 'US') {
+                  resolve(true);
+                  console.log("Blocking Access, Not US");
+                } else {
+                  resolve(false);
+                }
+              }
+            }
+          } else {
+            reject("checkCountryCodeToBlock: No results from geo code data");
+          }
+        }, err => {
+          reject(err);
+        });
+      })
+    });
   }
 
   updateFcmStatus(deviceId, status){
