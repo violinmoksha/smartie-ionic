@@ -54,23 +54,25 @@ export class MobileVerificationPage {
       });
     } else {
       // android, persistant UDID
+      console.log('Going into pushSignUpInner in droid');
       this.pushSignUpInner(this.device.uuid);
     }
   }
 
   pushSignUpInner(UDID) {
     // encrypt UUID
-    return this.dataService.getBeyondGDPR(true, {"plaintext":UDID}).then(cryptUUID => {
-      let deviceUUID;
-      if (cryptUUID) {
-        deviceUUID = cryptUUID;
-      } else { // chickenSwitch == false
+    //return this.dataService.getBeyondGDPR(true, {"plaintext":UDID}).then(cryptUUID => {
+      //console.log(`Got cryptUUID of ${cryptUUID.plaintext}`);
+      let deviceUUID: any;
+      //if (cryptUUID) {
+        //deviceUUID = cryptUUID.plaintext;
+      //} else { // chickenSwitch == false
         deviceUUID = UDID;
-      }
+      //}
 
       // TODO: actually wire this to beyondgdpr, for now we're going with plaintext this.device.uuid
       let params={
-        "uuid": (this.platform.is('cordova')) ? UDID :'123456',
+        "uuid": (this.platform.is('cordova')) ? deviceUUID :'123456',
         "device": { 'cordova': this.device.cordova, 'isVirtual': this.device.isVirtual, 'manufacturer': this.device.manufacturer, 'model': this.device.model, 'platform': this.device.platform, 'serial': this.device.serial, 'uuid': UDID, 'version': this.device.version },
         "role": this.role
       }
@@ -95,7 +97,7 @@ export class MobileVerificationPage {
           })
         });
       });
-    });
+    //});
   }
 
   maskUSPhone(txt) {
