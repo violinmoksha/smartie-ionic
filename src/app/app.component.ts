@@ -54,6 +54,7 @@ export class SmartieApp {
     this.dataService.currentPage = "Root"
     this.initializeApp();
     this.events.subscribe("buttonsLoad", eventData => {
+      console.log(eventData);
       //Tabs index 0 is always set to search
       if (eventData !== 'teacher') {
         this.buttons = [
@@ -61,8 +62,7 @@ export class SmartieApp {
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage', isTabs: false },
-          { iconName: 'paper', text: 'Reviews', pageName: 'ReviewsPage' },
-          { iconName: 'paper', text: 'Appointments', pageName: 'ViewAppointmentPage' },
+          // { iconName: 'paper', text: 'Reviews', pageName: 'ReviewsPage' },
           { iconName: 'add-circle', text: 'Create a Job', pageName: '' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];

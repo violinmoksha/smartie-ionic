@@ -40,10 +40,11 @@ export class ListPage {
   }
 
   ionViewDidEnter() {
-    this.events.publish("buttonsLoad", this.role);
+    // this.events.publish("buttonsLoad", this.role);
     this.storage.get("UserProfile").then(user => {
-      this.userData = user;
       this.role = user.profileData.role;
+      this.events.publish("buttonsLoad", this.role);
+      this.userData = user;
       this.body = {
         profileId: user.profileData.objectId,
         role: user.profileData.role

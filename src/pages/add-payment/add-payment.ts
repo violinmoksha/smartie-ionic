@@ -185,7 +185,7 @@ export class AddPaymentPage {
             if(this.userRole !== 'teacher'){
               this.pushPaymentPage(this.params);
             }else{
-              this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.result });
+              this.navCtrl.push('PaymentDetailsPage', { stripeAccount: response.result });
             }
           })
         }, err => {
