@@ -51,8 +51,22 @@ export class SmartieApp {
     public fetchiOSUDID: FetchiOSUDID,
     public crashlytics: FirebaseCrashlyticsProvider,
     private utilsService: UtilsProvider) {
-    this.dataService.currentPage = "Root"
-    this.initializeApp();
+    this.dataService.currentPage = "Root";
+    this.platform.ready().then(() => {
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      this.utilsService.checkCountryCodeToBlock().then(isUS => {
+        if(isUS) {
+          this.initializeApp();
+        } else {
+          this.rootPage = 'AppBlockPage';
+          console.log("Block Access");
+        }
+      }, err => {
+        this.initializeApp();
+        console.log(err);
+      });
+    });
     this.events.subscribe("buttonsLoad", eventData => {
       console.log(eventData);
       //Tabs index 0 is always set to search
@@ -156,9 +170,6 @@ export class SmartieApp {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       if (this.platform.is('cordova')) {
         // this.statusBar.styleDefault();
         this.statusBar.styleLightContent();
@@ -175,17 +186,7 @@ export class SmartieApp {
         if (this.platform.is('ios')) {
           this.fetchiOSUDID.fetch().then(iOSUDID => {
             this.initFirebase(iOSUDID); // NB: calls sync/non-returning notificationHandler
-            this.utilsService.checkCountryCodeToBlock().then(isUS => {
-              if(isUS)
-              this.initializeAppInner(iOSUDID);
-              else {
-                this.rootPage = 'AppBlockPage';
-                console.log("Block Access");
-              }
-            }, err => {
-              this.initializeAppInner(iOSUDID);
-              console.log(err);
-            });
+            this.initializeAppInner(iOSUDID);
             this.onFcmTokenRefresh(iOSUDID);
           });
         } else {
@@ -193,17 +194,7 @@ export class SmartieApp {
           this.initFirebase(this.device.uuid).then(result => {
             console.log("On initFirebase return");
             this.onFcmTokenRefresh(this.device.uuid);
-          });
-          this.utilsService.checkCountryCodeToBlock().then(isUS => {
-            if(isUS)
             this.initializeAppInner(this.device.uuid);
-            else {
-              this.rootPage = 'AppBlockPage';
-              console.log("Block Access");
-            }
-          }, err => {
-            this.initializeAppInner(this.device.uuid);
-            console.log(err);
           });
         }
       } else {
@@ -211,7 +202,6 @@ export class SmartieApp {
         this.splashScreen.hide();
         this.rootPage = 'LandingPage';
       }
-    });
   }
 
   getGalleryPermission() {
