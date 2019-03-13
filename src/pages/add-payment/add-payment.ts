@@ -7,6 +7,7 @@ import { DataService } from '../../app/app.data';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { UtilsProvider } from '../../providers/utils';
 /**
  * Generated class for the AddPaymentPage page.
  *
@@ -31,12 +32,18 @@ export class AddPaymentPage {
   private userIP: string;
   private fromWhere: any;
   private authenticationCode: any;
+  private params: any;
+  private selectedDates: any;
+  private scheduled: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser, private analytics: AnalyticsProvider, public platform: Platform, public iaBrowser: InAppBrowser) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser, private analytics: AnalyticsProvider, public platform: Platform, public iaBrowser: InAppBrowser, private utilsService: UtilsProvider) {
     this.analytics.setScreenName("AddPayment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("AddPayment", "View"));
 
-    this.fromWhere = navParams.data.fromWhere;
+    this.fromWhere = navParams.get("fromWhere");
+    this.params = navParams.get("params");
+    console.log("Add payment page")
+    console.log(this.params);
     this.PaymentForm = new FormGroup({
       emailPayment: new FormControl('', Validators.required),
       emailConfirm: new FormControl('yes'),
@@ -49,10 +56,14 @@ export class AddPaymentPage {
 
   ionViewDidLoad() {
     this.storage.get('UserProfile').then(UserProfile => {
+      console.log(UserProfile);
       this.profileId = UserProfile.profileData.objectId;
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
       this.email = UserProfile.userData.email;
+      this.selectedDates = UserProfile.profileData.scheduleDetails.selectedDates;
+      this.scheduled = UserProfile.profileData.scheduleDetails.scheduled;
+
       if (UserProfile.profileData.profilePhoto) {
         this.profilePhoto = UserProfile.profileData.profilePhoto;
       } else {
@@ -171,13 +182,41 @@ export class AddPaymentPage {
         return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
           this.dataService.updateUserProfileStorage(response.result).then(profile => {
             loading.dismiss();
-            this.navCtrl.push('NotificationFeedPage', { stripeAccount: response.result });
+            if(this.userRole !== 'teacher'){
+              this.pushPaymentPage(this.params);
+            }else{
+              this.navCtrl.push('PaymentDetailsPage', { stripeAccount: response.result });
+            }
           })
         }, err => {
           loading.dismiss();
           console.log(err);
         });
       });
+    })
+  }
+
+  pushPaymentPage(params){
+    this.storage.get("UserProfile").then(profile => {
+      this.navCtrl.push('TimeSelectorMultiPage', {
+        selectedDates: this.selectedDates,
+        scheduled: this.scheduled,
+        params: {
+          jobRequestId: params.jobRequestId,
+          profilePhoto: params.profilePhoto,
+          profileStripeAccount: params.profileStripeAccount,
+          fullname: params.fullname,
+          teacherProfileId: params.teacherProfileId,
+          role: params.role,
+          prefPayRate: params.prefPayRate,
+          prefLocation: params.prefLocation,
+          UTCstartDate: params.UTCstartDate,
+          UTCendDate: params.UTCendDate,
+          UTCStartTime: params.UTCStartTime,
+          UTCEndTime: params.UTCEndTime
+        },
+        loggedRole: profile.profileData.role
+      })
     })
   }
 }

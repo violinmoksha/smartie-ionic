@@ -58,7 +58,7 @@ export class PaymentPage {
           buttons: [{
             text: 'OK',
             handler: () => {
-              this.navCtrl.push("AddPaymentPage", { fromWhere: 'nonTeacher' });
+              this.navCtrl.push("AddPaymentPage", { fromWhere: 'nonTeacher', params: this.params });
             }
           }]
         });

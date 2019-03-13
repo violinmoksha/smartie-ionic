@@ -46,6 +46,7 @@ function updateThemeInManifest() {
 }
 
 function copySplashImage() {
+  console.log("************ copying splash image *****************");
   fse.copy("resources/splash.png", ANDROID_DIR + "/app/src/main/res/drawable/screen.png", err => {
     console.log(err);
   })
