@@ -20,8 +20,8 @@ export class UtilsProvider {
   getSelectedCity() {
     return new Promise((resolve, reject) => {
       this.storage.get("UserProfile").then(user => {
+        if(user && user.profileData){
         this.getGeoCodeData(user.profileData.latlng.latitude, user.profileData.latlng.longitude).then((result: any) => {
-          if(user && user.profileData){
                   console.log(result)
                   if(result){
                     for (var i=0; i<result.address_components.length; i++) {
@@ -34,12 +34,12 @@ export class UtilsProvider {
                   } else {
                     resolve(user.profileData.prefLocation);
                   }
-          } else {
-            reject("Error: No user found");
-          }
         }, err => {
           reject(err);
         })
+      } else {
+        reject("Error: No user found");
+      }
       })
     })
   }
