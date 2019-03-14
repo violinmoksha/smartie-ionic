@@ -62,10 +62,12 @@ export class UtilsProvider {
   }
 
   checkCountryCodeToBlock() {
-    return new Promise((resolve, reject) => {
-      this.geoService.getCurrentPosition().then(location => {
-        console.log(location);
-        this.getGeoCodeData(location.coords.latitude, location.coords.longitude).then((result: any) => {
+    console.log('Before countryBlock promise');
+    return new Promise(async (resolve, reject) => {
+      console.log('Before return await getCurrentPosition');
+      return await this.geoService.getCurrentPosition().then(async location => {
+        console.log('HERE10 with location of: '+location);
+        return await this.getGeoCodeData(location.coords.latitude, location.coords.longitude).then((result: any) => {
           console.log(result);
           if(result.address_components.length>0){
             for (var i=0; i<result.address_components.length; i++) {
@@ -82,8 +84,12 @@ export class UtilsProvider {
             reject("checkCountryCodeToBlock: No results from geo code data");
           }
         }, err => {
+          console.log('getGeoCodeData failed with err: '+JSON.stringify(err));
           reject(err);
         });
+      }, err => {
+        console.log('getCurrentPosition failed with err: '+JSON.stringify(err));
+        reject(err);
       })
     });
   }
