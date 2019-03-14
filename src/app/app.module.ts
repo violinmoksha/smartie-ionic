@@ -42,6 +42,7 @@ import { Crashlytics } from '@ionic-native/fabric';
 import { SmartieErrorHandler } from './app.err';
 import { UtilsProvider } from '../providers/utils';
 import { JobRequstProvider } from '../providers/job-request';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { JobRequstProvider } from '../providers/job-request';
     FirebaseCrashlyticsProvider,
     Crashlytics,
     UtilsProvider,
-    JobRequstProvider
+    JobRequstProvider,
+    LocationAccuracy
   ]
 })
 export class AppModule { }
