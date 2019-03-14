@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { FileUploaderProvider } from './../../providers/file-uploader';
 import { CameraServiceProvider } from './../../providers/camera-service';
+import { DataService } from '../../app/app.data';
 
 declare let google;
 /**
@@ -55,7 +56,7 @@ export class EditProfileStep2Page {
     dismissOnPageChange: true
   });
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage,private analytics : AnalyticsProvider, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public loadingCtrl:LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage,private analytics : AnalyticsProvider, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public loadingCtrl:LoadingController, private dataService: DataService) {
     this.analytics.setScreenName("EditProfile_step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
     this.userRole = navParams.get("userRole");
@@ -103,8 +104,17 @@ export class EditProfileStep2Page {
       if(roleProfile.profileData.schoolPhoto){
         this.schoolPicSrc = roleProfile.profileData.schoolPhoto;
       }
+
       if(roleProfile.profileData.profilePhoto){
         this.pageProfileSrc = roleProfile.profileData.profilePhoto;
+        /*this.dataService.getApi('getSignedUrlGetObj', { 'fileName': roleProfile.profileData.profilePhoto, 'folder':'Profile' }).then(API => {
+          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(imageUrl => {
+            this.pageProfileSrc = 'data:image/jpg;base64,' + imageUrl.result;
+          }, (err) => {
+            console.log("Get signedUrl error");
+            console.log(err);
+          })
+        });*/
       }else{
         if (this.userRole == 'teacher') {
           this.pageProfileSrc = './assets/img/user-img-teacher.png';

@@ -5,6 +5,8 @@ import { DataService } from '../app/app.data';
 import { LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
+
 /*
   Generated class for the UtilsProvider provider.
 
@@ -14,7 +16,7 @@ import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } fro
 @Injectable()
 export class UtilsProvider {
 
-  constructor(public http: HttpClient, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, public themeableBrowser: ThemeableBrowser, public geoService: Geolocation) {
+  constructor(public http: HttpClient, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, public themeableBrowser: ThemeableBrowser, public geoService: Geolocation, public locationService:LocationAccuracy) {
   }
 
   getSelectedCity() {
@@ -62,36 +64,50 @@ export class UtilsProvider {
   }
 
   checkCountryCodeToBlock() {
-    console.log('Before countryBlock promise');
-    return new Promise(async (resolve, reject) => {
-      console.log('Before return await getCurrentPosition');
-      return await this.geoService.getCurrentPosition().then(async location => {
-        console.log('HERE10 with location of: '+location);
-        return await this.getGeoCodeData(location.coords.latitude, location.coords.longitude).then((result: any) => {
-          console.log(result);
-          if(result.address_components.length>0){
-            for (var i=0; i<result.address_components.length; i++) {
-              if(result.address_components[i].types[0] == 'country'){
-                if(result.address_components[i].short_name == 'IN') {
-                  resolve(true);
-                  console.log("Blocking Access, Not US");
-                } else {
-                  resolve(false);
+    return new Promise((resolve, reject) => {
+      this.checkLocationService().then(success => {
+        this.geoService.getCurrentPosition().then(location => {
+          console.log(location);
+          this.getGeoCodeData(location.coords.latitude, location.coords.longitude).then((result: any) => {
+            console.log(result);
+            if(result.address_components.length>0){
+              for (var i=0; i<result.address_components.length; i++) {
+                if(result.address_components[i].types[0] == 'country'){
+                  if(result.address_components[i].short_name == 'IN') {
+                    resolve(true);
+                    console.log("Blocking Access, Not US");
+                  } else {
+                    resolve(false);
+                  }
                 }
               }
+            } else {
+              reject("checkCountryCodeToBlock: No results from geo code data");
             }
-          } else {
-            reject("checkCountryCodeToBlock: No results from geo code data");
-          }
-        }, err => {
-          console.log('getGeoCodeData failed with err: '+JSON.stringify(err));
-          reject(err);
+          }, err => {
+            reject(err);
+          });
         });
       }, err => {
-        console.log('getCurrentPosition failed with err: '+JSON.stringify(err));
-        reject(err);
+        console.log(err);
       })
     });
+  }
+
+  checkLocationService() {
+    return new Promise((resolve, reject) => {
+      this.locationService.canRequest().then(canRequest => {
+        if(canRequest){
+          this.locationService.request(this.locationService.REQUEST_PRIORITY_HIGH_ACCURACY).then(()=>{
+              resolve(true);
+          }, err => {
+            reject(err);
+          })
+        } else {
+          reject(false);
+        }
+      })
+    })
   }
 
   updateFcmStatus(deviceId, status){
