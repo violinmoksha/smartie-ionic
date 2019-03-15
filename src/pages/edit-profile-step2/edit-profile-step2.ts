@@ -107,14 +107,6 @@ export class EditProfileStep2Page {
 
       if(roleProfile.profileData.profilePhoto){
         this.pageProfileSrc = roleProfile.profileData.profilePhoto;
-        /*this.dataService.getApi('getSignedUrlGetObj', { 'fileName': roleProfile.profileData.profilePhoto, 'folder':'Profile' }).then(API => {
-          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(imageUrl => {
-            this.pageProfileSrc = 'data:image/jpg;base64,' + imageUrl.result;
-          }, (err) => {
-            console.log("Get signedUrl error");
-            console.log(err);
-          })
-        });*/
       }else{
         if (this.userRole == 'teacher') {
           this.pageProfileSrc = './assets/img/user-img-teacher.png';
