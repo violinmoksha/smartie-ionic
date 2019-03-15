@@ -58,6 +58,10 @@ export class ListPage {
       }
       this.fetchSmartieList(user);
       this.getNotificationCounts();
+      this.utils.jobReqTimer(user, this, (user, self) => {
+        self.fetchSmartieList(user);
+      });
+
     });
   }
 
@@ -71,6 +75,10 @@ export class ListPage {
       this.cityName = place.name;
       this.sortByLocation(place.name);
     });
+  }
+
+  ionViewWillLeave(){
+    this.utils.clearJobTimer()
   }
 
   sortByLocation(location) {
@@ -99,9 +107,9 @@ export class ListPage {
       this.dataService.getApi(
         'fetchMarkers',
         { profileId: user.profileData.objectId, role: user.profileData.role }
-      ).then(async API => {
-        return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
-          return await this.dataService.sanitizeNotifications(Notifications.result).then((notifications: Array<any>) => {
+      ).then(API => {
+         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(Notifications => {
+           this.dataService.sanitizeNotifications(Notifications.result).then((notifications: Array<any>) => {
             if (this.userData.profileData.role == "teacher") {
               for(let k=0; k<notifications.length; k++) {
                 notifications[k] = Object.assign({}, notifications[k], ...notifications[k].otherProfile);

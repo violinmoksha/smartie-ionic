@@ -16,6 +16,8 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy';
 @Injectable()
 export class UtilsProvider {
 
+  public jobTimer:any = null;
+
   constructor(public http: HttpClient, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, public themeableBrowser: ThemeableBrowser, public geoService: Geolocation, public locationService:LocationAccuracy) {
   }
 
@@ -94,6 +96,20 @@ export class UtilsProvider {
     });
   }
 
+  jobReqTimer(userData = null,classContext, callBack) {
+    clearInterval(this.jobTimer);
+    this.jobTimer = setInterval(()=> {
+      if(callBack){
+        callBack(userData, classContext);
+      }
+    }, 60000)
+  }
+
+  clearJobTimer() {
+    clearInterval(this.jobTimer);
+    this.jobTimer = null;
+  }
+
   checkLocationService() {
     return new Promise((resolve, reject) => {
       this.locationService.canRequest().then(canRequest => {
@@ -104,7 +120,7 @@ export class UtilsProvider {
             reject(err);
           })
         } else {
-          reject(false);
+          resolve(false);
         }
       })
     })

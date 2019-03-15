@@ -8,6 +8,7 @@ import { AnalyticsProvider } from '../../providers/analytics';
 const Parse = require('parse');
 import { Globalization } from '@ionic-native/globalization';
 import { JobRequstProvider } from '../../providers/job-request'
+import { UtilsProvider } from '../../providers/utils';
 
 declare let google;
 
@@ -52,10 +53,11 @@ export class SmartieSearch {
   private acceptedsCount: any = 0;
 
   private hasUpcomings: boolean = false;
+  public markers: Array<any> = [];
   // TODO: autopopulate input with user's location
   // private reverseGeocodedLocation: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private dataService: DataService, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone, private analytics: AnalyticsProvider, public jobRequestProvider: JobRequstProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private dataService: DataService, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone, private analytics: AnalyticsProvider, public jobRequestProvider: JobRequstProvider, public utilsService: UtilsProvider) {
     this.dataService.currentPage = "SmartieSearch";
     this.analytics.setScreenName("Smartie-search");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Smartie-search", "View"));
@@ -78,106 +80,116 @@ export class SmartieSearch {
 
   }
 
-  addProfilePhoto(profile) {
-    let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
-    parseFile.save({ useMasterKey: true }).then(file => {
-      profile.set('profilePhoto', file);
-      profile.save({ useMasterKey: true }).then(profile => {
-        if (this.role == 'school') {
-          if (this.schoolPhotoDataUrl) {
-            let parseSchoolFile = new Parse.File('school.jpg', { base64: this.schoolPhotoDataUrl });
-            parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
-              profile.set('schoolPhoto', schoolFile);
-              profile.save({ useMasterKey: true }).then(school => {
-                // TODO: run fetchNotifications here for the new user, same as in login.ts
-              })
-            })
-          }
-        }
-      })
-    }).catch(err => {
-      console.log(JSON.stringify(err));
-    })
-  }
+  // addProfilePhoto(profile) {
+  //   let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
+  //   parseFile.save({ useMasterKey: true }).then(file => {
+  //     profile.set('profilePhoto', file);
+  //     profile.save({ useMasterKey: true }).then(profile => {
+  //       if (this.role == 'school') {
+  //         if (this.schoolPhotoDataUrl) {
+  //           let parseSchoolFile = new Parse.File('school.jpg', { base64: this.schoolPhotoDataUrl });
+  //           parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
+  //             profile.set('schoolPhoto', schoolFile);
+  //             profile.save({ useMasterKey: true }).then(school => {
+  //               // TODO: run fetchNotifications here for the new user, same as in login.ts
+  //             })
+  //           })
+  //         }
+  //       }
+  //     })
+  //   }).catch(err => {
+  //     console.log(JSON.stringify(err));
+  //   })
+  // }
 
   ionViewDidEnter() {
     // send proper buttons into side-menu from here
     // since this is the first side-menu -loaded Page,
     // via SmartieApp's buttonsLoad custom Event
+    this.clearMarkers();
     this.events.publish("buttonsLoad", this.role);
-    if (this.fromWhere == 'signUp') {
-      let alert = this.alertCtrl.create({
-        title: 'One more step to go!',
-        subTitle: `Please check your email and click the verification link.`,
-        buttons: [{
-          text: 'OK',
-        }]
-      });
-      alert.present();
-    }
+    this.searchJobByLocation();
+    this.fetchJobMarkers();
+    // if (this.fromWhere == 'signUp') {
+    //   let alert = this.alertCtrl.create({
+    //     title: 'One more step to go!',
+    //     subTitle: `Please check your email and click the verification link.`,
+    //     buttons: [{
+    //       text: 'OK',
+    //     }]
+    //   });
+    //   alert.present();
+    // }
   }
 
   ionViewDidLoad() {
-    try {
+    this.initMap();
+    this.utilsService.jobReqTimer(null,this, (user, self) => {
+      self.clearMarkers();
+      self.fetchJobMarkers(true);
+  });
+  }
+  ionViewDidLeave() {
+    this.utilsService.clearJobTimer()
+  }
+  initMap() {
+    let mapOptions = {
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+  }
 
-      let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
-      let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
+  fetchJobMarkers(fromIntervals = false) {
+    this.storage.get('UserProfile').then(profile => {
+      this.role = profile.profileData.role;
+      this.currentProfile = profile.profileData;
 
-      let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);
-      autocomplete.addListener("place_changed", () => {
-        let place = autocomplete.getPlace();
-        this.userLocation = place.formatted_address;
-        this.findJobsSearch();
-      });
+      if (profile == null) {
+        this.navCtrl.setRoot("LoginPage");
+      } else {
+        this.dataService.getApi(
+            'fetchMarkers',
+            { profileId: profile.profileData.objectId, role: profile.profileData.role }
+          ).then(async API => {
+            this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(Notifications => {
+               this.dataService.sanitizeNotifications(Notifications.result).then(notifications => {
+                this.notifications = notifications;
+                this.storage.get('phoneGeoposition').then(phoneLatLng => {
+                  if (phoneLatLng !== undefined && phoneLatLng !== null) {
+                    this.smartieSearchResult({ latitude: phoneLatLng.coords.latitude, longitude: phoneLatLng.coords.longitude }, profile.profileData.role, null, fromIntervals);
+                  } else {
+                    this.latLngUser = profile.profileData.latlng;
+                    this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, fromIntervals);
+                  }
 
-      this.events.publish("buttonsLoad", this.role);
+                  //get all requested's
+                  this.body = {
+                    profileId: profile.profileData.objectId,
+                    role: profile.profileData.role
+                  };
 
-      this.storage.get('UserProfile').then(profile => {
-        this.role = profile.profileData.role;
-        this.currentProfile = profile.profileData;
+                  this.notifyCount = this.jobRequestProvider.notifyCount;
 
-        if (profile == null) {
-          this.navCtrl.setRoot("LoginPage");
-        } else {
-
-          return new Promise(async (resolve) => {
-            return await this.dataService.getApi(
-              'fetchMarkers',
-              { profileId: profile.profileData.objectId, role: profile.profileData.role }
-            ).then(async API => {
-              return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
-                return await this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
-                  this.notifications = notifications;
-                  return await this.storage.get('phoneGeoposition').then(async phoneLatLng => {
-                    if (phoneLatLng !== undefined && phoneLatLng !== null) {
-                      this.smartieSearchResult({ latitude: phoneLatLng.coords.latitude, longitude: phoneLatLng.coords.longitude }, profile.profileData.role, null);
-                    } else {
-                      this.latLngUser = profile.profileData.latlng;
-                      this.smartieSearchResult(this.latLngUser, profile.profileData.role, null);
-                    }
-
-                    //get all requested's
-                    this.body = {
-                      profileId: profile.profileData.objectId,
-                      role: profile.profileData.role
-                    };
-
-                    this.notifyCount = this.jobRequestProvider.notifyCount;
-
-                  });
-                })
-              }, err => {
-                console.log(err.error.error);
-                //this.smartieErrHandler.showErrors(err);
-              });
+                });
+              })
+            }, err => {
+              console.log(err.error.error);
+              //this.smartieErrHandler.showErrors(err);
             });
-
           });
-        }
-      });
-    } catch (e) {
-      console.log(e);
-    }
+      }
+    });
+  }
+  searchJobByLocation() {
+    let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
+    let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
+
+    let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);
+    autocomplete.addListener("place_changed", () => {
+      let place = autocomplete.getPlace();
+      this.userLocation = place.formatted_address;
+      this.findJobsSearch();
+    });
   }
 
   getGeoPoint(searchLoc) {
@@ -215,7 +227,30 @@ export class SmartieSearch {
     });
   }
 
-  createMarkerLocation(extendBound) {
+  addMarker(map, randomLocation, userIcon) {
+    this.marker = new google.maps.Marker({
+      map: map,
+      animation: google.maps.Animation.DROP,
+      position: new google.maps.LatLng(randomLocation.latitude, randomLocation.longitude),
+      icon: userIcon
+    });
+    this.markers.push(this.marker);
+  }
+
+  // Sets the map on all markers in the array.
+  setMapOnAll(map) {
+    for (var i = 0; i < this.markers.length; i++) {
+      this.markers[i].setMap(map);
+    }
+  }
+
+  // Removes the markers from the map, but keeps them in the array.
+  clearMarkers() {
+    this.setMapOnAll(null);
+    this.markers = [];
+  }
+
+  createMarkerLocation(extendBound, fromIntervals = false) {
     // TODO: there shud be a way to wrap this
     // so we don't need to include the frontend
     // SDK directly in our index.html
@@ -245,15 +280,16 @@ export class SmartieSearch {
             this.randomLocation = this.randomGeo(locationData.teacherProfile.latlng, 500);
             this.userIcon = './assets/imgs/teacher-map-icon30px.png';
           }
-
-          this.marker = new google.maps.Marker({
-            map: this.map,
-            animation: google.maps.Animation.DROP,
-            position: new google.maps.LatLng(this.randomLocation.latitude, this.randomLocation.longitude),
-            icon: this.userIcon
-          });
-
-          this.bounds.extend(latLng);
+          this.addMarker(this.map, this.randomLocation, this.userIcon);
+          // this.marker = new google.maps.Marker({
+          //   map: this.map,
+          //   animation: google.maps.Animation.DROP,
+          //   position: new google.maps.LatLng(this.randomLocation.latitude, this.randomLocation.longitude),
+          //   icon: this.userIcon
+          // });
+          if(this.utilsService.jobTimer == null) {
+            this.bounds.extend(latLng);
+          }
 
           if(extendBound) {
             // Extends our bounds to show US map
@@ -261,10 +297,11 @@ export class SmartieSearch {
               [39.952583, -75.165222],
               [34.052235, -118.243683]
             ];
-
-            for (var i = 0; i < USBoundLocation.length; i++) {
-              let addonLatLng = new google.maps.LatLng(USBoundLocation[i][0], USBoundLocation[i][1]);
-              this.bounds.extend(addonLatLng);
+            if(!fromIntervals) {
+              for (var i = 0; i < USBoundLocation.length; i++) {
+                let addonLatLng = new google.maps.LatLng(USBoundLocation[i][0], USBoundLocation[i][1]);
+                this.bounds.extend(addonLatLng);
+              }
             }
           }
 
@@ -287,10 +324,11 @@ export class SmartieSearch {
           [39.952583, -75.165222],
           [34.052235, -118.243683]
         ];
-
-        for (var i = 0; i < USBoundLocation.length; i++) {
-          let addonLatLng = new google.maps.LatLng(USBoundLocation[i][0], USBoundLocation[i][1]);
-          this.bounds.extend(addonLatLng);
+        if (!fromIntervals) {
+          for (var i = 0; i < USBoundLocation.length; i++) {
+            let addonLatLng = new google.maps.LatLng(USBoundLocation[i][0], USBoundLocation[i][1]);
+            this.bounds.extend(addonLatLng);
+          }
         }
       }
     } catch (e) {
@@ -363,7 +401,7 @@ export class SmartieSearch {
     return new google.maps.LatLng(this.toDeg(lat2), this.toDeg(lon2));
   }
 
-  smartieSearchResult(latLng, searchRole, searchLoc) {
+  smartieSearchResult(latLng, searchRole, searchLoc, fromIntervals = false) {
     let mapCenter;
     if (latLng !== null) {
       mapCenter = latLng;
@@ -372,10 +410,10 @@ export class SmartieSearch {
     }
     //console.log('smartieSearchResult debug: latLng == ' + JSON.stringify(latLng) + ' && searchLoc == ' + searchLoc);
 
-    let mapOptions = {
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    // let mapOptions = {
+    //   mapTypeId: google.maps.MapTypeId.ROADMAP
+    // };
+    // this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
     this.bounds = new google.maps.LatLngBounds();
 
@@ -395,16 +433,16 @@ export class SmartieSearch {
     if(locCount < 5){
       this.bounds = new google.maps.LatLngBounds();
       this.extendBound = true;
-      this.createMarkerLocation(this.extendBound);
+      this.createMarkerLocation(this.extendBound, fromIntervals);
     }else{
       let pointSouthwest = this.destinationPoint(220, this.radiusInKm / 2, mapCenter);
       let pointNortheast = this.destinationPoint(45, this.radiusInKm / 2, mapCenter);
       this.bounds = new google.maps.LatLngBounds(pointSouthwest, pointNortheast);
       this.extendBound = false;
-      this.createMarkerLocation(this.extendBound);
+      this.createMarkerLocation(this.extendBound, fromIntervals);
     }
-
-    this.map.fitBounds(this.bounds);
+    if(!fromIntervals)
+      this.map.fitBounds(this.bounds);
   }
 
   pushAccepteds() {

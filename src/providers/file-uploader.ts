@@ -35,30 +35,20 @@ export class FileUploaderProvider {
     console.log(filePath);
     return new Promise((resolve, reject) => {
       let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
-      console.log(fileName);
 
       this.dataService.getApi('getAWSCredential', { 'fileName': fileName, 'folder':bucketFolder }).then(async API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (signedUrl) => {
-          console.log(signedUrl.result);
           let options: FileUploadOptions = {
             fileKey: 'file',
             fileName: fileName,
             chunkedMode: false,
             mimeType: "image/jpg",
             httpMethod:'PUT',
-            // headers: {
-            //   "Content-Type": "image/jpg",
-            //   "acl": "public-read",
-            //   "X-Amz-Acl": "public-read"
-            // },
-            // params : {
-            //   // key: `uploads/${file.substr(file.lastIndexOf('/')+1)}`,
-            //   AWSAccessKeyId: s3Params.key,
-            //   acl: s3Params.acl,
-            //   policy: s3Params.policy,
-            //   signature: s3Params.signature,
-            //   'Content-Type' : "image/jpeg"
-            // }
+            headers: {
+              "Content-Type": "image/jpg",
+              "acl": "public-read",
+              "X-Amz-Acl": "public-read"
+            }
           }
          this.fileTransfer.upload(filePath, signedUrl.result, options).then((data) => {
               console.log("FileUpload");
