@@ -280,9 +280,10 @@ export class SmartieApp {
   notificationHandler(): void {
     var notificationId = "0";
     this.firebase.onNotificationOpen().subscribe((notification: any) => {
-
+      console.log(notification)
       var actionHandler = () => { //NB: To reuse this function due to ios triggers event twice
         if (notification.eventAction == "PaymentReminder") {
+          if (!notification.foreground || notification.tap == true)
           this.nav.push("AddPaymentPage");
         } else if (notification.eventAction == "JobRequest") {
           console.log("Received inside jobRequest");
