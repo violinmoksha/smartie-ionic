@@ -104,7 +104,7 @@ export class UtilsProvider {
             reject(err);
           })
         } else {
-          reject(false);
+          resolve(false);
         }
       })
     })
