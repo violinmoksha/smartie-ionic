@@ -205,7 +205,7 @@ export class EditProfileStep2Page {
       }else if(this.schoolCameraData){
         uploadContent = this.schoolCameraData;
       }
-      this.fileUploader.uploadFileToAWS(uploadContent, this.fileUploader.awsBucket.profile).then(res => {
+      this.fileUploader.uploadFileToAWS(uploadContent).then(res => {
         form2Values.profilePhoto = res;
         this.loading.dismiss();
         this.next(form2Values);

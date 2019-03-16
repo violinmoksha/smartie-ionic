@@ -30,31 +30,31 @@ export class FileUploaderProvider {
     });
   }
 
-  uploadFileToAWS(filePath, bucketFolder) {
+  uploadFileToAWS(filePath) {
     //let file = filePath.substr(0, filePath.lastIndexOf('/'));
     console.log(filePath);
     return new Promise((resolve, reject) => {
       let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
-      this.dataService.getApi('getAWSCredential', { 'fileName': fileName, 'folder':bucketFolder }).then(async API => {
+      this.dataService.getApi('getAWSCredential', { 'fileName': fileName }).then(async API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (signedUrl) => {
           let options: FileUploadOptions = {
             fileKey: 'file',
             fileName: fileName,
             chunkedMode: false,
-            mimeType: "image/jpg",
+            mimeType: "image/png",
             httpMethod:'PUT',
             headers: {
-              "Content-Type": "image/jpg",
-              "acl": "public-read",
-              "X-Amz-Acl": "public-read"
+              "Content-Type": "image/png",
+              "acl": "authenticated-read",
+              "X-Amz-Acl": "authenticated-read"
             }
           }
-         this.fileTransfer.upload(filePath, signedUrl.result, options).then((data) => {
+         this.fileTransfer.upload(filePath, signedUrl.result, options).then(data => {
               console.log("FileUpload");
               console.log(data);
-              let filePath = signedUrl.result.split('?')[0];
-              resolve(filePath);
+              //let filePath = signedUrl.result.split('?')[0];
+              resolve(signedUrl.result);
             }, (err) => {
               console.log(err);
               reject(err);

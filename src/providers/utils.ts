@@ -75,7 +75,7 @@ export class UtilsProvider {
             if(result.address_components.length>0){
               for (var i=0; i<result.address_components.length; i++) {
                 if(result.address_components[i].types[0] == 'country'){
-                  if(result.address_components[i].short_name == 'IN') {
+                  if(result.address_components[i].short_name == 'US') {
                     resolve(true);
                     console.log("Blocking Access, Not US");
                   } else {

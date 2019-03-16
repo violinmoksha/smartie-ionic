@@ -103,7 +103,7 @@ export class FeedbackPage {
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl, this.fileUploader.awsBucket.feedback));
+        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl));
       }
       Promise.all(filePromises).then((results) => {
         resolve(results);

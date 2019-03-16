@@ -188,7 +188,7 @@ export class RegisterStep2Page {
       }else if(this.schoolCameraData){
         uploadContent = this.schoolCameraData;
       }
-      this.fileUploader.uploadFileToAWS(uploadContent, this.fileUploader.awsBucket.profile).then(res => {
+      this.fileUploader.uploadFileToAWS(uploadContent).then(res => {
         form2Values.profilePhoto = res;
         this.next(form2Values);
       })
@@ -320,7 +320,7 @@ export class RegisterStep2Page {
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl, bucketName));
+        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl));
       }
       Promise.all(filePromises).then((results) => {
         resolve(results);
