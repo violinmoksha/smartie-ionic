@@ -43,7 +43,9 @@ import { SmartieErrorHandler } from './app.err';
 import { UtilsProvider } from '../providers/utils';
 import { JobRequstProvider } from '../providers/job-request';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
-
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
 @NgModule({
   declarations: [
     SmartieApp
@@ -58,7 +60,10 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy';
     CalendarModule,
     BrowserAnimationsModule,
     TooltipsModule,
-    IonicImageLoader.forRoot()
+    IonicImageLoader.forRoot(),
+    AngularFireModule.initializeApp(Constants.firebaseConfig, 'Smartie'),
+    AngularFirestoreModule,
+    AngularFireStorageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -94,7 +99,8 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy';
     Crashlytics,
     UtilsProvider,
     JobRequstProvider,
-    LocationAccuracy
+    LocationAccuracy,
+    { provide: StorageBucket, useValue: 'smartie-212716.appspot.com' }
   ]
 })
 export class AppModule { }

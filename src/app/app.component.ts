@@ -14,6 +14,7 @@ import { FetchiOSUDID } from '../providers/fetch-ios-udid';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
 import { UtilsProvider } from '../providers/utils';
+import { FileUploaderProvider } from '../providers/file-uploader';
 
 const Parse = require('parse');
 
@@ -50,7 +51,8 @@ export class SmartieApp {
     public imagePicker: ImagePicker,
     public fetchiOSUDID: FetchiOSUDID,
     public crashlytics: FirebaseCrashlyticsProvider,
-    private utilsService: UtilsProvider) {
+    private utilsService: UtilsProvider,
+    private fileUploader: FileUploaderProvider) {
     this.dataService.currentPage = "Root";
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -66,6 +68,7 @@ export class SmartieApp {
         this.initializeApp();
         console.log(err);
       });
+
     });
     this.events.subscribe("buttonsLoad", eventData => {
       console.log(eventData);
