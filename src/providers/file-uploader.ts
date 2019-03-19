@@ -63,7 +63,8 @@ export class FileUploaderProvider {
     console.log(path)
       return new Promise((resolve, reject) => {
         this.fileService.readAsDataURL(path, fileName).then(result => {
-          resolve(result)
+          // resolve(result)
+          console.log(result);
           const uploadTask = this.fireUpload.upload(filePath, result);
           console.log(uploadTask.percentageChanges())
 
