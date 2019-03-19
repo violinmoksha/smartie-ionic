@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { DataService } from '../app/app.data';
+import { Storage } from '@google-cloud/storage';
 
 import Parse from 'parse';
 
@@ -28,6 +29,27 @@ export class FileUploaderProvider {
         reject(err);
       });
     });
+  }
+
+  async uploadFileToGoogleAccount(){
+    console.log("Getting into google cloud bucket");
+    const projectId = 'smartie-212716';
+
+    // Creates a client
+    const storage = new Storage({
+      projectId: projectId,
+    });
+
+
+    const bucketName = 'staging.smartie-212716.appspot.com';
+
+    const [files] = await storage.bucket(bucketName).getFiles();
+
+    console.log('Files:');
+    files.forEach(file => {
+      console.log(file.name);
+    });
+
   }
 
   uploadFileToAWS(filePath) {
