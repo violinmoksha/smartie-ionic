@@ -69,7 +69,6 @@ export class SmartieApp {
         console.log(err);
       });
 
-      this.fileUploader.uploadFileToGoogleAccount();
     });
     this.events.subscribe("buttonsLoad", eventData => {
       console.log(eventData);

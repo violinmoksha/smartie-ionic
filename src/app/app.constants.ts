@@ -1,3 +1,6 @@
+//var fse = require('fs-extra');
+import fse from 'fs-extra';
+
 export class Constants {
   public static API_ENDPOINTS = {
     env: 'test',
@@ -32,4 +35,17 @@ export class Constants {
       }
     }
   }
+
+  // public static firebaseValues = JSON.parse(fse.readFileSync('../../google-services.json'));
+  public static firebaseConfig = {
+    production: false,
+    firebase: {
+      apiKey: 'AIzaSyCwovXgTeaJ38sVOrGNQi-TJph8SVH1D0U',
+      authDomain: 'https://smartie-212716.firebaseio.com',
+      databaseURL: 'https://smartie-212716.firebaseio.com',
+      projectId: 'smartie-212716',
+      storageBucket: 'smartie-212716.appspot.com',
+      messagingSenderId: '500059309895'
+    }
+  };
 }
