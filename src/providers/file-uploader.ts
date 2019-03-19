@@ -36,20 +36,18 @@ export class FileUploaderProvider {
     return new Promise((resolve, reject) => {
       let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
 
+      console.log('Going in with fileName: '+fileName);
       this.dataService.getApi('getAWSCredential', { 'fileName': fileName }).then(async API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async (signedUrl) => {
           let options: FileUploadOptions = {
-            fileKey: 'file',
+            fileKey: fileName,
             fileName: fileName,
             chunkedMode: false,
-            mimeType: "image/png",
+            mimeType: "image/jpeg",
             httpMethod:'PUT',
-            headers: {
-              "Content-Type": "image/png",
-              "acl": "authenticated-read",
-              "X-Amz-Acl": "authenticated-read"
-            }
+            headers: {}
           }
+         console.log('Going in with signedUrl of: '+signedUrl.result);
          this.fileTransfer.upload(filePath, signedUrl.result, options).then(data => {
               console.log("FileUpload");
               console.log(data);
