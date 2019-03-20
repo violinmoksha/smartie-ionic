@@ -61,7 +61,7 @@ import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
     BrowserAnimationsModule,
     TooltipsModule,
     IonicImageLoader.forRoot(),
-    AngularFireModule.initializeApp(Constants.firebaseConfig, 'Smartie'),
+    AngularFireModule.initializeApp(Constants.firebaseConfig),
     AngularFirestoreModule,
     AngularFireStorageModule
   ],

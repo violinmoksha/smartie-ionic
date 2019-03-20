@@ -40,12 +40,18 @@ export class Constants {
   public static firebaseConfig = {
     production: false,
     firebase: {
-      apiKey: 'AIzaSyCwovXgTeaJ38sVOrGNQi-TJph8SVH1D0U',
-      authDomain: 'https://smartie-212716.firebaseio.com',
-      databaseURL: 'https://smartie-212716.firebaseio.com',
-      projectId: 'smartie-212716',
-      storageBucket: 'smartie-212716.appspot.com',
-      messagingSenderId: '500059309895'
+      // apiKey: 'AIzaSyCwovXgTeaJ38sVOrGNQi-TJph8SVH1D0U',
+      // authDomain: 'https://smartie-212716.firebaseio.com',
+      // databaseURL: 'https://smartie-212716.firebaseio.com',
+      // projectId: 'smartie-212716',
+      // storageBucket: 'smartie-212716.appspot.com',
+      // messagingSenderId: '500059309895',
+      apiKey: "AIzaSyDEBhIe2qHmyQptDMiq4llXFdyRRBuKWoc",
+      authDomain: "smartie-212716.firebaseapp.com",
+      databaseURL: "https://smartie-212716.firebaseio.com",
+      projectId: "smartie-212716",
+      storageBucket: "smartie-212716.appspot.com",
+      messagingSenderId: "500059309895"
     }
   };
 }

@@ -3,6 +3,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { DataService } from '../app/app.data';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { File } from '@ionic-native/file';
+import { Constants } from './../app/app.constants';
 
 // import { Storage } from '@google-cloud/storage';
 
@@ -21,6 +22,7 @@ export class FileUploaderProvider {
   constructor(private transfer: FileTransfer, public dataService: DataService, public fireUpload: AngularFireStorage, public fileService: File) {
     this.fileTransfer = this.transfer.create();
     this.awsBucket = {"feedback":"Feedbacks", "credential":"Credentials", "profile":"Profile", "drivingLicense": "DrivingLicense"}
+    // initializeApp(Constants.firebaseConfig);
   }
 
   uploadFile(file, format) {
@@ -65,8 +67,18 @@ export class FileUploaderProvider {
         this.fileService.readAsDataURL(path, fileName).then(result => {
           // resolve(result)
           console.log(result);
-          const uploadTask = this.fireUpload.upload(filePath, result);
-          console.log(uploadTask.percentageChanges())
+          let base64Result = result.split(',')[1]
+          console.log(base64Result);
+          try{
+
+            const ref = this.fireUpload.ref(fileName);
+            const task = ref.putString(base64Result, 'base64', { contentType: 'image/jpeg'});
+            // TODO Get stored image path and store it in parse mongo
+
+          } catch(err) {
+            console.log(err);
+          }
+
 
         }, err => {
           reject(err)
