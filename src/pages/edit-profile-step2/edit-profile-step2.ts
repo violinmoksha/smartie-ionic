@@ -205,7 +205,9 @@ export class EditProfileStep2Page {
       }else if(this.schoolCameraData){
         uploadContent = this.schoolCameraData;
       }
-      this.fileUploader.uploadFileToAWS(uploadContent).then(res => {
+      this.fileUploader.uploadToFCS(uploadContent).then(res => {
+        console.log("Getting new image");
+        console.log(res);
         form2Values.profilePhoto = res;
         this.loading.dismiss();
         this.next(form2Values);
