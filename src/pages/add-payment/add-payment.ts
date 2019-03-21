@@ -146,6 +146,12 @@ export class AddPaymentPage {
           showPageTitle: true,
           staticText: "Add Stripe Payment"
         },
+        closeButton: {
+          wwwImage: 'assets/imgs/close-white.png',
+          wwwImagePressed: 'assets/imgs/close-white.png',
+          align: 'left',
+          event: 'closePressed'
+        },
         backButtonCanClose: true
       }
 
