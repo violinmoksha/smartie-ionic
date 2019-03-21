@@ -415,7 +415,9 @@ export class SmartieApp {
           this.nav.setRoot("TabsPage", params);
         })
       } else {
-        this.nav.push(page.pageName);
+        this.storage.get("UserProfile").then(userProfile => {
+          this.nav.push(page.pageName, {role: userProfile.profileData.role});
+        })
       }
     }
   }

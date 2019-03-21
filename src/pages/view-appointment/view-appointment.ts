@@ -19,12 +19,13 @@ import { AnalyticsProvider } from '../../providers/analytics';
 export class ViewAppointmentPage {
 
   private role: any;
-  public appointments: any;
+  public appointments: any = null;
   public isFetching: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public loadingCtrl: LoadingController, private dataService: DataService, private analytics : AnalyticsProvider, private utilsService: UtilsProvider) {
     this.analytics.setScreenName("ViewAppointment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("ViewAppointment", "View"));
+    this.role = this.navParams.get('role');
   }
 
   getRole() {
@@ -41,7 +42,6 @@ export class ViewAppointmentPage {
       ).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
           this.isFetching = false;
-          console.log(response.result);
           this.appointments = response.result;
           for(let appointment of this.appointments){
             if(this.role == 'teacher'){
@@ -69,7 +69,7 @@ export class ViewAppointmentPage {
     });
   }
   ionViewDidEnter() {
-
+    this.fetchAppoinments();
   }
 
   ionViewDidLoad() {
