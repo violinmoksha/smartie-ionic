@@ -44,8 +44,10 @@ import { UtilsProvider } from '../providers/utils';
 import { JobRequstProvider } from '../providers/job-request';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { AngularFireModule } from '@angular/fire';
+// import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
+
 @NgModule({
   declarations: [
     SmartieApp
@@ -63,7 +65,8 @@ import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
     IonicImageLoader.forRoot(),
     AngularFireModule.initializeApp(Constants.firebaseConfig),
     AngularFirestoreModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    // AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

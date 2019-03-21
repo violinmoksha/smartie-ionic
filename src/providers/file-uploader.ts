@@ -4,6 +4,7 @@ import { DataService } from '../app/app.data';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { File } from '@ionic-native/file';
 import { Constants } from './../app/app.constants';
+// import { AngularFireAuth } from '@angular/fire/auth';
 
 // import { Storage } from '@google-cloud/storage';
 
@@ -65,16 +66,29 @@ export class FileUploaderProvider {
     console.log(path)
       return new Promise((resolve, reject) => {
         this.fileService.readAsDataURL(path, fileName).then(result => {
-          // resolve(result)
-          console.log(result);
-          let base64Result = result.split(',')[1]
-          console.log(base64Result);
+          // try{
+          //   let fireUser = this.ngFireAuth.auth.signInAnonymously();
+          //   console.log("fireUser");
+          //   console.log(fireUser);
+          // } catch (ngLoginErr){
+          //   console.log(ngLoginErr);
+          // }
+
+          let base64Result = result.split(',')[1];
+          // console.log("currentUser");
+          // console.log(this.afAuth.auth.currentUser);
+          // console.log("authState");
+          // console.log(this.afAuth.authState);
           try{
-
             const ref = this.fireUpload.ref(fileName);
-            const task = ref.putString(base64Result, 'base64', { contentType: 'image/jpeg'});
-            // TODO Get stored image path and store it in parse mongo
-
+            const task = ref.putString(base64Result, 'base64', { contentType: 'image/jpeg'}).then(async result => {
+              let profilePhotoUrl = await result.ref.getDownloadURL();
+              console.log(profilePhotoUrl);
+              resolve(profilePhotoUrl);
+            }, (uploadErr) => {
+              console.log("Upload Error");
+              console.log(uploadErr);
+            });
           } catch(err) {
             console.log(err);
           }

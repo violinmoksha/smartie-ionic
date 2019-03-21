@@ -19,20 +19,29 @@ import { AnalyticsProvider } from '../../providers/analytics';
 export class ViewAppointmentPage {
 
   private role: any;
-  public appointments: any;
+  public appointments: any = null;
+  public isFetching: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public loadingCtrl: LoadingController, private dataService: DataService, private analytics : AnalyticsProvider, private utilsService: UtilsProvider) {
     this.analytics.setScreenName("ViewAppointment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("ViewAppointment", "View"));
+    this.role = this.navParams.get('role');
+  }
 
+  getRole() {
+    return this.role;
+  }
+
+  fetchAppoinments() {
     this.storage.get("UserProfile").then(profile => {
       this.role = profile.profileData.role;
-
+      this.isFetching = true;
       this.dataService.getApi(
         'getActiveAppointments',
         { role: this.role, profileId: profile.profileData.objectId }
       ).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
+          this.isFetching = false;
           this.appointments = response.result;
           for(let appointment of this.appointments){
             if(this.role == 'teacher'){
@@ -52,15 +61,15 @@ export class ViewAppointmentPage {
             appointment.startTime = parseInt(apptStartTime.split(':')[0]) +':'+ parseInt(apptStartTime.split(':')[1]);
             appointment.endTime = parseInt(apptEndTime.split(':')[0]) +':'+ parseInt(apptEndTime.split(':')[1]);
           }
-
-          console.log(this.appointments.owner);
+        }, err => {
+          console.log(err);
+          this.isFetching = false;
         });
       })
     });
   }
-
-  getRole() {
-    return this.role;
+  ionViewDidEnter() {
+    this.fetchAppoinments();
   }
 
   ionViewDidLoad() {

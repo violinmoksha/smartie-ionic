@@ -45,7 +45,7 @@ export class Constants {
       // databaseURL: 'https://smartie-212716.firebaseio.com',
       // projectId: 'smartie-212716',
       // storageBucket: 'smartie-212716.appspot.com',
-      // messagingSenderId: '500059309895',
+      // messagingSenderId: '500059309895'
       apiKey: "AIzaSyDEBhIe2qHmyQptDMiq4llXFdyRRBuKWoc",
       authDomain: "smartie-212716.firebaseapp.com",
       databaseURL: "https://smartie-212716.firebaseio.com",
