@@ -79,14 +79,14 @@ export class SmartieApp {
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage', isTabs: false },
-          // { iconName: 'paper', text: 'Reviews', pageName: 'ReviewsPage' },
-          { iconName: 'add-circle', text: 'Create a Job', pageName: '' },
+          { iconName: 'paper-plane', text: 'Reviews', pageName: 'ReviewsPage' },
+          { iconName: 'alarm', text: 'Appointments', pageName: 'ViewAppointmentPage' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
       } else {
         this.buttons = [
           { iconName: 'card', text: 'Payment Details', pageName: 'PaymentDetailsPage', index: 1, pageTitle: 'Payment Options' },
-          { iconName: 'card', text: 'Wallet', pageName: 'WalletPage' },
+          { iconName: 'wallet', text: 'Wallet', pageName: 'WalletPage' },
           { iconName: 'book', text: 'Manage Orders', pageName: '' },
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 2, pageTitle: 'Edit User' },
