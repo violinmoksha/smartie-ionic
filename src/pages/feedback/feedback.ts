@@ -89,7 +89,7 @@ export class FeedbackPage {
           filePromises.push(this.fileUploader.uploadFile(this.userScreenshotsView[i], 'png'));
         }*/
         /** To S3 bucket */
-        this.uploadToS3(this.userScreenshotsView).then(res => {
+        this.uploadToFirebaseBucket(this.userScreenshotsView).then(res => {
           params.attachment = res;
           this.setFeedbackApi(params);
         })
@@ -99,11 +99,11 @@ export class FeedbackPage {
     });
   }
 
-  uploadToS3(files) {
+  uploadToFirebaseBucket(files) {
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl));
+        filePromises.push(this.fileUploader.uploadToFCS(files[i].data.imageUrl));
       }
       Promise.all(filePromises).then((results) => {
         resolve(results);
