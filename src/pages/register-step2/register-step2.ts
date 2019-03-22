@@ -188,7 +188,9 @@ export class RegisterStep2Page {
       }else if(this.schoolCameraData){
         uploadContent = this.schoolCameraData;
       }
-      this.fileUploader.uploadFileToAWS(uploadContent).then(res => {
+      this.fileUploader.uploadToFCS(uploadContent, 'Profile').then(res => {
+        console.log("profilePhoto");
+        console.log(res);
         form2Values.profilePhoto = res;
         this.next(form2Values);
       })
@@ -203,9 +205,11 @@ export class RegisterStep2Page {
       this.userInfo.prefLocation = this.userLocation;
       this.userInfo.prefPayRate = this.hourlyRate;
 
-    //  if(this.licenseFiles.length > 0){
-        // this.uploadToS3(this.licenseFiles, this.fileUploader.awsBucket.drivingLicense).then(license => {
-          // form2Values.drivingLicense = license;
+     if(this.licenseFiles.length > 0){
+        this.uploadToFirebaseBucket(this.licenseFiles, 'DrivingLicense').then(license => {
+          console.log("DrivingLicense");
+          console.log(license);
+          form2Values.drivingLicense = license;
           this.dataService.getApi(
              'signUpRole',
              { role: this.role, accountInfo: JSON.stringify(this.form1Values), profileInfo: JSON.stringify(form2Values), userInfo: JSON.stringify(this.userInfo) }
@@ -254,10 +258,10 @@ export class RegisterStep2Page {
                alert.present();
              })
            });
-        // }, (err) => {
-        //   console.log(err);
-        // })
-      //}//-------
+        }, (err) => {
+          console.log(err);
+        })
+      }//-------
     } else {
         this.loading.dismiss();
         this.navCtrl.push("RegisterStep3Page", { form1Values: this.form1Values, form2Values: form2Values, role: this.role });
@@ -316,11 +320,11 @@ export class RegisterStep2Page {
       this.licenseFiles.splice(i,1);
   }
 
-  uploadToS3(files, bucketName) {
+  uploadToFirebaseBucket(files, bucketName) {
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl));
+        filePromises.push(this.fileUploader.uploadToFCS(files[i].data.imageUrl, bucketName));
       }
       Promise.all(filePromises).then((results) => {
         resolve(results);

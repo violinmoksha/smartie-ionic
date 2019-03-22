@@ -21,7 +21,7 @@ export class FileUploaderProvider {
   public awsBucket;
   constructor(private transfer: FileTransfer, public dataService: DataService, public fireUpload: AngularFireStorage, public fileService: File, public fireAuth: AngularFireAuth) {
     this.fileTransfer = this.transfer.create();
-    this.awsBucket = {"feedback":"Feedbacks", "credential":"Credentials", "profile":"Profile", "drivingLicense": "DrivingLicense"}
+    // this.awsBucket = {"feedback":"Feedbacks", "credential":"Credentials", "profile":"Profile", "drivingLicense": "DrivingLicense"}
     // initializeApp(Constants.firebaseConfig);
   }
 
@@ -36,26 +36,24 @@ export class FileUploaderProvider {
     });
   }
 
-  uploadToFCS(filePath){
+  uploadToFCS(filePath, bucketName = null){
     this.fireAuth.auth.signInAnonymously();
-    console.log("uploading files");
-    console.log(filePath);
     let fileName = filePath.substr(filePath.lastIndexOf('/') + 1),
     path = filePath.substr(0, filePath.lastIndexOf('/'));
-    console.log(path)
+    console.log(filePath);
+    console.log(fileName);
     return new Promise((resolve, reject) => {
       this.fileService.readAsDataURL(path, fileName).then(result => {
         let base64Result = result.split(',')[1];
         try{
           this.fireAuth.auth.signInAnonymously().then(() => {
             try {
-              const ref = this.fireUpload.ref(fileName);
+              const ref = this.fireUpload.ref(bucketName+'/'+fileName);
+              console.log(ref);
               const task = ref.putString(base64Result, 'base64', { contentType: 'image/jpeg'}).then(async result => {
                 let profilePhotoUrl = await result.ref.getDownloadURL();
-                console.log(profilePhotoUrl);
                 resolve(profilePhotoUrl);
               }, (uploadErr) => {
-                console.log("Upload Error");
                 console.log(uploadErr);
               });
             } catch (putErr) {

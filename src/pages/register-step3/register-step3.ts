@@ -218,11 +218,11 @@ export class RegisterStep3Page {
     });
   }
 
-  uploadToS3(files, bucketName) {
+  uploadToFirebaseBucket(files, bucketName) {
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl));
+        filePromises.push(this.fileUploader.uploadToFCS(files[i].data.imageUrl, bucketName));
       }
       Promise.all(filePromises).then((results) => {
         resolve(results);
@@ -232,11 +232,11 @@ export class RegisterStep3Page {
 
   signupRole(form3Values) {
     this.loading.present();
-    // if(this.licenseFiles.length > 0) {
-    //   this.uploadToS3(this.licenseFiles, this.fileUploader.awsBucket.drivingLicense).then(license => {
-    //     form3Values.drivingLicense = license;
+    if(this.licenseFiles.length > 0) {
+      this.uploadToFirebaseBucket(this.licenseFiles, 'DrivingLicense').then(license => {
+        form3Values.drivingLicense = license;
         if (this.cvFiles.length > 0 && this.role == "teacher"){
-          this.uploadToS3(this.cvFiles, this.fileUploader.awsBucket.credential).then(res => {
+          this.uploadToFirebaseBucket(this.cvFiles, 'Credentials').then(res => {
             form3Values.credentials = res;
             this.finalRegisterSubmit(form3Values);
           }, err => {
@@ -245,10 +245,10 @@ export class RegisterStep3Page {
         }else{
           this.finalRegisterSubmit(form3Values);
         }
-      // }, (error) => {
-      //   console.log(error);
-      // });
-    //}
+      }, (error) => {
+        console.log(error);
+      });
+    }
   }
 
   finalRegisterSubmit(form3Values) {

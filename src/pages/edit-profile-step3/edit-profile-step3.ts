@@ -248,11 +248,11 @@ export class EditProfileStep3Page {
     this.uploadedCvFiles.splice(i, 1);
   }
 
-  uploadToS3(files) {
+  uploadToFirebaseBucket(files, bucketName) {
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        filePromises.push(this.fileUploader.uploadFileToAWS(files[i].data.imageUrl));
+        filePromises.push(this.fileUploader.uploadToFCS(files[i].data.imageUrl, bucketName));
       }
       Promise.all(filePromises).then((results) => {
         resolve(results);
@@ -264,7 +264,7 @@ export class EditProfileStep3Page {
     form3Values.credentials = [];
     this.loading.present();
     if (this.cvFiles.length > 0 && this.userRole == "teacher") {
-      this.uploadToS3(this.cvFiles).then(res => {
+      this.uploadToFirebaseBucket(this.cvFiles, 'Credentials').then(res => {
         if (this.uploadedCvFiles.length > 0) {
           for (var i = 0; i < this.uploadedCvFiles.length; i++) {
             form3Values.credentials.push(this.uploadedCvFiles[i].data);
