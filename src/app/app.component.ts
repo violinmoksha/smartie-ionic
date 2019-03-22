@@ -91,8 +91,8 @@ export class SmartieApp {
           { iconName: 'qr-scanner', text: 'Scan QR Promo', pageName: '' },
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 2, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage' },
-          { iconName: 'paper', text: 'Reviews', pageName: 'ReviewsPage' },
-          { iconName: 'paper', text: 'Appointments', pageName: 'ViewAppointmentPage' },
+          { iconName: 'paper-plane', text: 'Reviews', pageName: 'ReviewsPage' },
+          { iconName: 'alarm', text: 'Appointments', pageName: 'ViewAppointmentPage' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
       }
