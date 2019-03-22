@@ -83,8 +83,6 @@ export class PaymentDetailsPage {
             /* browser.on('loadstop').subscribe(event => {
               console.log(event);
             }); */
-          } else {
-            // console.log("result not found");
           }
           // may need to return here for Tests???
         }, err => {
