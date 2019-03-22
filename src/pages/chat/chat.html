@@ -1,4 +1,4 @@
-<ion-header class="{{ params.role }}">
+<ion-header class="{{ role }}">
 
   <ion-navbar>
     <ion-title>{{ receiver.fullname }}</ion-title>
@@ -7,7 +7,7 @@
 </ion-header>
 
 
-<ion-content #content (ionScroll)="onScroll($event)" class="{{ params.role }}">
+<ion-content #content (ionScroll)="onScroll($event)" class="{{ role }}">
   <ion-infinite-scroll (ionInfinite)="fetchMore($event)" position="top" threshold="30px">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
