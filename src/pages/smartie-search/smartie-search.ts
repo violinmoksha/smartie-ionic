@@ -108,7 +108,6 @@ export class SmartieSearch {
     // via SmartieApp's buttonsLoad custom Event
     this.clearMarkers();
     this.events.publish("buttonsLoad", this.role);
-    this.searchJobByLocation();
     this.fetchJobMarkers();
     // if (this.fromWhere == 'signUp') {
     //   let alert = this.alertCtrl.create({
@@ -128,6 +127,7 @@ export class SmartieSearch {
       self.clearMarkers();
       self.fetchJobMarkers(true);
   });
+  this.searchJobByLocation();
   }
   ionViewDidLeave() {
     this.utilsService.clearJobTimer()
