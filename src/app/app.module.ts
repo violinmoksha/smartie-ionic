@@ -44,7 +44,7 @@ import { UtilsProvider } from '../providers/utils';
 import { JobRequstProvider } from '../providers/job-request';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { AngularFireModule } from '@angular/fire';
-// import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthModule } from "@angular/fire/auth";
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
 
@@ -63,10 +63,10 @@ import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
     BrowserAnimationsModule,
     TooltipsModule,
     IonicImageLoader.forRoot(),
-    AngularFireModule.initializeApp(Constants.firebaseConfig),
+    AngularFireModule.initializeApp(Constants.firebaseConfig.firebase),
+    AngularFireAuthModule,
     AngularFirestoreModule,
-    AngularFireStorageModule,
-    // AngularFireAuthModule
+    AngularFireStorageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
