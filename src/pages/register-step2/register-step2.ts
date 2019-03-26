@@ -280,7 +280,7 @@ export class RegisterStep2Page {
 
   ionViewDidLoad() {
     if (this.role == 'student') {
-      let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
+      let input = document.getElementById("locationRegSearch").getElementsByTagName('input')[0];
       let options = { componentRestrictions: { country: 'us' } };
 
       let autocomplete = new google.maps.places.Autocomplete(input, options);

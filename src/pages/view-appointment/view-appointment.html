@@ -17,7 +17,7 @@
 
   <div class="appontment-wrap">
     <h3>{{ appointments?.owner}}</h3>
-    <div *ngIf="(appointments == [] || appointments == null) && !isFetching" class="text-center">
+    <div *ngIf="appointments == null && !isFetching" class="text-center">
       <p>No appointments for you!</p>
     </div>
     <div *ngIf="isFetching" class="text-center">

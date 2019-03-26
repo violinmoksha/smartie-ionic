@@ -168,7 +168,7 @@
 
         <ion-item>
           <ion-label fixed>Preferred Learning Location</ion-label>
-          <ion-input placeholder="Location Name" [(ngModel)]="userLocation" id="locationSearch" type="text" formControlName="prefLocation"></ion-input>
+          <ion-input placeholder="Location Name" [(ngModel)]="userLocation" id="locationRegSearch" type="text" formControlName="prefLocation"></ion-input>
         </ion-item>
 
         <div *ngIf="!Step2Form.controls['prefLocation'].valid && Step2Form.controls['prefLocation'].touched" class="item item-message">
