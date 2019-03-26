@@ -372,7 +372,7 @@ export class SmartieApp {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
         if(response.result.acceptState == true){
           response.result.fromWhere = "acceptedJobs";
-          response.result.role = "teacher";
+          // response.result.role = "teacher";
         }else if(response.result.requestSent == true){
           response.result.fromWhere = "requestSentJobs";
         }
