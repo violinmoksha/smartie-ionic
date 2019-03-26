@@ -42,24 +42,28 @@ export class ViewAppointmentPage {
       ).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
           this.isFetching = false;
-          this.appointments = response.result;
-          for(let appointment of this.appointments){
-            if(this.role == 'teacher'){
-              this.appointments.owner = appointment.otherProfile.fullname;
-            }else{
-              this.appointments.owner = appointment.teacherProfile.fullname;
+          console.log(response)
+
+          if (response.result > 0) {
+            this.appointments = response.result;
+            for(let appointment of this.appointments){
+              if(this.role == 'teacher'){
+                this.appointments.owner = appointment.otherProfile.fullname;
+              }else{
+                this.appointments.owner = appointment.teacherProfile.fullname;
+              }
+              let apptStartDate = new Date(appointment.apptStartDateTime.iso);
+              let apptStartTime = this.utilsService.formatTime(apptStartDate).split('T')[1];
+              let apptEndDate = new Date(appointment.apptEndDateTime.iso);
+              let apptEndTime = this.utilsService.formatTime(apptEndDate).split('T')[1];
+
+              appointment.startDate = apptStartDate.getDate() + '-' + (apptStartDate.getMonth() + 1) + '-' + apptStartDate.getFullYear();
+
+              appointment.endDate = apptEndDate.getDate() + '-' + (apptEndDate.getMonth() + 1) + '-' + apptEndDate.getFullYear();
+
+              appointment.startTime = parseInt(apptStartTime.split(':')[0]) +':'+ parseInt(apptStartTime.split(':')[1]);
+              appointment.endTime = parseInt(apptEndTime.split(':')[0]) +':'+ parseInt(apptEndTime.split(':')[1]);
             }
-            let apptStartDate = new Date(appointment.apptStartDateTime.iso);
-            let apptStartTime = this.utilsService.formatTime(apptStartDate).split('T')[1];
-            let apptEndDate = new Date(appointment.apptEndDateTime.iso);
-            let apptEndTime = this.utilsService.formatTime(apptEndDate).split('T')[1];
-
-            appointment.startDate = apptStartDate.getDate() + '-' + (apptStartDate.getMonth() + 1) + '-' + apptStartDate.getFullYear();
-
-            appointment.endDate = apptEndDate.getDate() + '-' + (apptEndDate.getMonth() + 1) + '-' + apptEndDate.getFullYear();
-
-            appointment.startTime = parseInt(apptStartTime.split(':')[0]) +':'+ parseInt(apptStartTime.split(':')[1]);
-            appointment.endTime = parseInt(apptEndTime.split(':')[0]) +':'+ parseInt(apptEndTime.split(':')[1]);
           }
         }, err => {
           console.log(err);

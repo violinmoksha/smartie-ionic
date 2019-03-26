@@ -37,6 +37,8 @@ export class JobRequestPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("JobRequest", "View"));
 
     this.params = navParams.get('params');
+    console.log("#### Job Request Params ####");
+    console.log(this.params);
     this.jobObject = Object.assign({}, this.params);
     this.teacherObj = this.params.teacherProfile;
     this.otherObj = this.params.otherProfile;

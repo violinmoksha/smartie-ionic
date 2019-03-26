@@ -330,7 +330,7 @@ export class RegisterStep3Page {
   }
 
   ionViewDidLoad() {
-    let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
+    let input = document.getElementById("locationTeacherSearch").getElementsByTagName('input')[0];
     let options = { componentRestrictions: { country: 'us' } };
 
     let autocomplete = new google.maps.places.Autocomplete(input, options);

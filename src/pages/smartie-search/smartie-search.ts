@@ -109,6 +109,7 @@ export class SmartieSearch {
     this.clearMarkers();
     this.events.publish("buttonsLoad", this.role);
     this.fetchJobMarkers();
+    this.searchJobByLocation();
     // if (this.fromWhere == 'signUp') {
     //   let alert = this.alertCtrl.create({
     //     title: 'One more step to go!',
@@ -127,8 +128,8 @@ export class SmartieSearch {
       self.clearMarkers();
       self.fetchJobMarkers(true);
   });
-  this.searchJobByLocation();
   }
+
   ionViewDidLeave() {
     this.utilsService.clearJobTimer()
   }
@@ -181,7 +182,8 @@ export class SmartieSearch {
     });
   }
   searchJobByLocation() {
-    let input = document.getElementById("locationSearch").getElementsByTagName('input')[0];
+    console.log("search by location")
+    let input = document.getElementById("locationSearchMaps").getElementsByTagName('input')[0];
     let autoCompleteOptions = { componentRestrictions: { country: 'us' } };
 
     let autocomplete = new google.maps.places.Autocomplete(input, autoCompleteOptions);
@@ -222,6 +224,7 @@ export class SmartieSearch {
   }
 
   findJobsSearch() {
+    console.log("find job");
     this.getGeoPoint(this.userLocation).then(response => {
       this.smartieSearchResult(null, this.navParams.get("role"), response);
     });
