@@ -242,6 +242,7 @@ export class JobRequestPage {
             requestSent: true,
             acceptState: false,
             paidAndUpcoming: false,
+            jobRequeststate: this.jobRequestProvider.jobRequestState.requested,
             role: 'teacher'
           };
         } else {
