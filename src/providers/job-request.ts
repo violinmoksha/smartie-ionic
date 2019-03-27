@@ -9,11 +9,13 @@ import { DataService } from '../app/app.data';
   and Angular DI.
 */
 @Injectable()
-export class JobRequstProvider {
+export class JobRequestProvider {
   notifyCount: number = 0;
   hasUpcomings: boolean = false;
   upcomingCount: number = 0;
+  jobRequestState: any;
   constructor(public http: HttpClient, public dataService: DataService) {
+    this.jobRequestState = {"fresh": 1, "requested": 2, "accepted": 3, "paidAndUpcoming": 4, "scheduled": 5, "completed": 6}
   }
 
   getNotificationCounts(body) {
