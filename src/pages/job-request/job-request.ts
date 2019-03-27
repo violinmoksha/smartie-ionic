@@ -242,7 +242,7 @@ export class JobRequestPage {
             requestSent: true,
             acceptState: false,
             paidAndUpcoming: false,
-            jobRequeststate: this.jobRequestProvider.jobRequestState.requested,
+            jobRequestState: this.jobRequestProvider.jobRequestState.requested,
             role: 'teacher'
           };
         } else {
@@ -254,7 +254,7 @@ export class JobRequestPage {
             requestSent: true,
             acceptState: false,
             paidAndUpcoming: false,
-            jobRequeststate: this.jobRequestProvider.jobRequestState.requested,
+            jobRequestState: this.jobRequestProvider.jobRequestState.requested,
             role: profile.profileData.role
           };
         }
@@ -304,9 +304,9 @@ export class JobRequestPage {
     this.loading.present();
     this.storage.get("UserProfile").then(roleProfile => {
       if (this.userRole === 'teacher') {
-        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.otherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole, jobRequeststate: this.jobRequestProvider.jobRequestState.accepted };
+        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.otherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole, jobRequestState: this.jobRequestProvider.jobRequestState.accepted };
       } else {
-        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.teacherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole, jobRequeststate: this.jobRequestProvider.jobRequestState.accepted };
+        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.teacherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole, jobRequestState: this.jobRequestProvider.jobRequestState.accepted };
       }
 
       return new Promise(async (resolve) => {
@@ -339,9 +339,9 @@ export class JobRequestPage {
     this.loading.present();
     this.storage.get("UserProfile").then(roleProfile => {
       if (this.userRole === 'teacher') {
-        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.otherObj.objectId, requestSent: false, acceptState: false, paidAndUpcoming: false, jobRequeststate: this.jobRequestProvider.jobRequestState.fresh };
+        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.otherObj.objectId, requestSent: false, acceptState: false, paidAndUpcoming: false, jobRequestState: this.jobRequestProvider.jobRequestState.fresh };
       } else {
-        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.teacherObj.objectId, requestSent: false, acceptState: false, paidAndUpcoming: false, jobRequeststate: this.jobRequestProvider.jobRequestState.fresh };
+        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.teacherObj.objectId, requestSent: false, acceptState: false, paidAndUpcoming: false, jobRequestState: this.jobRequestProvider.jobRequestState.fresh };
       }
 
       return new Promise(async (resolve) => {
