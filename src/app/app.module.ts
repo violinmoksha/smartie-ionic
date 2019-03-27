@@ -41,7 +41,7 @@ import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
 import { Crashlytics } from '@ionic-native/fabric';
 import { SmartieErrorHandler } from './app.err';
 import { UtilsProvider } from '../providers/utils';
-import { JobRequstProvider } from '../providers/job-request';
+import { JobRequestProvider } from '../providers/job-request';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from "@angular/fire/auth";
@@ -101,7 +101,7 @@ import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
     FirebaseCrashlyticsProvider,
     Crashlytics,
     UtilsProvider,
-    JobRequstProvider,
+    JobRequestProvider,
     LocationAccuracy,
     { provide: StorageBucket, useValue: 'smartie-212716.appspot.com' }
   ]
