@@ -46,6 +46,10 @@
       <label class="item item-input expiry-date">
         <span class="input-label">Expiry Date</span>
         <ion-input placeholder="MM" type="number" max="10" name="monthexp" formControlName="monthexp" [value]="stripeCustomerCard?.exp_month"></ion-input>
+      </label>
+
+      <label class="item item-input expiry-date">
+        <span class="input-label">Expiry Year</span>
         <ion-input placeholder="YYYY" type="text" name="yearexp" formControlName="yearexp" [value]="stripeCustomerCard?.exp_year"></ion-input>
       </label>
 

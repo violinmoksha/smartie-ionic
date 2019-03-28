@@ -137,7 +137,7 @@ export class PaymentPage {
       otherProfileId: this.otherProfileId,
       jobRequestId: this.params.jobRequestId,
       selectedDates: this.selectedDates,
-      jobRequestState: this.jobRequestProvider.jobRequestState.requested
+      jobRequestState: this.jobRequestProvider.jobRequestState.scheduled
     };
     return new Promise(async (resolve) => {
       return await this.dataService.getApi(

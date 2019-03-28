@@ -31,6 +31,10 @@ export class PaymentthankyouPage {
   }
 
   ionViewDidLoad() {
+    this.storage.get("UserProfile").then(userProfile => {
+      userProfile.profileData.scheduleDetails = {};
+      this.storage.set("UserProfile", userProfile);
+    });
     if(this.fromWhere == 'nonTeacherPayment'){
       this.pageContent = "<h2>Thank you</h2><p>Your Payment was successful</p><p class='mail'></p>";
     }else if(this.fromWhere == 'teacherStripePayment'){
