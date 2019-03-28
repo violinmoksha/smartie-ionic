@@ -80,28 +80,6 @@ export class SmartieSearch {
 
   }
 
-  // addProfilePhoto(profile) {
-  //   let parseFile = new Parse.File('photo.jpg', { base64: this.profilePhotoData });
-  //   parseFile.save({ useMasterKey: true }).then(file => {
-  //     profile.set('profilePhoto', file);
-  //     profile.save({ useMasterKey: true }).then(profile => {
-  //       if (this.role == 'school') {
-  //         if (this.schoolPhotoDataUrl) {
-  //           let parseSchoolFile = new Parse.File('school.jpg', { base64: this.schoolPhotoDataUrl });
-  //           parseSchoolFile.save({ useMasterKey: true }).then(schoolFile => {
-  //             profile.set('schoolPhoto', schoolFile);
-  //             profile.save({ useMasterKey: true }).then(school => {
-  //               // TODO: run fetchNotifications here for the new user, same as in login.ts
-  //             })
-  //           })
-  //         }
-  //       }
-  //     })
-  //   }).catch(err => {
-  //     console.log(JSON.stringify(err));
-  //   })
-  // }
-
   ionViewDidEnter() {
     // send proper buttons into side-menu from here
     // since this is the first side-menu -loaded Page,
@@ -110,16 +88,6 @@ export class SmartieSearch {
     this.events.publish("buttonsLoad", this.role);
     this.fetchJobMarkers();
     this.searchJobByLocation();
-    // if (this.fromWhere == 'signUp') {
-    //   let alert = this.alertCtrl.create({
-    //     title: 'One more step to go!',
-    //     subTitle: `Please check your email and click the verification link.`,
-    //     buttons: [{
-    //       text: 'OK',
-    //     }]
-    //   });
-    //   alert.present();
-    // }
   }
 
   ionViewDidLoad() {

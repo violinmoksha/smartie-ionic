@@ -160,7 +160,7 @@ export class DataService {
     return new Promise(resolve => {
       let activeJobReqs = [];
       notifications.map(notification => {
-        if (notification.requestSent == true || notification.acceptState == true) {
+        if (notification.jobRequestState != 1) {
           activeJobReqs.push(notification);
         }
       });
@@ -177,6 +177,7 @@ export class DataService {
             if (ix >= notifications.length - 1) {
               resolve(notifications);
             }
+
           });
         }
       } else {
@@ -184,6 +185,7 @@ export class DataService {
       }
     });
   }
+
 
   getParameterByName(name, url) {
     if (!url) url = window.location.href;

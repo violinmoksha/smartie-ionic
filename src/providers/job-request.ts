@@ -94,4 +94,17 @@ export class JobRequestProvider {
     })
   }
 
+  checkjobReqForCompleted(jobReqs) {
+    
+  }
+  resetJobReq(jobIds) {
+    this.dataService.getApi("setJobReqToFresh", {"jobId":jobIds}).then(API => {
+      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
+        console.log(resp);
+      }, err => {
+        console.log(err);
+      })
+    })
+  }
+
 }
