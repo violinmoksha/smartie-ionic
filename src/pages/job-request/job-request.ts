@@ -369,10 +369,10 @@ export class JobRequestPage {
         role: this.teacherObj.role,
         prefPayRate: this.teacherObj.prefPayRate,
         prefLocation: this.teacherObj.prefLocation,
-        defaultStartDate: this.teacherObj.defaultStartDate,
-        defaultEndDate: this.teacherObj.defaultEndDate,
-        defaultStartTime: this.teacherObj.defaultStartTime,
-        defaultEndTime: this.teacherObj.defaultEndTime,
+        UTCstartDate: this.jobObject.UTCstartDate,
+        UTCendDate: this.jobObject.UTCendDate,
+        UTCStartTime: this.jobObject.UTCStartTime,
+        UTCEndTime: this.jobObject.UTCEndTime,
         profileStripeAccount: this.teacherObj.stripeCustomer,
         jobRequestId: this.jobObject.jobRequestId
       }
