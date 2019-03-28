@@ -103,7 +103,7 @@ export class FeedbackPage {
     return new Promise((resolve, reject) => {
       let filePromises = [];
       for (let i = 0; i < files.length; i++) {
-        filePromises.push(this.fileUploader.uploadToFCS(files[i].data.imageUrl));
+        filePromises.push(this.fileUploader.uploadToFCS(files[i].data.imageUrl, 'FeedBack'));
       }
       Promise.all(filePromises).then((results) => {
         resolve(results);

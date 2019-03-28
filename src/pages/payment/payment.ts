@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { FormGroup, FormControl, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
+import { JobRequestProvider } from '../../providers/job-request';
 /**
  * Generated class for the PaymentPage page.
  *
@@ -31,7 +32,7 @@ export class PaymentPage {
   private selectedDates: any;
   private loading: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private jobRequestProvider: JobRequestProvider) {
     this.analytics.setScreenName("Payment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Payment", "View"));
 
@@ -136,6 +137,7 @@ export class PaymentPage {
       otherProfileId: this.otherProfileId,
       jobRequestId: this.params.jobRequestId,
       selectedDates: this.selectedDates,
+      jobRequestState: this.jobRequestProvider.jobRequestState.requested
     };
     return new Promise(async (resolve) => {
       return await this.dataService.getApi(

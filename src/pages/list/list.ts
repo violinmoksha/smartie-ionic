@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, Events, PopoverController, AlertCo
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
 import { UtilsProvider } from '../../providers/utils';
-import { JobRequstProvider } from '../../providers/job-request';
+import { JobRequestProvider } from '../../providers/job-request';
 
 declare let google;
 
@@ -34,7 +34,7 @@ export class ListPage {
   notifyCount: number = 0;
   hasUpcomings: boolean = false;
   body: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private events: Events, private utils: UtilsProvider, public popoverCtrl: PopoverController, private jobRequestProvider: JobRequstProvider, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private events: Events, private utils: UtilsProvider, public popoverCtrl: PopoverController, private jobRequestProvider: JobRequestProvider, public alertCtrl: AlertController) {
     this.role = navParams.get("role");
     this.searchText = this.role == 'teacher' ? 'Search students by subjects!' : 'Search your favourite subjects!';
   }

@@ -25,7 +25,7 @@ export class AddPaymentPage {
   private userRole: any;
   private fullName: any;
   private email: any;
-  private profilePhoto: any;
+  public profilePhoto: any;
   private PaymentForm: FormGroup;
   private body: any;
   private profileId: any;
@@ -42,8 +42,6 @@ export class AddPaymentPage {
 
     this.fromWhere = navParams.get("fromWhere");
     this.params = navParams.get("params");
-    console.log("Add payment page")
-    console.log(this.params);
     this.PaymentForm = new FormGroup({
       emailPayment: new FormControl('', Validators.required),
       emailConfirm: new FormControl('yes'),
@@ -56,22 +54,22 @@ export class AddPaymentPage {
 
   ionViewDidLoad() {
     this.storage.get('UserProfile').then(UserProfile => {
-      console.log(UserProfile);
       this.profileId = UserProfile.profileData.objectId;
       this.userRole = UserProfile.profileData.role;
       this.fullName = UserProfile.profileData.fullname;
       this.email = UserProfile.userData.email;
-      this.selectedDates = UserProfile.profileData.scheduleDetails.selectedDates;
-      this.scheduled = UserProfile.profileData.scheduleDetails.scheduled;
 
-      if (UserProfile.profileData.profilePhoto) {
+      if(UserProfile.profileData.scheduleDetails){
+        this.selectedDates = UserProfile.profileData.scheduleDetails.selectedDates;
+        this.scheduled = UserProfile.profileData.scheduleDetails.scheduled;
+      }
+      if(UserProfile.profileData.profilePhoto) {
         this.profilePhoto = UserProfile.profileData.profilePhoto;
       } else {
         this.profilePhoto = './assets/imgs/user-img-teacher.png';
       }
-
       // this.stripeAccountId = UserProfile.profileData.stripeCustomer.id;
-    })
+    });
   }
 
   /* updateStripeAccount() {

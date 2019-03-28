@@ -7,7 +7,7 @@ import { DataService } from '../../app/app.data';
 import { AnalyticsProvider } from '../../providers/analytics';
 const Parse = require('parse');
 import { Globalization } from '@ionic-native/globalization';
-import { JobRequstProvider } from '../../providers/job-request'
+import { JobRequestProvider } from '../../providers/job-request'
 import { UtilsProvider } from '../../providers/utils';
 
 declare let google;
@@ -57,7 +57,7 @@ export class SmartieSearch {
   // TODO: autopopulate input with user's location
   // private reverseGeocodedLocation: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private dataService: DataService, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone, private analytics: AnalyticsProvider, public jobRequestProvider: JobRequstProvider, public utilsService: UtilsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sanitizer: DomSanitizer, public modalCtrl: ModalController, public alertCtrl: AlertController, public events: Events, private storage: Storage, private dataService: DataService, public popoverCtrl: PopoverController, private globalization: Globalization, private ngZone: NgZone, private analytics: AnalyticsProvider, public jobRequestProvider: JobRequestProvider, public utilsService: UtilsProvider) {
     this.dataService.currentPage = "SmartieSearch";
     this.analytics.setScreenName("Smartie-search");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Smartie-search", "View"));
