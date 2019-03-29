@@ -160,11 +160,7 @@ export class ListPage {
           buttons: [{
             text: 'OK',
             handler: () => {
-              if (this.role !== 'teacher') {
-                this.navCtrl.parent.select(3);
-              } else {
-                this.navCtrl.parent.select(4);
-              }
+              this.navCtrl.push("ViewAppointmentPage", { role: this.role });
             }
           }]
         });
