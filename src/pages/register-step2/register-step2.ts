@@ -9,6 +9,7 @@ import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { DataService } from '../../app/app.data';
 import { FetchiOSUDID } from '../../providers/fetch-ios-udid';
+import { JobRequestProvider } from '../../providers/job-request'
 
 declare let google;
 /**
@@ -77,7 +78,7 @@ export class RegisterStep2Page {
     dismissOnPageChange: true
   });
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public platform:Platform, public UDID: FetchiOSUDID) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public platform:Platform, public UDID: FetchiOSUDID, public jobReqService: JobRequestProvider) {
     this.analytics.setScreenName("Register-step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
 
@@ -237,7 +238,7 @@ export class RegisterStep2Page {
                        { profileId: signupResult.result.profileData.objectId, role: this.role }
                      ).then(async API => {
                        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
-                         this.dataService.sanitizeNotifications(Notifications.result).then(async notifications => {
+                         this.jobReqService.sanitizeNotifications(Notifications.result).then(async notifications => {
                            this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
                          })
                        }, err => {

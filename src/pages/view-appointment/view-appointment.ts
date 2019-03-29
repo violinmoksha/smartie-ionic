@@ -44,8 +44,10 @@ export class ViewAppointmentPage {
           this.isFetching = false;
           console.log(response)
 
-          if (response.result > 0) {
+          if (response.result.length > 0) {
+            console.log("Got appointments");
             this.appointments = response.result;
+            console.log(this.appointments)
             for(let appointment of this.appointments){
               if(this.role == 'teacher'){
                 this.appointments.owner = appointment.otherProfile.fullname;

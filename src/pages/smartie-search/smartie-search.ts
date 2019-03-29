@@ -121,7 +121,7 @@ export class SmartieSearch {
             { profileId: profile.profileData.objectId, role: profile.profileData.role }
           ).then(async API => {
             this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(Notifications => {
-               this.dataService.sanitizeNotifications(Notifications.result).then(notifications => {
+               this.jobRequestProvider.sanitizeNotifications(Notifications.result).then(notifications => {
                 this.notifications = notifications;
                 this.storage.get('phoneGeoposition').then(phoneLatLng => {
                   if (phoneLatLng !== undefined && phoneLatLng !== null) {

@@ -9,6 +9,7 @@ import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calend
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { FetchiOSUDID } from '../../providers/fetch-ios-udid';
+import { JobRequestProvider } from '../../providers/job-request'
 
 declare let google;
 
@@ -97,7 +98,7 @@ export class RegisterStep3Page {
     { "text": '100', "value": 100 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, public UDID: FetchiOSUDID) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, public UDID: FetchiOSUDID, public jobReqService: JobRequestProvider) {
 
     this.analytics.setScreenName("Register-step3");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step3", "View"));
@@ -302,7 +303,7 @@ export class RegisterStep3Page {
                   ).then(async API => {
                     return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async Notifications => {
                       this.loading.dismiss();
-                      return await this.dataService.sanitizeNotifications(Notifications.result).then(notifications => {
+                      return await this.jobReqService.sanitizeNotifications(Notifications.result).then(notifications => {
                         this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.role, fromWhere: "signUp" });
                         // TODO: do this via storage now
                         //this.dbService.setRegistrationData({step:3, role: this.role, form3: form3Values})
