@@ -109,7 +109,7 @@ export class ListPage {
         { profileId: user.profileData.objectId, role: user.profileData.role }
       ).then(API => {
          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(Notifications => {
-           this.dataService.sanitizeNotifications(Notifications.result).then((notifications: Array<any>) => {
+           this.jobRequestProvider.sanitizeNotifications(Notifications.result).then((notifications: Array<any>) => {
             if (this.userData.profileData.role == "teacher") {
               for(let k=0; k<notifications.length; k++) {
                 notifications[k] = Object.assign({}, notifications[k], ...notifications[k].otherProfile);
@@ -160,11 +160,7 @@ export class ListPage {
           buttons: [{
             text: 'OK',
             handler: () => {
-              if (this.role !== 'teacher') {
-                this.navCtrl.parent.select(3);
-              } else {
-                this.navCtrl.parent.select(4);
-              }
+              this.navCtrl.push("ViewAppointmentPage", { role: this.role });
             }
           }]
         });

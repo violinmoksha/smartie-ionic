@@ -155,36 +155,42 @@ export class DataService {
     });
   }
 
-  sanitizeNotifications(notifications: any) {
-    // TODO: when these are more than just jobReqs
-    return new Promise(resolve => {
-      let activeJobReqs = [];
-      notifications.map(notification => {
-        if (notification.jobRequestState != 1) {
-          activeJobReqs.push(notification);
-        }
-      });
-      if (activeJobReqs.length > 0) {
-        for (let activeJob of activeJobReqs) {
-          notifications.forEach((notification, ix) => {
-            if (notification.teacherProfile && notification.otherProfile && activeJob.otherProfile) {
-              if (notification.teacherProfile.objectId == activeJob.teacherProfile.objectId &&
-                notification.otherProfile.objectId == activeJob.otherProfile.objectId &&
-                (notification.requestSent == false && notification.acceptState == false)) {
-                notifications.splice(ix, 1);
-              }
-            }
-            if (ix >= notifications.length - 1) {
-              resolve(notifications);
-            }
-
-          });
-        }
-      } else {
-        resolve(notifications);
-      }
-    });
-  }
+  // sanitizeNotifications(notifications: any) {
+  //   // TODO: when these are more than just jobReqs
+  //   console.log(notifications);
+  //   return new Promise(resolve => {
+  //     let activeJobReqs = [];
+  //     notifications.map(notification => {
+  //       if (notification.jobRequestState != 1) {
+  //         activeJobReqs.push(notification);
+  //       }
+  //     });
+  //     if (activeJobReqs.length > 0) {
+  //       for (let activeJob of activeJobReqs) {
+  //         notifications.forEach((notification, ix) => {
+  //           if (notification.teacherProfile && notification.otherProfile && activeJob.otherProfile) {
+  //             // if (notification.teacherProfile.objectId == activeJob.teacherProfile.objectId &&
+  //             //   notification.otherProfile.objectId == activeJob.otherProfile.objectId &&
+  //             //   (notification.requestSent == false && notification.acceptState == false)) {
+  //             //   notifications.splice(ix, 1);
+  //             // }
+  //             if(notification.jobRequestState != 1){
+  //               notifications.splice(ix, 1);
+  //             }
+  //           }
+  //           if (ix >= notifications.length - 1) {
+  //             resolve({"notifications":notifications, "activeJobReq":activeJobReqs});
+  //             console.log(notifications);
+  //           }
+  //
+  //         });
+  //       }
+  //     } else {
+  //       resolve(notifications);
+  //       console.log(notifications);
+  //     }
+  //   });
+  // }
 
 
   getParameterByName(name, url) {

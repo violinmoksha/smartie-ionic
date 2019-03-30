@@ -94,17 +94,75 @@ export class JobRequestProvider {
     })
   }
 
+  sanitizeNotifications(notifications: any) {
+    // TODO: when these are more than just jobReqs
+    console.log(notifications);
+    return new Promise(resolve => {
+      let activeJobReqs = [];
+      notifications.map(notification => {
+        if (notification.jobRequestState != 1) {
+          activeJobReqs.push(notification);
+        }
+      });
+      if (activeJobReqs.length > 0) {
+        for (let activeJob of activeJobReqs) {
+          notifications.forEach((notification, ix) => {
+            if (notification.teacherProfile && notification.otherProfile && activeJob.otherProfile) {
+              // if (notification.teacherProfile.objectId == activeJob.teacherProfile.objectId &&
+              //   notification.otherProfile.objectId == activeJob.otherProfile.objectId &&
+              //   (notification.requestSent == false && notification.acceptState == false)) {
+              //   notifications.splice(ix, 1);
+              // }
+              if(notification.jobRequestState != 1){
+                notifications.splice(ix, 1);
+              }
+            }
+            if (ix >= notifications.length - 1) {
+              resolve(notifications);
+              console.log(notifications);
+              this.resetJobReq(this.checkjobReqForCompleted(activeJobReqs));
+            }
+
+          });
+        }
+      } else {
+        resolve(notifications);
+        console.log(notifications);
+      }
+    });
+  }
   checkjobReqForCompleted(jobReqs) {
-    
+    console.log(jobReqs);
+    let x = 0;
+    let resetJob = [];
+    if (jobReqs.length>0){
+      for(var i=0; i<jobReqs.length; i++){
+        for(var k=0; k<jobReqs[i].schedule.length; k++){
+          if(new Date(jobReqs[i].schedule[k].apptEndDateTime.iso) > new Date()){
+            x = 0;
+            break;
+          }else if(new Date(jobReqs[i].schedule[k].apptEndDateTime.iso) < new Date()){
+            x++;
+          }
+        }
+        if(x == 3){
+          resetJob.push(jobReqs[i].objectId)
+        }
+      }
+    }
+    return resetJob;
   }
   resetJobReq(jobIds) {
-    this.dataService.getApi("setJobReqToFresh", {"jobId":jobIds}).then(API => {
-      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
-        console.log(resp);
-      }, err => {
-        console.log(err);
+    console.log(jobIds);
+    if(jobIds.length>0){
+      this.dataService.getApi("setJobReqToFresh", {"jobId":jobIds}).then(API => {
+        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
+          console.log(resp);
+        }, err => {
+          console.log(err);
+        })
       })
-    })
+    }
   }
 
 }
