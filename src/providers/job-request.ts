@@ -145,7 +145,7 @@ export class JobRequestProvider {
             x++;
           }
         }
-        if(x == 3){
+        if(x == jobReqs[i].schedule.length){
           resetJob.push(jobReqs[i].objectId)
         }
       }
