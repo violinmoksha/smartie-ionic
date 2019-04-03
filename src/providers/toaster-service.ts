@@ -30,6 +30,12 @@ export class ToasterServiceProvider {
       showCloseButton: true,
       closeButtonText: 'OK'
     });
+
+    // initial check for network detection
+    if(this.network.Connection.NONE === this.network.type){
+      toast.present();
+    }
+
     this.network.onDisconnect().subscribe(() => {
       this.isInternetConnected = false;
       toast.present();
