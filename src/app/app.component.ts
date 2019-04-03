@@ -62,6 +62,7 @@ export class SmartieApp {
           this.initializeApp();
         } else {
           this.rootPage = 'AppBlockPage';
+          this.splashScreen.hide();
           console.log("Block Access");
         }
       }, err => {
