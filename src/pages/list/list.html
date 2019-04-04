@@ -34,9 +34,14 @@
         </ion-avatar>
         <h2 class="chat-title">{{lists.fullname}}</h2>
         <p>{{lists.profileTitle}}</p>
-        <div item-end>
+        <p class="role-txt-color">{{lists.prefPayRate}}$ <span style="color:lightgrey">per hour</span></p>
+
+        <!-- <div item-end>
           <p class="role-txt-color">{{lists.prefPayRate}}$ <br/> <span style="color:lightgrey">per hour</span></p>
-        </div>
+        </div> -->
+        <ion-avatar item-end *ngIf="lists.role == 'teacher'">
+          <img *ngIf="lists.badgeUrl" [src]="lists.badgeUrl" />
+        </ion-avatar>
     </ion-item>
   </ion-list>
   <div class="text-center" *ngIf="fetchingData">
