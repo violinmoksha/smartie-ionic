@@ -182,7 +182,7 @@ export class SmartieApp {
         this.setUserName();
         this.utilsService.getSelectedCity();
         this.grantNotificationPermission();
-
+        this.utilsService.initAppRating();
         Parse._initialize(this.parseAppId, null, this.parseMasterKey);
         // Parse.initialize(this.parseAppId, null, this.parseMasterKey);
         Parse.serverURL = this.parseServerUrl;

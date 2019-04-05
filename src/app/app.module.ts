@@ -47,7 +47,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
-
+import { AppRate } from '@ionic-native/app-rate';
 @NgModule({
   declarations: [
     SmartieApp
@@ -103,7 +103,8 @@ import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
     UtilsProvider,
     JobRequestProvider,
     LocationAccuracy,
-    { provide: StorageBucket, useValue: 'smartie-212716.appspot.com' }
+    { provide: StorageBucket, useValue: 'smartie-212716.appspot.com' },
+    AppRate
   ]
 })
 export class AppModule { }
