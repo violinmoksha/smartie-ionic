@@ -6,7 +6,7 @@ import { LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
-
+import { AppRate } from '@ionic-native/app-rate';
 /*
   Generated class for the UtilsProvider provider.
 
@@ -18,7 +18,7 @@ export class UtilsProvider {
 
   public jobTimer:any = null;
 
-  constructor(public http: HttpClient, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, public themeableBrowser: ThemeableBrowser, public geoService: Geolocation, public locationService:LocationAccuracy) {
+  constructor(public http: HttpClient, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, public themeableBrowser: ThemeableBrowser, public geoService: Geolocation, public locationService:LocationAccuracy, private appRate: AppRate) {
   }
 
   getSelectedCity() {
@@ -206,5 +206,15 @@ export class UtilsProvider {
         ':' + pad(dateTime.getSeconds()) +
         '.' + (dateTime.getMilliseconds() / 1000).toFixed(3).slice(2, 5) +
         'Z';
+  }
+
+  initAppRating() {
+    this.appRate.preferences = {
+  usesUntilPrompt: 2,
+  storeAppURL: {
+   android: 'https://play.google.com/store/apps/details?id=com.whatsapp&hl=en',
+  }
+};
+this.appRate.promptForRating(true);
   }
 }
