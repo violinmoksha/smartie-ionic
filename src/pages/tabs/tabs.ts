@@ -12,7 +12,7 @@ export class TabsPage {
   tab0Root: any = 'ListPage';
   tab1Root: any = 'SmartieSearch';
   tab2Root: any = 'PaymentDetailsPage';
-  tab3Root: any = 'EditProfilePage';
+  tab3Root: any = 'MyprofilePage';
   tab4Root: any = 'NotificationFeedPage';
   tab5Root: any = 'ChatRoomsPage';
   private role: string;
