@@ -28,7 +28,9 @@ export class UtilsProvider {
                   {name:"Master", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2FMaster.png?alt=media&token=bb36da6b-2da1-434b-b2e4-3a35dea3e65c"},
                   {name:"Yoda", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2FYoda.png?alt=media&token=d5e75182-46f3-4b8e-a0da-33b824e38d18"}];
 
-public studentBadgeLevel = [{name:"Awarding", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FAwarding.png?alt=media&token=13afa180-ac23-4e5d-bd3d-ea5dcf5e0eda"},
+public studentBadgeLevel = [
+                  {name:"Newbie", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2FNewbie.png?alt=media&token=e2a5f05a-afce-4def-abd3-8a899b64ed52"},
+                  {name:"Awarding", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FAwarding.png?alt=media&token=13afa180-ac23-4e5d-bd3d-ea5dcf5e0eda"},
                   {name:"Excellent", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FExcellent.png?alt=media&token=8d3fa6c6-bfd9-43d5-a82b-1e8bc9737fd2"},
                   {name:"Gracious", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FGracious.png?alt=media&token=5f906020-966c-4d37-ac69-0519106a16f4"},
                   {name:"Robin-Hood", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FRobin-Hood.png?alt=media&token=94add481-ffdc-4c91-8862-d23e5e7199a2"},
@@ -229,22 +231,28 @@ public studentBadgeLevel = [{name:"Awarding", badgeUrl:"https://firebasestorage.
   }
 
   initAppRating() {
-    this.appRate.preferences = {
-  usesUntilPrompt: 2,
-  storeAppURL: {
-   android: 'https://play.google.com/store/apps/details?id=com.whatsapp&hl=en',
-  }
-};
-this.appRate.promptForRating(true);
+//     this.appRate.preferences = {
+//   usesUntilPrompt: 2,
+//   storeAppURL: {
+//    android: 'https://play.google.com/store/apps/details?id=com.whatsapp&hl=en',
+//   }
+// };
+// this.appRate.promptForRating(true);
   }
 
   getProfLevelByActive(activeLevel, role){
     let badgeData = role == 'teacher' ? this.badgeLevel:this.studentBadgeLevel;
     let badges = {};
+    console.log("Searching lelves", badgeData);
     for (var i=0; i<badgeData.length;i++) {
-    if (badgeData[i] == activeLevel) {
+      console.log(badgeData[i]);
+    if (badgeData[i].name == activeLevel) {
+      if(i==1)
+      badges = {"prev":null, "next":badgeData[i+1]};
+      else
       badges = {"prev":badgeData[i-1], "next":badgeData[i+1]};
-      break;
+
+      console.log("Matched levels", badges);
     }
   }
   return badges;

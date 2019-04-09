@@ -29,7 +29,7 @@
       <div class="col col-33">
         <div class="other-badge" *ngIf="prevLevel != null">
           <img [src]="prevLevel.badgeUrl" class="other-badge-img"/>
-          <p>{{prevLevel.badgeName}}</p>
+          <p>{{prevLevel.name}}</p>
         </div>
       </div>
       <div class="col col-33">
@@ -40,28 +40,30 @@
         </div>
       </div>
       <div class="col col-33">
-        <div class="other-badge">
+        <div class="other-badge" *ngIf="nextLevel != null">
           <img [src]="nextLevel.badgeUrl" class="other-badge-img"/>
-          <p>{{nextLevel.badgeName}}</p>
+          <p>{{nextLevel.name}}</p>
         </div>
       </div>
     </div>
-    <div padding>
+    <div class="div-border-bottom" padding>
       <ion-item>
         <ion-label>
           <ion-icon name="pin"></ion-icon>
             <span style="padding-left: 10px;">{{user.prefLocation}}</span>
         </ion-label>
       </ion-item>
-      <p>About</p>
+      <p>About: </p>
       <p>{{user.profileAbout}}</p>
 
       <div class="job-availablity-details" *ngIf="role == 'teacher'">
         <h3>Available Timings</h3>
         <p>{{ user.UTCStartTime }} to {{ user.UTCEndTime}} ({{ timeZone }}) on {{ user.UTCstartDate}} to {{ user.UTCendDate}}</p>
       </div>
-      <button class="button button-positive" ion-button block>Edit</button>
   </div>
+  <div padding>
+    <button class="button button-positive" ion-button block (click)="gotoEdit()">Edit</button>
+</div>
 </div>
 </div>
 </ion-content>
