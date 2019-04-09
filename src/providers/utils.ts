@@ -231,13 +231,36 @@ public studentBadgeLevel = [
   }
 
   initAppRating() {
-//     this.appRate.preferences = {
-//   usesUntilPrompt: 2,
-//   storeAppURL: {
-//    android: 'https://play.google.com/store/apps/details?id=com.whatsapp&hl=en',
-//   }
-// };
-// this.appRate.promptForRating(true);
+    console.log("## Coming app rating function ##");
+
+    this.appRate.preferences = {
+        simpleMode: true,
+        displayAppName: 'Smartie App',
+        usesUntilPrompt: 2,
+        promptAgainForEachNewVersion: false,
+        storeAppURL: {
+          android: 'market://details?id=com.smartie.app'
+        },
+        useLanguage: 'en',
+        customLocale: {
+          title: 'Do you enjoy %@?',
+          message: 'If you enjoy using %@, would you mind taking a moment to rate it? Thanks so much!',
+          cancelButtonLabel: 'No, Thanks',
+          laterButtonLabel: 'Remind Me Later',
+          rateButtonLabel: 'Rate It Now',
+        },
+        callbacks: {
+          onRateDialogShow: function(callback){
+            console.log('rate dialog shown!');
+          },
+          onButtonClicked: function(buttonIndex){
+            console.log('Selected index: -> ' + buttonIndex);
+          }
+        }
+      };
+
+      // Opens the rating immediately no matter what preferences you set
+      this.appRate.promptForRating(true);
   }
 
   getProfLevelByActive(activeLevel, role){
