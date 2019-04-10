@@ -15,8 +15,7 @@
 
 <ion-content [ngClass]="role">
 
-  <div class="appontment-wrap">
-    <h3>{{ appointments?.owner}}</h3>
+  <div class="appointment-wrap">
     <div *ngIf="appointments == null && !isFetching" class="text-center">
       <p>No appointments for you!</p>
     </div>
@@ -24,6 +23,10 @@
       <p>Fetching your appointments</p>
     </div>
     <div *ngFor="let appointment of appointments">
+      <div class="appointment-container">
+        <h3>{{ appointment?.owner}}</h3>
+        <button class="button button-review" (click)="reviewProfile(appointment)" ion-button primary>Review</button>
+      </div>
       <div class="appointment-date"> {{ appointment.startDate }} </div>
       <div class="appointment-time">
         <p><strong>Start Time:</strong> {{ appointment.startTime }}</p>
