@@ -1,5 +1,5 @@
 page-view-appointment {
-  .appontment-wrap{
+  .appointment-wrap{
     border-bottom: 1px solid #cfcfcf;
     width: 100%;
     h3{
@@ -7,6 +7,7 @@ page-view-appointment {
       color: #333;
       font-weight: bold;
       text-align: center;
+      float: left;
     }
     .appointment-date{
       padding: 10px;
@@ -17,6 +18,17 @@ page-view-appointment {
     }
     .appointment-time{
       padding: 0 25px;
+    }
+    .appointment-container{
+      display: inline-block;
+      width: 100%;
+      padding: 10px 25px;
+
+      .button-review{
+        float: right;
+        background-color: #DADADA;
+        color: #000;
+      }
     }
   }
   .student{

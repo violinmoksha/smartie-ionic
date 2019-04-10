@@ -21,6 +21,7 @@ export class ViewAppointmentPage {
   private role: any;
   public appointments: any = null;
   public isFetching: boolean = false;
+  private profileData: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public loadingCtrl: LoadingController, private dataService: DataService, private analytics : AnalyticsProvider, private utilsService: UtilsProvider) {
     this.analytics.setScreenName("ViewAppointment");
@@ -50,9 +51,11 @@ export class ViewAppointmentPage {
             console.log(this.appointments)
             for(let appointment of this.appointments){
               if(this.role == 'teacher'){
-                this.appointments.owner = appointment.otherProfile.fullname;
+                appointment.owner = appointment.otherProfile.fullname;
+                this.profileData = appointment.otherProfile;
               }else{
-                this.appointments.owner = appointment.teacherProfile.fullname;
+                appointment.owner = appointment.teacherProfile.fullname;
+                this.profileData = appointment.teacherProfile;
               }
               let apptStartDate = new Date(appointment.apptStartDateTime.iso);
               let apptStartTime = this.utilsService.formatTime(apptStartDate).split('T')[1];
@@ -74,6 +77,17 @@ export class ViewAppointmentPage {
       })
     });
   }
+
+  reviewProfile(appointment){
+    if(this.role == 'teacher'){
+      this.profileData = appointment.otherProfile;
+    }else{
+      this.profileData = appointment.teacherProfile;
+    }
+
+    this.navCtrl.push("SetReviewPage", { profileData: this.profileData });
+  }
+
   ionViewDidEnter() {
     this.fetchAppoinments();
   }

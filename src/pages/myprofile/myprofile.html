@@ -1,0 +1,69 @@
+<!--
+  Generated template for the MyprofilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class={{role}}>
+
+  <ion-navbar>
+    <ion-title>Profile</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class={{role}}>
+<div>
+  <div>
+    <ion-item  class="prof-item">
+        <ion-avatar item-start class="prof-avatar">
+          <img [src]="user.profilePhoto" class="prof-pic" />
+        </ion-avatar>
+        <h2 class="prof-name">{{user.fullname}}</h2>
+        <p class="prof-title">{{user.profileTitle}}</p>
+        <p class="role-txt-color">{{user.prefPayRate}}$ <span style="color:lightgrey">per hour</span></p>
+
+    </ion-item>
+    <div class="row text-center badge-block">
+      <div class="col col-33">
+        <div class="other-badge" *ngIf="prevLevel != null">
+          <img [src]="prevLevel.badgeUrl" class="other-badge-img"/>
+          <p>{{prevLevel.name}}</p>
+        </div>
+      </div>
+      <div class="col col-33">
+        <div>
+          <img [src]="user.badgeUrl" />
+          <p>{{user.badgeName}}</p>
+          <p class="rating-point">{{user.ratingPoints}}</p>
+        </div>
+      </div>
+      <div class="col col-33">
+        <div class="other-badge" *ngIf="nextLevel != null">
+          <img [src]="nextLevel.badgeUrl" class="other-badge-img"/>
+          <p>{{nextLevel.name}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="div-border-bottom" padding>
+      <ion-item>
+        <ion-label>
+          <ion-icon name="pin"></ion-icon>
+            <span style="padding-left: 10px;">{{user.prefLocation}}</span>
+        </ion-label>
+      </ion-item>
+      <p>About: </p>
+      <p>{{user.profileAbout}}</p>
+
+      <div class="job-availablity-details" *ngIf="role == 'teacher'">
+        <h3>Available Timings</h3>
+        <p>{{ user.UTCStartTime }} to {{ user.UTCEndTime}} ({{ timeZone }}) on {{ user.UTCstartDate}} to {{ user.UTCendDate}}</p>
+      </div>
+  </div>
+  <div padding>
+    <button class="button button-positive" ion-button block (click)="gotoEdit()">Edit</button>
+</div>
+</div>
+</div>
+</ion-content>

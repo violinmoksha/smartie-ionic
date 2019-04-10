@@ -17,7 +17,29 @@ import { AppRate } from '@ionic-native/app-rate';
 export class UtilsProvider {
 
   public jobTimer:any = null;
+  public badgeLevel = [{name:"Newbie", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2FNewbie.png?alt=media&token=e2a5f05a-afce-4def-abd3-8a899b64ed52"},
+                  {name:"Excellent", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2Fexcellent.png?alt=media&token=2cfe1da8-2d07-4c1f-9698-759f9e46397a"},
+                  {name:"JuniorTeacher", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2FJunior-Teacher.png?alt=media&token=668933ab-c40e-4859-9828-8b972b266750"},
+                  {name:"Explorer", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2FExplorer.png?alt=media&token=d554d0c0-8a9e-48c1-a2cc-3b1643a96a70"},
+                  {name:"Acheiver", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2FAchiver.png?alt=media&token=009e05df-ff81-4b45-8ea8-efacaed66311"},
+                  {name:"Wizard", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2Fwizard.png?alt=media&token=ceaa0e6d-efb6-49cb-b319-9245d5c45fcf"},
+                  {name:"Sage", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2Fsage.png?alt=media&token=6e1428a7-4d2e-4a55-8833-a2a69cc360b5"},
+                  {name:"Guru", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2Fguru.png?alt=media&token=61885284-ed38-4812-a2d7-8c2ab590fdd4"},
+                  {name:"Master", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2FMaster.png?alt=media&token=bb36da6b-2da1-434b-b2e4-3a35dea3e65c"},
+                  {name:"Yoda", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2FYoda.png?alt=media&token=d5e75182-46f3-4b8e-a0da-33b824e38d18"}];
 
+public studentBadgeLevel = [
+                  {name:"Newbie", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/Badge%2FNewbie.png?alt=media&token=e2a5f05a-afce-4def-abd3-8a899b64ed52"},
+                  {name:"Awarding", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FAwarding.png?alt=media&token=13afa180-ac23-4e5d-bd3d-ea5dcf5e0eda"},
+                  {name:"Excellent", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FExcellent.png?alt=media&token=8d3fa6c6-bfd9-43d5-a82b-1e8bc9737fd2"},
+                  {name:"Gracious", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FGracious.png?alt=media&token=5f906020-966c-4d37-ac69-0519106a16f4"},
+                  {name:"Robin-Hood", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FRobin-Hood.png?alt=media&token=94add481-ffdc-4c91-8862-d23e5e7199a2"},
+                  {name:"Kind", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FKind.png?alt=media&token=b3d4f145-9dfa-47bf-bb72-589c1d242196"},
+                  {name:"Generous", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FGenerous.png?alt=media&token=c2a632d9-2243-429a-99c1-57f655ed38c4"},
+                  {name:"Considerate", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FConsiderate.png?alt=media&token=ae984490-c037-4262-b7d3-b7e0f5d5ea1e"},
+                  {name:"Benevolent", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FBenevolent.png?alt=media&token=a9ccc822-342b-42fb-8493-1701342051b1"},
+                  {name:"Noble", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FNoble.png?alt=media&token=5a4ed2d6-267f-4aa4-80f8-d79e44d5da94"},
+                  {name:"Compassionate", badgeUrl:"https://firebasestorage.googleapis.com/v0/b/smartie-212716.appspot.com/o/StudentBadges%2FCompassionate.png?alt=media&token=72509d22-84ae-4007-a2f6-c8d14f24224b"}];
   constructor(public http: HttpClient, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, public themeableBrowser: ThemeableBrowser, public geoService: Geolocation, public locationService:LocationAccuracy, private appRate: AppRate) {
   }
 
@@ -209,12 +231,53 @@ export class UtilsProvider {
   }
 
   initAppRating() {
+    console.log("## Coming app rating function ##");
+
     this.appRate.preferences = {
-  usesUntilPrompt: 2,
-  storeAppURL: {
-   android: 'https://play.google.com/store/apps/details?id=com.whatsapp&hl=en',
+        simpleMode: true,
+        displayAppName: 'Smartie App',
+        usesUntilPrompt: 2,
+        promptAgainForEachNewVersion: false,
+        storeAppURL: {
+          android: 'market://details?id=com.smartie.app'
+        },
+        useLanguage: 'en',
+        customLocale: {
+          title: 'Do you enjoy %@?',
+          message: 'If you enjoy using %@, would you mind taking a moment to rate it? Thanks so much!',
+          cancelButtonLabel: 'No, Thanks',
+          laterButtonLabel: 'Remind Me Later',
+          rateButtonLabel: 'Rate It Now',
+        },
+        callbacks: {
+          onRateDialogShow: function(callback){
+            console.log('rate dialog shown!');
+          },
+          onButtonClicked: function(buttonIndex){
+            console.log('Selected index: -> ' + buttonIndex);
+          }
+        }
+      };
+
+      // Opens the rating immediately no matter what preferences you set
+      this.appRate.promptForRating(true);
   }
-};
-this.appRate.promptForRating(true);
+
+  getProfLevelByActive(activeLevel, role){
+    let badgeData = role == 'teacher' ? this.badgeLevel:this.studentBadgeLevel;
+    let badges = {};
+    console.log("Searching lelves", badgeData);
+    for (var i=0; i<badgeData.length;i++) {
+      console.log(badgeData[i]);
+    if (badgeData[i].name == activeLevel) {
+      if(i==1)
+      badges = {"prev":null, "next":badgeData[i+1]};
+      else
+      badges = {"prev":badgeData[i-1], "next":badgeData[i+1]};
+
+      console.log("Matched levels", badges);
+    }
+  }
+  return badges;
   }
 }
