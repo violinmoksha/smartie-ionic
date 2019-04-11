@@ -34,8 +34,6 @@ export class SetReviewPage {
     this.profileData = navParams.get("profileData");
     this.jobRequestId = navParams.get("jobRequestId");
 
-    console.log(this.jobRequestId);
-
     this.reviewedProfileId = this.profileData.objectId;
 
     if (this.profileData.role == 'teacher') {
