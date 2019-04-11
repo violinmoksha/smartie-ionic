@@ -112,12 +112,14 @@ export class ListPage {
            this.jobRequestProvider.sanitizeNotifications(Notifications.result).then((notifications: Array<any>) => {
             if (this.userData.profileData.role == "teacher") {
               for(let k=0; k<notifications.length; k++) {
+                notifications[k].jobRequestId = notifications[k].objectId;
                 notifications[k] = Object.assign({}, notifications[k], ...notifications[k].otherProfile);
                 notifications[k].profilePhoto = notifications[k].otherProfile.profilePhoto ? notifications[k].otherProfile.profilePhoto : './assets/imgs/user-round-icon.png';
                 this.smartieList.push(notifications[k]);
               }
             } else {
               for(let k=0; k<notifications.length; k++) {
+                notifications[k].jobRequestId = notifications[k].objectId;
                 notifications[k] = Object.assign({}, notifications[k], ...notifications[k].teacherProfile);
                 notifications[k].profilePhoto = notifications[k].teacherProfile.profilePhoto ? notifications[k].teacherProfile.profilePhoto : './assets/imgs/user-round-icon.png';
                 this.smartieList.push(notifications[k]);

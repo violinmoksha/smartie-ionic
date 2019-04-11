@@ -85,7 +85,7 @@ export class ViewAppointmentPage {
       this.profileData = appointment.teacherProfile;
     }
 
-    this.navCtrl.push("SetReviewPage", { profileData: this.profileData });
+    this.navCtrl.push("SetReviewPage", { profileData: this.profileData, jobRequestId: appointment.jobRequestId.objectId });
   }
 
   ionViewDidEnter() {

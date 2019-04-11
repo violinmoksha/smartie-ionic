@@ -22,10 +22,10 @@
     <div *ngIf="isFetching" class="text-center">
       <p>Fetching your appointments</p>
     </div>
-    <div *ngFor="let appointment of appointments">
+    <div class="appointment-content" *ngFor="let appointment of appointments">
       <div class="appointment-container">
         <h3>{{ appointment?.owner}}</h3>
-        <button class="button button-review" (click)="reviewProfile(appointment)" ion-button primary>Review</button>
+        <button class="button button-review" [disabled]="appointment.jobRequestId.reviewStatus" (click)="reviewProfile(appointment)" ion-button primary>Review</button>
       </div>
       <div class="appointment-date"> {{ appointment.startDate }} </div>
       <div class="appointment-time">
