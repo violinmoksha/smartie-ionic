@@ -19,6 +19,7 @@ import { AnalyticsProvider } from '../../providers/analytics';
 export class SetReviewPage {
 
   profileData: any;
+  jobRequestId: any;
   role: any;
   rating: any = '';
   review: any = '';
@@ -31,6 +32,8 @@ export class SetReviewPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("SetReview", "View"));
 
     this.profileData = navParams.get("profileData");
+    this.jobRequestId = navParams.get("jobRequestId");
+
     this.reviewedProfileId = this.profileData.objectId;
 
     if (this.profileData.role == 'teacher') {
@@ -56,8 +59,7 @@ export class SetReviewPage {
   submitReview(){
     this.dataService.getApi(
       'setReview',
-      { reviewedProfileId: this.reviewedProfileId, reviewingProfileId: this.reviewingProfileId, reviewStars: this.rating, reviewFeedback: this.review }
-    ).then(API => {
+      { reviewedProfileId: this.reviewedProfileId, reviewingProfileId: this.reviewingProfileId, reviewStars: this.rating, reviewFeedback: this.review, jobRequestId: this.jobRequestId }).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(reviews => {
         this.navCtrl.setRoot("TabsPage", { tabIndex: 1, tabTitle: "SmartieSearch", role: this.role });
       })

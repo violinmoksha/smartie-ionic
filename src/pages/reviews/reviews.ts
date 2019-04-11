@@ -69,7 +69,7 @@ export class ReviewsPage {
   }
 
   addReview() {
-    this.navCtrl.push("SetReviewPage", { profileData: this.profileData });
+    this.navCtrl.push("SetReviewPage", { profileData: this.profileData, jobRequestId: this.params.jobRequestId });
   }
 
 }

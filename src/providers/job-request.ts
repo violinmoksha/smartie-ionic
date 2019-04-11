@@ -96,7 +96,7 @@ export class JobRequestProvider {
 
   sanitizeNotifications(notifications: any) {
     // TODO: when these are more than just jobReqs
-    console.log(notifications);
+    // console.log(notifications);
     return new Promise(resolve => {
       let activeJobReqs = [];
       notifications.map(notification => {
@@ -119,7 +119,7 @@ export class JobRequestProvider {
             }
             if (ix >= notifications.length - 1) {
               resolve(notifications);
-              console.log(notifications);
+              // console.log(notifications);
               this.resetJobReq(this.checkjobReqForCompleted(activeJobReqs));
             }
 
