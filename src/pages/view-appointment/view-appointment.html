@@ -10,28 +10,99 @@
     <ion-title>Appointments</ion-title>
   </ion-navbar>
 
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="scehduleStatus">
+      <ion-segment-button value="ongoing">
+        Ongoing
+      </ion-segment-button>
+      <ion-segment-button value="upcoming">
+        Upcoming
+      </ion-segment-button>
+      <ion-segment-button value="completed">
+        Completed
+      </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>
+
 </ion-header>
 
 
 <ion-content [ngClass]="role">
 
   <div class="appointment-wrap">
-    <div *ngIf="appointments == null && !isFetching" class="text-center">
+    <div *ngIf="schedules == null && !isFetching" class="text-center">
       <p>No appointments for you!</p>
     </div>
     <div *ngIf="isFetching" class="text-center">
       <p>Fetching your appointments</p>
     </div>
-    <div class="appointment-content" *ngFor="let appointment of appointments">
-      <div class="appointment-container">
-        <h3>{{ appointment?.owner}}</h3>
-        <button class="button button-review" [disabled]="appointment.jobRequestId.reviewStatus" (click)="reviewProfile(appointment)" ion-button primary>Review</button>
+    <div [ngSwitch]="scehduleStatus">
+      <div *ngSwitchCase="'ongoing'">
+        <div class="appointment-content" *ngFor="let schedule of schedules">
+          <div *ngIf="schedule.scheduleStatus == 'ongoing'">
+            <div class="appointment-container">
+              <h3>{{ schedule?.owner}}</h3>
+              <button class="button button-review" [disabled]="schedule.jobRequestId.reviewStatus" (click)="reviewProfile(appointment)" ion-button primary>Review</button>
+            </div>
+            <div *ngFor="let appointment of schedule.appointmentTimings">
+              <div class="appointment-date"> {{ appointment.startDate }}
+              </div>
+              <div class="appointment-time">
+                <p><strong>Start Time:</strong> {{ appointment.startTime }}</p>
+                <p><strong>End Time:</strong> {{ appointment.endTime }}</p>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="schedule.scheduleStatus != 'ongoing'" class="text-center">
+            <p>No appointments for you!</p>
+          </div>
+        </div>
       </div>
-      <div class="appointment-date"> {{ appointment.startDate }} </div>
-      <div class="appointment-time">
-        <p><strong>Start Time:</strong> {{ appointment.startTime }}</p>
-        <p><strong>End Time:</strong> {{ appointment.endTime }}</p>
+
+      <div *ngSwitchCase="'upcoming'">
+        <div class="appointment-content" *ngFor="let schedule of schedules">
+          <div *ngIf="schedule.scheduleStatus == 'upcoming'">
+            <div class="appointment-container">
+              <h3>{{ schedule?.owner}}</h3>
+              <button class="button button-review" [disabled]="schedule.jobRequestId.reviewStatus" (click)="reviewProfile(appointment)" ion-button primary>Review</button>
+            </div>
+            <div *ngFor="let appointment of schedule.appointmentTimings">
+              <div class="appointment-date"> {{ appointment.startDate }}
+              </div>
+              <div class="appointment-time">
+                <p><strong>Start Time:</strong> {{ appointment.startTime }}</p>
+                <p><strong>End Time:</strong> {{ appointment.endTime }}</p>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="schedule.scheduleStatus != 'upcoming'" class="text-center">
+            <p>No appointments for you!</p>
+          </div>
+        </div>
       </div>
+
+      <div *ngSwitchCase="'completed'">
+        <div class="appointment-content" *ngFor="let schedule of schedules">
+          <div *ngIf="schedule.scheduleStatus == 'completed'">
+            <div class="appointment-container">
+              <h3>{{ schedule?.owner}}</h3>
+              <button class="button button-review" [disabled]="schedule.jobRequestId.reviewStatus" (click)="reviewProfile(appointment)" ion-button primary>Review</button>
+            </div>
+            <div *ngFor="let appointment of schedule.appointmentTimings">
+              <div class="appointment-date"> {{ appointment.startDate }}
+              </div>
+              <div class="appointment-time">
+                <p><strong>Start Time:</strong> {{ appointment.startTime }}</p>
+                <p><strong>End Time:</strong> {{ appointment.endTime }}</p>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="schedule.scheduleStatus != 'completed'" class="text-center">
+            <p>No appointments for you!</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>

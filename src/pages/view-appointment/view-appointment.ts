@@ -20,8 +20,10 @@ export class ViewAppointmentPage {
 
   private role: any;
   public appointments: any = null;
+  public schedules: any = null;
   public isFetching: boolean = false;
   private profileData: any;
+  scehduleStatus: string = "ongoing";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public loadingCtrl: LoadingController, private dataService: DataService, private analytics : AnalyticsProvider, private utilsService: UtilsProvider) {
     this.analytics.setScreenName("ViewAppointment");
@@ -46,28 +48,31 @@ export class ViewAppointmentPage {
           console.log(response)
 
           if (response.result.length > 0) {
-            console.log("Got appointments");
-            this.appointments = response.result;
-            console.log(this.appointments)
-            for(let appointment of this.appointments){
+            console.log("Got Schedules");
+            this.schedules = response.result;
+            console.log(this.schedules)
+            for(let schedule of this.schedules){
               if(this.role == 'teacher'){
-                appointment.owner = appointment.otherProfile.fullname;
-                this.profileData = appointment.otherProfile;
+                schedule.owner = schedule.otherProfile.fullname;
+                this.profileData = schedule.otherProfile;
               }else{
-                appointment.owner = appointment.teacherProfile.fullname;
-                this.profileData = appointment.teacherProfile;
+                schedule.owner = schedule.teacherProfile.fullname;
+                this.profileData = schedule.teacherProfile;
               }
-              let apptStartDate = new Date(appointment.apptStartDateTime.iso);
-              let apptStartTime = this.utilsService.formatTime(apptStartDate).split('T')[1];
-              let apptEndDate = new Date(appointment.apptEndDateTime.iso);
-              let apptEndTime = this.utilsService.formatTime(apptEndDate).split('T')[1];
+              let apptStartDate, apptStartTime, apptEndDate, apptEndTime;
+              for(let appointment of schedule.appointmentTimings){
+                apptStartDate = new Date(appointment.apptStartDateTime.iso);
+                apptStartTime = this.utilsService.formatTime(apptStartDate).split('T')[1];
+                apptEndDate = new Date(appointment.apptEndDateTime.iso);
+                apptEndTime = this.utilsService.formatTime(apptEndDate).split('T')[1];
 
-              appointment.startDate = apptStartDate.getDate() + '-' + (apptStartDate.getMonth() + 1) + '-' + apptStartDate.getFullYear();
 
-              appointment.endDate = apptEndDate.getDate() + '-' + (apptEndDate.getMonth() + 1) + '-' + apptEndDate.getFullYear();
+                appointment.startDate = apptStartDate.getDate() + '-' + (apptStartDate.getMonth() + 1) + '-' + apptStartDate.getFullYear();
+                appointment.endDate = apptEndDate.getDate() + '-' + (apptEndDate.getMonth() + 1) + '-' + apptEndDate.getFullYear();
 
-              appointment.startTime = parseInt(apptStartTime.split(':')[0]) +':'+ parseInt(apptStartTime.split(':')[1]);
-              appointment.endTime = parseInt(apptEndTime.split(':')[0]) +':'+ parseInt(apptEndTime.split(':')[1]);
+                appointment.startTime = parseInt(apptStartTime.split(':')[0]) +':'+ parseInt(apptStartTime.split(':')[1]);
+                appointment.endTime = parseInt(apptEndTime.split(':')[0]) +':'+ parseInt(apptEndTime.split(':')[1]);
+              }
             }
           }
         }, err => {
