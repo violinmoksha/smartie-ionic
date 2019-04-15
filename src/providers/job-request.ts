@@ -120,7 +120,7 @@ export class JobRequestProvider {
             if (ix >= notifications.length - 1) {
               resolve(notifications);
               // console.log(notifications);
-              this.resetJobReq(this.checkjobReqForCompleted(activeJobReqs));
+              this.markCompleteSchedules(this.checkjobScheduleForCompleted(activeJobReqs));
             }
 
           });
@@ -131,22 +131,30 @@ export class JobRequestProvider {
       }
     });
   }
-  checkjobReqForCompleted(jobReqs) {
+  checkjobScheduleForCompleted(jobReqs) {
     console.log(jobReqs);
     let x = 0;
     let resetJob = [];
     if (jobReqs.length>0){
-      for(var i=0; i<jobReqs.length; i++){
-        for(var k=0; k<jobReqs[i].schedule.length; k++){
-          if(new Date(jobReqs[i].schedule[k].apptEndDateTime.iso) > new Date()){
-            x = 0;
-            break;
-          }else if(new Date(jobReqs[i].schedule[k].apptEndDateTime.iso) < new Date()){
-            x++;
+      for (var i=0; i<jobReqs.length; i++) {
+        for (var k=0; k<jobReqs[i].schedule.length; k++) {
+          for (var j=0; j<jobReqs[i].schedule[k].length; j++) {
+            if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime.iso) > new Date()){
+              x = 0;
+              break;
+            }else if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime.iso) < new Date()) {
+              x++;
+            } else if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime.iso) == new Date()) {
+              x = -1;
+            }
           }
-        }
-        if(x == jobReqs[i].schedule.length){
-          resetJob.push(jobReqs[i].objectId)
+          if(x == jobReqs[i].schedule[k].appointmentTimings[j].length) {
+            resetJob.push({id:jobReqs[i].schedule[k].objectId, completed:true})
+          } else if(x == -1) {
+            resetJob.push({id:jobReqs[i].schedule[k].objectId, onGoing:true})
+          } else if(x == 0) {
+            resetJob.push({id:jobReqs[i].schedule[k].objectId, upComing:true})
+          }
         }
       }
     }
@@ -156,6 +164,19 @@ export class JobRequestProvider {
     console.log(jobIds);
     if(jobIds.length>0){
       this.dataService.getApi("setJobReqToFresh", {"jobId":jobIds}).then(API => {
+        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
+          console.log(resp);
+        }, err => {
+          console.log(err);
+        })
+      })
+    }
+  }
+
+  markCompleteSchedules(schedules) {
+    console.log(schedules);
+    if(schedules.length>0){
+      this.dataService.getApi("setJobReqToFresh", schedules).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
           console.log(resp);
         }, err => {
