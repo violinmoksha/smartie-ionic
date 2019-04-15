@@ -78,7 +78,7 @@ export class ListPage {
   }
 
   ionViewWillLeave(){
-    this.utils.clearJobTimer()
+    this.utils.clearJobTimer();
   }
 
   sortByLocation(location) {

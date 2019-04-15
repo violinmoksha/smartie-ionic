@@ -392,6 +392,7 @@ export class SmartieApp {
     if (page.iconName == 'log-out') { // logout -->
       console.log("Remove user profile in logout");
       this.logOutUser();
+      this.utilsService.clearJobTimer()
       this.storage.remove('UserProfile'); // yes??
       //this.dbservice.deleteUser();
       this.nav.setRoot("LoginPage"); // send to Login
