@@ -176,7 +176,7 @@ export class JobRequestProvider {
   markCompleteSchedules(schedules) {
     console.log(schedules);
     if(schedules.length>0){
-      this.dataService.getApi("setJobReqToFresh", schedules).then(API => {
+      this.dataService.getApi("updateScheduleStatus", schedules).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
           console.log(resp);
         }, err => {
