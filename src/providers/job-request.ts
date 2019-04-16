@@ -135,10 +135,11 @@ export class JobRequestProvider {
     console.log(jobReqs);
     let x = 0;
     let resetJob = [];
+    let j;
     if (jobReqs.length>0){
-      for (var i=0; i<jobReqs.length; i++) {
-        for (var k=0; k<jobReqs[i].schedule.length; k++) {
-          for (var j=0; j<jobReqs[i].schedule[k].length; j++) {
+      for (let i=0; i<jobReqs.length; i++) {
+        for (let k=0; k<jobReqs[i].schedule.length; k++) {
+          for (j=0; j<jobReqs[i].schedule[k].appointmentTimings.length; j++) {
             if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime) > new Date()){
               x = 0;
               break;
@@ -147,19 +148,24 @@ export class JobRequestProvider {
             } else if((new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptStartDateTime) <= new Date()) && (new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime) >= new Date())) {
               x = -1;
             }
+
+            if(j == jobReqs[i].schedule[k].appointmentTimings.length - 1){
+              if(x == jobReqs[i].schedule[k].appointmentTimings.length) {
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, completed:true})
+              } else if(x == -1) {
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, onGoing:true})
+              } else if(x == 0) {
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, upComing:true})
+              }
+            }
           }
-          if(x == jobReqs[i].schedule[k].appointmentTimings[j].length) {
-            resetJob.push({id:jobReqs[i].schedule[k].objectId, completed:true})
-          } else if(x == -1) {
-            resetJob.push({id:jobReqs[i].schedule[k].objectId, onGoing:true})
-          } else if(x == 0) {
-            resetJob.push({id:jobReqs[i].schedule[k].objectId, upComing:true})
-          }
+
         }
       }
     }
     return resetJob;
   }
+
   resetJobReq(jobIds) {
     console.log(jobIds);
     if(jobIds.length>0){
@@ -176,7 +182,7 @@ export class JobRequestProvider {
   markCompleteSchedules(schedules) {
     console.log(schedules);
     if(schedules.length>0){
-      this.dataService.getApi("updateScheduleStatus", schedules).then(API => {
+      this.dataService.getApi("updateScheduleStatus", {"scheduleIds":schedules}).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
           console.log(resp);
         }, err => {

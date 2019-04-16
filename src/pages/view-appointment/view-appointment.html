@@ -42,7 +42,6 @@
           <div *ngIf="schedule.scheduleStatus == 'ongoing'">
             <div class="appointment-container">
               <h3>{{ schedule?.owner}}</h3>
-              <button class="button button-review" [disabled]="schedule.jobRequestId.reviewStatus" (click)="reviewProfile(appointment)" ion-button primary>Review</button>
             </div>
             <div *ngFor="let appointment of schedule.appointmentTimings">
               <div class="appointment-date"> {{ appointment.startDate }}
@@ -64,7 +63,6 @@
           <div *ngIf="schedule.scheduleStatus == 'upcoming'">
             <div class="appointment-container">
               <h3>{{ schedule?.owner}}</h3>
-              <button class="button button-review" [disabled]="schedule.jobRequestId.reviewStatus" (click)="reviewProfile(appointment)" ion-button primary>Review</button>
             </div>
             <div *ngFor="let appointment of schedule.appointmentTimings">
               <div class="appointment-date"> {{ appointment.startDate }}
