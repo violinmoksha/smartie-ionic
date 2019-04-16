@@ -139,12 +139,12 @@ export class JobRequestProvider {
       for (var i=0; i<jobReqs.length; i++) {
         for (var k=0; k<jobReqs[i].schedule.length; k++) {
           for (var j=0; j<jobReqs[i].schedule[k].length; j++) {
-            if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime.iso) > new Date()){
+            if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime) > new Date()){
               x = 0;
               break;
-            }else if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime.iso) < new Date()) {
+            }else if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime) < new Date()) {
               x++;
-            } else if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime.iso) == new Date()) {
+            } else if((new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptStartDateTime) <= new Date()) && (new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime) >= new Date())) {
               x = -1;
             }
           }
