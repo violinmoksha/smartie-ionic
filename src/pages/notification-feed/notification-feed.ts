@@ -57,6 +57,8 @@ export class NotificationFeedPage {
     ).then(async API => {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async jobReq => {
         this.apiCompletedCount += 1;
+        console.log("getAllAccepteds");
+        console.log(jobReq.result);
         if (jobReq)
           this.allAccepteds = jobReq.result; // jobReq[0], jobReq.data[0]???
       }, (err) => {
@@ -72,6 +74,8 @@ export class NotificationFeedPage {
     ).then(async API => {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async jobReq => {
         this.apiCompletedCount += 1;
+        console.log("getAllRequesteds");
+        console.log(jobReq.result);
         if (jobReq)
           this.allRequesteds = jobReq.result; // ???
       }, (err) => {
@@ -88,6 +92,8 @@ export class NotificationFeedPage {
     ).then(async API => {
       return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async jobReq => {
         this.apiCompletedCount += 1;
+        console.log("getAllUpcomings");
+        console.log(jobReq.result);
         if (jobReq)
           this.allUpcomings = jobReq.result; // ????
       }, (err) => {
@@ -104,11 +110,7 @@ export class NotificationFeedPage {
   }
 
   showUpcomingAlert() {
-    let alert = this.alertCtrl.create({
-      title: 'Remember to Show!',
-      subTitle: 'Life is all about showing up, so please show up to your booked session!'
-    });
-    alert.present();
+    this.navCtrl.push("ViewAppointmentPage");
   }
 
   showJobRequest(notification, requestState) {

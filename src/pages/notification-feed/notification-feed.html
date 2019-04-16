@@ -33,7 +33,7 @@
     </li>
 
     <li class="upcoming" *ngFor="let upcoming of allUpcomings">
-      <a href="javascript:" (click)="showUpcomingAlert()">{{ upcoming.otherProfile.fullname }} made payment and booked appointment for {{ [toTimeZone(upcoming.apptDate.iso)] }} from {{ upcoming.startTime }} to {{ upcoming.endTime }}!</a>
+      <a href="javascript:" (click)="showUpcomingAlert()">{{ upcoming.otherProfile.fullname }} booked appointment</a>
     </li>
 
   </ul>
