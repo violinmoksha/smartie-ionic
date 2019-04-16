@@ -61,9 +61,9 @@ export class ViewAppointmentPage {
               }
               let apptStartDate, apptStartTime, apptEndDate, apptEndTime;
               for(let appointment of schedule.appointmentTimings){
-                apptStartDate = new Date(appointment.apptStartDateTime.iso);
+                apptStartDate = new Date(appointment.apptStartDateTime);
                 apptStartTime = this.utilsService.formatTime(apptStartDate).split('T')[1];
-                apptEndDate = new Date(appointment.apptEndDateTime.iso);
+                apptEndDate = new Date(appointment.apptEndDateTime);
                 apptEndTime = this.utilsService.formatTime(apptEndDate).split('T')[1];
 
 

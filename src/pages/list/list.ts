@@ -109,6 +109,8 @@ export class ListPage {
         { profileId: user.profileData.objectId, role: user.profileData.role }
       ).then(API => {
          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(Notifications => {
+           console.log("## Notifications ##");
+           console.log(Notifications);
            this.jobRequestProvider.sanitizeNotifications(Notifications.result).then((notifications: Array<any>) => {
             if (this.userData.profileData.role == "teacher") {
               for(let k=0; k<notifications.length; k++) {

@@ -14,6 +14,8 @@ export class JobRequestProvider {
   hasUpcomings: boolean = false;
   upcomingCount: number = 0;
   jobRequestState: any;
+  public scheduleStatus = {"upComing":"upcoming", "onGoing":'ongoing', "completed":'completed'};
+
   constructor(public http: HttpClient, public dataService: DataService) {
     this.jobRequestState = {"fresh": 1, "requested": 2, "accepted": 3, "paidAndUpcoming": 4, "scheduled": 5, "completed": 6}
   }
@@ -120,7 +122,7 @@ export class JobRequestProvider {
             if (ix >= notifications.length - 1) {
               resolve(notifications);
               // console.log(notifications);
-              this.markCompleteSchedules(this.checkjobScheduleForCompleted(activeJobReqs));
+              this.updateScheduleAndReq(this.checkjobScheduleForCompleted(activeJobReqs));
             }
 
           });
@@ -131,35 +133,65 @@ export class JobRequestProvider {
       }
     });
   }
-  checkjobScheduleForCompleted(jobReqs) {
+
+  checkjobReqForCompleted(jobReqs) {
     console.log(jobReqs);
     let x = 0;
     let resetJob = [];
-    if (jobReqs.length>0){
-      for (var i=0; i<jobReqs.length; i++) {
-        for (var k=0; k<jobReqs[i].schedule.length; k++) {
-          for (var j=0; j<jobReqs[i].schedule[k].length; j++) {
-            if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime.iso) > new Date()){
-              x = 0;
-              break;
-            }else if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime.iso) < new Date()) {
-              x++;
-            } else if(new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime.iso) == new Date()) {
-              x = -1;
-            }
+    if (jobReqs.length > 0){
+      for (let i=0; i<jobReqs.length; i++) {
+        for (let k=0; k<jobReqs[i].schedule.length; k++) {
+          if (jobReqs[i].schedule[k].scheduleStatus == this.scheduleStatus.completed) {
+            x++;
           }
-          if(x == jobReqs[i].schedule[k].appointmentTimings[j].length) {
-            resetJob.push({id:jobReqs[i].schedule[k].objectId, completed:true})
-          } else if(x == -1) {
-            resetJob.push({id:jobReqs[i].schedule[k].objectId, onGoing:true})
-          } else if(x == 0) {
-            resetJob.push({id:jobReqs[i].schedule[k].objectId, upComing:true})
-          }
+        }
+        if (x == jobReqs[i].schedule.length) {
+          resetJob.push(jobReqs[i].objectId);
         }
       }
     }
     return resetJob;
   }
+
+  checkjobScheduleForCompleted(jobReqs) {
+    console.log(jobReqs);
+    let x = 0;
+    let resetJob = [];
+
+    let j;
+    if (jobReqs.length > 0){
+      for (let i=0; i<jobReqs.length; i++) {
+        for (let k=0; k<jobReqs[i].schedule.length; k++) {
+          for (j=0; j<jobReqs[i].schedule[k].appointmentTimings.length; j++) {
+            if (new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime) > new Date()){
+              x = 0;
+              break;
+            } else if (new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime) < new Date()) {
+              x++;
+            } else if ((new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptStartDateTime) <= new Date()) && (new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime) >= new Date())) {
+              x = -1;
+            }
+
+            if (j == jobReqs[i].schedule[k].appointmentTimings.length - 1){
+              if (x == jobReqs[i].schedule[k].appointmentTimings.length) {
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, completed:true});
+                jobReqs[i].schedule[k].scheduleStatus = this.scheduleStatus.completed;
+              } else if (x == -1) {
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, onGoing:true});
+                jobReqs[i].schedule[k].scheduleStatus = this.scheduleStatus.onGoing;
+              } else if (x == 0) {
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, upComing:true});
+                jobReqs[i].schedule[k].scheduleStatus = this.scheduleStatus.upComing;
+              }
+            }
+          }
+        }
+      }
+    }
+    //this.resetJobReq(this.checkjobReqForCompleted(jobReqs));
+    return {"schedules":resetJob, "jobReqs":jobReqs};
+  }
+
   resetJobReq(jobIds) {
     console.log(jobIds);
     if(jobIds.length>0){
@@ -173,12 +205,13 @@ export class JobRequestProvider {
     }
   }
 
-  markCompleteSchedules(schedules) {
-    console.log(schedules);
-    if(schedules.length>0){
-      this.dataService.getApi("setJobReqToFresh", schedules).then(API => {
+  updateScheduleAndReq(jobs) {
+    console.log(jobs);
+    if(jobs.schedules.length > 0){
+      this.dataService.getApi("updateScheduleStatus", {"scheduleIds":jobs.schedules}).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
           console.log(resp);
+          this.resetJobReq(this.checkjobReqForCompleted(jobs.jobReqs));
         }, err => {
           console.log(err);
         })
