@@ -149,7 +149,7 @@ export class ListPage {
     this.jobRequestProvider.getNotificationCounts(this.body).then((values: any) => {
       this.notifyCount = values.notifyCount;
       this.hasUpcomings = values.hasUpcomings;
-      if (this.hasUpcomings == true) {
+      /*if (this.hasUpcomings == true) {
         let title, subTitle;
         if (values.upcomingsCount == 1) {
           title = "You have an upcoming appointment!";
@@ -169,7 +169,8 @@ export class ListPage {
           }]
         });
         alert.present();
-      } else if (this.notifyCount > 0) {
+      } else */
+      if (this.notifyCount > 0) {
         let alert = this.alertCtrl.create({
           title: 'Wow, check it out!',
           subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
