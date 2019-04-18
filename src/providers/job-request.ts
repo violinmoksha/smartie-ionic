@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataService } from '../app/app.data';
+import { AlertController, NavController, NavParams, } from 'ionic-angular';
 
 /*
   Generated class for the JobRequstProvider provider.
@@ -16,7 +17,7 @@ export class JobRequestProvider {
   jobRequestState: any;
   public scheduleStatus = {"upComing":"upcoming", "onGoing":'ongoing', "completed":'completed'};
 
-  constructor(public http: HttpClient, public dataService: DataService) {
+  constructor(public http: HttpClient, public dataService: DataService, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
     this.jobRequestState = {"fresh": 1, "requested": 2, "accepted": 3, "paidAndUpcoming": 4, "scheduled": 5, "completed": 6}
   }
 
@@ -110,19 +111,14 @@ export class JobRequestProvider {
         for (let activeJob of activeJobReqs) {
           notifications.forEach((notification, ix) => {
             if (notification.teacherProfile && notification.otherProfile && activeJob.otherProfile) {
-              // if (notification.teacherProfile.objectId == activeJob.teacherProfile.objectId &&
-              //   notification.otherProfile.objectId == activeJob.otherProfile.objectId &&
-              //   (notification.requestSent == false && notification.acceptState == false)) {
-              //   notifications.splice(ix, 1);
-              // }
               if(notification.jobRequestState != 1){
                 notifications.splice(ix, 1);
               }
             }
             if (ix >= notifications.length - 1) {
               resolve(notifications);
-              // console.log(notifications);
               this.updateScheduleAndReq(this.checkjobScheduleForCompleted(activeJobReqs));
+              //this.handleReviewUpdates(activeJobReqs);
             }
 
           });
@@ -217,6 +213,20 @@ export class JobRequestProvider {
         })
       })
     }
+  }
+
+  handleReviewUpdates(jobReqs) {
+    let alert = this.alertCtrl.create({
+      title: 'Wow, check it out!',
+      subTitle: `You have ${this.notifyCount} active job request(s)! Tap OK to visit your Notifications page!`,
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          this.navCtrl.push("ViewAppointmentPage");
+        }
+      }]
+    });
+    alert.present();
   }
 
 }
