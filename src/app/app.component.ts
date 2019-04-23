@@ -22,7 +22,7 @@ const Parse = require('parse');
   templateUrl: 'app.html'
 })
 export class SmartieApp {
-  @ViewChild(Nav) nav: Nav;
+  @ViewChild('myNav') nav: Nav;
   rootPage: any;
   buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string, isTabs?: boolean }>;
 
@@ -52,7 +52,8 @@ export class SmartieApp {
     public fetchiOSUDID: FetchiOSUDID,
     public crashlytics: FirebaseCrashlyticsProvider,
     private utilsService: UtilsProvider,
-    private fileUploader: FileUploaderProvider) {
+    private fileUploader: FileUploaderProvider,
+    private app: App) {
     this.dataService.currentPage = "Root";
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -141,11 +142,40 @@ export class SmartieApp {
               this.splashScreen.hide();
             } else {
               this.storage.get("Registration").then(async registration => {
+                console.log(registration);
                 if (registration && registration.step) {
                   if (registration.step === 0) {
-                    this.nav.setRoot("RegisterStep1Page", { role: registration.role });
+                    this.nav.setRoot("RegisterStep1Page", { role: registration.role }).then( () => {
+                      this.nav.popToRoot().then( ()=> {
+                      }).catch(err=>{
+                        console.log("popToRoot Error");
+                        console.log(err);
+
+                      });
+                    }).catch(err => {
+                      console.log("setRoot Error");
+                      console.log(err);
+                    });
+
                   } else if (registration.step == 1) {
-                    this.nav.setRoot("RegisterStep2Page", registration);
+                    this.app.getActiveNav().setRoot("RegisterStep2Page").then( (appNav) => {
+                      console.log("App Nav");
+                      console.log(appNav);
+                    }).catch(err => {
+                      console.log("App SetRoot");
+                      console.log(err);
+                    })
+                    /*this.nav.setRoot("RegisterStep2Page", registration).then( () => {
+                      this.nav.popToRoot().then( ()=> {
+                      }).catch(err=>{
+                        console.log("popToRoot Error");
+                        console.log(err);
+
+                      });
+                    }).catch(err => {
+                      console.log("setRoot Error");
+                      console.log(err);
+                    });*/
                   } else if (registration.step == 2) {
                     this.nav.setRoot("RegisterStep3Page", registration);
                   }
