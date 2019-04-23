@@ -182,7 +182,7 @@ export class SmartieApp {
         this.setUserName();
         this.utilsService.getSelectedCity();
         this.grantNotificationPermission();
-        this.utilsService.initAppRating();
+        //this.utilsService.initAppRating();
         Parse._initialize(this.parseAppId, null, this.parseMasterKey);
         // Parse.initialize(this.parseAppId, null, this.parseMasterKey);
         Parse.serverURL = this.parseServerUrl;
@@ -215,7 +215,7 @@ export class SmartieApp {
   initGeolocation(): Promise<any> {
     return new Promise((resolve, reject) => { // only returns promise for testing purpose
       this.geolocation.getCurrentPosition().then(resp => {
-        this.storage.set('phoneGeoposition', resp).then(() => {
+        this.storage.set('phoneGeoposition', JSON.stringify(resp)).then(() => {
           resolve(resp);
         }, error => {
           console.info('Error storing phoneGeoposition: ', JSON.stringify(error));

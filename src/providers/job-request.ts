@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataService } from '../app/app.data';
 import { AlertController, NavController, NavParams, } from 'ionic-angular';
-
+import { UtilsProvider } from './utils.js'
 /*
   Generated class for the JobRequstProvider provider.
 
@@ -17,7 +17,7 @@ export class JobRequestProvider {
   jobRequestState: any;
   public scheduleStatus = {"upComing":"upcoming", "onGoing":'ongoing', "completed":'completed'};
 
-  constructor(public http: HttpClient, public dataService: DataService, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public http: HttpClient, public dataService: DataService, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public utils: UtilsProvider) {
     this.jobRequestState = {"fresh": 1, "requested": 2, "accepted": 3, "paidAndUpcoming": 4, "scheduled": 5, "completed": 6}
   }
 
@@ -118,6 +118,7 @@ export class JobRequestProvider {
             if (ix >= notifications.length - 1) {
               resolve(notifications);
               this.updateScheduleAndReq(this.checkjobScheduleForCompleted(activeJobReqs));
+              this.utils.initAppRating();
               //this.handleReviewUpdates(activeJobReqs);
             }
 
