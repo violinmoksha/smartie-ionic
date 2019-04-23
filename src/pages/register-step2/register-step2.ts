@@ -111,7 +111,8 @@ export class RegisterStep2Page {
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public platform:Platform, public UDID: FetchiOSUDID, public jobReqService: JobRequestProvider) {
     this.analytics.setScreenName("Register-step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
-
+    console.log("Register Step 2");
+    console.log(navParams)
     this.form1Values = navParams.data.form1Values;
     this.role = navParams.data.role;
     this.profilePicSrc = './assets/img/user-img-' + this.role + '.png';

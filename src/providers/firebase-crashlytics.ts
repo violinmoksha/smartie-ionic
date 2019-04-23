@@ -19,6 +19,8 @@ export class FirebaseCrashlyticsProvider {
   }
 
   logError(e, msg) {
+    console.log(msg);
+    console.log(e)
     this.crashlytics.addLog(msg);
     if (this.platform.is('android'))
     this.crashlytics.sendNonFatalCrash(e);
