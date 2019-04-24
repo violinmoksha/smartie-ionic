@@ -1,6 +1,3 @@
-import { FileUploaderProvider } from './../../providers/file-uploader';
-import { CameraServiceProvider } from './../../providers/camera-service';
-import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ActionSheetController, Slides, LoadingController, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -10,6 +7,9 @@ import { AnalyticsProvider } from '../../providers/analytics';
 import { DataService } from '../../app/app.data';
 import { FetchiOSUDID } from '../../providers/fetch-ios-udid';
 import { JobRequestProvider } from '../../providers/job-request'
+import { FileUploaderProvider } from './../../providers/file-uploader';
+import { CameraServiceProvider } from './../../providers/camera-service';
+import { Device } from '@ionic-native/device';
 
 declare let google;
 /**
