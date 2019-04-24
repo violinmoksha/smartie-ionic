@@ -22,7 +22,7 @@ const Parse = require('parse');
   templateUrl: 'app.html'
 })
 export class SmartieApp {
-  @ViewChild('myNav') nav: Nav;
+  @ViewChild(Nav) nav: Nav;
   rootPage: any;
   buttons: Array<{ iconName: string, text: string, pageName: string, index?: number, pageTitle?: string, isTabs?: boolean }>;
 
@@ -142,40 +142,20 @@ export class SmartieApp {
               this.splashScreen.hide();
             } else {
               this.storage.get("Registration").then(async registration => {
-                console.log(registration);
                 if (registration && registration.step) {
                   if (registration.step === 0) {
                     this.nav.setRoot("RegisterStep1Page", { role: registration.role }).then( () => {
-                      this.nav.popToRoot().then( ()=> {
-                      }).catch(err=>{
-                        console.log("popToRoot Error");
-                        console.log(err);
-
-                      });
                     }).catch(err => {
-                      console.log("setRoot Error");
                       console.log(err);
                     });
 
                   } else if (registration.step == 1) {
-                    this.app.getActiveNav().setRoot("RegisterStep2Page").then( (appNav) => {
-                      console.log("App Nav");
+                    this.nav.setRoot("RegisterStep2Page").then( (appNav) => {
+                      this.splashScreen.hide();
                       console.log(appNav);
                     }).catch(err => {
-                      console.log("App SetRoot");
                       console.log(err);
                     })
-                    /*this.nav.setRoot("RegisterStep2Page", registration).then( () => {
-                      this.nav.popToRoot().then( ()=> {
-                      }).catch(err=>{
-                        console.log("popToRoot Error");
-                        console.log(err);
-
-                      });
-                    }).catch(err => {
-                      console.log("setRoot Error");
-                      console.log(err);
-                    });*/
                   } else if (registration.step == 2) {
                     this.nav.setRoot("RegisterStep3Page", registration);
                   }

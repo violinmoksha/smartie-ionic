@@ -75,16 +75,15 @@ export class RegisterStep1Page {
             loading.dismiss();
             console.log(isNewEmail);
             if (isNewEmail.result == true) {
-              console.log("navigating to step 2");
               this.navCtrl.push("RegisterStep2Page");
-              return await this.storage.get('Registration').then(async registration=>{
+              return await this.storage.get('Registration').then(async registration =>{
                 if(registration){
                   registration.step = 1;
                   registration.form1Values = formParams;
-                  this.storage.set('Registration', JSON.stringify(registration));
+                  this.storage.set('Registration', registration);
                   return await registration;
                 }else{
-                  return await this.storage.set('Registration', JSON.stringify({ step:1, form1Values : formParams, role: this.role })).then(async () => {
+                  return await this.storage.set('Registration', { step:1, form1Values : formParams, role: this.role }).then(async () => {
                     return await { step:1, form1Values : formParams, role: this.role };
                   });
                 }
