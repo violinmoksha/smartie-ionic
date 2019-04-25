@@ -75,7 +75,7 @@ export class RegisterStep1Page {
             loading.dismiss();
             console.log(isNewEmail);
             if (isNewEmail.result == true) {
-              this.navCtrl.push("RegisterStep2Page");
+              this.navCtrl.push("RegisterStep2Page", { form1Values : formParams, role: this.role });
               return await this.storage.get('Registration').then(async registration =>{
                 if(registration){
                   registration.step = 1;

@@ -118,7 +118,7 @@ export class JobRequestProvider {
             if (ix >= notifications.length - 1) {
               resolve(notifications);
               this.updateScheduleAndReq(this.checkjobScheduleForCompleted(activeJobReqs));
-              this.utils.initAppRating();
+              // this.utils.initAppRating();
               //this.handleReviewUpdates(activeJobReqs);
             }
 
