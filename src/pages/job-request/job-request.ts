@@ -303,31 +303,34 @@ export class JobRequestPage {
     });
     this.loading.present();
     this.storage.get("UserProfile").then(roleProfile => {
-      if (this.userRole === 'teacher') {
-        this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.otherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole, jobRequestState: this.jobRequestProvider.jobRequestState.accepted };
+      if (this.userRole == 'teacher' && (roleProfile.profileData.stripeCustomer == undefined || roleProfile.profileData.stripeCustomer == '')) {
+        this.checkStripeAccount(roleProfile);
       } else {
-        this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.teacherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole, jobRequestState: this.jobRequestProvider.jobRequestState.accepted };
-      }
+        if (this.userRole === 'teacher') {
+          this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.otherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole, jobRequestState: this.jobRequestProvider.jobRequestState.accepted };
+        } else {
+          this.body = { otherProfileId: roleProfile.profileData.objectId, teacherProfileId: this.teacherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole, jobRequestState: this.jobRequestProvider.jobRequestState.accepted };
+        }
 
-      return new Promise(async (resolve) => {
-        return await this.dataService.getApi(
-          'setJobRequest',
-          this.body
-        ).then(async API => {
-          return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
-            this.acceptState = true;
-            this.viewCtrl.dismiss();
-            this.loading.dismiss();
-            this.submitInProgress = false;
-            if (this.userRole !== 'teacher') {
-              this.scheduleJob();
-            }
-          }, err => {
-            this.loading.dismiss();
+        return new Promise(async (resolve) => {
+          return await this.dataService.getApi(
+            'setJobRequest',
+            this.body
+          ).then(async API => {
+            return await this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+              this.acceptState = true;
+              this.viewCtrl.dismiss();
+              this.loading.dismiss();
+              this.submitInProgress = false;
+              if (this.userRole !== 'teacher') {
+                this.scheduleJob();
+              }
+            }, err => {
+              this.loading.dismiss();
+            });
           });
         });
-      })
-
+      }
     });
   }
 
