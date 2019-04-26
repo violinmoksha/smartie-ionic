@@ -22,6 +22,9 @@
               <ion-input [formControl]="mobileVerification.controls['mobileNumber']" type="tel" maxlength="14" [(ngModel)]="phoneNumber" (ionChange)="phoneNumber = maskUSPhone(phoneNumber)" placeholder="(323) 555-5555" class="mob-input color-grey height-44"></ion-input>
             </ion-item>
 
+            <div *ngIf="notNewPhone" class="item item-message">
+              This phone appears to already be in our system!
+            </div>
       </form>
     </ion-list>
 

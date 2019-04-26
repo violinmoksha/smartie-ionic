@@ -14,6 +14,7 @@ export class DataService {
   contentType: string;
   hostname: string;
   currentPage: string = "Root";
+  minionToken: string; //NB: purely-transient, needs no storage
 
   constructor(public storage: Storage, public secureStorage: SecureStorage, public http: HTTP, public toasterService: ToasterServiceProvider, public alertCtrl: AlertController) {
   }
@@ -71,6 +72,10 @@ export class DataService {
             'X-User-Id': userData ? userData.userData.objectId : '',
             'Content-Type': this.contentType
           };
+
+          if (this.minionToken) {
+            httpOptions['X-Minion-Token'] = this.minionToken;
+          }
 
           this.http.setDataSerializer('utf8');
 

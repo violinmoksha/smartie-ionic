@@ -48,4 +48,13 @@ page-mobile-verification {
     border-bottom: 1px solid #c8c7cc !important;
     border-top: 0px !important;
   }
+  .item.item-message {
+    border: 0;
+    padding: 5px 15px;
+    color: red;
+    background-color: #fceded;
+    margin-left: 15px;
+    margin-bottom:5px!important;
+    font-size: 13px;
+  }
 }

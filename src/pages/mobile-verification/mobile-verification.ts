@@ -24,6 +24,8 @@ export class MobileVerificationPage {
   role: string;
   phoneNumber = '';
   mobileVerification: FormGroup;
+  notNewPhone: boolean;
+
   constructor(public platform: Platform,public navCtrl: NavController, public navParams: NavParams, public device: Device, public dataService: DataService, public loadingCtrl: LoadingController, public storage: Storage,public formBuilder: FormBuilder,public analytics : AnalyticsProvider, public fetchiOSUDID: FetchiOSUDID) {
     this.role = this.navParams.get('role');
 
@@ -71,10 +73,15 @@ export class MobileVerificationPage {
       //}
 
       // TODO: actually wire this to beyondgdpr, for now we're going with plaintext this.device.uuid
-      let params={
+      let provParams={
         "uuid": (this.platform.is('cordova')) ? deviceUUID :'123456',
         "device": { 'cordova': this.device.cordova, 'isVirtual': this.device.isVirtual, 'manufacturer': this.device.manufacturer, 'model': this.device.model, 'platform': this.device.platform, 'serial': this.device.serial, 'uuid': UDID, 'version': this.device.version },
-        "role": this.role
+        "role": this.role,
+        "phone": this.phoneNumber
+      }
+
+      let phoneParams = {
+        "phone": this.phoneNumber
       }
 
       let loading = this.loadingCtrl.create({
@@ -84,20 +91,42 @@ export class MobileVerificationPage {
       return new Promise(async (resolve) => {
         loading.present();
         return await this.dataService.getApi(
-          'setUserProvision',
-          params
+          'isNewPhone',
+          phoneParams
         ).then(async API => {
-          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response=>{
-            loading.dismiss();
-            this.storage.set("Provision", response.result);
-            this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
-          },e=>{
-            loading.dismiss();
+          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+            if (response.result == false) {
+              loading.dismiss();
+              this.notNewPhone = true;
+              return await false;
+            } else {
+              this.dataService.minionToken = response.result.mToken;
+
+              return await this.dataService.getApi(
+                'setUserProvision',
+                provParams
+              ).then(async API => {
+                this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response=>{
+                  loading.dismiss();
+                  this.storage.set("Provision", response.result);
+                  this.dataService.minionToken = undefined; // dealloc the transient minionToken, just in case
+                  this.navCtrl.push("RegisterStep1Page", { role: this.role, phone: this.phoneNumber });
+                },e=>{
+                  loading.dismiss();
+                  console.log(e);
+                })
+              });
+            }
+          }, e => {
             console.log(e);
           })
         });
       });
     //});
+  }
+
+  usedPhoneNumber() {
+
   }
 
   maskUSPhone(txt) {
