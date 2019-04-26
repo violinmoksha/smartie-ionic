@@ -125,7 +125,7 @@ export class SmartieSearch {
                 this.notifications = notifications;
                 this.storage.get('phoneGeoposition').then(phoneLatLng => {
                   if (phoneLatLng !== undefined && phoneLatLng !== null) {
-                    this.smartieSearchResult({ latitude: phoneLatLng.coords.latitude, longitude: phoneLatLng.coords.longitude }, profile.profileData.role, null, fromIntervals);
+                    this.smartieSearchResult({ latitude: phoneLatLng.latitude, longitude: phoneLatLng.longitude }, profile.profileData.role, null, fromIntervals);
                   } else {
                     this.latLngUser = profile.profileData.latlng;
                     this.smartieSearchResult(this.latLngUser, profile.profileData.role, null, fromIntervals);
