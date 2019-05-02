@@ -37,6 +37,40 @@ export class ListPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private events: Events, private utils: UtilsProvider, public popoverCtrl: PopoverController, private jobRequestProvider: JobRequestProvider, public alertCtrl: AlertController) {
     this.role = navParams.get("role");
     this.searchText = this.role == 'teacher' ? 'Search students by subjects!' : 'Search your favourite subjects!';
+
+    this.events.subscribe("scheduleCompleted", schedules => {
+      console.log("Event emitter string");
+      console.log(schedules);
+      if(schedules.result.length > 0){
+        let alert = this.alertCtrl.create({
+          title: 'Time to review',
+          subTitle: `Your jobRequest has been completed give a review`,
+          buttons: [
+            {
+              text: 'Review',
+              handler: () => {
+                this.navCtrl.push("ViewAppointmentPage", { "scheduleStatus": "completed" });
+              }
+            },
+            {
+              text: 'Cancel',
+              handler: () => {
+                this.updatedScheduleStatus(schedules.result)
+              }
+            }
+          ]
+        });
+        alert.present();
+      }
+    })
+  }
+
+  updatedScheduleStatus(schedules){
+    this.dataService.getApi(
+      'updateReviewStatusInSchedule',
+      { scheduleIds: schedules, reviewStatus: this.jobRequestProvider.jobScheduleReviewStaus.cancelled }).then(jobSchedules => {
+        console.log(jobSchedules);
+      })
   }
 
   ionViewDidEnter() {
@@ -109,9 +143,9 @@ export class ListPage {
         { profileId: user.profileData.objectId, role: user.profileData.role }
       ).then(API => {
          this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(Notifications => {
-           console.log("## Notifications ##");
-           console.log(Notifications);
            this.jobRequestProvider.sanitizeNotifications(Notifications.result).then((notifications: Array<any>) => {
+             console.log("## Sanitize Notifications ##");
+             console.log(notifications);
             if (this.userData.profileData.role == "teacher") {
               for(let k=0; k<notifications.length; k++) {
                 notifications[k].jobRequestId = notifications[k].objectId;
@@ -128,6 +162,24 @@ export class ListPage {
               }
             }
             this.smartieListAlias = this.smartieList;
+
+            /*this.jobRequestProvider.scheduleReviews(notifications).then(completedJobSchedule => {
+              if(completedJobSchedule){
+                console.log("Completed job schedule");
+                console.log(completedJobSchedule);
+                /*let alert = this.alertCtrl.create({
+                  title: 'Time to review',
+                  subTitle: `Your jobRequest has been completed give a review`,
+                  buttons: [{
+                    text: 'OK',
+                    handler: () => {
+                      this.navCtrl.push("ViewAppointmentPage");
+                    }
+                  }]
+                });
+                // alert.present();
+              }
+            });*/
           })
         }, err => {
           console.log(err.error.error);
@@ -135,7 +187,9 @@ export class ListPage {
       });
   }
 
-  openJobRequst(job) {
+
+
+  openJobRequest(job) {
     if (this.role !== 'teacher') {
       job.role = job.teacherProfile.role;
     } else {

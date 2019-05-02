@@ -29,6 +29,7 @@ export class ViewAppointmentPage {
     this.analytics.setScreenName("ViewAppointment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("ViewAppointment", "View"));
     this.role = this.navParams.get('role');
+    this.scehduleStatus = this.navParams.get('scheduleStatus');
   }
 
   getRole() {

@@ -249,10 +249,12 @@ export class RegisterStep2Page {
              this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async signupResult => {
                this.updateUserToProvision(signupResult.result.userData.objectId, signupResult.result.profileData.objectId);
 
+               this.loading.dismiss();
                if (!signupResult.result.userData.emailVerified) {
                  let alert = this.alertCtrl.create({
                    title: 'Email not yet verified.',
                    subTitle: "Please check your email to confirm your email address. Be sure to check your spam folder for our confirmation as this can happen with some email providers!",
+                   enableBackdropDismiss: false,
                    buttons: [{
                      text: 'Ok',
                      role: 'Ok',

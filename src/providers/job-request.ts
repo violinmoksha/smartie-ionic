@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataService } from '../app/app.data';
-// import { AlertController, NavController, NavParams, } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 import { UtilsProvider } from './utils'
 /*
   Generated class for the JobRequstProvider provider.
@@ -15,10 +15,12 @@ export class JobRequestProvider {
   hasUpcomings: boolean = false;
   upcomingCount: number = 0;
   jobRequestState: any;
+  jobScheduleReviewStaus: any;
   public scheduleStatus = {"upComing":"upcoming", "onGoing":'ongoing', "completed":'completed'};
 
-  constructor(public http: HttpClient, public dataService: DataService, public utils: UtilsProvider) {
-    this.jobRequestState = {"fresh": 1, "requested": 2, "accepted": 3, "paidAndUpcoming": 4, "scheduled": 5, "completed": 6}
+  constructor(public http: HttpClient, public dataService: DataService, public utils: UtilsProvider, public events: Events) {
+    this.jobRequestState = {"fresh": 1, "requested": 2, "accepted": 3, "paidAndUpcoming": 4, "scheduled": 5, "completed": 6};
+    this.jobScheduleReviewStaus = {"fresh": 0, "review": 1, "cancelled": 2};
   }
 
   getNotificationCounts(body) {
@@ -103,6 +105,8 @@ export class JobRequestProvider {
     return new Promise(resolve => {
       let activeJobReqs = [];
       notifications.map(notification => {
+        console.log("Notification map");
+        console.log(notification);
         if (notification.jobRequestState != 1) {
           activeJobReqs.push(notification);
         }
@@ -110,12 +114,17 @@ export class JobRequestProvider {
       if (activeJobReqs.length > 0) {
         for (let activeJob of activeJobReqs) {
           notifications.forEach((notification, ix) => {
+            console.log("Foreach and Is");
+            console.log(notification);
+            console.log(ix);
             if (notification.teacherProfile && notification.otherProfile && activeJob.otherProfile) {
               if(notification.jobRequestState != 1){
                 notifications.splice(ix, 1);
               }
             }
             if (ix >= notifications.length - 1) {
+              console.log("active Job Reqs");
+              console.log(activeJobReqs);
               resolve(notifications);
               this.updateScheduleAndReq(this.checkjobScheduleForCompleted(activeJobReqs));
               // this.utils.initAppRating();
@@ -126,7 +135,7 @@ export class JobRequestProvider {
         }
       } else {
         resolve(notifications);
-        console.log(notifications);
+        // console.log(notifications);
       }
     });
   }
@@ -160,7 +169,7 @@ export class JobRequestProvider {
       for (let i=0; i<jobReqs.length; i++) {
         for (let k=0; k<jobReqs[i].schedule.length; k++) {
           for (j=0; j<jobReqs[i].schedule[k].appointmentTimings.length; j++) {
-            if (new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime) > new Date()){
+            if (new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptStartDateTime) > new Date()){
               x = 0;
               break;
             } else if (new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptEndDateTime) < new Date()) {
@@ -208,12 +217,35 @@ export class JobRequestProvider {
       this.dataService.getApi("updateScheduleStatus", {"scheduleIds":jobs.schedules}).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
           console.log(resp);
+          this.events.publish("scheduleCompleted", resp);
           this.resetJobReq(this.checkjobReqForCompleted(jobs.jobReqs));
         }, err => {
           console.log(err);
         })
       })
     }
+  }
+
+  scheduleReviews(notifications){
+    let completedSchedule = [];
+    return new Promise(resolve => {
+      console.log("JobRequest provider schedule reviews");
+      console.log(notifications);
+      for(let notification of notifications){
+        if(notification.schedule){
+          for(let appointment of notification.schedule){
+            console.log("Each appointment");
+            console.log(appointment);
+            if(appointment.scheduleStatus == 'completed' && appointment.reviewStatus == 0){
+              completedSchedule.push(appointment);
+            }
+          }
+        }
+      }
+      if(completedSchedule.length > 0){
+        resolve(completedSchedule);
+      }
+    });
   }
 
   /*handleReviewUpdates(jobReqs) {
