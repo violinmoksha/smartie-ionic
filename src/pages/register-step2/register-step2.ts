@@ -291,6 +291,8 @@ export class RegisterStep2Page {
                this.loading.dismiss();
                alert.present();
              })
+           }, signUpErr => {
+             console.log(signUpErr);
            });
         }, (err) => {
           console.log(err);

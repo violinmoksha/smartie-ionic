@@ -142,6 +142,8 @@ export class SmartieApp {
               this.splashScreen.hide();
             } else {
               this.storage.get("Registration").then(async registration => {
+                console.log("Registration values");
+                console.log(registration);
                 if (registration && registration.step) {
                   if (registration.step === 0) {
                     this.nav.setRoot("RegisterStep1Page", { role: registration.role }).then( () => {
@@ -150,7 +152,7 @@ export class SmartieApp {
                     });
 
                   } else if (registration.step == 1) {
-                    this.nav.setRoot("RegisterStep2Page").then( (appNav) => {
+                    this.nav.setRoot("RegisterStep2Page", { role: registration.role }).then( (appNav) => {
                       this.splashScreen.hide();
                       console.log(appNav);
                     }).catch(err => {

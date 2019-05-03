@@ -37,36 +37,48 @@ export class FileUploaderProvider {
   }
 
   uploadToFCS(filePath, bucketName = null){
-    this.fireAuth.auth.signInAnonymously();
+    // this.fireAuth.auth.signInAnonymously();
     let fileName = filePath.substr(filePath.lastIndexOf('/') + 1),
     path = filePath.substr(0, filePath.lastIndexOf('/'));
     console.log(filePath);
     console.log(fileName);
-    return new Promise((resolve, reject) => {
-      this.fileService.readAsDataURL(path, fileName).then(result => {
-        let base64Result = result.split(',')[1];
-        try{
-          this.fireAuth.auth.signInAnonymously().then(() => {
-            try {
-              const ref = this.fireUpload.ref(bucketName+'/'+fileName);
-              console.log(ref);
-              const task = ref.putString(base64Result, 'base64', { contentType: 'image/jpeg'}).then(async result => {
-                let profilePhotoUrl = await result.ref.getDownloadURL();
-                resolve(profilePhotoUrl);
-              }, (uploadErr) => {
-                console.log(uploadErr);
-              });
-            } catch (putErr) {
-              console.log(putErr);
-            }
-          })
-        } catch (authErr) {
-          console.log(authErr);
-        }
-      }, err => {
-        reject(err)
-      })
-    });
+    try{
+      return new Promise((resolve, reject) => {
+        console.log("File Upload debug");
+        this.fileService.readAsDataURL(path, fileName).then(result => {
+          let base64Result = result.split(',')[1];
+          console.log("File Upload read as date success");
+          try{
+            this.fireAuth.auth.signInAnonymously().then(() => {
+              console.log("Firebase auth signed successfully");
+              try {
+                const ref = this.fireUpload.ref(bucketName+'/'+fileName);
+                console.log(ref);
+                const task = ref.putString(base64Result, 'base64', { contentType: 'image/jpeg'}).then(async result => {
+                  let profilePhotoUrl = await result.ref.getDownloadURL();
+                  resolve(profilePhotoUrl);
+                }, (uploadErr) => {
+                  console.log(uploadErr);
+                });
+              } catch (putErr) {
+                console.log(putErr);
+              }
+            }, firebaseAuthErr => {
+              console.log(firebaseAuthErr);
+              reject(firebaseAuthErr);
+            })
+          } catch (authErr) {
+            console.log(authErr);
+          }
+        }, err => {
+          console.log(err);
+          reject(err)
+        })
+      });
+    } catch (fileError) {
+      console.log(fileError);
+    }
+
   }
 
   /*uploadFileToAWS(filePath) {
