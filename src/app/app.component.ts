@@ -225,7 +225,9 @@ export class SmartieApp {
   initGeolocation(): Promise<any> {
     return new Promise((resolve, reject) => { // only returns promise for testing purpose
       this.geolocation.getCurrentPosition().then(resp => {
-        this.storage.set('phoneGeoposition', JSON.stringify(resp)).then(() => {
+        // Type of resp is GeoPoint and cant be change the type
+        let geoObj = { 'latitude': resp.coords.latitude, longitude: resp.coords.longitude };
+        this.storage.set('phoneGeoposition', geoObj).then(() => {
           resolve(resp);
         }, error => {
           console.info('Error storing phoneGeoposition: ', JSON.stringify(error));
