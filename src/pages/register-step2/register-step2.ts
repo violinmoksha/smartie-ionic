@@ -111,10 +111,14 @@ export class RegisterStep2Page {
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public platform:Platform, public UDID: FetchiOSUDID, public jobReqService: JobRequestProvider) {
     this.analytics.setScreenName("Register-step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
-    console.log("Register Step 2");
-    console.log(navParams)
-    this.form1Values = navParams.data.form1Values;
-    this.role = navParams.data.role;
+    if(!navParams.get("form1Values")){
+      this.storage.get("Registration").then(registerValue => {
+        this.form1Values = registerValue.form1Values;
+      });
+    }else{
+      this.form1Values = navParams.get("form1Values");
+    }
+    this.role = navParams.get("role");
     this.profilePicSrc = './assets/img/user-img-' + this.role + '.png';
     this.partOfSchool = false;
 
@@ -290,6 +294,8 @@ export class RegisterStep2Page {
                });
                this.loading.dismiss();
                alert.present();
+             }).catch(signUperr => {
+               console.log(signUperr);
              })
            }, signUpErr => {
              console.log(signUpErr);
