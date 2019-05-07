@@ -116,8 +116,10 @@ export class RegisterStep2Page {
         this.form1Values = registerValue.form1Values;
       });
     }else{
-      this.form1Values = navParams.get("form1Values");
+      this.form1Values = navParams.data.form1Values;
     }
+    console.log("Nav Params");
+    console.log(navParams);
     this.role = navParams.get("role");
     this.profilePicSrc = './assets/img/user-img-' + this.role + '.png';
     this.partOfSchool = false;
