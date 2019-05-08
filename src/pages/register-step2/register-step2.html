@@ -141,12 +141,13 @@
             <p>{{ rate.text }}</p>
           </ion-slide>
         </ion-slides> -->
-
-        <ion-scroll scrollX="true" style="height: 50px;">
-          <div style="width: 100%; display: flex;" >
-            <button *ngFor="let rate of hourRates" type="button" style="width: 15%;" ion-button class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">{{rate.text}}</button>
-          </div>
-        </ion-scroll>
+        <div class="scroll-select">
+          <ion-scroll scrollX="true" style="height: 50px;">
+            <div style="width: 100%; display: flex;" >
+              <button *ngFor="let rate of hourRates" type="button" style="width: 15%;" ion-button class="button button-clear rate-button" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">{{rate.text}}</button>
+            </div>
+          </ion-scroll>
+        </div>
 
         <div class="teacher-cv">
           <button type="button" class="button button-cv" (click)=uploadDL()>Upload your driving license</button>

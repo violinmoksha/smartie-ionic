@@ -97,6 +97,14 @@ page-register-step2 {
     .scroll-content{
       padding-top: 0!important;
     }
+    .scroll-select{
+      .button{
+        width:auto!important;
+        min-width:40px!important;
+        padding:0!important;
+        text-align:center;
+      }
+    }
     .item-ios.item-block{
       .item-inner{
        padding-right: 0;
@@ -216,5 +224,6 @@ page-register-step2 {
     }
 
     }
+
 
 }

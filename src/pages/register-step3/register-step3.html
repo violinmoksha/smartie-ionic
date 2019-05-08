@@ -34,11 +34,13 @@
         </div>
         <h3 padding>Years of Experience</h3>
 
-        <ion-scroll scrollX="true" class="rate-scroll">
-          <div class="rate-display text-center">
-            <button *ngFor="let year of years" type="button"  ion-button class="button button-clear rate-button text-center" [ngClass]="{'rate-btn-selected': yearExperience == year.value}" (click)="filterYear(year.value)">{{year.text}}</button>
-          </div>
-        </ion-scroll>
+        <div class="scroll-select">
+          <ion-scroll scrollX="true" class="rate-scroll">
+            <div class="rate-display text-center">
+              <button *ngFor="let year of years" type="button"  ion-button class="button button-clear rate-button text-center" [ngClass]="{'rate-btn-selected': yearExperience == year.value}" (click)="filterYear(year.value)">{{year.text}}</button>
+            </div>
+          </ion-scroll>
+        </div>
 
         <ion-list id="resume-list">
           <ion-item class="teacher-certs" *ngFor="let cert of TeacherFilesView">
@@ -91,13 +93,15 @@
       </div>
       <h3>Preferred Hourly Rates</h3>
 
-      <ion-scroll scrollX="true" class="rate-scroll">
-        <div class="rate-display text-center">
-          <button *ngFor="let rate of hourRates" type="button" ion-button outline="(hourlyRate == rate.value)" class="button button-clear rate-button text-center" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">
-            {{rate.text}}
-          </button>
-        </div>
-      </ion-scroll>
+      <div class="scroll-select">
+        <ion-scroll scrollX="true" class="rate-scroll">
+          <div class="rate-display text-center">
+            <button *ngFor="let rate of hourRates" type="button" ion-button outline="(hourlyRate == rate.value)" class="button button-clear rate-button text-center" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">
+              {{rate.text}}
+            </button>
+          </div>
+        </ion-scroll>
+      </div>
 
       <div class="tagline">
         <p>Your Availability</p>
