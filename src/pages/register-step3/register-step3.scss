@@ -2,6 +2,16 @@ page-register-step3 {
   .scroll-content{
     padding-top: 0!important;
   }
+
+  .scroll-select{
+    .button{
+      width:auto!important;
+      min-width:40px!important;
+      padding:0!important;
+      text-align:center;
+    }
+  }
+
   .list-files{
     .item-inner{
       margin-left: 5px!important;
@@ -38,7 +48,7 @@ page-register-step3 {
     }
   }
 
- ion-list{
+  ion-list{
     .teacher-certs{
       border: none;
       background: url(./../assets/img/doc-icon.png) no-repeat;
@@ -121,29 +131,29 @@ page-register-step3 {
     }
 
     .my-class {
-    .toolbar-background-md, .toolbar-background-ios, ion-calendar-week .week-title {
-      background-color: #424242;
-    }
-    .month-box {
-      background: #343434;
-      border-bottom: none;
-      h4 {
-        color: #fff;
+      .toolbar-background-md, .toolbar-background-ios, ion-calendar-week .week-title {
+        background-color: #424242;
       }
-      button.days-btn > p {
-        color: #fff;
+      .month-box {
+        background: #343434;
+        border-bottom: none;
+        h4 {
+          color: #fff;
+        }
+        button.days-btn > p {
+          color: #fff;
+        }
       }
     }
-  }
 
-  .my-cal {
-    button.days-btn.my-day {
-      small {
-        color: #fff;
-        background-color: red;
+    .my-cal {
+      button.days-btn.my-day {
+        small {
+          color: #fff;
+          background-color: red;
+        }
       }
     }
-  }
 
   }
 
@@ -182,97 +192,97 @@ page-register-step3 {
     margin-bottom: 15px;
   }
   .available-date{
-      width: 100%;
-      margin-bottom: 15px;
-      .item-inner{
-        border:0!important;
-        padding-right: 0!important;
-      }
-      .left, .right{
-          float: left;
-          width: 45%;
-          .item-input{
-            padding: 0!important ;
-            position: relative;
-            ::after{
-              content: '';
-              width: 100%;
-              height: 100%;
-              position: absolute;
-              left: 0;
-              top: 0;
-            }
-            .input{
-              border:0!important;
-              padding-left:40px;
-              height:35px;
-              position: relative;
-              border:2px solid #00BC5B!important;
-              width: 100%;
-              padding-left:45px!important;
-              background-image: url(../assets/img/date-icon.png);
-              background-size: 22px;
-              background-position: 7px 4px;
-              background-repeat: no-repeat;
-              .text-input{
-                height: 33px;
-                line-height:33px;
-                font-size: 15px;
-              }
-            }
+    width: 100%;
+    margin-bottom: 15px;
+    .item-inner{
+      border:0!important;
+      padding-right: 0!important;
+    }
+    .left, .right{
+      float: left;
+      width: 45%;
+      .item-input{
+        padding: 0!important ;
+        position: relative;
+        ::after{
+          content: '';
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+        .input{
+          border:0!important;
+          padding-left:40px;
+          height:35px;
+          position: relative;
+          border:2px solid #00BC5B!important;
+          width: 100%;
+          padding-left:45px!important;
+          background-image: url(../assets/img/date-icon.png);
+          background-size: 22px;
+          background-position: 7px 4px;
+          background-repeat: no-repeat;
+          .text-input{
+            height: 33px;
+            line-height:33px;
+            font-size: 15px;
           }
+        }
       }
-      .to-text{
-        float: left;
-        width: 10%;
-        text-align: center;
-        line-height: 50px;
-      }
+    }
+    .to-text{
+      float: left;
+      width: 10%;
+      text-align: center;
+      line-height: 50px;
+    }
   }
 
   .available-time{
-      width: 100%;
-      display: inline-block;
-      .item-inner{
-        border:0!important;
-        padding-right: 0!important;
-      }
-      .left, .right{
-          float: left;
-          width: 45%;
-          .item-datetime{
-            padding: 0!important ;
-            position: relative;
-            .datetime{
-              border:0!important;
-              height:35px;
-              position: relative;
-              border:2px solid #00BC5B!important;
-              width: 100%!important;
-              padding: 0!important;
-              padding-left:45px!important;
-              background-image: url(../assets/img/clock-icon.png);
-              background-size: 22px;
-              background-position: 10px 4px;
-              background-repeat: no-repeat;
-              .datetime-text{
-                height:33px;
-                line-height:33px;
-                font-size: 15px!important;
-              }
-              .item-cover-default{
-                position: absolute;
-                width: 100%;
-              }
-            }
+    width: 100%;
+    display: inline-block;
+    .item-inner{
+      border:0!important;
+      padding-right: 0!important;
+    }
+    .left, .right{
+      float: left;
+      width: 45%;
+      .item-datetime{
+        padding: 0!important ;
+        position: relative;
+        .datetime{
+          border:0!important;
+          height:35px;
+          position: relative;
+          border:2px solid #00BC5B!important;
+          width: 100%!important;
+          padding: 0!important;
+          padding-left:45px!important;
+          background-image: url(../assets/img/clock-icon.png);
+          background-size: 22px;
+          background-position: 10px 4px;
+          background-repeat: no-repeat;
+          .datetime-text{
+            height:33px;
+            line-height:33px;
+            font-size: 15px!important;
           }
+          .item-cover-default{
+            position: absolute;
+            width: 100%;
+          }
+        }
       }
-      .to-text{
-        float: left;
-        width: 10%;
-        text-align: center;
-        line-height: 50px;
-      }
+    }
+    .to-text{
+      float: left;
+      width: 10%;
+      text-align: center;
+      line-height: 50px;
+    }
   }
 
   .lang-level-label {
@@ -321,9 +331,9 @@ ion-calendar-modal{
   }
 }
 .picker-wrapper{
-   .picker-button{
-       color: #00BC5B!important;
-   }
+  .picker-button{
+    color: #00BC5B!important;
+  }
 }
 #resume-list{
   border:0;
