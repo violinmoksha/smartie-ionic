@@ -38,7 +38,7 @@
     </div>
     <div [ngSwitch]="scehduleStatus">
       <div *ngSwitchCase="'ongoing'">
-        <div class="appointment-content" *ngFor="let schedule of schedules">
+        <div class="appointment-content" *ngFor="let schedule of ongoingSchedules">
           <div *ngIf="schedule.scheduleStatus == 'ongoing'">
             <div class="appointment-container">
               <h3>{{ schedule?.owner}}</h3>
@@ -52,14 +52,14 @@
               </div>
             </div>
           </div>
-          <div *ngIf="schedule.scheduleStatus != 'ongoing'" class="text-center">
-            <p>No appointments for you!</p>
-          </div>
+        </div>
+        <div *ngIf="ongoingSchedules?.length == 0" class="text-center">
+          <p>No appointments for you!</p>
         </div>
       </div>
 
       <div *ngSwitchCase="'upcoming'">
-        <div class="appointment-content" *ngFor="let schedule of schedules">
+        <div class="appointment-content" *ngFor="let schedule of upcomingSchedules">
           <div *ngIf="schedule.scheduleStatus == 'upcoming'">
             <div class="appointment-container">
               <h3>{{ schedule?.owner}}</h3>
@@ -73,18 +73,18 @@
               </div>
             </div>
           </div>
-          <div *ngIf="schedule.scheduleStatus != 'upcoming'" class="text-center">
+          <div *ngIf="upcomingSchedules?.length == 0" class="text-center">
             <p>No appointments for you!</p>
           </div>
         </div>
       </div>
 
       <div *ngSwitchCase="'completed'">
-        <div class="appointment-content" *ngFor="let schedule of schedules">
+        <div class="appointment-content" *ngFor="let schedule of completedSchedules">
           <div *ngIf="schedule.scheduleStatus == 'completed'">
             <div class="appointment-container">
               <h3>{{ schedule?.owner}}</h3>
-              <button class="button button-review" [disabled]="schedule.jobRequestId.reviewStatus" (click)="reviewProfile(appointment)" ion-button primary>Review</button>
+              <button class="button button-review" [disabled]="schedule.jobRequestId.reviewStatus" (click)="reviewProfile(schedule)" ion-button primary>Review</button>
             </div>
             <div *ngFor="let appointment of schedule.appointmentTimings">
               <div class="appointment-date"> {{ appointment.startDate }}
@@ -95,7 +95,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="schedule.scheduleStatus != 'completed'" class="text-center">
+          <div *ngIf="completedSchedules?.length == 0" class="text-center">
             <p>No appointments for you!</p>
           </div>
         </div>

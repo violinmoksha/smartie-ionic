@@ -204,6 +204,7 @@ export class JobRequestProvider {
       this.dataService.getApi("setJobReqToFresh", {"jobId":jobIds}).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
           console.log(resp);
+          this.events.publish("scheduleCompleted", resp);
         }, err => {
           console.log(err);
         })
@@ -217,7 +218,6 @@ export class JobRequestProvider {
       this.dataService.getApi("updateScheduleStatus", {"scheduleIds":jobs.schedules}).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
           console.log(resp);
-          this.events.publish("scheduleCompleted", resp);
           this.resetJobReq(this.checkjobReqForCompleted(jobs.jobReqs));
         }, err => {
           console.log(err);

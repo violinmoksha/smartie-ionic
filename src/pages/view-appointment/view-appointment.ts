@@ -21,6 +21,9 @@ export class ViewAppointmentPage {
   private role: any;
   public appointments: any = null;
   public schedules: any = null;
+  public ongoingSchedules: any = [];
+  public upcomingSchedules: any = [];
+  public completedSchedules: any = [];
   public isFetching: boolean = false;
   private profileData: any;
   scehduleStatus: string = "ongoing";
@@ -51,7 +54,6 @@ export class ViewAppointmentPage {
           if (response.result.length > 0) {
             console.log("Got Schedules");
             this.schedules = response.result;
-            console.log(this.schedules)
             for(let schedule of this.schedules){
               if(this.role == 'teacher'){
                 schedule.owner = schedule.otherProfile.fullname;
@@ -74,7 +76,18 @@ export class ViewAppointmentPage {
                 appointment.startTime = parseInt(apptStartTime.split(':')[0]) +':'+ parseInt(apptStartTime.split(':')[1]);
                 appointment.endTime = parseInt(apptEndTime.split(':')[0]) +':'+ parseInt(apptEndTime.split(':')[1]);
               }
+              if(schedule.scheduleStatus == 'ongoing'){
+                this.ongoingSchedules.push(schedule);
+              }else if(schedule.scheduleStatus == 'upcoming'){
+                this.upcomingSchedules.push(schedule);
+              }else if(schedule.scheduleStatus == 'completed'){
+                this.completedSchedules.push(schedule);
+              }
             }
+
+            console.log(this.ongoingSchedules);
+            console.log(this.upcomingSchedules);
+            console.log(this.completedSchedules);
           }
         }, err => {
           console.log(err);
@@ -85,6 +98,7 @@ export class ViewAppointmentPage {
   }
 
   reviewProfile(appointment){
+    console.log(appointment);
     if(this.role == 'teacher'){
       this.profileData = appointment.otherProfile;
     }else{
