@@ -101,7 +101,7 @@ export class JobRequestProvider {
 
   sanitizeNotifications(notifications: any) {
     // TODO: when these are more than just jobReqs
-    // console.log(notifications);
+    console.log(notifications);
     return new Promise(resolve => {
       let activeJobReqs = [];
       notifications.map(notification => {
@@ -180,13 +180,13 @@ export class JobRequestProvider {
 
             if (j == jobReqs[i].schedule[k].appointmentTimings.length - 1){
               if (x == jobReqs[i].schedule[k].appointmentTimings.length) {
-                resetJob.push({id:jobReqs[i].schedule[k].objectId, completed:true});
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, completed:true, scheduleReviewStatus: jobReqs[i].schedule[k].reviewStatus });
                 jobReqs[i].schedule[k].scheduleStatus = this.scheduleStatus.completed;
               } else if (x == -1) {
-                resetJob.push({id:jobReqs[i].schedule[k].objectId, onGoing:true});
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, onGoing:true, scheduleReviewStatus: jobReqs[i].schedule[k].reviewStatus });
                 jobReqs[i].schedule[k].scheduleStatus = this.scheduleStatus.onGoing;
               } else if (x == 0) {
-                resetJob.push({id:jobReqs[i].schedule[k].objectId, upComing:true});
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, upComing:true, scheduleReviewStatus: jobReqs[i].schedule[k].reviewStatus });
                 jobReqs[i].schedule[k].scheduleStatus = this.scheduleStatus.upComing;
               }
             }
@@ -204,7 +204,7 @@ export class JobRequestProvider {
       this.dataService.getApi("setJobReqToFresh", {"jobId":jobIds}).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
           console.log(resp);
-          this.events.publish("scheduleCompleted", resp);
+          // this.events.publish("scheduleCompleted", resp);
         }, err => {
           console.log(err);
         })
@@ -215,14 +215,27 @@ export class JobRequestProvider {
   updateScheduleAndReq(jobs) {
     console.log(jobs);
     if(jobs.schedules.length > 0){
+      let completeSchedules = [];
       this.dataService.getApi("updateScheduleStatus", {"scheduleIds":jobs.schedules}).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(resp => {
+          console.log("updateScheduleStatus");
           console.log(resp);
+
           this.resetJobReq(this.checkjobReqForCompleted(jobs.jobReqs));
+
+          for(let schedule of jobs.schedules){
+            if(schedule.completed && schedule.scheduleReviewStatus == 0){
+        		  completeSchedules.push(schedule);
+            }
+          }
+          console.log(completeSchedules);
+          if(completeSchedules.length > 0){
+            this.events.publish("scheduleCompleted", completeSchedules);
+          }
         }, err => {
           console.log(err);
         })
-      })
+      });
     }
   }
 

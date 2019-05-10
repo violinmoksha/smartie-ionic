@@ -416,6 +416,8 @@ export class SmartieApp {
       this.storage.get("UserProfile").then(userProfile => {
         this.nav.push("ReviewsPage", { params: { "profileData": userProfile.profileData, "role": userProfile.profileData.role } });
       });
+    } else if(page.text == 'Appointments'){
+      this.nav.push("ViewAppointmentPage", { "scheduleStatus": "ongoing" });
     } else {
       if (page.isTabs) {
         this.storage.get("UserProfile").then(userProfile => {
