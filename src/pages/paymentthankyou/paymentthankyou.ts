@@ -17,7 +17,7 @@ import { AnalyticsProvider } from '../../providers/analytics';
 export class PaymentthankyouPage {
 
   private role: any;
-  private pageContent: any;
+  public pageContent: any;
   private fromWhere: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage,private analytics : AnalyticsProvider) {

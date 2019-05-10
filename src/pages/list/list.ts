@@ -41,7 +41,7 @@ export class ListPage {
     this.events.subscribe("scheduleCompleted", schedules => {
       console.log("Event emitter string");
       console.log(schedules);
-      if(schedules.result.length > 0){
+      if(schedules.length > 0){
         let alert = this.alertCtrl.create({
           title: 'Time to review',
           subTitle: `Your jobRequest has been completed give a review`,
@@ -50,12 +50,13 @@ export class ListPage {
               text: 'Review',
               handler: () => {
                 this.navCtrl.push("ViewAppointmentPage", { "scheduleStatus": "completed" });
+                this.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.review)
               }
             },
             {
               text: 'Cancel',
               handler: () => {
-                this.updatedScheduleStatus(schedules.result)
+                this.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.cancelled)
               }
             }
           ]
@@ -65,12 +66,14 @@ export class ListPage {
     })
   }
 
-  updatedScheduleStatus(schedules){
-    this.dataService.getApi(
-      'updateReviewStatusInSchedule',
-      { scheduleIds: schedules, reviewStatus: this.jobRequestProvider.jobScheduleReviewStaus.cancelled }).then(jobSchedules => {
+  updatedScheduleStatus(schedules, reviewStatus){
+    console.log({ scheduleIds: schedules, reviewStatus: reviewStatus });
+
+    this.dataService.getApi('updateReviewStatusInSchedule', { scheduleIds: schedules, reviewStatus: reviewStatus }).then(API => {
+      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(jobSchedules => {
         console.log(jobSchedules);
       })
+    })
   }
 
   ionViewDidEnter() {
@@ -223,7 +226,7 @@ export class ListPage {
           }]
         });
         alert.present();
-      } else */
+      } else
       if (this.notifyCount > 0) {
         let alert = this.alertCtrl.create({
           title: 'Wow, check it out!',
@@ -240,7 +243,7 @@ export class ListPage {
           }]
         });
         alert.present();
-      }
+      }*/
     })
   }
   pushAccepteds() {

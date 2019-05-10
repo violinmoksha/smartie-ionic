@@ -18,9 +18,9 @@ import { AnalyticsProvider } from '../../providers/analytics';
 })
 export class PaymentConfirmPage {
 
-  private totalAmount: number;
-  private CardForm: FormGroup;
-  private userRole: any;
+  totalAmount: number;
+  CardForm: FormGroup;
+  userRole: any;
   private stripeCustomer: any;
   private body: any;
   private params: any;

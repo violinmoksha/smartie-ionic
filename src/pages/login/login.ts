@@ -24,7 +24,7 @@ import { Device } from '@ionic-native/device';
 })
 export class LoginPage {
 
-  private LoginForm: FormGroup;
+  public LoginForm: FormGroup;
   public provisionData: any = {
     profile: { fullname: '' }
   };

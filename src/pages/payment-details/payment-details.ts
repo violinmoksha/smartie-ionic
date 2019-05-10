@@ -18,9 +18,9 @@ import { AnalyticsProvider } from '../../providers/analytics';
 })
 export class PaymentDetailsPage {
 
-  private userRole: string;
-  private fullName: any;
-  private registeredWithStripe: boolean = false;
+  public userRole: string;
+  public fullName: any;
+  public registeredWithStripe: boolean = false;
   private stripeCustomerId: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, public themeableBrowser: ThemeableBrowser, public events: Events) {
@@ -78,7 +78,7 @@ export class PaymentDetailsPage {
               },
               backButtonCanClose: true
             }
-            const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_blank', options);
+            this.themeableBrowser.create(response.result.url, '_blank', options);
 
             /* browser.on('loadstop').subscribe(event => {
               console.log(event);

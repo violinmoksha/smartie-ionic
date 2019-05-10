@@ -21,11 +21,7 @@
       </div>
 
       <h3>Optimal hourly price range</h3>
-      <!-- <ion-slides (ionSlideDidChange)="rateChanged()" slidesPerView="7">
-        <ion-slide (click)="filterRate(rate.value)" [ngClass]="{'active': hourlyRate == rate.value}" *ngFor="let rate of hourRates">
-          <p>{{ rate.text }}</p>
-        </ion-slide>
-      </ion-slides> -->
+
       <ion-scroll scrollX="true" class="rate-scroll">
           <div class="rate-display text-center">
             <button *ngFor="let rate of hourRates" type="button" ion-button outline="(hourlyRate == rate.value)" class="button button-clear rate-button text-center" [ngClass]="{'rate-btn-selected': hourlyRate == rate.value}" (click)="filterRate(rate.value)">{{rate.text}}</button>
@@ -50,11 +46,6 @@
 
       <div *ngIf="userRole == 'teacher'">
         <h3 padding-top>Years of Experience</h3>
-        <!-- <ion-slides id="year-teaching" (ionSlideDidChange)="yearChanged()" slidesPerView="7">
-          <ion-slide (click)="filterYear(year.value)" [ngClass]="{'active': yrsExperience == year.value}" *ngFor="let year of years">
-            <p>{{ year.text }}</p>
-          </ion-slide>
-        </ion-slides> -->
 
         <ion-scroll scrollX="true" class="rate-scroll">
           <div class="rate-display text-center">

@@ -1,6 +1,5 @@
 import { FileUploaderProvider } from './../../providers/file-uploader';
 import { CameraServiceProvider } from './../../providers/camera-service';
-import { Device } from '@ionic-native/device';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Slides, ModalController, LoadingController } from 'ionic-angular';
 import { AbstractControl, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
@@ -30,7 +29,7 @@ export class RegisterStep3Page {
   private loading: any;
   private form1Values: any;
   private form2Values: any;
-  private Step3Form: FormGroup;
+  public Step3Form: FormGroup;
   public TeacherFiles: any;
   public TeacherFilesView: any;
   public fileData: any;
@@ -128,7 +127,7 @@ export class RegisterStep3Page {
     { "text": '250', "value": 250 }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private device: Device, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, public UDID: FetchiOSUDID, public jobReqService: JobRequestProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService, private alertCtrl: AlertController, private modalCtrl: ModalController, public loadingCtrl: LoadingController, private storage: Storage, private analytics: AnalyticsProvider, private cameraService: CameraServiceProvider, private fileUploader: FileUploaderProvider, public UDID: FetchiOSUDID, public jobReqService: JobRequestProvider) {
 
     this.analytics.setScreenName("Register-step3");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step3", "View"));
@@ -218,9 +217,9 @@ export class RegisterStep3Page {
   }
 
   // Method executed when the slides are changed
-  public yearChanged(): void {
-    let currentIndex = this.yearExp.getActiveIndex();
-  }
+    // public yearChanged(): void {
+    //   let currentIndex = this.yearExp.getActiveIndex();
+    // }
 
   public filterRate(rate: number): void {
     // Handle what to do when a category is selected
@@ -228,9 +227,9 @@ export class RegisterStep3Page {
   }
 
   // Method executed when the slides are changed
-  public rateChanged(): void {
-    let currentIndex = this.hourRate.getActiveIndex();
-  }
+  // public rateChanged(): void {
+  //   let currentIndex = this.hourRate.getActiveIndex();
+  // }
 
   updateUserToProvision = async (userId, userProfileId) => {
     this.UDID.getDeviceId().then(async udid => {

@@ -21,15 +21,15 @@ export class JobRequestPage {
   private jobObject: any;
   private teacherObj: any;
   private otherObj: any;
-  private requestSent: boolean;
-  private acceptState: boolean;
+  public requestSent: boolean;
+  public acceptState: boolean;
   private body: any;
-  private submitInProgress: boolean;
+  public submitInProgress: boolean;
   private loading: any;
   private userRole: any;
-  private congrats: boolean;
-  private genericAvatar: string;
-  private loaded: any = false;
+  public congrats: boolean;
+  public genericAvatar: string;
+  public loaded: any = false;
   timeZone: any;
   private appNavCtrl: any;
 

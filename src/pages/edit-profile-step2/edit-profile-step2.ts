@@ -2,14 +2,11 @@ import { IonicPage } from 'ionic-angular';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, Slides, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-import { Camera } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { FileUploaderProvider } from './../../providers/file-uploader';
 import { CameraServiceProvider } from './../../providers/camera-service';
-import { DataService } from '../../app/app.data';
 
-declare let google;
 /**
  * Generated class for the EditProfileStep2Page page.
  *
@@ -33,9 +30,6 @@ export class EditProfileStep2Page {
   photoTaken: boolean;
   cameraUrl: string;
   private schoolCameraData: string;
-  private schoolPhotoSelected: boolean;
-  private schoolPhotoTaken: boolean;
-  private schoolCameraUrl:string;
   photoSelected: boolean;
   passwordChange: boolean = false;
   partOfSchool: string;
@@ -56,7 +50,7 @@ export class EditProfileStep2Page {
     dismissOnPageChange: true
   });
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public actionSheetCtrl: ActionSheetController, public storage: Storage,private analytics : AnalyticsProvider, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public loadingCtrl:LoadingController, private dataService: DataService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public storage: Storage,private analytics : AnalyticsProvider, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public loadingCtrl:LoadingController) {
     this.analytics.setScreenName("EditProfile_step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("EditProfile_step2", "View"));
     this.userRole = navParams.get("userRole");

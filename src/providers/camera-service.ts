@@ -95,8 +95,8 @@ export class CameraServiceProvider {
               this.camera.getPicture(this.getCameraOptions()).then((image) => {
                 // //NOTE: converting(normalizing the URL due to cordova web view plugin upgrade)
                 // image = this.ionicWebView.convertFileSrc(image);
-                let path = image.substring(0, image.lastIndexOf("/"));
-                let name = image.substring(image.lastIndexOf("/")+1);
+                // let path = image.substring(0, image.lastIndexOf("/"));
+                // let name = image.substring(image.lastIndexOf("/")+1);
                 let normalizedFile = window['Ionic']['WebView'].convertFileSrc(image);
                 // this.returnFileAsDataURL(path, name).then(res => {
                 //   console.log(res);

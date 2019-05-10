@@ -10,8 +10,6 @@ import { Storage } from '@ionic/storage';
 import { CalendarModal, CalendarModalOptions, CalendarResult } from "ion2-calendar";
 import { AnalyticsProvider } from '../../providers/analytics';
 
-import Parse from 'parse';
-
 declare let google;
 
 /**
@@ -28,7 +26,7 @@ declare let google;
 export class EditProfileStep3Page {
 
   private userRole: string;
-  private submitInProgress: boolean;
+  public submitInProgress: boolean;
   private loading: any;
   private EditProfilestep3Form: FormGroup;
   private form1Values: any;
@@ -47,7 +45,7 @@ export class EditProfileStep3Page {
   private endTime: any;
   private userData: any;
   private body: any;
-  private timeZone: any;
+  timeZone: any;
   yrsExperience: any;
   public cvFiles: Array<any> = [];
   public uploadedCvFiles: Array<any> = []
@@ -251,11 +249,6 @@ export class EditProfileStep3Page {
     return this.userRole;
   }
 
-  // Method executed when the slides are changed
-  public yearChanged(): void {
-    let currentIndex = this.yearExp.getActiveIndex();
-  }
-
   uploadCv() {
     this.cameraService.getImage().then(async (files) => {
       if (Array.isArray(files)) {
@@ -440,7 +433,5 @@ export class EditProfileStep3Page {
   }
 
   // Method executed when the slides are changed
-  public rateChanged(): void {
-    let currentIndex = this.hourRate.getActiveIndex();
-  }
+
 }

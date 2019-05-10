@@ -19,13 +19,13 @@ import { AnalyticsProvider } from '../../providers/analytics';
 })
 export class AddBankAccountPage {
 
-  private BankAccountForm: FormGroup;
+  public BankAccountForm: FormGroup;
   private params: any;
-  private userRole: any;
+  public userRole: any;
   private profileId: any;
-  private fullName: any;
+  public fullName: any;
   private body: any;
-  private profilePhoto: any;
+  public profilePhoto: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,public storage: Storage, private stripe: Stripe, private dataService: DataService, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.analytics.setScreenName("AddBankAccount");

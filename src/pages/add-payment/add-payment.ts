@@ -7,7 +7,6 @@ import { DataService } from '../../app/app.data';
 import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { UtilsProvider } from '../../providers/utils';
 /**
  * Generated class for the AddPaymentPage page.
  *
@@ -26,17 +25,17 @@ export class AddPaymentPage {
   private fullName: any;
   private email: any;
   public profilePhoto: any;
-  private PaymentForm: FormGroup;
+  public PaymentForm: FormGroup;
   private body: any;
   private profileId: any;
   private userIP: string;
-  private fromWhere: any;
+  public fromWhere: any;
   private authenticationCode: any;
   private params: any;
   private selectedDates: any;
   private scheduled: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser, private analytics: AnalyticsProvider, public platform: Platform, public iaBrowser: InAppBrowser, private utilsService: UtilsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser, private analytics: AnalyticsProvider, public platform: Platform, public iaBrowser: InAppBrowser) {
     this.analytics.setScreenName("AddPayment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("AddPayment", "View"));
 

@@ -20,8 +20,8 @@ import { AnalyticsProvider } from '../../providers/analytics';
 export class RegisterStep1Page {
 
   private role: any;
-  private Step1Form: FormGroup;
-  private notNewEmail: boolean;
+  public Step1Form: FormGroup;
+  public notNewEmail: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataService: DataService, public loadingCtrl: LoadingController,public analytics : AnalyticsProvider, public storage: Storage) {
 
