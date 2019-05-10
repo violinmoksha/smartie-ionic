@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ActionSheetController, Slides, LoadingController, AlertController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Camera } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { DataService } from '../../app/app.data';
@@ -9,7 +8,6 @@ import { FetchiOSUDID } from '../../providers/fetch-ios-udid';
 import { JobRequestProvider } from '../../providers/job-request'
 import { FileUploaderProvider } from './../../providers/file-uploader';
 import { CameraServiceProvider } from './../../providers/camera-service';
-import { Device } from '@ionic-native/device';
 
 declare let google;
 /**
@@ -29,20 +27,16 @@ export class RegisterStep2Page {
   private Step2Form: FormGroup;
   private form1Values: any;
   private role: any;
-  private profilePicSrc: string;
+  public profilePicSrc: string;
   public schoolPicSrc: string = './assets/img/school-img.png';
   private cameraData: string;
   public displayCameraImg: string;
   private schoolCameraData: string;
-  private photoTaken: boolean;
-  private schoolPhotoTaken: boolean;
-  private cameraUrl: string;
-  private schoolCameraUrl: string;
-  private photoSelected: boolean;
-  private schoolPhotoSelected: boolean;
-  private partOfSchool: any;
-  private titlePlaceHolder: string;
-  private messagePlaceHolder: string;
+  public photoTaken: boolean;
+  public photoSelected: boolean;
+  public partOfSchool: any;
+  public titlePlaceHolder: string;
+  public messagePlaceHolder: string;
   @ViewChild(Slides) studentSchool: Slides;
   @ViewChild(Slides) hourRate: Slides;
   private hourlyRate: any;
@@ -108,7 +102,7 @@ export class RegisterStep2Page {
     dismissOnPageChange: true
   });
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private camera: Camera, private storage: Storage, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private dataService: DataService, private device: Device, private alertCtrl: AlertController, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public platform:Platform, public UDID: FetchiOSUDID, public jobReqService: JobRequestProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private storage: Storage, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, private dataService: DataService, private alertCtrl: AlertController, public cameraService:CameraServiceProvider, public fileUploader:FileUploaderProvider, public platform:Platform, public UDID: FetchiOSUDID, public jobReqService: JobRequestProvider) {
     this.analytics.setScreenName("Register-step2");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Register-step2", "View"));
     if(!navParams.get("form1Values")){

@@ -21,7 +21,7 @@ export class SchedulePage {
   private userRole: string;
   timeZone: any;
 
-  private genericAvatar: string;
+  public genericAvatar: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public modalCtrl: ModalController, public popoverCtrl: PopoverController, private analytics: AnalyticsProvider) {
     this.analytics.setScreenName("Schedule");

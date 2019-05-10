@@ -22,7 +22,7 @@ export class TimeSelectorMultiPage {
   loggedRole: any;
   startTime: any = [];
   endTime: any = [];
-  private readyToPay: boolean = false;
+  readyToPay: boolean = false;
   grossAmount: number = 0;
   grossHours: number = 0;
   timeZone: any;

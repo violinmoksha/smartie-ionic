@@ -1,5 +1,3 @@
-//var fse = require('fs-extra');
-import fse from 'fs-extra';
 
 export class Constants {
   public static API_ENDPOINTS = {
