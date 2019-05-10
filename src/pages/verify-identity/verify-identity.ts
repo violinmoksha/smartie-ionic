@@ -18,12 +18,12 @@ import { AnalyticsProvider } from '../../providers/analytics';
 })
 export class VerifyIdentityPage {
 
-  private VerifyIdentityForm: FormGroup;
-  private userRole: string;
-  private fullName: any;
+  VerifyIdentityForm: FormGroup;
+  userRole: string;
+  fullName: any;
   private params: any;
   private body: any;
-  private profilePhoto: any;
+  profilePhoto: any;
   private profileId: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private analytics : AnalyticsProvider,private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {

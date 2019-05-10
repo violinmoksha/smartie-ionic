@@ -13,9 +13,10 @@ export class TabsPage {
   tab1Root: any = 'SmartieSearch';
   tab2Root: any = 'PaymentDetailsPage';
   tab3Root: any = 'MyprofilePage';
-  tab4Root: any = 'NotificationFeedPage';
+  // tab4Root: any = 'NotificationFeedPage';
+  tab4Root: any = 'ViewAppointmentPage';
   tab5Root: any = 'ChatRoomsPage';
-  private role: string;
+  role: string;
 
   myIndex: number;
 

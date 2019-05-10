@@ -22,7 +22,7 @@ export class NotificationFeedPage {
   private userRole: any;
   private profileId: any;
   public apiCompletedCount: number = 0;
-  private params: any;
+  public params: any;
 
   constructor(public navCtrl: NavController, private dataService: DataService, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController, private analytics: AnalyticsProvider) {
     this.dataService.currentPage = "NotificationFeedPage";

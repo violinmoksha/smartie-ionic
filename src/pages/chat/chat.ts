@@ -1,4 +1,3 @@
-import { FileTransfer } from '@ionic-native/file-transfer';
 import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
@@ -23,7 +22,6 @@ export class ChatPage {
   private params: any;
   public role: any;
   private newmessage: any;
-  private allmessages: any = [];
   public chatAccess: boolean = true;
   studentProfileId: any;
   teacherProfileId: any;

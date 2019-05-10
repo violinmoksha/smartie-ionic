@@ -19,12 +19,12 @@ import { JobRequestProvider } from '../../providers/job-request';
 })
 export class PaymentPage {
 
-  private userRole: string;
+  userRole: string;
   public genericAvatar: string = '/assets/imgs/user-img-teacher.png';
-  private totalHours: number;
+  totalHours: number;
   private totalAmount: number;
   private params: any;
-  private CardForm: FormGroup;
+  public CardForm: FormGroup;
   private stripeCustomerCard: any = { "last4": '', "exp_month": '', "exp_year": '' };
   private stripeCustomer: any;
   private body: any;

@@ -51,9 +51,7 @@ export class SmartieApp {
     public imagePicker: ImagePicker,
     public fetchiOSUDID: FetchiOSUDID,
     public crashlytics: FirebaseCrashlyticsProvider,
-    private utilsService: UtilsProvider,
-    private fileUploader: FileUploaderProvider,
-    private app: App) {
+    private utilsService: UtilsProvider) {
     this.dataService.currentPage = "Root";
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -82,7 +80,7 @@ export class SmartieApp {
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 1, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage', isTabs: false },
           { iconName: 'paper-plane', text: 'Reviews', pageName: 'ReviewsPage' },
-          { iconName: 'alarm', text: 'Appointments', pageName: 'ViewAppointmentPage' },
+          { iconName: 'md-notifications', text: 'Notifications', pageName: 'NotificationFeedPage' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
       } else {
@@ -94,7 +92,7 @@ export class SmartieApp {
           { iconName: 'settings', text: 'Profile Settings', pageName: 'EditProfilePage', index: 2, pageTitle: 'Edit User' },
           { iconName: 'paper', text: 'Give Feedback', pageName: 'FeedbackPage' },
           { iconName: 'paper-plane', text: 'Reviews', pageName: 'ReviewsPage' },
-          { iconName: 'alarm', text: 'Appointments', pageName: 'ViewAppointmentPage' },
+          { iconName: 'md-notifications', text: 'Notifications', pageName: 'NotificationFeedPage' },
           { iconName: 'log-out', text: 'Logout', pageName: '' }
         ];
       }

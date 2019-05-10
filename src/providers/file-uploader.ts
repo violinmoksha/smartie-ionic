@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { DataService } from '../app/app.data';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { File } from '@ionic-native/file';
-import { Constants } from './../app/app.constants';
-import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 import Parse from 'parse';
@@ -54,7 +52,7 @@ export class FileUploaderProvider {
               try {
                 const ref = this.fireUpload.ref(bucketName+'/'+fileName);
                 console.log(ref);
-                const task = ref.putString(base64Result, 'base64', { contentType: 'image/jpeg'}).then(async result => {
+                ref.putString(base64Result, 'base64', { contentType: 'image/jpeg'}).then(async result => {
                   let profilePhotoUrl = await result.ref.getDownloadURL();
                   resolve(profilePhotoUrl);
                 }, (uploadErr) => {

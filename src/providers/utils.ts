@@ -198,7 +198,7 @@ public studentBadgeLevel = [
                 backButtonCanClose: true
               }
               setTimeout(()=>{
-                const browser: ThemeableBrowserObject = this.themeableBrowser.create(response.result.url, '_blank', options);
+                this.themeableBrowser.create(response.result.url, '_blank', options);
               },500);
             }
             // may need to return here for Tests???

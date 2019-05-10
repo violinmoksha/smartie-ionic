@@ -28,31 +28,23 @@ export class SmartieSearch {
   map: any;
   bounds: any;
   private role: string;
-  private fromWhere: string;
+  public fromWhere: string;
   private userIcon: string;
-  private profilePhoto: string;
+  public profilePhoto: string;
   private _contentTitle: string;
   private _contentMessage: string;
-  private upcomingsCount: any = 0;
   private latLngUser: any;
   private marker: any;
-  private body: any;
-  private profilePhotoData: any;
-  private schoolPhotoDataUrl: any;
-  private teacherCv: any;
-  private markerCount: Array<number> = []
+  public body: any;
   private radiusInKm: number = 50;
   private extendBound: boolean = false;
   private randomLocation: any;
   public notifications: any;
   public accepteds: any;
-  private currentProfile: any;
+  public currentProfile: any;
   public userLocation: any;
-  private notifyCount: any = 0;
-  private requestedsCount: any = 0;
-  private acceptedsCount: any = 0;
+  public notifyCount: any = 0;
 
-  private hasUpcomings: boolean = false;
   public markers: Array<any> = [];
   // TODO: autopopulate input with user's location
   // private reverseGeocodedLocation: string;
@@ -264,12 +256,12 @@ export class SmartieSearch {
 
           if(extendBound) {
             // Extends our bounds to show US map
-            var USBoundLocation = [
+            let USBoundLocation = [
               [39.952583, -75.165222],
               [34.052235, -118.243683]
             ];
             if(!fromIntervals) {
-              for (var i = 0; i < USBoundLocation.length; i++) {
+              for (let i = 0; i < USBoundLocation.length; i++) {
                 let addonLatLng = new google.maps.LatLng(USBoundLocation[i][0], USBoundLocation[i][1]);
                 this.bounds.extend(addonLatLng);
               }
@@ -291,12 +283,12 @@ export class SmartieSearch {
         }
       }else{
         // Extends our bounds to show US map
-        var USBoundLocation = [
+        let USBoundLocation = [
           [39.952583, -75.165222],
           [34.052235, -118.243683]
         ];
         if (!fromIntervals) {
-          for (var i = 0; i < USBoundLocation.length; i++) {
+          for (let i = 0; i < USBoundLocation.length; i++) {
             let addonLatLng = new google.maps.LatLng(USBoundLocation[i][0], USBoundLocation[i][1]);
             this.bounds.extend(addonLatLng);
           }

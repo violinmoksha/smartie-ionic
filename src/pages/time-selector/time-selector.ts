@@ -16,11 +16,11 @@ import { IonicPage, NavController, NavParams, AlertController, ViewController } 
 export class TimeSelectorPage {
 
   private selectedDate: string;
-  private readyToPay: boolean = false;
+  public readyToPay: boolean = false;
   private totalHours: any;
   private totalAmount: number;
   private params: any;
-  private loggedRole: any;
+  public loggedRole: any;
 
   public event = {
     timeStarts: '10:00',
