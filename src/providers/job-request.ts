@@ -20,7 +20,7 @@ export class JobRequestProvider {
 
   constructor(public http: HttpClient, public dataService: DataService, public utils: UtilsProvider, public events: Events) {
     this.jobRequestState = {"fresh": 1, "requested": 2, "accepted": 3, "paidAndUpcoming": 4, "scheduled": 5, "completed": 6};
-    this.jobScheduleReviewStaus = {"fresh": 0, "review": 1, "cancelled": 2};
+    this.jobScheduleReviewStaus = {"fresh": 0, "completed": 1, "cancelled": 2};
   }
 
   getNotificationCounts(body) {
@@ -99,14 +99,22 @@ export class JobRequestProvider {
     })
   }
 
+  updatedScheduleStatus(schedules, reviewStatus){
+    console.log({ scheduleIds: schedules, reviewStatus: reviewStatus });
+
+    this.dataService.getApi('updateReviewStatusInSchedule', { scheduleIds: schedules, reviewStatus: reviewStatus }).then(API => {
+      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(jobSchedules => {
+        console.log(jobSchedules);
+      })
+    })
+  }
+
   sanitizeNotifications(notifications: any) {
     // TODO: when these are more than just jobReqs
-    console.log(notifications);
+    // console.log(notifications);
     return new Promise(resolve => {
       let activeJobReqs = [];
       notifications.map(notification => {
-        console.log("Notification map");
-        console.log(notification);
         if (notification.jobRequestState != 1) {
           activeJobReqs.push(notification);
         }
@@ -114,9 +122,6 @@ export class JobRequestProvider {
       if (activeJobReqs.length > 0) {
         for (let activeJob of activeJobReqs) {
           notifications.forEach((notification, ix) => {
-            console.log("Foreach and Is");
-            console.log(notification);
-            console.log(ix);
             if (notification.teacherProfile && notification.otherProfile && activeJob.otherProfile) {
               if(notification.jobRequestState != 1){
                 notifications.splice(ix, 1);
@@ -161,7 +166,6 @@ export class JobRequestProvider {
 
   checkjobScheduleForCompleted(jobReqs) {
     console.log(jobReqs);
-    let x = 0;
     let resetJob = [];
 
     let j;
@@ -169,6 +173,7 @@ export class JobRequestProvider {
       for (let i=0; i<jobReqs.length; i++) {
         for (let k=0; k<jobReqs[i].schedule.length; k++) {
           for (j=0; j<jobReqs[i].schedule[k].appointmentTimings.length; j++) {
+            let x = 0;
             if (new Date(jobReqs[i].schedule[k].appointmentTimings[j].apptStartDateTime) > new Date()){
               x = 0;
               break;
@@ -179,6 +184,7 @@ export class JobRequestProvider {
             }
 
             if (j == jobReqs[i].schedule[k].appointmentTimings.length - 1){
+              console.log("Value of : " + x);
               if (x == jobReqs[i].schedule[k].appointmentTimings.length) {
                 resetJob.push({id:jobReqs[i].schedule[k].objectId, completed:true, scheduleReviewStatus: jobReqs[i].schedule[k].reviewStatus });
                 jobReqs[i].schedule[k].scheduleStatus = this.scheduleStatus.completed;

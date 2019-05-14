@@ -54,6 +54,34 @@ export class SmartieSearch {
     this.analytics.setScreenName("Smartie-search");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Smartie-search", "View"));
 
+    // Review status popup
+    this.events.subscribe("scheduleCompleted", schedules => {
+      console.log("Event emitter string");
+      console.log(schedules);
+      if(schedules.length > 0){
+        let alert = this.alertCtrl.create({
+          title: 'Time to review',
+          subTitle: `Your jobRequest has been completed give a review`,
+          buttons: [
+            {
+              text: 'Review',
+              handler: () => {
+                this.navCtrl.push("ViewAppointmentPage", { "scheduleStatus": "completed" });
+                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.completed)
+              }
+            },
+            {
+              text: 'Cancel',
+              handler: () => {
+                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.cancelled)
+              }
+            }
+          ]
+        });
+        alert.present();
+      }
+    })
+
     this.role = navParams.get('role');
 
     let options = {
