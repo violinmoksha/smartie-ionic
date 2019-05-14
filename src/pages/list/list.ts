@@ -50,29 +50,19 @@ export class ListPage {
               text: 'Review',
               handler: () => {
                 this.navCtrl.push("ViewAppointmentPage", { "scheduleStatus": "completed" });
-                this.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.review)
+                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.completed)
               }
             },
             {
               text: 'Cancel',
               handler: () => {
-                this.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.cancelled)
+                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.cancelled)
               }
             }
           ]
         });
         alert.present();
       }
-    })
-  }
-
-  updatedScheduleStatus(schedules, reviewStatus){
-    console.log({ scheduleIds: schedules, reviewStatus: reviewStatus });
-
-    this.dataService.getApi('updateReviewStatusInSchedule', { scheduleIds: schedules, reviewStatus: reviewStatus }).then(API => {
-      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(jobSchedules => {
-        console.log(jobSchedules);
-      })
     })
   }
 

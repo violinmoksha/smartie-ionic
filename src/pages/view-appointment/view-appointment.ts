@@ -54,6 +54,10 @@ export class ViewAppointmentPage {
           if (response.result.length > 0) {
             console.log("Got Schedules");
             this.schedules = response.result;
+            this.ongoingSchedules = [];
+            this.upcomingSchedules = [];
+            this.completedSchedules = [];
+
             for(let schedule of this.schedules){
               if(this.role == 'teacher'){
                 schedule.owner = schedule.otherProfile.fullname;
