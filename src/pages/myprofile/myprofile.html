@@ -61,7 +61,7 @@
 
       <div class="job-availablity-details" *ngIf="role == 'teacher'">
         <h3>Available Timings</h3>
-        <p>{{ user.UTCStartTime }} to {{ user.UTCEndTime}} ({{ timeZone }}) on {{ user.UTCstartDate}} to {{ user.UTCendDate}}</p>
+         <p>{{ user.specificUser?.UTCStartTime }} to {{ user.specificUser?.UTCEndTime}} ({{ timeZone }}) on {{ user.specificUser?.UTCstartDate}} to {{ user.specificUser?.UTCendDate}}</p>
       </div>
   </div>
   <div padding>
