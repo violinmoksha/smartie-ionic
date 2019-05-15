@@ -47,7 +47,7 @@ export class PaymentDetailsPage {
 
   viewStripeDashboard() {
     let loading = this.loadingCtrl.create({
-      content: 'Creating Stripe Account...'
+      content: 'Fetching Stripe Account...'
     });
     loading.present();
 

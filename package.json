@@ -43,6 +43,7 @@
     "@ionic-native/in-app-browser": "^4.7.0",
     "@ionic-native/location-accuracy": "^4.20.0",
     "@ionic-native/network": "^4.16.0",
+    "@ionic-native/open-native-settings": "^4.20.0",
     "@ionic-native/push": "^4.9.0",
     "@ionic-native/secure-storage": "^4.12.0",
     "@ionic-native/splash-screen": "^4.11.0",
@@ -57,6 +58,7 @@
     "cordova-android-play-services-gradle-release": "^1.4.6",
     "cordova-fabric-plugin": "^1.1.14-dev",
     "cordova-ios": "4.5.5",
+    "cordova-open-native-settings": "1.5.2",
     "cordova-plugin-advanced-http": "^2.0.9",
     "cordova-plugin-apprate": "^1.4.0",
     "cordova-plugin-camera": "^4.0.3",
@@ -161,7 +163,8 @@
         "FABRIC_API_SECRET": "ff3aa846eaca010cf8a04051345addbcc41f45b8ef2251e6e602afaa745ea3e6"
       },
       "cordova-plugin-request-location-accuracy": {},
-      "cordova-plugin-apprate": {}
+      "cordova-plugin-apprate": {},
+      "cordova-open-native-settings": {}
     },
     "platforms": [
       "android",

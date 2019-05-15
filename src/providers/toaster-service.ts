@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ToastController } from 'ionic-angular';
+import { ToastController, AlertController, Events } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 /*
   Generated class for the ToasterServiceProvider provider.
 
@@ -12,7 +13,7 @@ export class ToasterServiceProvider {
 
   public isInternetConnected: Boolean = true;
 
-  constructor(public toastCtrl: ToastController, private network: Network) {
+  constructor(public toastCtrl: ToastController, private network: Network, private openNativeSettings: OpenNativeSettings, private alertCtrl: AlertController, private events: Events) {
   }
 
   presentToast() {
@@ -31,6 +32,29 @@ export class ToasterServiceProvider {
       closeButtonText: 'OK'
     });
 
+    toast.onDidDismiss(() => {
+      // this.openNativeSettings.open("wifi");
+      let alert = this.alertCtrl.create({
+        title: "Select connection type",
+        subTitle: "Choose your connection type",
+        buttons: [
+          {
+            text: 'Wifi',
+            handler: () => {
+              this.openNativeSettings.open("wifi");
+            }
+          },
+          {
+            text: 'Mobile network',
+            handler: () => {
+              this.openNativeSettings.open("network");
+            }
+          }
+        ]
+      });
+      alert.present();
+    });
+
     // initial check for network detection
     if(this.network.Connection.NONE === this.network.type){
       toast.present();
@@ -43,6 +67,7 @@ export class ToasterServiceProvider {
     this.network.onConnect().subscribe(() => {
       this.isInternetConnected = true;
       toast.dismiss();
+      this.events.publish("onNetworkConnection", true);
     })
   }
 

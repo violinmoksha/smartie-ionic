@@ -69,6 +69,16 @@ export class SmartieApp {
       });
 
     });
+
+    // Init app on network connection
+    this.events.subscribe("onNetworkConnection", connectionData => {
+      if(connectionData){
+        this.initializeApp();
+        // console.log(this.nav.getActive());
+        // this.nav.setRoot(this.nav.getActive());
+      }
+    });
+
     this.events.subscribe("buttonsLoad", eventData => {
       console.log(eventData);
       //Tabs index 0 is always set to search
@@ -184,10 +194,10 @@ export class SmartieApp {
 
   initializeApp() {
       if (this.platform.is('cordova')) {
+        this.tosterService.internetListener();
         // this.statusBar.styleDefault();
         this.statusBar.styleLightContent();
         this.initGeolocation();
-        this.tosterService.internetListener();
         this.setUserName();
         this.utilsService.getSelectedCity();
         this.grantNotificationPermission();
