@@ -48,6 +48,7 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
 import { AppRate } from '@ionic-native/app-rate';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 @NgModule({
   declarations: [
     SmartieApp
@@ -104,7 +105,8 @@ import { AppRate } from '@ionic-native/app-rate';
     JobRequestProvider,
     LocationAccuracy,
     { provide: StorageBucket, useValue: 'smartie-212716.appspot.com' },
-    AppRate
+    AppRate,
+    OpenNativeSettings
   ]
 })
 export class AppModule { }
