@@ -164,8 +164,8 @@
       "cordova-plugin-apprate": {}
     },
     "platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ]
   },
   "engines": {

@@ -19,12 +19,12 @@ export class FetchiOSUDID {
       // NB: same keystore name as in app.data.ts, to keep us clean in keychain
       this.secureStorage.create('smartieKeys').then((ss: SecureStorageObject) => {
         /* remove == Illuminati (or Us testing this) */
-        //ss.remove('iOSUDID').then(async data => {
+        ss.remove('iOSUDID').then(async data => {
           this.fetchInner(ss, newUDID, resolve, reject);
-        //}, error => {
+        }, error => {
           // nothing to remove because we were already testing Illuminati remove
-          //this.fetchInner(ss, newUDID, resolve, reject);
-        //});
+          this.fetchInner(ss, newUDID, resolve, reject);
+        });
       });
     });
   }

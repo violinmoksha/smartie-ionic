@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, Events, Tabs, App } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -14,7 +14,6 @@ import { FetchiOSUDID } from '../providers/fetch-ios-udid';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { FirebaseCrashlyticsProvider } from '../providers/firebase-crashlytics';
 import { UtilsProvider } from '../providers/utils';
-import { FileUploaderProvider } from '../providers/file-uploader';
 
 const Parse = require('parse');
 

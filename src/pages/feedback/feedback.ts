@@ -84,7 +84,6 @@ export class FeedbackPage {
       let params = { feedBack: this.feedbackValue, profileId: this.profileData.objectId, userId: this.userData.objectId, attachment: null, userName: this.profileData.fullname, email: this.userData.email };
 
       if (this.userScreenshotsView.length > 0) {
-        let filePromises = [];
         /*for (let i = 0; i < this.userScreenshotsView.length; i++) {
           filePromises.push(this.fileUploader.uploadFile(this.userScreenshotsView[i], 'png'));
         }*/

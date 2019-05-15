@@ -1,6 +1,6 @@
 import { IonicPage } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AnalyticsProvider } from '../../providers/analytics';
 import { DataService } from '../../app/app.data';
@@ -24,7 +24,7 @@ export class NotificationFeedPage {
   public apiCompletedCount: number = 0;
   public params: any;
 
-  constructor(public navCtrl: NavController, private dataService: DataService, public navParams: NavParams, private storage: Storage, private alertCtrl: AlertController, private analytics: AnalyticsProvider) {
+  constructor(public navCtrl: NavController, private dataService: DataService, public navParams: NavParams, private storage: Storage, private analytics: AnalyticsProvider) {
     this.dataService.currentPage = "NotificationFeedPage";
     this.analytics.setScreenName("NotificationFeed");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("NotificationFeed", "View"));

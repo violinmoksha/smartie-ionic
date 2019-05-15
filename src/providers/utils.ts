@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { DataService } from '../app/app.data';
 import { LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
-import { ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject } from '@ionic-native/themeable-browser';
+import { ThemeableBrowser, ThemeableBrowserOptions } from '@ionic-native/themeable-browser';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { AppRate } from '@ionic-native/app-rate';
 /*
