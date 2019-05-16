@@ -95,8 +95,8 @@ export class MobileVerificationPage {
           phoneParams
         ).then(async API => {
           this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(async response => {
+            //loading.dismiss();
             if (response.result == false) {
-              loading.dismiss();
               this.notNewPhone = true;
               return await false;
             } else {
@@ -118,6 +118,7 @@ export class MobileVerificationPage {
               });
             }
           }, e => {
+            loading.dismiss();
             console.log(e);
           })
         });

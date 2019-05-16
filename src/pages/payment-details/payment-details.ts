@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Events, ViewController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
 import { ThemeableBrowser, ThemeableBrowserOptions } from '@ionic-native/themeable-browser';
@@ -22,10 +22,15 @@ export class PaymentDetailsPage {
   public fullName: any;
   public registeredWithStripe: boolean = false;
   private stripeCustomerId: any;
+  private notification: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, public themeableBrowser: ThemeableBrowser, public events: Events) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private analytics: AnalyticsProvider, public themeableBrowser: ThemeableBrowser, public events: Events, private viewCtrl: ViewController) {
     this.analytics.setScreenName("PaymentDetails");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("PaymentDetails", "View"));
+
+    this.notification = this.navParams.get("notification") ? this.navParams.get("notification") : "";
+    console.log(this.notification);
+
   }
 
   ionViewDidEnter() {
@@ -42,7 +47,8 @@ export class PaymentDetailsPage {
 
 
   addPayment() {
-    this.navCtrl.push('AddPaymentPage', { fromWhere: 'teacher' });
+    this.viewCtrl.dismiss();
+    this.navCtrl.push('AddPaymentPage', { fromWhere: 'teacher', notification: this.notification });
   }
 
   viewStripeDashboard() {

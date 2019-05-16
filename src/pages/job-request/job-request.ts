@@ -303,9 +303,9 @@ export class JobRequestPage {
     });
     this.loading.present();
     this.storage.get("UserProfile").then(roleProfile => {
-      if (this.userRole == 'teacher' && (roleProfile.profileData.stripeCustomer == undefined || roleProfile.profileData.stripeCustomer == '')) {
+      /*if (this.userRole == 'teacher' && (roleProfile.profileData.stripeCustomer == undefined || roleProfile.profileData.stripeCustomer == '')) {
         this.checkStripeAccount(roleProfile);
-      } else {
+      } else {*/
         if (this.userRole === 'teacher') {
           this.body = { teacherProfileId: roleProfile.profileData.objectId, otherProfileId: this.otherObj.objectId, requestSent: true, acceptState: true, paidAndUpcoming: false, role: this.userRole, jobRequestState: this.jobRequestProvider.jobRequestState.accepted };
         } else {
@@ -330,7 +330,7 @@ export class JobRequestPage {
             });
           });
         });
-      }
+      // }
     });
   }
 
