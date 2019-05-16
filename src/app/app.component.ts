@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, Events } from 'ionic-angular';
+import { Nav, Platform, Events, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -50,7 +50,8 @@ export class SmartieApp {
     public imagePicker: ImagePicker,
     public fetchiOSUDID: FetchiOSUDID,
     public crashlytics: FirebaseCrashlyticsProvider,
-    private utilsService: UtilsProvider) {
+    private utilsService: UtilsProvider,
+    private alertCtrl: AlertController) {
     this.dataService.currentPage = "Root";
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -325,7 +326,14 @@ export class SmartieApp {
               console.log("Coming inside jobrequest toaster");
               let toasterTitle = this.platform.is('ios') ? notification.aps.alert.body : notification.body;
               this.tosterService.chatToast(toasterTitle, "Go", () => {
-                this.pushJobRequestPage(notification);
+                this.storage.get("UserProfile").then(userProfile => {
+                  console.log(userProfile);
+                  if (this.role == 'teacher' && (userProfile.profileData.stripeCustomer == undefined || userProfile.profileData.stripeCustomer == '')) {
+                    this.checkStripeAccount(userProfile, notification);
+                  }else{
+                    this.pushJobRequestPage(notification);
+                  }
+                })
               });
             }
           }
@@ -456,5 +464,20 @@ export class SmartieApp {
       // android, persistant UDID
       this.utilsService.updateFcmStatus(this.device.uuid, 0);
     }
+  }
+
+  checkStripeAccount(profile, notification) {
+    let alert = this.alertCtrl.create({
+      title: 'Time to add your Stripe Account!',
+      subTitle: `You must add a Stripe Account in order to receive payments from students! We will send you to Payment Details now in order to gather your information.`,
+      enableBackdropDismiss: false,
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          this.nav.push("PaymentDetailsPage", { notification: notification});
+        }
+      }]
+    });
+    alert.present();
   }
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform, ViewController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
@@ -34,13 +34,18 @@ export class AddPaymentPage {
   private params: any;
   private selectedDates: any;
   private scheduled: any;
+  private notification: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser, private analytics: AnalyticsProvider, public platform: Platform, public iaBrowser: InAppBrowser) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, private dataService: DataService, private loadingCtrl: LoadingController, private themeableBrowser: ThemeableBrowser, private analytics: AnalyticsProvider, public platform: Platform, public iaBrowser: InAppBrowser, private viewCtrl: ViewController) {
     this.analytics.setScreenName("AddPayment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("AddPayment", "View"));
 
     this.fromWhere = navParams.get("fromWhere");
     this.params = navParams.get("params");
+
+    this.notification = this.navParams.get("notification") ? this.navParams.get("notification") : "";
+    console.log(this.notification);
+
     this.PaymentForm = new FormGroup({
       emailPayment: new FormControl('', Validators.required),
       emailConfirm: new FormControl('yes'),
@@ -188,7 +193,12 @@ export class AddPaymentPage {
             if(this.userRole !== 'teacher'){
               this.pushPaymentPage(this.params);
             }else{
-              this.navCtrl.push('PaymentDetailsPage', { stripeAccount: response.result });
+              if(this.notification != ""){
+                this.viewCtrl.dismiss();
+                this.pushJobRequestPage(this.notification);
+              }else{
+                this.navCtrl.push('PaymentDetailsPage', { stripeAccount: response.result });
+              }
             }
           })
         }, err => {
@@ -197,6 +207,29 @@ export class AddPaymentPage {
         });
       });
     })
+  }
+
+  pushJobRequestPage(notification){
+    let job = JSON.parse(notification.extraData);
+    this.dataService.getApi(
+      'getJobRequestById',
+      { "jobRequestId": job.jobId }
+    ).then(API => {
+      this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
+        response.result.role = this.userRole != 'teacher' ? response.result.teacherProfile.role : response.result.otherProfile.role;
+        if(response.result.acceptState == true){
+          response.result.fromWhere = "acceptedJobs";
+        }else if(response.result.requestSent == true){
+          response.result.fromWhere = "requestSentJobs";
+        }
+        this.navCtrl.push("JobRequestPage", { params: response.result });
+      }, err => {
+        // TODO: handle this in UI
+        console.info('0: ' + err);
+      })
+    }, err => {
+      console.info('sub-0: ' + err);
+    });
   }
 
   pushPaymentPage(params){
