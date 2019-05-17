@@ -69,9 +69,11 @@ export class ViewAppointmentPage {
               let apptStartDate, apptStartTime, apptEndDate, apptEndTime;
               for(let appointment of schedule.appointmentTimings){
                 apptStartDate = new Date(appointment.apptStartDateTime);
-                apptStartTime = this.utilsService.formatTime(apptStartDate).split('T')[1];
+                // apptStartTime = this.utilsService.formatTime(apptStartDate).split('T')[1];
+                apptStartTime = this.utilsService.getTimeString(apptStartDate);
                 apptEndDate = new Date(appointment.apptEndDateTime);
-                apptEndTime = this.utilsService.formatTime(apptEndDate).split('T')[1];
+                apptEndTime = this.utilsService.getTimeString(apptEndDate);
+                // apptEndTime = this.utilsService.formatTime(apptEndDate).split('T')[1];
 
 
                 appointment.startDate = apptStartDate.getDate() + '-' + (apptStartDate.getMonth() + 1) + '-' + apptStartDate.getFullYear();
