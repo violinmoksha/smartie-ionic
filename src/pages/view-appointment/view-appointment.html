@@ -11,7 +11,7 @@
   </ion-navbar>
 
   <ion-toolbar no-border-top>
-    <ion-segment [(ngModel)]="scehduleStatus">
+    <ion-segment [(ngModel)]="scheduleStatus">
       <ion-segment-button value="ongoing">
         Ongoing
       </ion-segment-button>
@@ -36,7 +36,7 @@
     <div *ngIf="isFetching" class="text-center">
       <p>Fetching your appointments</p>
     </div>
-    <div [ngSwitch]="scehduleStatus">
+    <div [ngSwitch]="scheduleStatus">
       <div *ngSwitchCase="'ongoing'">
         <div class="appointment-content" *ngFor="let schedule of ongoingSchedules">
           <div *ngIf="schedule.scheduleStatus == 'ongoing'">

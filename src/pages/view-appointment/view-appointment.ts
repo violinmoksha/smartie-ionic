@@ -26,13 +26,13 @@ export class ViewAppointmentPage {
   public completedSchedules: any = [];
   public isFetching: boolean = false;
   private profileData: any;
-  scehduleStatus: string = "ongoing";
+  scheduleStatus: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public loadingCtrl: LoadingController, private dataService: DataService, private analytics : AnalyticsProvider, private utilsService: UtilsProvider) {
     this.analytics.setScreenName("ViewAppointment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("ViewAppointment", "View"));
     this.role = this.navParams.get('role');
-    this.scehduleStatus = this.navParams.get('scheduleStatus');
+    this.scheduleStatus = this.navParams.get('scheduleStatus') ? this.navParams.get('scheduleStatus') : "upcoming";
   }
 
   getRole() {
@@ -88,10 +88,6 @@ export class ViewAppointmentPage {
                 this.completedSchedules.push(schedule);
               }
             }
-
-            console.log(this.ongoingSchedules);
-            console.log(this.upcomingSchedules);
-            console.log(this.completedSchedules);
           }
         }, err => {
           console.log(err);
