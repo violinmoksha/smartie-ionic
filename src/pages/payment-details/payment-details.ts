@@ -29,6 +29,7 @@ export class PaymentDetailsPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("PaymentDetails", "View"));
 
     this.notification = this.navParams.get("notification") ? this.navParams.get("notification") : "";
+    console.log("Test");
     console.log(this.notification);
 
   }
@@ -47,7 +48,9 @@ export class PaymentDetailsPage {
 
 
   addPayment() {
-    this.viewCtrl.dismiss();
+    if(this.notification != ""){
+      this.viewCtrl.dismiss();
+    }
     this.navCtrl.push('AddPaymentPage', { fromWhere: 'teacher', notification: this.notification });
   }
 

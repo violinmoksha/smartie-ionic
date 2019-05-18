@@ -306,7 +306,7 @@ export class SmartieApp {
   notificationHandler(): void {
     var notificationId = "0";
     this.firebase.onNotificationOpen().subscribe((notification: any) => {
-      console.log(notification)
+      console.log(notification);
       var actionHandler = () => { //NB: To reuse this function due to ios triggers event twice
         if (notification.eventAction == "PaymentReminder") {
           if (!notification.foreground || notification.tap == true)
@@ -365,6 +365,11 @@ export class SmartieApp {
                 this.utilsService.openStripeDashboard();
               },500);
             }
+          } else {
+            let toasterTitle = this.platform.is('ios') ? notification.aps.alert.body : notification.body;
+            this.tosterService.chatToast(toasterTitle, "Go", () => {
+              this.nav.push("ViewAppointmentPage", { scheduleStatus: "upcoming"});
+            });
           }
         } else if (notification.eventAction == "New_Teachers" || notification.eventAction == "New_Students") {
           if (this.role == 'teacher')

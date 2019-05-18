@@ -97,7 +97,7 @@ public studentBadgeLevel = [
             if(result.address_components.length>0){
               for (var i=0; i<result.address_components.length; i++) {
                 if(result.address_components[i].types[0] == 'country'){
-                  if(result.address_components[i].short_name == 'US') {
+                  if(result.address_components[i].short_name == 'IN') {
                     resolve(true);
                   } else {
                     resolve(false);
@@ -279,5 +279,13 @@ public studentBadgeLevel = [
     }
   }
   return badges;
+  }
+
+  getTimeString(date) {//this function converts date to lacal time string. eg. 10:00 AM
+    var dt = new Date(date);
+    var time = dt.toLocaleTimeString();
+    time = time.replace(/\u200E/g, '');
+    time = time.replace(/^([^\d]*\d{1,2}:\d{1,2}):\d{1,2}([^\d]*)$/, '$1$2');
+    return time;
   }
 }

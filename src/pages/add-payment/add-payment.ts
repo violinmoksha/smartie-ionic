@@ -197,7 +197,8 @@ export class AddPaymentPage {
                 this.viewCtrl.dismiss();
                 this.pushJobRequestPage(this.notification);
               }else{
-                this.navCtrl.push('PaymentDetailsPage', { stripeAccount: response.result });
+                // this.navCtrl.push('PaymentDetailsPage', { stripeAccount: response.result });
+                this.navCtrl.setRoot("TabsPage", { tabIndex: 0, tabTitle: "SmartieSearch", role: this.userRole });
               }
             }
           })
