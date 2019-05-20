@@ -24,11 +24,15 @@ export class ViewAppointmentPage {
   public ongoingSchedules: any = [];
   public upcomingSchedules: any = [];
   public completedSchedules: any = [];
-  public isFetching: boolean = false;
+  public isFetching: boolean = true;
   private profileData: any;
+  private loading: any;
   scheduleStatus: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public loadingCtrl: LoadingController, private dataService: DataService, private analytics : AnalyticsProvider, private utilsService: UtilsProvider) {
+    this.loading = this.loadingCtrl.create({
+      content: 'Fetching your appointments...'
+    });
     this.analytics.setScreenName("ViewAppointment");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("ViewAppointment", "View"));
     this.role = this.navParams.get('role');
@@ -40,14 +44,15 @@ export class ViewAppointmentPage {
   }
 
   fetchAppoinments() {
+    this.loading.present();
     this.storage.get("UserProfile").then(profile => {
       this.role = profile.profileData.role;
-      this.isFetching = true;
       this.dataService.getApi(
         'getActiveAppointments',
         { role: this.role, profileId: profile.profileData.objectId }
       ).then(API => {
         this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(response => {
+          this.loading.dismiss();
           this.isFetching = false;
           console.log(response)
 
@@ -93,7 +98,9 @@ export class ViewAppointmentPage {
           }
         }, err => {
           console.log(err);
-          this.isFetching = false;
+          this.loading.dismiss();
+          // NB: we err'd so don't tell them anything
+          //this.isFetching = false;
         });
       })
     });

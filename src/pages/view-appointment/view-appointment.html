@@ -30,12 +30,6 @@
 <ion-content [ngClass]="role">
 
   <div class="appointment-wrap">
-    <div *ngIf="schedules == null && !isFetching" class="text-center">
-      <p>No appointments for you!</p>
-    </div>
-    <div *ngIf="isFetching" class="text-center">
-      <p>Fetching your appointments</p>
-    </div>
     <div [ngSwitch]="scheduleStatus">
       <div *ngSwitchCase="'ongoing'">
         <div class="appointment-content" *ngFor="let schedule of ongoingSchedules">
@@ -53,8 +47,8 @@
             </div>
           </div>
         </div>
-        <div *ngIf="ongoingSchedules?.length == 0" class="text-center">
-          <p>No appointments for you!</p>
+        <div *ngIf="ongoingSchedules?.length == 0 && !isFetching" class="text-center">
+          <p>No ongoing appointments for you!</p>
         </div>
       </div>
 
@@ -69,8 +63,8 @@
                <p>
                   <span style="margin-right: 10px;"><ion-icon ios="ios-calendar" md="md-calendar" style="margin:5px;"></ion-icon>{{ appointment.startDate }}</span>
                   <span style="margin-right: 10px;"><ion-icon ios="ios-alarm" md="md-alarm" style="margin:5px;"></ion-icon> {{ appointment.startTime }}</span>  <span style="margin-right: 10px;"><ion-icon ios="ios-arrow-round-forward" md="md-arrow-round-forward" style="margin:5px;"></ion-icon> {{ appointment.endTime }}</span>
-                  
-               </p> 
+
+               </p>
               </div>
               <!-- <div class="appointment-time">
                 <p></p>
@@ -79,8 +73,8 @@
             </div>
           </div>
         </div>
-        <div *ngIf="upcomingSchedules?.length == 0" class="text-center">
-          <p>No appointments for you!</p>
+        <div *ngIf="upcomingSchedules?.length == 0 && !isFetching" class="text-center">
+          <p>No upcoming appointments for you!</p>
         </div>
       </div>
 
@@ -101,8 +95,8 @@
             </div>
           </div>
         </div>
-        <div *ngIf="completedSchedules?.length == 0" class="text-center">
-          <p>No appointments for you!</p>
+        <div *ngIf="completedSchedules?.length == 0 && !isFetching" class="text-center">
+          <p>No completed appointments for you!</p>
         </div>
       </div>
 
