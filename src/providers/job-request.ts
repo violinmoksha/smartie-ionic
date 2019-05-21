@@ -103,7 +103,7 @@ export class JobRequestProvider {
   updatedScheduleStatus(schedules, reviewStatus, role){
     console.log({ scheduleIds: schedules, reviewStatus: reviewStatus });
 
-    if(role = 'teacher'){
+    if(role == 'teacher'){
       this.reviewStatusBody = { scheduleIds: schedules, teacherReviewStatus: reviewStatus, role: role }
     }else{
       this.reviewStatusBody = { scheduleIds: schedules, studentReviewStatus: reviewStatus, role: role }
