@@ -236,24 +236,24 @@ export class JobRequestProvider {
 
           this.resetJobReq(this.checkjobReqForCompleted(jobs.jobReqs));
 
-          for(let schedule of jobs.schedules){
-            this.utils.getCurrentUserData().then((currentUserData: any) => {
+          this.utils.getCurrentUserData().then((currentUserData: any) => {
+            for(let schedule of jobs.schedules){
               if(currentUserData.profileData.role == 'teacher'){
                 if(schedule.completed && schedule.teacherReviewStatus == 0){
-            		  completeSchedules.push(schedule);
+                  completeSchedules.push(schedule);
                 }
               }else{
                 if(schedule.completed && schedule.studentReviewStatus == 0){
-            		  completeSchedules.push(schedule);
+                  completeSchedules.push(schedule);
                 }
               }
-            });
+            }
+            console.log(completeSchedules);
+            if(completeSchedules.length > 0){
+              this.events.publish("scheduleCompleted", completeSchedules);
+            }
+          });
 
-          }
-          console.log(completeSchedules);
-          if(completeSchedules.length > 0){
-            this.events.publish("scheduleCompleted", completeSchedules);
-          }
         }, err => {
           console.log(err);
         })
