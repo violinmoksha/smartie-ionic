@@ -196,8 +196,8 @@ export class SmartieApp {
   initializeApp() {
       if (this.platform.is('cordova')) {
         this.tosterService.internetListener();
-        // this.statusBar.styleDefault();
-        this.statusBar.styleLightContent();
+        this.statusBar.styleDefault();
+        //this.statusBar.styleLightContent();
         this.initGeolocation();
         this.setUserName();
         this.utilsService.getSelectedCity();

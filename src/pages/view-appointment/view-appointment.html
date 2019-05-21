@@ -34,15 +34,18 @@
       <div *ngSwitchCase="'ongoing'">
         <div class="appointment-content" *ngFor="let schedule of ongoingSchedules">
           <div *ngIf="schedule.scheduleStatus == 'ongoing'">
-            <div class="appointment-container">
+            <ion-item  class="color-appt">
+              <ion-avatar *ngIf="profileData.profilePhoto" item-start>
+                <img [src]="profileData.profilePhoto">
+              </ion-avatar>
               <h3>{{ schedule?.owner}}</h3>
-            </div>
+            </ion-item>
             <div *ngFor="let appointment of schedule.appointmentTimings">
-              <div class="appointment-date"> {{ appointment.startDate }}
-              </div>
-              <div class="appointment-time">
-                <p><strong>Start Time:</strong> {{ appointment.startTime }}</p>
-                <p><strong>End Time:</strong> {{ appointment.endTime }}</p>
+              <div class="appointment-date">
+               <p>
+                  <span style="margin-right: 10px;"><ion-icon ios="ios-calendar" md="md-calendar" style="margin:5px;"></ion-icon>{{ appointment.startDate }}</span>
+                  <span style="margin-right: 10px;"><ion-icon ios="ios-alarm" md="md-alarm" style="margin:5px;"></ion-icon> {{ appointment.startTime }}</span>  <span style="margin-right: 10px;"><ion-icon ios="ios-arrow-round-forward" md="md-arrow-round-forward" style="margin:5px;"></ion-icon> {{ appointment.endTime }}</span>
+               </p>
               </div>
             </div>
           </div>
@@ -55,9 +58,12 @@
       <div *ngSwitchCase="'upcoming'">
         <div class="appointment-content" *ngFor="let schedule of upcomingSchedules">
           <div *ngIf="schedule.scheduleStatus == 'upcoming'">
-            <div class="appointment-container">
+            <ion-item  class="color-appt">
+              <ion-avatar *ngIf="profileData.profilePhoto" item-start>
+                <img [src]="profileData.profilePhoto">
+              </ion-avatar>
               <h3>{{ schedule?.owner}}</h3>
-            </div>
+            </ion-item>
             <div *ngFor="let appointment of schedule.appointmentTimings">
               <div class="appointment-date">
                <p>
@@ -66,10 +72,6 @@
 
                </p>
               </div>
-              <!-- <div class="appointment-time">
-                <p></p>
-                <p></p>
-              </div> -->
             </div>
           </div>
         </div>
@@ -81,16 +83,22 @@
       <div *ngSwitchCase="'completed'">
         <div class="appointment-content" *ngFor="let schedule of completedSchedules">
           <div *ngIf="schedule.scheduleStatus == 'completed'">
-            <div class="appointment-container">
-              <h3>{{ schedule?.owner}}</h3>
-              <button class="button button-review" [disabled]="schedule.jobRequestId.reviewStatus" (click)="reviewProfile(schedule)" ion-button primary>Review</button>
-            </div>
+            <!-- <div class="appointment-container"> -->
+              <ion-item  class="color-appt">
+    <ion-avatar *ngIf="profileData.profilePhoto" item-start>
+      <img [src]="profileData.profilePhoto">
+    </ion-avatar>
+    <h3>{{ schedule?.owner}}</h3>
+    <button item-end class="button button-review" [disabled]="schedule.jobRequestId.reviewStatus" (click)="reviewProfile(schedule)" ion-button primary>Review</button>
+  </ion-item>
+
+            <!-- </div> -->
             <div *ngFor="let appointment of schedule.appointmentTimings">
-              <div class="appointment-date"> {{ appointment.startDate }}
-              </div>
-              <div class="appointment-time">
-                <p><strong>Start Time:</strong> {{ appointment.startTime }}</p>
-                <p><strong>End Time:</strong> {{ appointment.endTime }}</p>
+              <div class="appointment-date">
+               <p>
+                  <span style="margin-right: 10px;"><ion-icon ios="ios-calendar" md="md-calendar" style="margin:5px;"></ion-icon>{{ appointment.startDate }}</span>
+                  <span style="margin-right: 10px;"><ion-icon ios="ios-alarm" md="md-alarm" style="margin:5px;"></ion-icon> {{ appointment.startTime }}</span>  <span style="margin-right: 10px;"><ion-icon ios="ios-arrow-round-forward" md="md-arrow-round-forward" style="margin:5px;"></ion-icon> {{ appointment.endTime }}</span>
+               </p>
               </div>
             </div>
           </div>

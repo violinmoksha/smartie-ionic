@@ -30,13 +30,23 @@ page-view-appointment {
       }
     }
   }
+  .color-appt{
+    background-color: #DADADA;
+    color: #000 !important;
+  }
   .student{
     .appointment-container{
+      background-color: #0096D7;
+    }
+    .color-appt{
       background-color: #0096D7;
     }
   }
   .teacher{
     .appointment-container{
+      background-color: #00BC5B;
+    }
+    .color-appt{
       background-color: #00BC5B;
     }
   }
