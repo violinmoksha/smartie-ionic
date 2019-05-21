@@ -53,6 +53,7 @@ export class SmartieSearch {
     this.dataService.currentPage = "SmartieSearch";
     this.analytics.setScreenName("Smartie-search");
     this.analytics.addEvent(this.analytics.getAnalyticEvent("Smartie-search", "View"));
+    this.role = navParams.get('role');
 
     // Review status popup
     this.events.subscribe("scheduleCompleted", schedules => {
@@ -67,22 +68,20 @@ export class SmartieSearch {
               text: 'Review',
               handler: () => {
                 this.navCtrl.push("ViewAppointmentPage", { "scheduleStatus": "completed" });
-                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.completed)
+                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.completed, this.role)
               }
             },
             {
               text: 'Cancel',
               handler: () => {
-                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.cancelled)
+                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.cancelled, this.role)
               }
             }
           ]
         });
         alert.present();
       }
-    })
-
-    this.role = navParams.get('role');
+    });
 
     let options = {
       formatLength: 'short',

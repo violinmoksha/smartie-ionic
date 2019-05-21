@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataService } from '../app/app.data';
 import { Events } from 'ionic-angular';
-import { UtilsProvider } from './utils'
+import { UtilsProvider } from './utils';
 /*
   Generated class for the JobRequstProvider provider.
 
@@ -16,6 +16,7 @@ export class JobRequestProvider {
   upcomingCount: number = 0;
   jobRequestState: any;
   jobScheduleReviewStaus: any;
+  private reviewStatusBody: any;
   public scheduleStatus = {"upComing":"upcoming", "onGoing":'ongoing', "completed":'completed'};
 
   constructor(public http: HttpClient, public dataService: DataService, public utils: UtilsProvider, public events: Events) {
@@ -99,10 +100,13 @@ export class JobRequestProvider {
     })
   }
 
-  updatedScheduleStatus(schedules, reviewStatus){
+  updatedScheduleStatus(schedules, reviewStatus, role){
     console.log({ scheduleIds: schedules, reviewStatus: reviewStatus });
 
-    this.dataService.getApi('updateReviewStatusInSchedule', { scheduleIds: schedules, reviewStatus: reviewStatus }).then(API => {
+    this.reviewStatusBody = { scheduleIds: schedules, reviewStatus: reviewStatus, role: role }
+
+
+    this.dataService.getApi('updateReviewStatusInSchedule', this.reviewStatusBody ).then(API => {
       this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(jobSchedules => {
         console.log(jobSchedules);
       })
@@ -186,13 +190,13 @@ export class JobRequestProvider {
             if (j == jobReqs[i].schedule[k].appointmentTimings.length - 1){
               console.log("Value of : " + x);
               if (x == jobReqs[i].schedule[k].appointmentTimings.length) {
-                resetJob.push({id:jobReqs[i].schedule[k].objectId, completed:true, scheduleReviewStatus: jobReqs[i].schedule[k].reviewStatus });
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, completed:true, teacherReviewStatus: jobReqs[i].schedule[k].teacherReviewStatus, studentReviewStatus: jobReqs[i].schedule[k].studentReviewStatus });
                 jobReqs[i].schedule[k].scheduleStatus = this.scheduleStatus.completed;
               } else if (x == -1) {
-                resetJob.push({id:jobReqs[i].schedule[k].objectId, onGoing:true, scheduleReviewStatus: jobReqs[i].schedule[k].reviewStatus });
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, onGoing:true, teacherReviewStatus: jobReqs[i].schedule[k].teacherReviewStatus, studentReviewStatus: jobReqs[i].schedule[k].studentReviewStatus });
                 jobReqs[i].schedule[k].scheduleStatus = this.scheduleStatus.onGoing;
               } else if (x == 0) {
-                resetJob.push({id:jobReqs[i].schedule[k].objectId, upComing:true, scheduleReviewStatus: jobReqs[i].schedule[k].reviewStatus });
+                resetJob.push({id:jobReqs[i].schedule[k].objectId, upComing:true, teacherReviewStatus: jobReqs[i].schedule[k].teacherReviewStatus, studentReviewStatus: jobReqs[i].schedule[k].studentReviewStatus });
                 jobReqs[i].schedule[k].scheduleStatus = this.scheduleStatus.upComing;
               }
             }
@@ -229,15 +233,24 @@ export class JobRequestProvider {
 
           this.resetJobReq(this.checkjobReqForCompleted(jobs.jobReqs));
 
-          for(let schedule of jobs.schedules){
-            if(schedule.completed && schedule.scheduleReviewStatus == 0){
-        		  completeSchedules.push(schedule);
+          this.utils.getCurrentUserData().then((currentUserData: any) => {
+            for(let schedule of jobs.schedules){
+              if(currentUserData.profileData.role == 'teacher'){
+                if(schedule.completed && schedule.teacherReviewStatus == 0){
+                  completeSchedules.push(schedule);
+                }
+              }else{
+                if(schedule.completed && schedule.studentReviewStatus == 0){
+                  completeSchedules.push(schedule);
+                }
+              }
             }
-          }
-          console.log(completeSchedules);
-          if(completeSchedules.length > 0){
-            this.events.publish("scheduleCompleted", completeSchedules);
-          }
+            console.log(completeSchedules);
+            if(completeSchedules.length > 0){
+              this.events.publish("scheduleCompleted", completeSchedules);
+            }
+          });
+
         }, err => {
           console.log(err);
         })
