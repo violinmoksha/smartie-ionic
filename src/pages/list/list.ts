@@ -50,13 +50,13 @@ export class ListPage {
               text: 'Review',
               handler: () => {
                 this.navCtrl.push("ViewAppointmentPage", { "scheduleStatus": "completed" });
-                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.completed)
+                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.completed, this.role)
               }
             },
             {
               text: 'Cancel',
               handler: () => {
-                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.cancelled)
+                this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.cancelled, this.role)
               }
             }
           ]

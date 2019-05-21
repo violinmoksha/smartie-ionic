@@ -97,7 +97,7 @@ public studentBadgeLevel = [
             if(result.address_components.length>0){
               for (var i=0; i<result.address_components.length; i++) {
                 if(result.address_components[i].types[0] == 'country'){
-                  if(result.address_components[i].short_name == 'US') {
+                  if(result.address_components[i].short_name == 'IN') {
                     resolve(true);
                   } else {
                     resolve(false);
@@ -161,6 +161,16 @@ public studentBadgeLevel = [
           })
         })
       });
+  }
+
+  getCurrentUserData(){
+    return new Promise((resolve, reject) => {
+      this.storage.get("UserProfile").then(currentUserData => {
+        resolve(currentUserData);
+      }, err => {
+        reject(err);
+      })
+    })
   }
 
   openStripeDashboard() {
