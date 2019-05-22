@@ -49,7 +49,12 @@ export class ListPage {
             {
               text: 'Review',
               handler: () => {
-                this.navCtrl.push("ViewAppointmentPage", { "scheduleStatus": "completed" });
+                if(this.role == 'teacher'){
+                  this.navCtrl.parent.select(4);
+                }else{
+                  this.navCtrl.parent.select(3);
+                }
+
                 this.jobRequestProvider.updatedScheduleStatus(schedules, this.jobRequestProvider.jobScheduleReviewStaus.completed, this.role)
               }
             },
@@ -156,23 +161,7 @@ export class ListPage {
             }
             this.smartieListAlias = this.smartieList;
 
-            /*this.jobRequestProvider.scheduleReviews(notifications).then(completedJobSchedule => {
-              if(completedJobSchedule){
-                console.log("Completed job schedule");
-                console.log(completedJobSchedule);
-                /*let alert = this.alertCtrl.create({
-                  title: 'Time to review',
-                  subTitle: `Your jobRequest has been completed give a review`,
-                  buttons: [{
-                    text: 'OK',
-                    handler: () => {
-                      this.navCtrl.push("ViewAppointmentPage");
-                    }
-                  }]
-                });
-                // alert.present();
-              }
-            });*/
+
           })
         }, err => {
           console.log(err.error.error);

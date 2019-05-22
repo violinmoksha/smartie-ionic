@@ -368,7 +368,11 @@ export class SmartieApp {
           } else {
             let toasterTitle = this.platform.is('ios') ? notification.aps.alert.body : notification.body;
             this.tosterService.chatToast(toasterTitle, "Go", () => {
-              this.nav.push("ViewAppointmentPage", { scheduleStatus: "upcoming"});
+              if(this.role == 'teacher'){
+                this.nav.parent.select(4);
+              }else{
+                this.nav.parent.select(3);
+              }
             });
           }
         } else if (notification.eventAction == "New_Teachers" || notification.eventAction == "New_Students") {
@@ -438,8 +442,6 @@ export class SmartieApp {
       this.storage.get("UserProfile").then(userProfile => {
         this.nav.push("ReviewsPage", { params: { "profileData": userProfile.profileData, "role": userProfile.profileData.role } });
       });
-    } else if(page.text == 'Appointments'){
-      this.nav.push("ViewAppointmentPage", { "scheduleStatus": "ongoing" });
     } else {
       if (page.isTabs) {
         this.storage.get("UserProfile").then(userProfile => {
