@@ -1,3 +1,4 @@
+import { env as ENV } from '../envs/env';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
@@ -97,7 +98,7 @@ public studentBadgeLevel = [
             if(result.address_components.length>0){
               for (var i=0; i<result.address_components.length; i++) {
                 if(result.address_components[i].types[0] == 'country'){
-                  if(result.address_components[i].short_name == 'IN') {
+                  if(result.address_components[i].short_name == ENV.EXEC_COUNTRY) {
                     resolve(true);
                   } else {
                     resolve(false);

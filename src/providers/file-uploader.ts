@@ -69,7 +69,7 @@ export class FileUploaderProvider {
             console.log(authErr);
           }
         }, err => {
-          console.log(err);
+          console.log('readAsDataURL error: '+err);
           reject(err)
         })
       });
