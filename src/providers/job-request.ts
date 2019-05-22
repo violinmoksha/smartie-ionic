@@ -115,7 +115,7 @@ export class JobRequestProvider {
 
   sanitizeNotifications(notifications: any) {
     // TODO: when these are more than just jobReqs
-    // console.log(notifications);
+    console.log(notifications);
     return new Promise(resolve => {
       let activeJobReqs = [];
       notifications.map(notification => {
@@ -135,18 +135,44 @@ export class JobRequestProvider {
               console.log("active Job Reqs");
               console.log(activeJobReqs);
               resolve(notifications);
-              this.updateScheduleAndReq(this.checkjobScheduleForCompleted(activeJobReqs));
               // this.utils.initAppRating();
               //this.handleReviewUpdates(activeJobReqs);
             }
 
           });
         }
+        this.updateScheduleAndReq(this.checkjobScheduleForCompleted(activeJobReqs));
       } else {
         resolve(notifications);
+        this.checkCompletedjobScheduleForReview(notifications);
         // console.log(notifications);
       }
     });
+  }
+
+  checkCompletedjobScheduleForReview(notifications){
+    if(notifications.length > 0){
+      this.utils.getCurrentUserData().then((currentUserData: any) => {
+        let completeSchedules = [];
+        for(let notification of notifications){
+          console.log(notification);
+          if(notification.schedule.length > 0){
+            for(let schedule of notification.schedule){
+              console.log(schedule);
+              if(schedule.scheduleStatus == "completed" && currentUserData.profileData.role == "teacher" && schedule.teacherReviewStatus == 0){
+                completeSchedules.push({id: schedule.objectId, teacherReviewStatus: schedule.teacherReviewStatus, studentReviewStatus: schedule.studentReviewStatus });
+              }else if(schedule.scheduleStatus == "completed" && currentUserData.profileData.role == "student" && schedule.studentReviewStatus == 0){
+                completeSchedules.push({id: schedule.objectId, teacherReviewStatus: schedule.teacherReviewStatus, studentReviewStatus: schedule.studentReviewStatus });
+              }
+            }
+          }
+        }
+        console.log(completeSchedules);
+        if(completeSchedules.length > 0){
+          this.events.publish("scheduleCompleted", completeSchedules);
+        }
+      });
+    }
   }
 
   checkjobReqForCompleted(jobReqs) {
