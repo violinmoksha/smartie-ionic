@@ -37,6 +37,7 @@ export class ViewAppointmentPage {
     this.analytics.addEvent(this.analytics.getAnalyticEvent("ViewAppointment", "View"));
     this.role = this.navParams.get('role');
     this.scheduleStatus = this.navParams.get('scheduleStatus') ? this.navParams.get('scheduleStatus') : "upcoming";
+    console.log(this.navParams.get('scheduleStatus'));
   }
 
   getRole() {
@@ -94,6 +95,17 @@ export class ViewAppointmentPage {
               }else if(schedule.scheduleStatus == 'completed'){
                 this.completedSchedules.push(schedule);
               }
+
+              if(this.ongoingSchedules.length > 0){
+                this.scheduleStatus = "ongoing";
+              }else if(this.upcomingSchedules.length > 0 && this.ongoingSchedules.length == 0){
+                this.scheduleStatus = "upcoming";
+              }
+
+              console.log(this.ongoingSchedules);
+              console.log(this.upcomingSchedules);
+              console.log(this.completedSchedules);
+              console.log(this.scheduleStatus);
             }
           }
         }, err => {

@@ -98,7 +98,7 @@ export class JobRequestPage {
 
       this.userRole = roleProfile.profileData.role;
 
-      if(this.userRole !== 'teacher' && roleProfile.profileData.scheduleDetails && this.params.fromWhere !== "smartieSearch"){
+      /*if(this.userRole !== 'teacher' && roleProfile.profileData.scheduleDetails && this.params.fromWhere !== "smartieSearch"){
         let alert = this.alertCtrl.create({
           title: 'Time to Pay!',
           subTitle: `You have already scheduled your session! Tap OK to view your schedule!`,
@@ -128,7 +128,7 @@ export class JobRequestPage {
           }]
         });
         alert.present();
-      }
+      }*/
       // Flip viewed status to True once enter
       let viewed;
       if(this.jobObject.sentBy.objectId != roleProfile.profileData.objectId){

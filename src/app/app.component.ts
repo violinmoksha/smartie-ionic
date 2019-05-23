@@ -196,7 +196,8 @@ export class SmartieApp {
   initializeApp() {
       if (this.platform.is('cordova')) {
         this.tosterService.internetListener();
-        this.statusBar.styleDefault();
+        this.statusBar.overlaysWebView(false);
+        this.statusBar.backgroundColorByHexString('#000000');
         //this.statusBar.styleLightContent();
         this.initGeolocation();
         this.setUserName();
@@ -369,9 +370,9 @@ export class SmartieApp {
             let toasterTitle = this.platform.is('ios') ? notification.aps.alert.body : notification.body;
             this.tosterService.chatToast(toasterTitle, "Go", () => {
               if(this.role == 'teacher'){
-                this.nav.parent.select(4);
+                this.nav.setRoot("TabsPage", { tabIndex: 4, tabTitle: 'Appointments', role: this.role });
               }else{
-                this.nav.parent.select(3);
+                this.nav.setRoot("TabsPage", { tabIndex: 3, tabTitle: 'Appointments', role: this.role });
               }
             });
           }
