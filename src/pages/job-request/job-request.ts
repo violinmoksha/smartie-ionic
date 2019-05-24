@@ -150,7 +150,7 @@ export class JobRequestPage {
       })
       // })
 
-      if (this.userRole !== 'teacher' && this.params.fromWhere == 'acceptedJobs' && !roleProfile.profileData.scheduleDetails) {
+      if (this.userRole !== 'teacher' && this.params.fromWhere == 'acceptedJobs') {
         // this.scheduleJob();
         let alert = this.alertCtrl.create({
           title: 'Time to schedule!',

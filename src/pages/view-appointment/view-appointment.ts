@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { DataService } from '../../app/app.data';
 import { UtilsProvider } from '../../providers/utils';
 import { AnalyticsProvider } from '../../providers/analytics';
+import { JobRequestProvider } from '../../providers/job-request';
 /**
  * Generated class for the ViewAppointmentPage page.
  *
@@ -29,7 +30,7 @@ export class ViewAppointmentPage {
   private loading: any;
   scheduleStatus: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public loadingCtrl: LoadingController, private dataService: DataService, private analytics : AnalyticsProvider, private utilsService: UtilsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public loadingCtrl: LoadingController, private dataService: DataService, private analytics : AnalyticsProvider, private utilsService: UtilsProvider, private jobRequestProvider: JobRequestProvider) {
     this.loading = this.loadingCtrl.create({
       content: 'Fetching your appointments...'
     });
@@ -100,6 +101,8 @@ export class ViewAppointmentPage {
                 this.scheduleStatus = "ongoing";
               }else if(this.upcomingSchedules.length > 0 && this.ongoingSchedules.length == 0){
                 this.scheduleStatus = "upcoming";
+              }else if(this.ongoingSchedules.length == 0 && this.upcomingSchedules.length == 0 && this.completedSchedules.length > 0){
+                this.scheduleStatus = "completed";
               }
 
               console.log(this.ongoingSchedules);
@@ -130,7 +133,22 @@ export class ViewAppointmentPage {
   }
 
   ionViewDidEnter() {
-    this.fetchAppoinments();
+    this.fetchSmartieData();
+    this.utilsService.jobReqTimer(null, this, (user, self) => {
+      self.fetchSmartieData();
+    });
+  }
+
+  fetchSmartieData(){
+    this.storage.get("UserProfile").then(user => {
+      this.dataService.getApi('fetchMarkers', { profileId: user.profileData.objectId, role: user.profileData.role }).then(API => {
+        this.dataService.httpPost(API['apiUrl'], API['apiBody'], API['apiHeaders']).then(Notifications => {
+          this.jobRequestProvider.sanitizeNotifications(Notifications.result, true).then((notifications: Array<any>) => {
+            this.fetchAppoinments();
+          });
+        });
+      })
+    })
   }
 
   ionViewDidLoad() {
