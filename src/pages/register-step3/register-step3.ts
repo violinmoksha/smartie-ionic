@@ -256,6 +256,8 @@ export class RegisterStep3Page {
       }
       Promise.all(filePromises).then((results) => {
         resolve(results);
+      }, err => {
+        reject(err);
       })
     })
   }
@@ -271,12 +273,26 @@ export class RegisterStep3Page {
             this.finalRegisterSubmit(form3Values);
           }, err => {
             console.log(err);
+            this.loading.dismiss();
+            let alert = this.alertCtrl.create({
+              title: 'File upload Failed!',
+              subTitle: JSON.stringify(err.message),
+              buttons: ['OK']
+            });
+            alert.present();
           })
         }else{
           this.finalRegisterSubmit(form3Values);
         }
       }, (error) => {
         console.log(error);
+        this.loading.dismiss();
+        let alert = this.alertCtrl.create({
+          title: 'File upload Failed!',
+          subTitle: JSON.stringify(error.message),
+          buttons: ['OK']
+        });
+        alert.present();
       });
     }
   }
