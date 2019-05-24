@@ -113,7 +113,7 @@ export class JobRequestProvider {
     })
   }
 
-  sanitizeNotifications(notifications: any) {
+  sanitizeNotifications(notifications: any, appointment = null) {
     // TODO: when these are more than just jobReqs
     console.log(notifications);
     return new Promise(resolve => {
@@ -141,16 +141,16 @@ export class JobRequestProvider {
 
           });
         }
-        this.updateScheduleAndReq(this.checkjobScheduleForCompleted(activeJobReqs));
+        this.updateScheduleAndReq(this.checkjobScheduleForCompleted(activeJobReqs), appointment);
       } else {
         resolve(notifications);
-        this.checkCompletedjobScheduleForReview(notifications);
+        this.checkCompletedjobScheduleForReview(notifications, appointment);
         // console.log(notifications);
       }
     });
   }
 
-  checkCompletedjobScheduleForReview(notifications){
+  checkCompletedjobScheduleForReview(notifications, appointment){
     if(notifications.length > 0){
       this.utils.getCurrentUserData().then((currentUserData: any) => {
         let completeSchedules = [];
@@ -168,8 +168,10 @@ export class JobRequestProvider {
           }
         }
         console.log(completeSchedules);
-        if(completeSchedules.length > 0){
-          this.events.publish("scheduleCompleted", completeSchedules);
+        if(!appointment){
+          if(completeSchedules.length > 0){
+            this.events.publish("scheduleCompleted", completeSchedules);
+          }
         }
       });
     }
@@ -248,7 +250,7 @@ export class JobRequestProvider {
     }
   }
 
-  updateScheduleAndReq(jobs) {
+  updateScheduleAndReq(jobs, appointment) {
     console.log(jobs);
     if(jobs.schedules.length > 0){
       let completeSchedules = [];
@@ -272,8 +274,10 @@ export class JobRequestProvider {
               }
             }
             console.log(completeSchedules);
-            if(completeSchedules.length > 0){
-              this.events.publish("scheduleCompleted", completeSchedules);
+            if(!appointment){
+              if(completeSchedules.length > 0){
+                this.events.publish("scheduleCompleted", completeSchedules);
+              }
             }
           });
 
