@@ -250,7 +250,7 @@ public studentBadgeLevel = [
         usesUntilPrompt: 2,
         promptAgainForEachNewVersion: false,
         storeAppURL: {
-          android: 'market://details?id=com.smartie.app'
+          android: 'market://details?id=io.ionic.smartie'
         },
         useLanguage: 'en',
         customLocale: {

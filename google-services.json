@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:500059309895:android:e2d686bf0f01b8e4",
         "android_client_info": {
-          "package_name": "com.smartie.app"
+          "package_name": "io.ionic.smartie"
         }
       },
       "oauth_client": [

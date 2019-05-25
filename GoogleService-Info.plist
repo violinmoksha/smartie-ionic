@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.smartie.app</string>
+	<string>io.ionic.smartie</string>
 	<key>PROJECT_ID</key>
 	<string>smartie-212716</string>
 	<key>STORAGE_BUCKET</key>
