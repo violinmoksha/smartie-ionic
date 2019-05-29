@@ -436,10 +436,11 @@ export class SmartieSearch {
   }
 
   pushAccepteds() {
-    if (this.role !== 'teacher') {
+    /*if (this.role !== 'teacher') {
       this.navCtrl.parent.select(3);
     } else {
       this.navCtrl.parent.select(4);
-    }
+    }*/
+    this.navCtrl.push("NotificationFeedPage");
   }
 }
