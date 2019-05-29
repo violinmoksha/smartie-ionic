@@ -100,6 +100,10 @@ export class PaymentPage {
   }
 
   pay(amount, cardValue) {
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading...'
+    });
+    this.loading.present();
 
     if (this.stripeCustomerCard == undefined) {
 
@@ -113,8 +117,13 @@ export class PaymentPage {
             return response;
           }, err => {
             console.log(err);
+            this.loading.dismiss();
             return err;
           })
+        }, err =>{
+          console.log(err);
+          this.loading.dismiss();
+          return err;
         });
       })
     } else {
@@ -123,10 +132,6 @@ export class PaymentPage {
   }
 
   createTransaction(amount) {
-    this.loading = this.loadingCtrl.create({
-      content: 'Loading...'
-    });
-    this.loading.present();
 
     this.body = {
       amountPayable: amount * 100, // in cents
