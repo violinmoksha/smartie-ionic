@@ -2,39 +2,35 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
-	<string>ca-app-pub-3940256099942544/2934735716</string>
-	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
-	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>500059309895-pp88l9se2nkt900gnbdum7u75qvviitf.apps.googleusercontent.com</string>
+	<string>133229201820-glnpilnt3r4244qhhkeaosi8nnals4pc.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.500059309895-pp88l9se2nkt900gnbdum7u75qvviitf</string>
+	<string>com.googleusercontent.apps.133229201820-glnpilnt3r4244qhhkeaosi8nnals4pc</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAFDj7ucWGVD2HWy9CxxWYKD7cRjh1imWg</string>
+	<string>AIzaSyCAGJe9987wZlgjNctCCdsiC9GkOT8ByeE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>500059309895</string>
+	<string>133229201820</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>io.ionic.smartie</string>
 	<key>PROJECT_ID</key>
-	<string>smartie-212716</string>
+	<string>smartie-renamed</string>
 	<key>STORAGE_BUCKET</key>
-	<string>smartie-212716.appspot.com</string>
+	<string>smartie-renamed.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
 	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false></false>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
 	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:500059309895:ios:e2d686bf0f01b8e4</string>
+	<string>1:133229201820:ios:d4047e68ae020cae</string>
 	<key>DATABASE_URL</key>
-	<string>https://smartie-212716.firebaseio.com</string>
+	<string>https://smartie-renamed.firebaseio.com</string>
 </dict>
 </plist>

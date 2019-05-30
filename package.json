@@ -169,8 +169,8 @@
       "cordova-open-native-settings": {}
     },
     "platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ]
   },
   "engines": {

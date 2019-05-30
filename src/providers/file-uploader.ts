@@ -43,35 +43,37 @@ export class FileUploaderProvider {
     try{
       return new Promise((resolve, reject) => {
         console.log("File Upload debug");
-        this.fileService.readAsDataURL(path, fileName).then(result => {
-          let base64Result = result.split(',')[1];
-          console.log("File Upload read as date success");
-          try{
-            this.fireAuth.auth.signInAnonymously().then(() => {
-              console.log("Firebase auth signed successfully");
-              try {
-                const ref = this.fireUpload.ref(bucketName+'/'+fileName);
-                console.log(ref);
-                ref.putString(base64Result, 'base64', { contentType: 'image/jpeg'}).then(async result => {
-                  let profilePhotoUrl = await result.ref.getDownloadURL();
-                  resolve(profilePhotoUrl);
-                }, (uploadErr) => {
-                  console.log(uploadErr);
-                });
-              } catch (putErr) {
-                console.log(putErr);
-              }
-            }, firebaseAuthErr => {
-              console.log(firebaseAuthErr);
-              reject(firebaseAuthErr);
-            })
-          } catch (authErr) {
-            console.log(authErr);
-          }
-        }, err => {
-          console.log('readAsDataURL error: '+err);
-          reject(err)
-        })
+        this.fileService.resolveLocalFilesystemUrl(path).then(entry => {
+          this.fileService.readAsDataURL(entry.nativeURL, fileName).then(result => {
+            let base64Result = result.split(',')[1];
+            console.log("File Upload read as date success");
+            try{
+              this.fireAuth.auth.signInAnonymously().then(() => {
+                console.log("Firebase auth signed successfully");
+                try {
+                  const ref = this.fireUpload.ref(bucketName+'/'+fileName);
+                  console.log(ref);
+                  ref.putString(base64Result, 'base64', { contentType: 'image/jpeg'}).then(async result => {
+                    let profilePhotoUrl = await result.ref.getDownloadURL();
+                    resolve(profilePhotoUrl);
+                  }, (uploadErr) => {
+                    console.log(uploadErr);
+                  });
+                } catch (putErr) {
+                  console.log(putErr);
+                }
+              }, firebaseAuthErr => {
+                console.log(firebaseAuthErr);
+                reject(firebaseAuthErr);
+              })
+            } catch (authErr) {
+              console.log(authErr);
+            }
+          }, err => {
+            console.log('readAsDataURL error: '+err);
+            reject(err)
+          })
+        });
       });
     } catch (fileError) {
       console.log(fileError);
