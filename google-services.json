@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "133229201820",
-    "firebase_url": "https://smartie-renamed.firebaseio.com",
-    "project_id": "smartie-renamed",
-    "storage_bucket": "smartie-renamed.appspot.com"
+    "project_number": "292635713591",
+    "firebase_url": "https://smatie-ionic3.firebaseio.com",
+    "project_id": "smatie-ionic3",
+    "storage_bucket": "smatie-ionic3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:133229201820:android:d4047e68ae020cae",
+        "mobilesdk_app_id": "1:292635713591:android:9cce58cf7ada1ed7",
         "android_client_info": {
-          "package_name": "io.ionic.smartie"
+          "package_name": "io.ionic3.smartie"
         }
       },
       "oauth_client": [
         {
-          "client_id": "133229201820-rb59j859k8db6fi1jfvrqjkdok58pncg.apps.googleusercontent.com",
+          "client_id": "292635713591-vn85t1q17givn72975dq7r9p9klrgmjr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCvNVy3zwGKp932BpdcUxeQDsXkn-RU_Qw"
+          "current_key": "AIzaSyBQ8Jss00TukG8BgTYVpqBVn1Bz1QekMMY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "133229201820-rb59j859k8db6fi1jfvrqjkdok58pncg.apps.googleusercontent.com",
+              "client_id": "292635713591-vn85t1q17givn72975dq7r9p9klrgmjr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
